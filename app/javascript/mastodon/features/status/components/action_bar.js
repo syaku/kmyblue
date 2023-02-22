@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import IconButton from '../../../components/icon_button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
+import EmojiPickerDropdown from '../../compose/containers/emoji_picker_dropdown_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import { me } from '../../../initial_state';
 import classNames from 'classnames';
@@ -180,6 +181,16 @@ class ActionBar extends React.PureComponent {
     navigator.clipboard.writeText(url);
   };
 
+  handleEmojiPick = (data) => {
+    /*
+    const { text }     = this.props;
+    const position     = this.autosuggestTextarea.textarea.selectionStart;
+    const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
+
+    this.props.onPickEmoji(position, data, needsSpace);
+    */
+  };
+
   render () {
     const { status, relationship, intl } = this.props;
     const { signedIn, permissions } = this.context.identity;
@@ -287,6 +298,7 @@ class ActionBar extends React.PureComponent {
         <div className='detailed-status__button' ><IconButton className={classNames({ reblogPrivate })} disabled={!publicStatus && !reblogPrivate} active={status.get('reblogged')} title={reblogTitle} icon='retweet' onClick={this.handleReblogClick} /></div>
         <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} /></div>
         <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} /></div>
+        <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} /></div>
 
         {shareButton}
 

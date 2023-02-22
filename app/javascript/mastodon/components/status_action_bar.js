@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import IconButton from './icon_button';
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
+import EmojiPickerDropdown from '../features/compose/containers/emoji_picker_dropdown_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { me } from '../initial_state';
@@ -231,6 +232,16 @@ class StatusActionBar extends ImmutablePureComponent {
     this.props.onFilter();
   };
 
+  handleEmojiPick = (data) => {
+    /*
+    const { text }     = this.props;
+    const position     = this.autosuggestTextarea.textarea.selectionStart;
+    const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
+
+    this.props.onPickEmoji(position, data, needsSpace);
+    */
+  };
+
   render () {
     const { status, relationship, intl, withDismiss, withCounters, scrollKey } = this.props;
     const { signedIn, permissions } = this.context.identity;
@@ -363,6 +374,7 @@ class StatusActionBar extends ImmutablePureComponent {
         <IconButton className={classNames('status__action-bar__button', { reblogPrivate })} disabled={!publicStatus && !reblogPrivate} active={status.get('reblogged')} title={reblogTitle} icon='retweet' onClick={this.handleReblogClick} counter={withCounters ? status.get('reblogs_count') : undefined} />
         <IconButton className='status__action-bar__button star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} counter={withCounters ? status.get('favourites_count') : undefined} />
         <IconButton className='status__action-bar__button bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} />
+        <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
 
         {shareButton}
 
