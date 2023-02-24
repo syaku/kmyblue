@@ -60,6 +60,7 @@ class Notification < ApplicationRecord
   belongs_to :follow,         foreign_key: 'activity_id', optional: true
   belongs_to :follow_request, foreign_key: 'activity_id', optional: true
   belongs_to :favourite,      foreign_key: 'activity_id', optional: true
+  belongs_to :emoji_reaction, foreign_key: 'activity_id', optional: true
   belongs_to :poll,           foreign_key: 'activity_id', optional: true
   belongs_to :report,         foreign_key: 'activity_id', optional: true
 
@@ -79,6 +80,8 @@ class Notification < ApplicationRecord
       status&.reblog
     when :favourite
       favourite&.status
+    when :emoji_reaction
+      emoji_reaction&.status
     when :mention
       mention&.status
     when :poll
@@ -128,6 +131,8 @@ class Notification < ApplicationRecord
           notification.status.reblog = cached_status
         when :favourite
           notification.favourite.status = cached_status
+        when :emoji_reaction
+          notification.emoji_reaction.status = cached_status
         when :mention
           notification.mention.status = cached_status
         when :poll
@@ -148,7 +153,7 @@ class Notification < ApplicationRecord
     return unless new_record?
 
     case activity_type
-    when 'Status', 'Follow', 'Favourite', 'FollowRequest', 'Poll', 'Report'
+    when 'Status', 'Follow', 'Favourite', 'EmojiReaction', 'FollowRequest', 'Poll', 'Report'
       self.from_account_id = activity&.account_id
     when 'Mention'
       self.from_account_id = activity&.status&.account_id

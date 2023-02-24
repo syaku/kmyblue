@@ -68,6 +68,7 @@ class StatusActionBar extends ImmutablePureComponent {
     relationship: ImmutablePropTypes.map,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
+    onEmojiReact: PropTypes.func,
     onReblog: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
@@ -124,6 +125,16 @@ class StatusActionBar extends ImmutablePureComponent {
 
     if (signedIn) {
       this.props.onFavourite(this.props.status);
+    } else {
+      this.props.onInteractionModal('favourite', this.props.status);
+    }
+  };
+
+  handleEmojiPick = (data) => {
+    const { signedIn } = this.context.identity;
+
+    if (signedIn) {
+      this.props.onEmojiReact(this.props.status, data);
     } else {
       this.props.onInteractionModal('favourite', this.props.status);
     }
@@ -230,16 +241,6 @@ class StatusActionBar extends ImmutablePureComponent {
 
   handleHideClick = () => {
     this.props.onFilter();
-  };
-
-  handleEmojiPick = (data) => {
-    /*
-    const { text }     = this.props;
-    const position     = this.autosuggestTextarea.textarea.selectionStart;
-    const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
-
-    this.props.onPickEmoji(position, data, needsSpace);
-    */
   };
 
   render () {

@@ -93,6 +93,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
+  onEmojiReact (status, emoji) {
+    
+  },
+
   onPin (status) {
     if (status.get('pinned')) {
       dispatch(unpin(status));
