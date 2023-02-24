@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import StatusContent from '../../../components/status_content';
+import StatusEmojiReactionsBar from '../../../components/status_emoji_reactions_bar';
 import MediaGallery from '../../../components/media_gallery';
 import { Link } from 'react-router-dom';
 import { injectIntl, defineMessages, FormattedDate } from 'react-intl';
@@ -187,6 +188,12 @@ class DetailedStatus extends ImmutablePureComponent {
       media = <Card sensitive={status.get('sensitive')} onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
     }
 
+    let emojiReactionsBar = null;
+    if (status.get('emoji_reactions')) {
+      const emojiReactions = status.get('emoji_reactions');
+      emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} statusId={status.get('id')} />;
+    }
+
     if (status.get('application')) {
       applicationLink = <React.Fragment> · <a className='detailed-status__application' href={status.getIn(['application', 'website'])} target='_blank' rel='noopener noreferrer'>{status.getIn(['application', 'name'])}</a></React.Fragment>;
     }
@@ -274,6 +281,8 @@ class DetailedStatus extends ImmutablePureComponent {
           />
 
           {media}
+
+          {emojiReactionsBar}
 
           <div className='detailed-status__meta'>
             <a className='detailed-status__datetime' href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} target='_blank' rel='noopener noreferrer'>
