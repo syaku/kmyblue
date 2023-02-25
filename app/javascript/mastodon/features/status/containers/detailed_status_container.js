@@ -13,6 +13,7 @@ import {
   unfavourite,
   pin,
   unpin,
+  emojiReact,
 } from '../../../actions/interactions';
 import {
   muteStatus,
@@ -94,7 +95,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onEmojiReact (status, emoji) {
-    
+    dispatch(emojiReact(status, emoji));
   },
 
   onPin (status) {
