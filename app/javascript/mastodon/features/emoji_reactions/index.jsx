@@ -69,7 +69,6 @@ class EmojiReactions extends ImmutablePureComponent {
       if (!groups[key]) groups[key] = [value];
       else groups[key].push(value);
     }
-    console.dir(groups)
 
     const emptyMessage = <FormattedMessage id='empty_column.emoji_reactions' defaultMessage='No one has reacted with emoji this post yet. When someone does, they will show up here.' />;
 

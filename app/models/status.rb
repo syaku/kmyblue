@@ -29,6 +29,8 @@
 #  ordered_media_attachment_ids :bigint(8)        is an Array
 #
 
+require 'ostruct'
+
 class Status < ApplicationRecord
   before_destroy :unlink_from_conversations!
 
@@ -310,6 +312,11 @@ class Status < ApplicationRecord
     generate_emoji_reactions_grouped_by_name.tap do |emoji_reactions|
       update_status_stat!(emoji_reactions: emoji_reactions)
     end
+  end
+
+  def generate_emoji_reactions_grouped_by_account
+    # TODO for serializer
+    EmojiReaction.where(status_id: id).group_by(&:account)
   end
 
   def trendable?

@@ -136,8 +136,6 @@ export default function userLists(state = initialState, action) {
   case FAVOURITES_FETCH_SUCCESS:
     return state.setIn(['favourited_by', action.id], ImmutableList(action.accounts.map(item => item.id)));
   case EMOJI_REACTIONS_FETCH_SUCCESS:
-    console.log('===================')
-    console.dir(state);
     return state.setIn(['emoji_reactioned_by', action.id], ImmutableList(action.accounts));
   case NOTIFICATIONS_UPDATE:
     return action.notification.type === 'follow_request' ? normalizeFollowRequest(state, action.notification) : state;
