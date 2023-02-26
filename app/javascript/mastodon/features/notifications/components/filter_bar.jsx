@@ -75,6 +75,13 @@ class FilterBar extends React.PureComponent {
           <Icon id='star' fixedWidth />
         </button>
         <button
+          className={selectedFilter === 'emoji_reaction' ? 'active' : ''}
+          onClick={this.onClick('emoji_reaction')}
+          title={intl.formatMessage(tooltips.emojiReactions)}
+        >
+          <Icon id='star' fixedWidth />
+        </button>
+        <button
           className={selectedFilter === 'reblog' ? 'active' : ''}
           onClick={this.onClick('reblog')}
           title={intl.formatMessage(tooltips.boosts)}
