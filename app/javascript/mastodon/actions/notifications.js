@@ -15,6 +15,7 @@ import { unescapeHTML } from '../utils/html';
 import { usePendingItems as preferPendingItems } from 'mastodon/initial_state';
 import compareId from 'mastodon/compare_id';
 import { requestNotificationPermission } from '../utils/notifications';
+import { STATUS_EMOJI_REACTION_UPDATE } from './statuses';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -53,6 +54,15 @@ const fetchRelatedRelationships = (dispatch, notifications) => {
 export const loadPending = () => ({
   type: NOTIFICATIONS_LOAD_PENDING,
 });
+
+export function updateEmojiReactions(emoji_reaction, accountId) {
+  return (dispatch) =>
+    dispatch({
+      type: STATUS_EMOJI_REACTION_UPDATE,
+      emoji_reaction,
+      accountId,
+    });
+}
 
 export function updateNotifications(notification, intlMessages, intlLocale) {
   return (dispatch, getState) => {

@@ -12,7 +12,7 @@ import {
   fillCommunityTimelineGaps,
   fillListTimelineGaps,
 } from './timelines';
-import { updateNotifications, expandNotifications } from './notifications';
+import { updateNotifications, expandNotifications, updateEmojiReactions } from './notifications';
 import { updateConversations } from './conversations';
 import { updateStatus } from './statuses';
 import {
@@ -92,6 +92,9 @@ export const connectTimelineStream = (timelineId, channelName, params = {}, opti
           break;
         case 'notification':
           dispatch(updateNotifications(JSON.parse(data.payload), messages, locale));
+          break;
+        case 'emoji_reaction':
+          dispatch(updateEmojiReactions(JSON.parse(data.payload), getState().getIn(['meta', 'me'])));
           break;
         case 'conversation':
           dispatch(updateConversations(JSON.parse(data.payload)));

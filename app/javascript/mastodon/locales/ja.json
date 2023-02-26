@@ -396,6 +396,7 @@
   "not_signed_in_indicator.not_signed_in": "この機能を使うにはログインする必要があります。",
   "notification.admin.report": "{name}さんが{target}さんを通報しました",
   "notification.admin.sign_up": "{name}さんがサインアップしました",
+  "notification.emoji_reaction": "{name}さんがあなたの投稿に絵文字をつけました",
   "notification.favourite": "{name}さんがあなたの投稿をお気に入りに登録しました",
   "notification.follow": "{name}さんにフォローされました",
   "notification.follow_request": "{name}さんがあなたにフォローリクエストしました",
