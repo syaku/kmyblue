@@ -43,6 +43,8 @@ class ActivityPub::TagManager
       account_status_url(target.account, target)
     when :emoji
       emoji_url(target)
+    when :emoji_reaction
+      emoji_reaction_url(target)
     end
   end
 
