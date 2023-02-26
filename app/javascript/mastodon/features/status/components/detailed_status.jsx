@@ -49,6 +49,8 @@ class DetailedStatus extends ImmutablePureComponent {
       available: PropTypes.bool,
     }),
     onToggleMediaVisibility: PropTypes.func,
+    onEmojiReact: PropTypes.func,
+    onUnEmojiReact: PropTypes.func,
   };
 
   state = {
@@ -191,7 +193,7 @@ class DetailedStatus extends ImmutablePureComponent {
     let emojiReactionsBar = null;
     if (status.get('emoji_reactions')) {
       const emojiReactions = status.get('emoji_reactions');
-      emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} status={status} onEmojiReaction={this.props.onEmojiReaction} OnUnEmojiReaction={this.props.OnUnEmojiReaction} />;
+      emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
     }
 
     if (status.get('application')) {

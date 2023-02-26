@@ -39,6 +39,7 @@ class Account extends ImmutablePureComponent {
     actionTitle: PropTypes.string,
     defaultAction: PropTypes.string,
     onActionClick: PropTypes.func,
+    children: PropTypes.object,
   };
 
   static defaultProps = {
@@ -70,7 +71,7 @@ class Account extends ImmutablePureComponent {
   };
 
   render () {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, defaultAction, size } = this.props;
+    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, defaultAction, size, children } = this.props;
 
     if (!account) {
       return (
@@ -145,6 +146,10 @@ class Account extends ImmutablePureComponent {
             {mute_expires_at}
             <DisplayName account={account} />
           </Link>
+
+          <div>
+            {children}
+          </div>
 
           <div className='account__relationship'>
             {buttons}

@@ -33,6 +33,10 @@ export const FAVOURITES_FETCH_REQUEST = 'FAVOURITES_FETCH_REQUEST';
 export const FAVOURITES_FETCH_SUCCESS = 'FAVOURITES_FETCH_SUCCESS';
 export const FAVOURITES_FETCH_FAIL    = 'FAVOURITES_FETCH_FAIL';
 
+export const EMOJI_REACTIONS_FETCH_REQUEST = 'EMOJI_REACTIONS_FETCH_REQUEST';
+export const EMOJI_REACTIONS_FETCH_SUCCESS = 'EMOJI_REACTIONS_FETCH_SUCCESS';
+export const EMOJI_REACTIONS_FETCH_FAIL    = 'EMOJI_REACTIONS_FETCH_FAIL';
+
 export const PIN_REQUEST = 'PIN_REQUEST';
 export const PIN_SUCCESS = 'PIN_SUCCESS';
 export const PIN_FAIL    = 'PIN_FAIL';
@@ -423,6 +427,41 @@ export function fetchFavouritesSuccess(id, accounts) {
 export function fetchFavouritesFail(id, error) {
   return {
     type: FAVOURITES_FETCH_FAIL,
+    error,
+  };
+}
+
+export function fetchEmojiReactions(id) {
+  return (dispatch, getState) => {
+    dispatch(fetchEmojiReactionsRequest(id));
+
+    api(getState).get(`/api/v1/statuses/${id}/emoji_reactioned_by`).then(response => {
+      dispatch(importFetchedAccounts(response.data.map((er) => er.account)));
+      dispatch(fetchEmojiReactionsSuccess(id, response.data));
+    }).catch(error => {
+      dispatch(fetchEmojiReactionsFail(id, error));
+    });
+  };
+}
+
+export function fetchEmojiReactionsRequest(id) {
+  return {
+    type: EMOJI_REACTIONS_FETCH_REQUEST,
+    id,
+  };
+}
+
+export function fetchEmojiReactionsSuccess(id, accounts) {
+  return {
+    type: EMOJI_REACTIONS_FETCH_SUCCESS,
+    id,
+    accounts,
+  };
+}
+
+export function fetchEmojiReactionsFail(id, error) {
+  return {
+    type: EMOJI_REACTIONS_FETCH_FAIL,
     error,
   };
 }

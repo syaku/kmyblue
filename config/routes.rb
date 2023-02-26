@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     /lists/(*any)
     /notifications
     /favourites
+    /emoji_reactions
     /bookmarks
     /pinned
     /start
@@ -439,6 +440,7 @@ Rails.application.routes.draw do
         scope module: :statuses do
           resources :reblogged_by, controller: :reblogged_by_accounts, only: :index
           resources :favourited_by, controller: :favourited_by_accounts, only: :index
+          resources :emoji_reactioned_by, controller: :emoji_reactioned_by_accounts, only: :index
           resource :reblog, only: :create
           post :unreblog, to: 'reblogs#destroy'
 

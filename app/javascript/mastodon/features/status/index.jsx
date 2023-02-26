@@ -24,6 +24,8 @@ import Column from '../ui/components/column';
 import {
   favourite,
   unfavourite,
+  emojiReact,
+  unEmojiReact,
   bookmark,
   unbookmark,
   reblog,
@@ -252,6 +254,16 @@ class Status extends ImmutablePureComponent {
         url: status.get('url'),
       }));
     }
+  };
+
+  handleEmojiReact = (status, emoji) => {
+    const { dispatch } = this.props;
+    dispatch(emojiReact(status, emoji));
+  };
+
+  handleUnEmojiReact = (status, emoji) => {
+    const { dispatch } = this.props;
+    dispatch(unEmojiReact(status, emoji));
   };
 
   handlePin = (status) => {
@@ -644,6 +656,8 @@ class Status extends ImmutablePureComponent {
                   showMedia={this.state.showMedia}
                   onToggleMediaVisibility={this.handleToggleMediaVisibility}
                   pictureInPicture={pictureInPicture}
+                  onEmojiReact={this.handleEmojiReact}
+                  onUnEmojiReact={this.handleUnEmojiReact}
                 />
 
                 <ActionBar
@@ -651,6 +665,7 @@ class Status extends ImmutablePureComponent {
                   status={status}
                   onReply={this.handleReplyClick}
                   onFavourite={this.handleFavouriteClick}
+                  onEmojiReact={this.handleEmojiReact}
                   onReblog={this.handleReblogClick}
                   onBookmark={this.handleBookmarkClick}
                   onDelete={this.handleDeleteClick}
