@@ -197,7 +197,7 @@ class DeleteAccountService < BaseService
   def purge_emoji_reactions!
     @account.emoji_reactions.in_batches do |reactions|
       reactions.each do |reaction|
-        reaction.status.refresh_emoji_reactions_grouped_by_name
+        reaction.status.refresh_emoji_reactions_grouped_by_name!
       end
       Chewy.strategy.current.update(StatusesIndex, reactions.pluck(:status_id)) if Chewy.enabled?
       reactions.delete_all
