@@ -125,15 +125,16 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
         emoji = CustomEmoji.find_by(shortcode: shortcode, domain: @account.domain)
       end
 
-      if @account.reacted?(@original_status, shortcode, emoji)
-        @original_status.emoji_reactions.where(account: @account, name: shortcode, custom_emoji: emoji).first&.destroy
+      emoji_reaction = @original_status.emoji_reactions.where(account: @account, name: shortcode, custom_emoji: emoji).first&
+
+      if emoji_reaction
+        emoji_reaction.destroy
+        write_stream(emoji_reaction)
 
         if @original_status.account.local?
           forward_for_undo_emoji_reaction
           relay_for_undo_emoji_reaction
         end
-      else
-        delete_later!(object_uri)
       end
     else
       undo_like_original
