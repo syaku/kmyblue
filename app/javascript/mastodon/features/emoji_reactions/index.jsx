@@ -52,7 +52,6 @@ class EmojiReactions extends ImmutablePureComponent {
 
   render () {
     const { intl, accountIds, multiColumn } = this.props;
-    console.dir(accountIds);
 
     if (!accountIds) {
       return (
