@@ -6,12 +6,10 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
 
     return if @original_status.nil? || !@original_status.account.local? || delete_arrived_first?(@json['id'])
 
-    lock_or_fail("like:#{object_uri}") do
-      if shortcode.nil?
-        process_favourite
-      else
-        process_emoji_reaction
-      end
+    if shortcode.nil?
+      process_favourite
+    else
+      process_emoji_reaction
     end
   end
 
