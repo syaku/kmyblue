@@ -86,10 +86,10 @@ class EmojiReactions extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}
         >
-          {Object.keys(groups).map((key, index) =>(
-            <AccountContainer key={index} id={key} withNote={false}>
-              <div style={ { 'max-width': '100px' } }>
-                {groups[key].map((value) => <EmojiView name={value.name} url={value.url} staticUrl={value.static_url} />)}
+          {Object.keys(groups).map((key) =>(
+            <AccountContainer key={key} id={key} withNote={false}>
+              <div style={ { 'maxWidth': '100px' } }>
+                {groups[key].map((value, index2) => <EmojiView key={index2} name={value.name} url={value.url} staticUrl={value.static_url} />)}
               </div>
             </AccountContainer>
           ))}
