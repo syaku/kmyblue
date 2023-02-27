@@ -10,9 +10,6 @@ class UnEmojiReactService < BaseService
     @status     = Status.find(status_id)
 
     if emoji_reaction
-      p '================================ DEBUG2 G'
-      emoji_reaction.destroy
-      p '================================ DEBUG2 H'
       create_notification(emoji_reaction) if !@account.local? && @account.activitypub?
       notify_to_followers(emoji_reaction) if @account.local?
       write_stream(emoji_reaction)
