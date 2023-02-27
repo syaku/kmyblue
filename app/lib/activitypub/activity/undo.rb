@@ -125,7 +125,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
         emoji = CustomEmoji.find_by(shortcode: shortcode, domain: @account.domain)
       end
 
-      emoji_reaction = @original_status.emoji_reactions.where(account: @account, name: shortcode, custom_emoji: emoji).first&
+      emoji_reaction = @original_status.emoji_reactions.where(account: @account, name: shortcode, custom_emoji: emoji).first
 
       if emoji_reaction
         emoji_reaction.destroy
