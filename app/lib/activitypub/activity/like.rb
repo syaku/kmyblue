@@ -40,7 +40,6 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
 
     return if EmojiReaction.where(account: @account, status: @original_status).count >= 10
 
-    EmojiReaction.find_by(account: @account, status: @original_status)&.destroy
     reaction = @original_status.emoji_reactions.create!(account: @account, name: shortcode, custom_emoji: emoji, uri: @json['id'])
     write_stream(reaction)
 
