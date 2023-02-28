@@ -13,14 +13,14 @@
                 %time.formatted{ datetime: media_attachment.status.created_at.iso8601, title: l(media_attachment.status.created_at) }= l(media_attachment.status.created_at)
               - if media_attachment.status.edited?
                 ·
-                = link_to t('statuses.edited_at_html', date: content_tag(:time, l(media_attachment.status.edited_at), datetime: media_attachment.status.edited_at.iso8601, title: l(status.edited_at), class: 'formatted')), admin_account_status_path(status.account_id, status), class: 'detailed-status__datetime'
+                = link_to t('statuses.edited_at_html', date: content_tag(:time, l(media_attachment.status.edited_at), datetime: media_attachment.status.edited_at.iso8601, title: l(media_attachment.status.edited_at), class: 'formatted')), admin_account_status_path(media_attachment.status.account_id, media_attachment.status), class: 'detailed-status__datetime'
               - if media_attachment.status.discarded?
                 ·
                 %span.negative-hint= t('admin.statuses.deleted')
               ·
               - if media_attachment.status.reblog?
                 = fa_icon('retweet fw')
-                = t('statuses.boosted_from_html', acct_link: admin_account_inline_link_to(status.proper.account))
+                = t('statuses.boosted_from_html', acct_link: admin_account_inline_link_to(media_attachment.status.proper.account))
               - else
                 = fa_visibility_icon(media_attachment.status)
                 = t("statuses.visibilities.#{media_attachment.status.visibility}")
