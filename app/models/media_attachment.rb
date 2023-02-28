@@ -209,7 +209,7 @@ class MediaAttachment < ApplicationRecord
   scope :local,      -> { where(remote_url: '') }
   scope :remote,     -> { where.not(remote_url: '') }
   scope :cached,     -> { remote.where.not(file_file_name: nil) }
-  scope :recently_attachments, -> { attached.order(status_id: 'DESC') }
+  scope :recently_attachments, -> { attached.where(remote_url: '').order(status_id: 'DESC') }
 
   default_scope { order(id: :asc) }
 

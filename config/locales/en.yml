@@ -547,6 +547,8 @@ en:
         title: Create new IP rule
       no_ip_block_selected: No IP rules were changed as none were selected
       title: IP rules
+    media_attachments:
+      title: Media attachments
     relationships:
       title: "%{acct}'s relationships"
     relays:
