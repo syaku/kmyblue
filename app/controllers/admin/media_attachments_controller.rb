@@ -12,7 +12,7 @@ module Admin
     private
 
     def filtered_attachments
-      MediaAttachment.recently_attachments
+      MediaAttachment.local_attached.order(created_at: :desc)
     end
   end
 end
