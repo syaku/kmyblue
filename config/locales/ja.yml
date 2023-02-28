@@ -536,6 +536,8 @@ ja:
         title: 新規IPルール
       no_ip_block_selected: 何も選択されていないためIPルールを変更しませんでした
       title: IPルール
+    media_attachments:
+      title: 投稿された画像
     relationships:
       title: "%{acct} さんのフォロー・フォロワー"
     relays:
@@ -1302,6 +1304,10 @@ ja:
       body: "%{name}さんにお気に入り登録された、あなたの投稿があります:"
       subject: "%{name}さんにお気に入りに登録されました"
       title: 新たなお気に入り登録
+    emoji_reaction:
+      body: "%{name}さんに絵文字リアクションされた、あなたの投稿があります:"
+      subject: "%{name}さんに絵文字リアクションされました"
+      title: 新たな絵文字リアクション
     follow:
       body: "%{name}さんにフォローされています！"
       subject: "%{name}さんにフォローされています"

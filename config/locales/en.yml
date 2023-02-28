@@ -547,6 +547,8 @@ en:
         title: Create new IP rule
       no_ip_block_selected: No IP rules were changed as none were selected
       title: IP rules
+    media_attachments:
+      title: Media attachments
     relationships:
       title: "%{acct}'s relationships"
     relays:
@@ -1328,6 +1330,10 @@ en:
       body: 'Your post was favourited by %{name}:'
       subject: "%{name} favourited your post"
       title: New favourite
+    emoji_reaction:
+      body: 'Your post was reacted with emoji by %{name}:'
+      subject: "%{name} reacted your post with emoji"
+      title: New emoji reaction
     follow:
       body: "%{name} is now following you!"
       subject: "%{name} is now following you"

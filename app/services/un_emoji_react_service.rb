@@ -5,16 +5,16 @@ class UnEmojiReactService < BaseService
   include Payloadable
 
   def call(account_id, status_id, emoji_reaction = nil)
-    @account_id = account_id
-    @account    = Account.find(account_id)
-    @status     = Status.find(status_id)
+    @status = Status.find(status_id)
 
     if emoji_reaction
-      create_notification(emoji_reaction) if !@account.local? && @account.activitypub?
-      notify_to_followers(emoji_reaction) if @account.local?
+      emoji_reaction.destroy!
+      create_notification(emoji_reaction) if !@status.account.local? && @status.account.activitypub?
+      notify_to_followers(emoji_reaction) if @status.account.local?
       write_stream(emoji_reaction)
     else
-      bulk(@account, @status)
+      account = Account.find(account_id)
+      bulk(account, @status)
     end
     emoji_reaction
   end
@@ -22,17 +22,17 @@ class UnEmojiReactService < BaseService
   private
 
   def bulk(account, status)
-    EmojiReaction.where(account: account).where(status: status).tap do |emoji_reaction|
-      call(account, status, emoji_reaction)
+    EmojiReaction.where(account: account).where(status: status).each do |emoji_reaction|
+      call(account.id, status.id, emoji_reaction)
     end
   end
 
   def create_notification(emoji_reaction)
-    ActivityPub::DeliveryWorker.perform_async(build_json(emoji_reaction), @account_id, @account.inbox_url)
+    ActivityPub::DeliveryWorker.perform_async(build_json(emoji_reaction), emoji_reaction.account_id, @status.account.inbox_url)
   end
 
   def notify_to_followers(emoji_reaction)
-    ActivityPub::RawDistributionWorker.perform_async(build_json(emoji_reaction), @account_id)
+    ActivityPub::RawDistributionWorker.perform_async(build_json(emoji_reaction), @status.account_id)
   end
 
   def write_stream(emoji_reaction)
@@ -45,7 +45,7 @@ class UnEmojiReactService < BaseService
       emoji_group = { 'name' => emoji_reaction.name, 'count' => 0, 'account_ids' => [], 'status_id' => @status.id.to_s }
       emoji_group['domain'] = emoji_reaction.custom_emoji.domain if emoji_reaction.custom_emoji
     end
-    FeedAnyJsonWorker.perform_async(render_emoji_reaction(emoji_group), @status.id, @account_id)
+    FeedAnyJsonWorker.perform_async(render_emoji_reaction(emoji_group), @status.id, emoji_reaction.account_id)
   end
 
   def build_json(emoji_reaction)

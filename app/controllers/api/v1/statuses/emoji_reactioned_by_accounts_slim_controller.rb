@@ -10,7 +10,10 @@ class Api::V1::Statuses::EmojiReactionedByAccountsSlimController < Api::BaseCont
     @accounts = load_emoji_reactions
 
     # TODO for serialize hash object
-    render json: @accounts, each_serializer: REST::EmojiReactedBySlimSerializer
+    #render json: @accounts, each_serializer: REST::EmojiReactedBySlimSerializer
+
+    # Hide WIP api for hide account secret
+    not_found
   end
 
   private
