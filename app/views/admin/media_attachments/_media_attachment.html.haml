@@ -1,0 +1,11 @@
+.batch-table__row{ class: ['batch-table__row--attention'] }
+  .batch-table__row__content.batch-table__row__content--unpadded
+    %table.accounts-table
+      %tbody
+        %tr
+          %td
+            %img{ src: media_attachment.url }
+            %div
+              = media_attachment.status.uri
+            %div
+              = media_attachment.status.visibility

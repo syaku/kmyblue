@@ -33,6 +33,7 @@ class MediaAttachment < ApplicationRecord
   self.inheritance_column = nil
 
   include Attachmentable
+  include RoutingHelper
 
   enum type: { :image => 0, :gifv => 1, :video => 2, :unknown => 3, :audio => 4 }
   enum processing: { :queued => 0, :in_progress => 1, :complete => 2, :failed => 3 }, _prefix: true
@@ -208,6 +209,7 @@ class MediaAttachment < ApplicationRecord
   scope :local,      -> { where(remote_url: '') }
   scope :remote,     -> { where.not(remote_url: '') }
   scope :cached,     -> { remote.where.not(file_file_name: nil) }
+  scope :recently_attachments, -> { attached.order(status_id: 'DESC') }
 
   default_scope { order(id: :asc) }
 
@@ -269,6 +271,10 @@ class MediaAttachment < ApplicationRecord
 
   def delay_processing_for_attachment?(attachment_name)
     delay_processing? && attachment_name == :file
+  end
+
+  def url
+    full_asset_url(file.url(:original))
   end
 
   after_commit :enqueue_processing, on: :create

@@ -257,6 +257,7 @@ Rails.application.routes.draw do
 
     resources :action_logs, only: [:index]
     resources :warning_presets, except: [:new]
+    resources :media_attachments, only: [:index]
 
     resources :announcements, except: [:show] do
       member do
