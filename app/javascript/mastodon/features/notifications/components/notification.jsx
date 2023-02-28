@@ -179,7 +179,6 @@ class Notification extends ImmutablePureComponent {
         cachedMediaWidth={this.props.cachedMediaWidth}
         cacheMediaWidth={this.props.cacheMediaWidth}
         unread={this.props.unread}
-        withoutEmojiReactions={true}
       />
     );
   }
