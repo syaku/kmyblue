@@ -6,6 +6,7 @@ import Icon from 'mastodon/components/icon';
 const tooltips = defineMessages({
   mentions: { id: 'notifications.filter.mentions', defaultMessage: 'Mentions' },
   favourites: { id: 'notifications.filter.favourites', defaultMessage: 'Favourites' },
+  emojiReactions: { id: 'notifications.filter.emoji_reactions', defaultMessage: 'Emoji reactions' },
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Boosts' },
   polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
@@ -79,7 +80,7 @@ class FilterBar extends React.PureComponent {
           onClick={this.onClick('emoji_reaction')}
           title={intl.formatMessage(tooltips.emojiReactions)}
         >
-          <Icon id='star' fixedWidth />
+          <Icon id='smile-o' fixedWidth />
         </button>
         <button
           className={selectedFilter === 'reblog' ? 'active' : ''}
