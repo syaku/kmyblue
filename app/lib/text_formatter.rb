@@ -46,6 +46,8 @@ class TextFormatter
     html = markdownify(html)
 
     # html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
+    html = html.delete("\n")
+    p html
 
     html.html_safe # rubocop:disable Rails/OutputSafety
   end
@@ -162,7 +164,7 @@ class TextFormatter
     # not need filter_html because escape is already done
     @htmlobj ||= MyMarkdownHTML.new(
         filter_html: false,
-        hard_wrap: false,
+        hard_wrap: true,
         no_styles: true
       )
     @markdown ||= Redcarpet::Markdown.new(@htmlobj,
@@ -181,16 +183,12 @@ class TextFormatter
       nil
     end
 
-    def linebreak
-      nil
-    end
-
     def block_code(code, language)
-      "<pre>#{code}</pre>"
+      "<pre>#{process_program_code(code)}</pre>"
     end
 
     def codespan(code)
-      "<code>#{escape_tags(code)}</code>"
+      "<code>#{process_program_code(code)}</code>"
     end
 
     def header(text, header_level)
@@ -199,8 +197,8 @@ class TextFormatter
 
     private
 
-    def escape_tags(code)
-      code.gsub(/</, '&lt;').gsub(/>/, '&gt;')
+    def process_program_code(code)
+      code.gsub(/\n/, '<br>')
     end
   end
 end
