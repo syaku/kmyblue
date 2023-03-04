@@ -43,7 +43,9 @@ class TextFormatter
       end
     end
 
-    html = markdownify(html)
+    # line first letter for blockquote
+    p 'DEBUG  ' + html.gsub(/^gt;/, '>')
+    html = markdownify(html.gsub(/^&gt;/, '>'))
 
     # html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
     html = html.delete("\n")
@@ -164,8 +166,7 @@ class TextFormatter
     # not need filter_html because escape is already done
     @htmlobj ||= MyMarkdownHTML.new(
         filter_html: false,
-        hard_wrap: true,
-        no_styles: true
+        hard_wrap: true
       )
     @markdown ||= Redcarpet::Markdown.new(@htmlobj,
         autolink: false,
