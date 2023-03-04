@@ -43,7 +43,13 @@ class TextFormatter
       end
     end
 
-    html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
+    # line first letter for blockquote
+    p 'DEBUG  ' + html.gsub(/^gt;/, '>')
+    html = markdownify(html.gsub(/^&gt;/, '>'))
+
+    # html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
+    html = html.delete("\n")
+    p html
 
     html.html_safe # rubocop:disable Rails/OutputSafety
   end
@@ -154,5 +160,46 @@ class TextFormatter
 
   def preloaded_accounts?
     preloaded_accounts.present?
+  end
+
+  def markdownify(html)
+    # not need filter_html because escape is already done
+    @htmlobj ||= MyMarkdownHTML.new(
+        filter_html: false,
+        hard_wrap: true
+      )
+    @markdown ||= Redcarpet::Markdown.new(@htmlobj,
+        autolink: false,
+        tables: false,
+        underline: true,
+        disable_indented_code_blocks: false,
+        fenced_code_blocks: true,
+        highlight: false
+      )
+    @markdown.render(html)
+  end
+
+  class MyMarkdownHTML < Redcarpet::Render::HTML
+    def link(link, title, content)
+      nil
+    end
+
+    def block_code(code, language)
+      "<pre>#{process_program_code(code)}</pre>"
+    end
+
+    def codespan(code)
+      "<code>#{process_program_code(code)}</code>"
+    end
+
+    def header(text, header_level)
+      "<p>#{text}</p>"
+    end
+
+    private
+
+    def process_program_code(code)
+      code.gsub(/\n/, '<br>')
+    end
   end
 end
