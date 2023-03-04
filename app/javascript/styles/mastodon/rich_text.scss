@@ -87,6 +87,10 @@
     color: $ui-secondary-color;
     padding: 0 2px;
   }
+
+  sup {
+    vertical-align: super;
+  }
 }
 
 .reply-indicator__content {
