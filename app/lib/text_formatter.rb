@@ -175,6 +175,7 @@ class TextFormatter
         fenced_code_blocks: true,
         strikethrough: true,
         superscript: true,
+        underline: true,
         highlight: false
       )
     @markdown.render(html)
@@ -195,6 +196,10 @@ class TextFormatter
 
     def header(text, header_level)
       "<p>#{text}</p>"
+    end
+
+    def underline(text)
+      nil
     end
 
     private
