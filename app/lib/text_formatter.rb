@@ -171,7 +171,6 @@ class TextFormatter
     @markdown ||= Redcarpet::Markdown.new(@htmlobj,
         autolink: false,
         tables: false,
-        underline: true,
         disable_indented_code_blocks: false,
         fenced_code_blocks: true,
         strikethrough: true,
