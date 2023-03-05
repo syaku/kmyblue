@@ -1521,9 +1521,11 @@ ja:
       private: フォロワー限定
       private_long: フォロワーにのみ表示されます
       public: 公開
-      public_long: 誰でも見ることができ、かつ公開タイムラインに表示されます
+      public_long: 誰でも見ることができ、かつ連合・ローカルタイムラインに表示されます
+      public_unlisted: ローカル公開
+      public_unlisted_long: 誰でも見ることができますが、連合タイムラインには表示されません
       unlisted: 未収載
-      unlisted_long: 誰でも見ることができますが、公開タイムラインには表示されません
+      unlisted_long: 誰でも見ることができますが、連合・ローカルタイムラインには表示されません
   statuses_cleanup:
     enabled: 古い投稿を自動的に削除する
     enabled_hint: 設定した期間を過ぎた投稿は、以下の例外に該当しない限り、自動的に削除されます

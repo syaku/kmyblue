@@ -460,6 +460,8 @@
   "privacy.private.short": "Followers only",
   "privacy.public.long": "Visible for all",
   "privacy.public.short": "Public",
+  "privacy.public_unlisted.long": "Visible for all without GTL",
+  "privacy.public_unlisted.short": "Public unlisted",
   "privacy.unlisted.long": "Visible for all, but opted-out of discovery features",
   "privacy.unlisted.short": "Unlisted",
   "privacy_policy.last_updated": "Last updated {date}",
