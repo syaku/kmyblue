@@ -87,7 +87,7 @@ class StatusReachFinder
   end
 
   def distributable?
-    @status.public_visibility? || @status.unlisted_visibility?
+    @status.public_visibility? || @status.unlisted_visibility? || @status.public_unlisted_visibility?
   end
 
   def unsafe?

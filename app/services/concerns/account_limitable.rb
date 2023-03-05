@@ -3,7 +3,7 @@
 module AccountLimitable
   def scope_status(status)
     case status.visibility.to_sym
-    when :public, :unlisted
+    when :public, :unlisted, :public_unlisted
       #scope_local.merge(scope_list_following_account(status.account))
       scope_local
     when :private

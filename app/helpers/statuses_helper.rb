@@ -98,6 +98,8 @@ module StatusesHelper
       fa_icon 'globe fw'
     when 'unlisted'
       fa_icon 'unlock fw'
+    when 'public_unlisted'
+      fa_icon 'cloud fw'
     when 'private'
       fa_icon 'lock fw'
     when 'direct'
