@@ -171,9 +171,11 @@ class TextFormatter
     @markdown ||= Redcarpet::Markdown.new(@htmlobj,
         autolink: false,
         tables: false,
-        underline: true,
         disable_indented_code_blocks: false,
         fenced_code_blocks: true,
+        strikethrough: true,
+        superscript: true,
+        underline: true,
         highlight: false
       )
     @markdown.render(html)
@@ -194,6 +196,10 @@ class TextFormatter
 
     def header(text, header_level)
       "<p>#{text}</p>"
+    end
+
+    def underline(text)
+      text.include?(':') ? nil : '<u>' + text + '</u>'
     end
 
     private
