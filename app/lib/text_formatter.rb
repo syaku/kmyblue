@@ -199,7 +199,7 @@ class TextFormatter
     end
 
     def underline(text)
-      nil
+      text.include?(':') ? nil : '<u>' + text + '</u>'
     end
 
     private
