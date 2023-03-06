@@ -202,6 +202,10 @@ class TextFormatter
       text.include?(':') ? nil : '<u>' + text + '</u>'
     end
 
+    def image(link, title, alt_text)
+      nil
+    end
+
     private
 
     def process_program_code(code)
