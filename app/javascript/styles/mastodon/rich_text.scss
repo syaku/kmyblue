@@ -91,6 +91,13 @@
   sup {
     vertical-align: super;
   }
+
+}
+
+.status__content__text {
+  a.kmy-dangerous-link {
+    color: red !important;
+  }
 }
 
 .reply-indicator__content {

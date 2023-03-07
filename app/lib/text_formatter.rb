@@ -44,7 +44,6 @@ class TextFormatter
     end
 
     # line first letter for blockquote
-    p 'DEBUG  ' + html.gsub(/^gt;/, '>')
     html = markdownify(html.gsub(/^&gt;/, '>'))
 
     # html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
