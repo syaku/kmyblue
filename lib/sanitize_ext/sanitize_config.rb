@@ -64,7 +64,7 @@ class Sanitize
                  :relative
                end
 
-      if LINK_PROTOCOLS.include?(scheme) && href != text
+      if LINK_PROTOCOLS.include?(scheme) && href != text && href != 'https://' + text && cls == ''
         current_node['class'] = cls + ' kmy-dangerous-link'
         current_node.before(Nokogiri::XML::Text.new('⚠', current_node.document))
       end
