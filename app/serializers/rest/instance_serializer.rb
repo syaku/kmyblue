@@ -77,6 +77,11 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       translation: {
         enabled: TranslationService.configured?,
       },
+
+      emoji_reactions: {
+        max_reactions: EmojiReaction::EMOJI_REACTION_LIMIT,
+        max_reactions_per_account: EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT,
+      },
     }
   end
 
@@ -92,7 +97,9 @@ class REST::InstanceSerializer < ActiveModel::Serializer
   def fedibird_capabilities
     capabilities = [
       :emoji_reaction,
-      :visibility_public_unlisted
+      :visibility_public_unlisted,
+      :enable_wide_emoji,
+      :enable_wide_emoji_reaction,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?
