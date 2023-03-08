@@ -19,6 +19,8 @@
 #  visible_in_picker            :boolean          default(TRUE), not null
 #  category_id                  :bigint(8)
 #  image_storage_schema_version :integer
+#  image_width                  :integer
+#  image_height                 :integer
 #
 
 class CustomEmoji < ApplicationRecord

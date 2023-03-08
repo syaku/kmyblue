@@ -802,7 +802,8 @@ body > [data-popper-placement] {
   vertical-align: middle;
   object-fit: contain;
   margin: -0.2ex 0.15em 0.2ex;
-  width: 16px;
+  min-width: 16px;
+  max-width: min(8em, 100%);
   height: 16px;
 
   img {
@@ -878,7 +879,8 @@ body > [data-popper-placement] {
   }
 
   .emojione {
-    width: 20px;
+    min-width: 20px;
+    max-width: min(8em, 100%);
     height: 20px;
     margin: -3px 0 0;
   }
@@ -959,7 +961,8 @@ body > [data-popper-placement] {
   overflow-y: auto;
 
   .emojione {
-    width: 20px;
+    min-width: 20px;
+    max-width: min(8em, 100%);
     height: 20px;
     margin: -3px 0 0;
   }
@@ -1334,7 +1337,8 @@ body > [data-popper-placement] {
     line-height: 24px;
 
     .emojione {
-      width: 24px;
+      min-width: 24px;
+      max-width: min(8em, 100%);
       height: 24px;
       margin: -1px 0 0;
     }
@@ -4122,6 +4126,10 @@ a.status-card.compact:hover {
   text-align: center;
 }
 
+.detailed-status__button .emoji-button {
+  padding: 0;
+}
+
 .column-settings__outer {
   background: lighten($ui-base-color, 8%);
   padding: 15px;
@@ -5871,7 +5879,8 @@ a.status-card.compact:hover {
     line-height: 24px;
 
     .emojione {
-      width: 24px;
+      min-width: 24px;
+      max-width: min(8em, 100%);
       height: 24px;
       margin: -1px 0 0;
     }
@@ -7222,7 +7231,8 @@ noscript {
       }
 
       .emojione {
-        width: 22px;
+        min-width: 22px;
+        max-width: min(8em, 100%);
         height: 22px;
       }
 

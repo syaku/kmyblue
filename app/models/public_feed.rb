@@ -25,6 +25,7 @@ class PublicFeed
     scope.merge!(without_reblogs_scope) unless with_reblogs?
     scope.merge!(local_only_scope) if local_only?
     scope.merge!(remote_only_scope) if remote_only?
+    scope.merge!(global_timeline_only_scope) if global_timeline?
     scope.merge!(account_filters_scope) if account?
     scope.merge!(media_only_scope) if media_only?
     scope.merge!(language_scope) if account&.chosen_languages.present?
@@ -52,6 +53,10 @@ class PublicFeed
     options[:remote]
   end
 
+  def global_timeline?
+    !options[:remote] && !options[:local]
+  end
+
   def account?
     account.present?
   end
@@ -70,6 +75,10 @@ class PublicFeed
 
   def remote_only_scope
     Status.remote
+  end
+
+  def global_timeline_only_scope
+    Status.with_global_timeline_visibility.joins(:account).merge(Account.without_suspended.without_silenced)
   end
 
   def without_replies_scope

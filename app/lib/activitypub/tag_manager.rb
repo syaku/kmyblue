@@ -84,7 +84,7 @@ class ActivityPub::TagManager
     case status.visibility
     when 'public'
       [COLLECTIONS[:public]]
-    when 'unlisted', 'private'
+    when 'unlisted', 'public_unlisted', 'private'
       [account_followers_url(status.account)]
     when 'direct', 'limited'
       if status.account.silenced?
@@ -120,7 +120,7 @@ class ActivityPub::TagManager
     case status.visibility
     when 'public'
       cc << account_followers_url(status.account)
-    when 'unlisted'
+    when 'unlisted', 'public_unlisted'
       cc << COLLECTIONS[:public]
     end
 

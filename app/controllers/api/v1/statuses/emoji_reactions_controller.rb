@@ -5,7 +5,7 @@ class Api::V1::Statuses::EmojiReactionsController < Api::BaseController
 
   before_action -> { doorkeeper_authorize! :write, :'write:emoji_reactions' }
   before_action :require_user!
-  before_action :set_status, only: %i(create update)
+  before_action :set_status, only: %i(create update destroy)
   before_action :set_status_without_authorize, only: [:destroy]
 
   def create
@@ -18,7 +18,7 @@ class Api::V1::Statuses::EmojiReactionsController < Api::BaseController
   end
 
   def destroy
-    emoji = params[:emoji]
+    emoji = params[:emoji] || params[:id]
 
     if emoji
       shortcode, domain = emoji.split('@')
@@ -42,7 +42,7 @@ class Api::V1::Statuses::EmojiReactionsController < Api::BaseController
   def create_private(emoji)
     count = EmojiReaction.where(account: current_account, status: @status).count
 
-    if count >= DEFAULT_EMOJI_REACTION_LIMIT
+    if count >= EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT
       bad_request
       return
     end

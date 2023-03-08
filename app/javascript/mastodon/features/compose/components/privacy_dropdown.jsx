@@ -12,6 +12,8 @@ const messages = defineMessages({
   public_long: { id: 'privacy.public.long', defaultMessage: 'Visible for all' },
   unlisted_short: { id: 'privacy.unlisted.short', defaultMessage: 'Unlisted' },
   unlisted_long: { id: 'privacy.unlisted.long', defaultMessage: 'Visible for all, but opted-out of discovery features' },
+  public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
+  public_unlisted_long: { id: 'privacy.public_unlisted.long', defaultMessage: 'Visible for all without GTL' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
   private_long: { id: 'privacy.private.long', defaultMessage: 'Visible for followers only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
@@ -218,6 +220,7 @@ class PrivacyDropdown extends React.PureComponent {
 
     this.options = [
       { icon: 'globe', value: 'public', text: formatMessage(messages.public_short), meta: formatMessage(messages.public_long) },
+      { icon: 'cloud', value: 'public_unlisted', text: formatMessage(messages.public_unlisted_short), meta: formatMessage(messages.public_unlisted_long) },
       { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
       { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
     ];

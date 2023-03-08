@@ -22,6 +22,7 @@ import EditedTimestamp from 'mastodon/components/edited_timestamp';
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
   unlisted_short: { id: 'privacy.unlisted.short', defaultMessage: 'Unlisted' },
+  public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers-only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
 });
@@ -209,6 +210,7 @@ class DetailedStatus extends ImmutablePureComponent {
     const visibilityIconInfo = {
       'public': { icon: 'globe', text: intl.formatMessage(messages.public_short) },
       'unlisted': { icon: 'unlock', text: intl.formatMessage(messages.unlisted_short) },
+      'public_unlisted': { icon: 'cloud', text: intl.formatMessage(messages.public_unlisted_short) },
       'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };

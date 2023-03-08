@@ -17,8 +17,13 @@ class FanOutOnWriteService < BaseService
     warm_payload_cache!
 
     fan_out_to_local_recipients!
-    fan_out_to_public_recipients! if broadcastable?
-    fan_out_to_public_streams! if broadcastable?
+    if broadcastable?
+      fan_out_to_public_recipients!
+      fan_out_to_public_streams!
+    elsif broadcastable_unlisted?
+      fan_out_to_public_recipients!
+      fan_out_to_public_unlisted_streams!
+    end
   end
 
   private
@@ -41,7 +46,7 @@ class FanOutOnWriteService < BaseService
     notify_about_update! if update?
 
     case @status.visibility.to_sym
-    when :public, :unlisted, :private
+    when :public, :unlisted, :public_unlisted, :private
       deliver_to_all_followers!
       deliver_to_lists!
     when :limited
@@ -59,6 +64,11 @@ class FanOutOnWriteService < BaseService
   def fan_out_to_public_streams!
     broadcast_to_hashtag_streams!
     broadcast_to_public_streams!
+  end
+
+  def fan_out_to_public_unlisted_streams!
+    broadcast_to_hashtag_streams!
+    broadcast_to_public_unlisted_streams!
   end
 
   def deliver_to_self!
@@ -132,6 +142,16 @@ class FanOutOnWriteService < BaseService
     end
   end
 
+  def broadcast_to_public_unlisted_streams!
+    return if @status.reply? && @status.in_reply_to_account_id != @account.id
+
+    redis.publish(@status.local? ? 'timeline:public:local' : 'timeline:public:remote', anonymous_payload)
+
+    if @status.with_media?
+      redis.publish(@status.local? ? 'timeline:public:local:media' : 'timeline:public:remote:media', anonymous_payload)
+    end
+  end
+
   def deliver_to_conversation!
     AccountConversation.add_status(@account, @status) unless update?
   end
@@ -157,5 +177,9 @@ class FanOutOnWriteService < BaseService
 
   def broadcastable?
     @status.public_visibility? && !@status.reblog? && !@account.silenced?
+  end
+
+  def broadcastable_unlisted?
+    @status.public_unlisted_visibility? && !@status.reblog? && !@account.silenced?
   end
 end

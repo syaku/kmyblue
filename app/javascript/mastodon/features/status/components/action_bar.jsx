@@ -190,8 +190,8 @@ class ActionBar extends React.PureComponent {
     const { status, relationship, intl } = this.props;
     const { signedIn, permissions } = this.context.identity;
 
-    const publicStatus       = ['public', 'unlisted'].includes(status.get('visibility'));
-    const pinnableStatus     = ['public', 'unlisted', 'private'].includes(status.get('visibility'));
+    const publicStatus       = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility'));
+    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'private'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
     const account            = status.get('account');
     const writtenByMe        = status.getIn(['account', 'id']) === me;
@@ -267,6 +267,10 @@ class ActionBar extends React.PureComponent {
       <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShare} /></div>
     );
 
+    const emojiPickerButton = (
+      <IconButton icon='smile-o' />
+    );
+
     let replyIcon;
     if (status.get('in_reply_to_id', null) === null) {
       replyIcon = 'reply';
@@ -293,7 +297,7 @@ class ActionBar extends React.PureComponent {
         <div className='detailed-status__button' ><IconButton className={classNames({ reblogPrivate })} disabled={!publicStatus && !reblogPrivate} active={status.get('reblogged')} title={reblogTitle} icon='retweet' onClick={this.handleReblogClick} /></div>
         <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} /></div>
         <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} /></div>
-        <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} /></div>
+        <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} /></div>
 
         {shareButton}
 

@@ -73,7 +73,7 @@ class StatusEmojiReactionsBar extends React.PureComponent {
   render () {
     const { emojiReactions } = this.props;
 
-    const emojiButtons = Array.from(emojiReactions).map((emoji, index) => (
+    const emojiButtons = Array.from(emojiReactions).filter(emoji => emoji.get('count') != 0).map((emoji, index) => (
       <EmojiReactionButton
         key={index}
         name={emoji.get('name')}

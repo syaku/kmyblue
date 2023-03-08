@@ -44,7 +44,6 @@ class TextFormatter
     end
 
     # line first letter for blockquote
-    p 'DEBUG  ' + html.gsub(/^gt;/, '>')
     html = markdownify(html.gsub(/^&gt;/, '>'))
 
     # html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
@@ -200,6 +199,10 @@ class TextFormatter
 
     def underline(text)
       text.include?(':') ? nil : '<u>' + text + '</u>'
+    end
+
+    def image(link, title, alt_text)
+      nil
     end
 
     private

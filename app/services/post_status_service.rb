@@ -65,7 +65,7 @@ class PostStatusService < BaseService
     @sensitive    = (@options[:sensitive].nil? ? @account.user&.setting_default_sensitive : @options[:sensitive]) || @options[:spoiler_text].present?
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
-    @visibility   = :unlisted if @visibility&.to_sym == :public && @account.silenced?
+    @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
   rescue ArgumentError
