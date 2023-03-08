@@ -3,7 +3,7 @@
 class REST::CustomEmojiSerializer < ActiveModel::Serializer
   include RoutingHelper
 
-  attributes :shortcode, :url, :static_url, :visible_in_picker
+  attributes :shortcode, :url, :static_url, :visible_in_picker, :width, :height
 
   attribute :category, if: :category_loaded?
 
@@ -21,5 +21,13 @@ class REST::CustomEmojiSerializer < ActiveModel::Serializer
 
   def category_loaded?
     object.association(:category).loaded? && object.category.present?
+  end
+
+  def width
+    object.image_width
+  end
+
+  def height
+    object.image_height
   end
 end
