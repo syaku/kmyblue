@@ -28,6 +28,7 @@ const messages = defineMessages({
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Unboost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be boosted' },
   favourite: { id: 'status.favourite', defaultMessage: 'Favourite' },
+  emojiReaction: { id: 'status.emoji_reaction', defaultMessage: 'Emoji Reaction' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   removeBookmark: { id: 'status.remove_bookmark', defaultMessage: 'Remove bookmark' },
   open: { id: 'status.open', defaultMessage: 'Expand this status' },
@@ -370,7 +371,7 @@ class StatusActionBar extends ImmutablePureComponent {
     );
 
     const emojiPickerButton = (
-      <IconButton className='status__action-bar__button' icon='smile-o' />
+      <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.emojiReaction)} icon='smile-o' />
     );
 
     return (
