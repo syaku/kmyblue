@@ -48,7 +48,6 @@ class TextFormatter
 
     # html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
     html = html.delete("\n")
-    p html
 
     html.html_safe # rubocop:disable Rails/OutputSafety
   end
