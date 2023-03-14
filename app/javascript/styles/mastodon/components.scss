@@ -1287,6 +1287,12 @@ body > [data-popper-placement] {
     .emoji {
       display: block;
       height: 16px;
+      transition: transform .2s ease;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+
       img {
         margin-top: 0;
         margin-bottom: 0;

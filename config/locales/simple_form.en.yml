@@ -40,12 +40,16 @@ en:
         discoverable: Allow your account to be discovered by strangers through recommendations, trends and other features
         email: You will be sent a confirmation e-mail
         fields: You can have up to 4 items displayed as a table on your profile
+        group: Reps sent to this account will be automatically BT'd and distributed to all accounts you follow!
+        group_allow_private_message: Posts are duplicated and cannot be edited or deleted by the post
+        group_message_following_only: Effective as an anti-troll/spam measure, but requires the effort to follow up with subscribers
         header: PNG, GIF or JPG. At most %{size}. Will be downscaled to %{dimensions}px
         inbox_url: Copy the URL from the frontpage of the relay you want to use
         irreversible: Filtered posts will disappear irreversibly, even if filter is later removed
         locale: The language of the user interface, e-mails and push notifications
         locked: Manually control who can follow you by approving follow requests
         password: Use at least 8 characters
+        person: This is normal account
         phrase: Will be matched regardless of casing in text or content warning of a post
         scopes: Which APIs the application will be allowed to access. If you select a top-level scope, you don't need to select individual ones.
         setting_aggregate_reblogs: Do not show new boosts for posts that have been recently boosted (only affects newly-received boosts)
@@ -179,6 +183,9 @@ en:
         email: E-mail address
         expires_in: Expire after
         fields: Profile metadata
+        group: This is a group account
+        group_allow_private_message: For group accounts, duplicate private or direct message
+        group_message_following_only: For group accounts, BT only mentions from people you are following
         header: Header
         honeypot: "%{label} (do not fill in)"
         inbox_url: URL of the relay inbox
@@ -186,10 +193,12 @@ en:
         locale: Interface language
         locked: Require follow requests
         max_uses: Max number of uses
+        my_actor_type: Account type
         new_password: New password
         note: Bio
         otp_attempt: Two-factor code
         password: Password
+        person: This is a normal account
         phrase: Keyword or phrase
         setting_advanced_layout: Enable advanced web interface
         setting_aggregate_reblogs: Group boosts in timelines

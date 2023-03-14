@@ -86,6 +86,13 @@
     vertical-align: super;
   }
 
+  .emojione {
+    transition: transform .2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
 }
 
 .status__content__text {

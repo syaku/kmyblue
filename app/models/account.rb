@@ -50,6 +50,8 @@
 #  trendable                     :boolean
 #  reviewed_at                   :datetime
 #  requested_review_at           :datetime
+#  group_message_following_only  :boolean
+#  group_allow_private_message   :boolean
 #
 
 class Account < ApplicationRecord
@@ -171,7 +173,19 @@ class Account < ApplicationRecord
     actor_type == 'Group'
   end
 
+  def group=(val)
+    self.actor_type = ActiveModel::Type::Boolean.new.cast(val) ? 'Group' : 'Person'
+  end
+
   alias group group?
+
+  def my_actor_type
+    actor_type == 'Service' ? 'bot' : actor_type == 'Group' ? 'group' : 'person'
+  end
+
+  def my_actor_type=(val)
+    self.actor_type = val == 'bot' ? 'Service' : val == 'group' ? 'Group' : 'Person'
+  end
 
   def acct
     local? ? username : "#{username}@#{domain}"
