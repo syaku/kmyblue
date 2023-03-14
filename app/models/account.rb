@@ -51,6 +51,7 @@
 #  reviewed_at                   :datetime
 #  requested_review_at           :datetime
 #  group_message_following_only  :boolean
+#  group_allow_private_message   :boolean
 #
 
 class Account < ApplicationRecord

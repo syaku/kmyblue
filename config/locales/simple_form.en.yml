@@ -41,6 +41,7 @@ en:
         email: You will be sent a confirmation e-mail
         fields: You can have up to 4 items displayed as a table on your profile
         group: Reps sent to this account will be automatically BT'd and distributed to all accounts you follow!
+        group_allow_private_message: Posts are duplicated and cannot be edited or deleted by the post
         group_message_following_only: Effective as an anti-troll/spam measure, but requires the effort to follow up with subscribers
         header: PNG, GIF or JPG. At most %{size}. Will be downscaled to %{dimensions}px
         inbox_url: Copy the URL from the frontpage of the relay you want to use
@@ -183,6 +184,7 @@ en:
         expires_in: Expire after
         fields: Profile metadata
         group: This is a group account
+        group_allow_private_message: For group accounts, duplicate private or direct message
         group_message_following_only: For group accounts, BT only mentions from people you are following
         header: Header
         honeypot: "%{label} (do not fill in)"

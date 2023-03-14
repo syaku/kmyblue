@@ -33,6 +33,9 @@
     = f.input :group_message_following_only, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.group_message_following_only')
 
   .fields-group
+    = f.input :group_allow_private_message, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.group_allow_private_message')
+
+  .fields-group
     = f.input :discoverable, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.discoverable'), recommended: true
 
   .fields-group

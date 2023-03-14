@@ -5,16 +5,17 @@ class GroupReblogService < BaseService
 
   def call(status)
     visibility = status.visibility.to_sym
-    return nil if !%i(public public_unlisted unlisted private).include?(visibility)
+    return nil if !%i(public public_unlisted unlisted private direct).include?(visibility)
 
     accounts = status.mentions.map(&:account) | status.active_mentions.map(&:account)
-    transcription = visibility == :private
+    transcription = %i(private direct).include?(visibility)
 
     accounts.each do |account|
       next unless account.local?
       next if account.group_message_following_only && !account.following?(status.account)
       next unless account.group?
       next if account.id == status.account_id
+      next if transcription && !account.group_allow_private_message
 
       ReblogService.new.call(account, status, { visibility: status.visibility }) if !transcription
 
@@ -33,14 +34,16 @@ class GroupReblogService < BaseService
           end
         end
 
+        text = status.account.local? ? status.text : strip_tags(status.text.gsub(/<br>/, "\n").gsub(/<br \/>/, "\n").gsub(/<\/p>/, "\n\n").strip)
+
         PostStatusService.new.call(
           account,
-          text: "Private message by @#{username}\n\\-\\-\\-\\-\n#{status.text}",
+          text: "Private message by @#{username}\n\\-\\-\\-\\-\n#{text}",
           thread: status.thread,
           media_ids: media_attachments.map(&:id),
           sensitive: status.sensitive,
           spoiler_text: status.spoiler_text,
-          visibility: status.visibility,
+          visibility: :private,
           language: status.language,
           poll: status.poll,
           with_rate_limit: true
