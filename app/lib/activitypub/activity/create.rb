@@ -89,6 +89,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     fetch_replies(@status)
     distribute
     forward_for_reply
+    join_group!
   end
 
   def distribute
@@ -423,5 +424,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   rescue ActiveRecord::StaleObjectError
     poll.reload
     retry
+  end
+
+  def join_group!
+    GroupReblogService.new.call(@status)
   end
 end

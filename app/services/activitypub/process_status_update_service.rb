@@ -182,7 +182,6 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
     update_tags!
     update_mentions!
     update_emojis!
-    join_group!
   end
 
   def update_tags!
@@ -217,10 +216,6 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
     removed_mentions = previous_mentions - current_mentions
 
     Mention.where(id: removed_mentions.map(&:id)).update_all(silent: true) unless removed_mentions.empty?
-  end
-
-  def join_group!
-    GroupReblogService.call(@status)
   end
 
   def update_emojis!
