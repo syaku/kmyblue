@@ -40,12 +40,15 @@ ja:
         discoverable: レコメンド、トレンド、その他の機能により、あなたのアカウントを他の人から見つけられるようにします
         email: 確認のメールが送信されます
         fields: プロフィールに表として4つまでの項目を表示することができます
+        group: このアカウントに送られたリプは自動でBTされ、フォローしている全てのアカウントに配信されます
+        group_message_following_only: 荒らし・スパム対策として有効ですが、加入者をフォローする手間が発生します
         header: "%{size}までのPNG、GIF、JPGが利用可能です。 %{dimensions}pxまで縮小されます"
         inbox_url: 使用したいリレーサーバーのトップページからURLをコピーします
         irreversible: フィルターが後で削除されても、除外された投稿は元に戻せなくなります
         locale: ユーザーインターフェース、メールやプッシュ通知の言語
         locked: フォロワーを手動で承認する必要があります
         password: 少なくとも8文字は入力してください
+        person: これは人が使用している通常のアカウントです
         phrase: 投稿内容の大文字小文字や閲覧注意に関係なく一致
         scopes: アプリの API に許可するアクセス権を選択してください。最上位のスコープを選択する場合、個々のスコープを選択する必要はありません。
         setting_aggregate_reblogs: 最近ブーストされた投稿が新たにブーストされても表示しません (設定後受信したものにのみ影響)
@@ -179,6 +182,8 @@ ja:
         email: メールアドレス
         expires_in: 有効期限
         fields: プロフィール補足情報
+        group: これはグループアカウントです
+        group_message_following_only: グループアカウントの場合、自分がフォローしている相手からのメンションのみをBTする
         header: ヘッダー
         honeypot: "%{label} (入力しない)"
         inbox_url: リレーサーバーの inbox URL
@@ -186,10 +191,12 @@ ja:
         locale: 言語
         locked: 承認制アカウントにする
         max_uses: 使用できる回数
+        my_actor_type: アカウントの種類
         new_password: 新しいパスワード
         note: プロフィール
         otp_attempt: 二要素認証コード
         password: パスワード
+        person: これは通常のアカウントです
         phrase: キーワードまたはフレーズ
         setting_advanced_layout: 上級者向けUIを有効にする
         setting_aggregate_reblogs: ブーストをまとめる
