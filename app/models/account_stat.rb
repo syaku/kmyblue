@@ -36,6 +36,6 @@ class AccountStat < ApplicationRecord
   end
 
   def group_activitypub_count
-    [attributes['group_activitypub_count'], 0].max
+    [attributes['group_activitypub_count'] || 0, 0].max
   end
 end
