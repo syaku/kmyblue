@@ -3,6 +3,9 @@
 class GroupReblogService < BaseService
   include RoutingHelper
 
+  CHECK_POSTS_DOMAIN_SIZE = 30
+  REQUESTED_LOCAL_POSTS = 5
+
   def call(status)
     visibility = status.visibility.to_sym
     return nil if !%i(public public_unlisted unlisted private direct).include?(visibility)
@@ -13,9 +16,16 @@ class GroupReblogService < BaseService
     accounts.each do |account|
       next unless account.local?
       next if account.group_message_following_only && !account.following?(status.account)
+      next unless status.account.following?(account)
       next unless account.group?
       next if account.id == status.account_id
       next if transcription && !account.group_allow_private_message
+
+      if status.account.activitypub?
+        domains = account.statuses.order(created_at: 'DESC').where('reblog_of_id > 0').map(&:reblog).map(&:account).map(&:domain).take(CHECK_POSTS_DOMAIN_SIZE).to_a
+        local_count = domains.where { |domain| !domain }.size
+        next if local_count < REQUESTED_LOCAL_POSTS
+      end
 
       ReblogService.new.call(account, status, { visibility: status.visibility }) if !transcription
 
