@@ -6,6 +6,8 @@ class GroupReblogService < BaseService
   ACTIVITYPUB_CONTINUOUS_SIZE = 30
 
   def call(status)
+    return nil if status.account.group?
+
     visibility = status.visibility.to_sym
     return nil if !%i(public public_unlisted unlisted private direct).include?(visibility)
 
