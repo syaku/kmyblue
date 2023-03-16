@@ -23,12 +23,14 @@ class UpdateStatusService < BaseService
     @media_attachments_changed = false
     @poll_changed              = false
 
+    clear_histories! if @options[:no_history]
+
     Status.transaction do
-      create_previous_edit!
+      create_previous_edit! unless @options[:no_history]
       update_media_attachments! if @options.key?(:media_ids)
       update_poll! if @options.key?(:poll)
       update_immediate_attributes!
-      create_edit!
+      create_edit! unless @options[:no_history]
     end
 
     queue_poll_notifications!
@@ -165,5 +167,11 @@ class UpdateStatusService < BaseService
 
   def significant_changes?
     @status.changed? || @poll_changed || @media_attachments_changed
+  end
+
+  def clear_histories!
+    @status.edits.destroy_all
+    @status.edited_at = nil
+    @status.save!
   end
 end

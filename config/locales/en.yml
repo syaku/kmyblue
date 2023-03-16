@@ -774,6 +774,8 @@ en:
         report: Report
       deleted: Deleted
       favourites: Favourites
+      force_cw: Force CW
+      force_nsfw: Force NSFW
       history: Version history
       in_reply_to: Replying to
       language: Language
@@ -784,6 +786,9 @@ en:
       open: Open post
       original_status: Original post
       reblogs: Reblogs
+      remove: Remove post
+      remove_media: Remove medias
+      remove_history: Remove edit history
       status_changed: Post changed
       title: Account posts
       trending: Trending

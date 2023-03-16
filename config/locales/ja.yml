@@ -760,6 +760,8 @@ ja:
         report: 通報
       deleted: 削除済み
       favourites: お気に入り
+      force_cw: 強制CW
+      force_nsfw: 強制NSFW
       history: 更新履歴
       in_reply_to: 返信先
       language: 言語
@@ -770,6 +772,9 @@ ja:
       open: 投稿を開く
       original_status: オリジナルの投稿
       reblogs: ブースト
+      remove: 投稿を削除
+      remove_media: メディアを削除
+      remove_history: 編集履歴を削除
       status_changed: 投稿を変更しました
       title: 投稿一覧
       trending: トレンド
