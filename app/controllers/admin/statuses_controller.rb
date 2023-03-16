@@ -36,6 +36,7 @@ module Admin
         @account.id,
         no_history: true
       )
+      log_action(:remove_history, @status)
       redirect_to admin_account_status_path
     end
 
@@ -47,6 +48,7 @@ module Admin
         media_ids: [],
         media_attributes: []
       )
+      log_action(:remove_media, @status)
       redirect_to admin_account_status_path
     end
 
@@ -57,6 +59,7 @@ module Admin
         @account.id,
         sensitive: true
       )
+      log_action(:force_sensitive, @status)
       redirect_to admin_account_status_path
     end
 
@@ -67,6 +70,7 @@ module Admin
         @account.id,
         spoiler_text: 'CW'
       )
+      log_action(:force_cw, @status)
       redirect_to admin_account_status_path
     end
 
@@ -76,6 +80,7 @@ module Admin
       StatusPin.find_by(status: @status)&.destroy
       @status.account.statuses_count = @status.account.statuses_count - 1
       RemovalWorker.perform_async(@status.id, { 'redraft' => false })
+      log_action(:remove_status, @status)
       redirect_to admin_account_path
     end
 
