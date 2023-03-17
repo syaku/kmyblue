@@ -3,7 +3,11 @@
 class GroupReblogService < BaseService
   include RoutingHelper
 
+  ACTIVITYPUB_CONTINUOUS_SIZE = 30
+
   def call(status)
+    return nil if status.account.group?
+
     visibility = status.visibility.to_sym
     return nil if !%i(public public_unlisted unlisted private direct).include?(visibility)
 
@@ -12,10 +16,21 @@ class GroupReblogService < BaseService
 
     accounts.each do |account|
       next unless account.local?
-      next if account.group_message_following_only && !account.following?(status.account)
+      next unless status.account.following?(account)
       next unless account.group?
       next if account.id == status.account_id
       next if transcription && !account.group_allow_private_message
+
+      if status.account.activitypub? && ACTIVITYPUB_CONTINUOUS_SIZE > 0
+        next if account.group_activitypub_count >= ACTIVITYPUB_CONTINUOUS_SIZE
+        account.group_activitypub_count = account.group_activitypub_count + 1
+        account.save!
+      else
+        if account.group_activitypub_count > 0
+          account.group_activitypub_count = 0
+          account.save!
+        end
+      end
 
       ReblogService.new.call(account, status, { visibility: status.visibility }) if !transcription
 

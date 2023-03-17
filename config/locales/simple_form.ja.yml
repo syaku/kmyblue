@@ -42,7 +42,6 @@ ja:
         fields: プロフィールに表として4つまでの項目を表示することができます
         group: このアカウントに送られたメンションは自動でBTされ、フォローしている全てのアカウントに配信されます
         group_allow_private_message: 投稿は複製されるため、投稿者が編集・削除することはできません
-        group_message_following_only: 荒らし・スパム対策として有効ですが、加入者をフォローする手間が発生します
         header: "%{size}までのPNG、GIF、JPGが利用可能です。 %{dimensions}pxまで縮小されます"
         inbox_url: 使用したいリレーサーバーのトップページからURLをコピーします
         irreversible: フィルターが後で削除されても、除外された投稿は元に戻せなくなります
@@ -185,7 +184,6 @@ ja:
         fields: プロフィール補足情報
         group: これはグループアカウントです
         group_allow_private_message: グループアカウントの場合、フォロワーのみ・ダイレクトのメンションを複製する
-        group_message_following_only: グループアカウントの場合、自分がフォローしている相手からのメンションのみをBTする
         header: ヘッダー
         honeypot: "%{label} (入力しない)"
         inbox_url: リレーサーバーの inbox URL

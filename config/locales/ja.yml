@@ -261,11 +261,16 @@ ja:
         enable_custom_emoji_html: "%{name}さんがカスタム絵文字 %{target}を有効化しました"
         enable_sign_in_token_auth_user_html: "%{name}さんが%{target}さんのメールトークン認証を有効にしました"
         enable_user_html: "%{name}さんが%{target}さんのログインを有効化しました"
+        force_cw_status_html: "%{name}さんが%{target}さんの投稿を強制的にCWにしました"
+        force_sensitive_status_html: "%{name}さんが%{target}さんの投稿を強制的に閲覧注意にしました"
         memorialize_account_html: "%{name}さんが%{target}さんを追悼アカウントページに登録しました"
         promote_user_html: "%{name}さんが%{target}さんを昇格しました"
         reject_appeal_html: "%{name}さんが%{target}からの抗議を却下しました"
         reject_user_html: "%{name}さんが%{target}さんからの登録を拒否しました"
         remove_avatar_user_html: "%{name}さんが%{target}さんのアイコンを削除しました"
+        remove_history_status_html: "%{name}さんが%{target}さんの投稿の編集履歴を削除しました"
+        remove_media_status_html: "%{name}さんが%{target}さんの投稿のメディアを削除しました"
+        remove_status_status_html: "%{name}さんが%{target}さんの投稿を削除しました"
         reopen_report_html: "%{name}さんが通報 %{target}を未解決に戻しました"
         resend_user_html: "%{name}さんが%{target}の確認メールを再送信しました"
         reset_password_user_html: "%{name}さんが%{target}さんのパスワードをリセットしました"
@@ -760,6 +765,8 @@ ja:
         report: 通報
       deleted: 削除済み
       favourites: お気に入り
+      force_cw: 強制CW
+      force_nsfw: 強制NSFW
       history: 更新履歴
       in_reply_to: 返信先
       language: 言語
@@ -770,6 +777,9 @@ ja:
       open: 投稿を開く
       original_status: オリジナルの投稿
       reblogs: ブースト
+      remove: 投稿を削除
+      remove_media: メディアを削除
+      remove_history: 編集履歴を削除
       status_changed: 投稿を変更しました
       title: 投稿一覧
       trending: トレンド

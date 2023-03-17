@@ -4,7 +4,7 @@ module Admin
   class StatusesController < BaseController
     before_action :set_account
     before_action :set_statuses, except: :show
-    before_action :set_status, only: :show
+    before_action :set_status, only: [:show, :remove_history, :remove_media, :force_sensitive, :force_cw, :remove_status]
 
     PER_PAGE = 20
 
@@ -27,6 +27,61 @@ module Admin
       flash[:alert] = I18n.t('admin.statuses.no_status_selected')
     ensure
       redirect_to after_create_redirect_path
+    end
+
+    def remove_history
+      authorize [:admin, @status], :show?
+      UpdateStatusService.new.call(
+        @status,
+        @account.id,
+        no_history: true
+      )
+      log_action(:remove_history, @status)
+      redirect_to admin_account_status_path
+    end
+
+    def remove_media
+      authorize [:admin, @status], :show?
+      UpdateStatusService.new.call(
+        @status,
+        @account.id,
+        media_ids: [],
+        media_attributes: []
+      )
+      log_action(:remove_media, @status)
+      redirect_to admin_account_status_path
+    end
+
+    def force_sensitive
+      authorize [:admin, @status], :show?
+      UpdateStatusService.new.call(
+        @status,
+        @account.id,
+        sensitive: true
+      )
+      log_action(:force_sensitive, @status)
+      redirect_to admin_account_status_path
+    end
+
+    def force_cw
+      authorize [:admin, @status], :show?
+      UpdateStatusService.new.call(
+        @status,
+        @account.id,
+        spoiler_text: 'CW'
+      )
+      log_action(:force_cw, @status)
+      redirect_to admin_account_status_path
+    end
+
+    def remove_status
+      authorize [:admin, @status], :show?
+      @status.discard_with_reblogs
+      StatusPin.find_by(status: @status)&.destroy
+      @status.account.statuses_count = @status.account.statuses_count - 1
+      RemovalWorker.perform_async(@status.id, { 'redraft' => false })
+      log_action(:remove_status, @status)
+      redirect_to admin_account_path
     end
 
     private

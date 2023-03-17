@@ -355,6 +355,14 @@ Rails.application.routes.draw do
       resource :action, only: [:new, :create], controller: 'account_actions'
 
       resources :statuses, only: [:index, :show] do
+        member do
+          post :remove_history
+          post :remove_media
+          post :force_sensitive
+          post :force_cw
+          post :remove_status
+        end
+
         collection do
           post :batch
         end
