@@ -170,7 +170,6 @@ class UpdateStatusService < BaseService
   end
 
   def clear_histories!
-    MediaAttachment.where(status_id: @status.id).destroy_all unless @status.with_media?
     @status.edits.destroy_all
     @status.edited_at = nil
     @status.save!
