@@ -33,7 +33,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        current_account.id,
         no_history: true
       )
       log_action(:remove_history, @status)
@@ -44,7 +44,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        current_account.id,
         media_ids: [],
         media_attributes: []
       )
@@ -56,7 +56,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        current_account.id,
         sensitive: true
       )
       log_action(:force_sensitive, @status)
@@ -67,7 +67,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        current_account.id,
         spoiler_text: 'CW'
       )
       log_action(:force_cw, @status)
