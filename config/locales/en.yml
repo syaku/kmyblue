@@ -772,6 +772,7 @@ en:
     statuses:
       account: Author
       application: Application
+      are_you_sure: Are you sure?
       back_to_account: Back to account page
       back_to_report: Back to report page
       batch:
