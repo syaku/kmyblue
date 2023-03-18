@@ -758,6 +758,7 @@ ja:
     statuses:
       account: 作成者
       application: アプリ
+      are_you_sure: 本当に実行しますか？
       back_to_account: アカウントページに戻る
       back_to_report: 通報ページに戻る
       batch:

@@ -48,15 +48,15 @@
 %div.action-buttons
   %div
     - if @account.local?
-      = link_to t('admin.statuses.remove_history'), remove_history_admin_account_status_path(@account.id), method: :post, class: 'button' if can?(:warn, @account)
+      = link_to t('admin.statuses.remove_history'), remove_history_admin_account_status_path(@account.id), data: { confirm: t('admin.statuses.are_you_sure') }, method: :post, class: 'button' if can?(:warn, @account)
     - if @account.local? && @status.with_media?
-      = link_to t('admin.statuses.remove_media'), remove_media_admin_account_status_path(@account.id), method: :post, class: 'button' if can?(:warn, @account)
+      = link_to t('admin.statuses.remove_media'), remove_media_admin_account_status_path(@account.id), data: { confirm: t('admin.statuses.are_you_sure') }, method: :post, class: 'button' if can?(:warn, @account)
     - if @account.local? && !@status.sensitive && @status.with_media?
-      = link_to t('admin.statuses.force_nsfw'), force_sensitive_admin_account_status_path(@account.id), method: :post, class: 'button' if can?(:warn, @account)
+      = link_to t('admin.statuses.force_nsfw'), force_sensitive_admin_account_status_path(@account.id), data: { confirm: t('admin.statuses.are_you_sure') }, method: :post, class: 'button' if can?(:warn, @account)
     - if @account.local? && !@status.spoiler_text.present?
-      = link_to t('admin.statuses.force_cw'), force_cw_admin_account_status_path(@account.id), method: :post, class: 'button' if can?(:warn, @account)
+      = link_to t('admin.statuses.force_cw'), force_cw_admin_account_status_path(@account.id), data: { confirm: t('admin.statuses.are_you_sure') }, method: :post, class: 'button' if can?(:warn, @account)
     - if @account.local?
-      = link_to t('admin.statuses.remove'), remove_status_admin_account_status_path(@account.id), method: :post, class: 'button' if can?(:warn, @account)
+      = link_to t('admin.statuses.remove'), remove_status_admin_account_status_path(@account.id), data: { confirm: t('admin.statuses.are_you_sure') }, method: :post, class: 'button' if can?(:warn, @account)
 
 %hr.spacer/
 

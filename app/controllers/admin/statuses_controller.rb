@@ -33,7 +33,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        edit_status_account_id,
         no_history: true
       )
       log_action(:remove_history, @status)
@@ -44,7 +44,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        edit_status_account_id,
         media_ids: [],
         media_attributes: []
       )
@@ -56,7 +56,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        edit_status_account_id,
         sensitive: true
       )
       log_action(:force_sensitive, @status)
@@ -67,7 +67,7 @@ module Admin
       authorize [:admin, @status], :show?
       UpdateStatusService.new.call(
         @status,
-        @account.id,
+        edit_status_account_id,
         spoiler_text: 'CW'
       )
       log_action(:force_cw, @status)
@@ -110,6 +110,13 @@ module Admin
 
     def set_statuses
       @statuses = Admin::StatusFilter.new(@account, filter_params).results.preload(:application, :preloadable_poll, :media_attachments, active_mentions: :account, reblog: [:account, :application, :preloadable_poll, :media_attachments, active_mentions: :account]).page(params[:page]).per(PER_PAGE)
+    end
+
+    def edit_status_account_id
+      return @edit_account_id || @account.id if @edit_account_checked
+
+      @edit_account_checked = true
+      @edit_account_id = Account.local.find_by(username: 'official')&.id || @account.id
     end
 
     def filter_params
