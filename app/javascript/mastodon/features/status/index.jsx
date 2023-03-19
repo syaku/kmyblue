@@ -258,7 +258,17 @@ class Status extends ImmutablePureComponent {
 
   handleEmojiReact = (status, emoji) => {
     const { dispatch } = this.props;
-    dispatch(emojiReact(status, emoji));
+    const { signedIn } = this.context.identity;
+
+    if (signedIn) {
+      dispatch(emojiReact(status, emoji));
+    } else {
+      dispatch(openModal('INTERACTION', {
+        type: 'favourite',
+        accountId: status.getIn(['account', 'id']),
+        url: status.get('url'),
+      }));
+    }
   };
 
   handleUnEmojiReact = (status, emoji) => {

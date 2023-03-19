@@ -529,16 +529,17 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :media,        only: [:create, :update, :show]
-      resources :blocks,       only: [:index]
-      resources :mutes,        only: [:index]
-      resources :favourites,   only: [:index]
-      resources :bookmarks,    only: [:index]
-      resources :reports,      only: [:create]
-      resources :trends,       only: [:index], controller: 'trends/tags'
-      resources :filters,      only: [:index, :create, :show, :update, :destroy]
-      resources :endorsements, only: [:index]
-      resources :markers,      only: [:index, :create]
+      resources :media,           only: [:create, :update, :show]
+      resources :blocks,          only: [:index]
+      resources :mutes,           only: [:index]
+      resources :favourites,      only: [:index]
+      resources :emoji_reactions, only: [:index]
+      resources :bookmarks,       only: [:index]
+      resources :reports,         only: [:create]
+      resources :trends,          only: [:index], controller: 'trends/tags'
+      resources :filters,         only: [:index, :create, :show, :update, :destroy]
+      resources :endorsements,    only: [:index]
+      resources :markers,         only: [:index, :create]
 
       namespace :apps do
         get :verify_credentials, to: 'credentials#show'

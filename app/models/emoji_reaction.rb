@@ -18,7 +18,7 @@ class EmojiReaction < ApplicationRecord
   include Paginable
 
   EMOJI_REACTION_LIMIT = 32767
-  EMOJI_REACTION_PER_ACCOUNT_LIMIT = 5
+  EMOJI_REACTION_PER_ACCOUNT_LIMIT = 3
 
   update_index('statuses', :status)
 

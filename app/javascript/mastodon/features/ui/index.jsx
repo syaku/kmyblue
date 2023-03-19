@@ -42,6 +42,7 @@ import {
   Notifications,
   FollowRequests,
   FavouritedStatuses,
+  EmojiReactedStatuses,
   BookmarkedStatuses,
   FollowedTags,
   ListTimeline,
@@ -102,6 +103,7 @@ const keyMap = {
   goToDirect: 'g d',
   goToStart: 'g s',
   goToFavourites: 'g f',
+  goToEmojiReactions: 'g e',
   goToPinned: 'g p',
   goToProfile: 'g u',
   goToBlocked: 'g b',
@@ -189,6 +191,7 @@ class SwitchingColumnsArea extends React.PureComponent {
           <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
           <WrappedRoute path='/notifications' component={Notifications} content={children} />
           <WrappedRoute path='/favourites' component={FavouritedStatuses} content={children} />
+          <WrappedRoute path='/emoji_reactions' component={EmojiReactedStatuses} content={children} />
 
           <WrappedRoute path='/bookmarks' component={BookmarkedStatuses} content={children} />
           <WrappedRoute path='/pinned' component={PinnedStatuses} content={children} />
@@ -525,6 +528,10 @@ class UI extends React.PureComponent {
     this.context.router.history.push('/favourites');
   };
 
+  handleHotkeyGoToEmojiReactions = () => {
+    this.context.router.history.push('/emoji_reactions');
+  };
+
   handleHotkeyGoToPinned = () => {
     this.context.router.history.push('/pinned');
   };
@@ -564,6 +571,7 @@ class UI extends React.PureComponent {
       goToDirect: this.handleHotkeyGoToDirect,
       goToStart: this.handleHotkeyGoToStart,
       goToFavourites: this.handleHotkeyGoToFavourites,
+      goToEmojiReactions: this.handleHotkeyGoToEmojiReactions,
       goToPinned: this.handleHotkeyGoToPinned,
       goToProfile: this.handleHotkeyGoToProfile,
       goToBlocked: this.handleHotkeyGoToBlocked,
