@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UpdateStatusExpirationService < BaseService
-  SCAN_EXPIRATION_RE = /#exp((\d.\d|\d)+)([dhms]+)/
+  SCAN_EXPIRATION_RE = /#exp((\d+.\d+|\d+))([dhms]+)/
 
   def call(status)
     existing_expiration = ScheduledExpirationStatus.find_by(status: status)
