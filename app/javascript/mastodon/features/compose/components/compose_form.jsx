@@ -11,6 +11,7 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
+import ExpirationDropdownContainer from '../containers/expiration_dropdown_container';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import PollFormContainer from '../containers/poll_form_container';
 import UploadFormContainer from '../containers/upload_form_container';
@@ -60,6 +61,7 @@ class ComposeForm extends ImmutablePureComponent {
     onChangeSpoilerText: PropTypes.func.isRequired,
     onPaste: PropTypes.func.isRequired,
     onPickEmoji: PropTypes.func.isRequired,
+    onPickExpiration: PropTypes.func.isRequired,
     autoFocus: PropTypes.bool,
     anyMedia: PropTypes.bool,
     isInReply: PropTypes.bool,
@@ -206,6 +208,13 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onPickEmoji(position, data, needsSpace);
   };
 
+  handleExpirationPick = (data) => {
+    const { text }     = this.props;
+    const position     = this.autosuggestTextarea.textarea.selectionStart;
+
+    this.props.onPickExpiration(position, data);
+  };
+
   render () {
     const { intl, onPaste, autoFocus } = this.props;
     const disabled = this.props.isSubmitting;
@@ -277,6 +286,7 @@ class ComposeForm extends ImmutablePureComponent {
             <PrivacyDropdownContainer disabled={this.props.isEditing} />
             <SpoilerButtonContainer />
             <LanguageDropdown />
+            <ExpirationDropdownContainer onPickExpiration={this.handleExpirationPick} />
           </div>
 
           <div className='character-counter__wrapper'>

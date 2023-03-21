@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UpdateStatusExpirationService < BaseService
-  SCAN_EXPIRATION_RE = /#exp((\d.\d|\d)+)([dms]+)/
+  SCAN_EXPIRATION_RE = /#exp((\d.\d|\d)+)([dhms]+)/
 
   def call(status)
     existing_expiration = ScheduledExpirationStatus.find_by(status: status)
@@ -13,7 +13,7 @@ class UpdateStatusExpirationService < BaseService
     expiration_num = expiration[0].to_f
     expiration_option = expiration[1]
 
-    expired_at = Time.now.utc + (expiration_option == 'd' ? expiration_num.days : expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes)
+    expired_at = Time.now.utc + (expiration_option == 'd' ? expiration_num.days : expiration_option == 'h' ? expiration_num.hours : expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes)
     ScheduledExpirationStatus.create!(account: status.account, status: status, scheduled_at: expired_at)
   end
 end
