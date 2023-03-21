@@ -32,6 +32,7 @@ import {
   COMPOSE_LANGUAGE_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
   COMPOSE_EMOJI_INSERT,
+  COMPOSE_EXPIRATION_INSERT,
   COMPOSE_UPLOAD_CHANGE_REQUEST,
   COMPOSE_UPLOAD_CHANGE_SUCCESS,
   COMPOSE_UPLOAD_CHANGE_FAIL,
@@ -213,6 +214,17 @@ const insertEmoji = (state, position, emojiData, needsSpace) => {
     text: `${oldText.slice(0, position)}${emoji} ${oldText.slice(position)}`,
     focusDate: new Date(),
     caretPosition: position + emoji.length + 1,
+    idempotencyKey: uuid(),
+  });
+};
+
+const insertExpiration = (state, position, data) => {
+  const oldText = state.get('text');
+
+  return state.merge({
+    text: `${oldText.slice(0, position)} ${data} ${oldText.slice(position)}`,
+    focusDate: new Date(),
+    caretPosition: position + data.length + 1,
     idempotencyKey: uuid(),
   });
 };
@@ -443,6 +455,8 @@ export default function compose(state = initialState, action) {
     }
   case COMPOSE_EMOJI_INSERT:
     return insertEmoji(state, action.position, action.emoji, action.needsSpace);
+  case COMPOSE_EXPIRATION_INSERT:
+    return insertExpiration(state, action.position, action.data);
   case COMPOSE_UPLOAD_CHANGE_SUCCESS:
     return state
       .set('is_changing_upload', false)

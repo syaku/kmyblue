@@ -117,9 +117,15 @@ class UpdateStatusService < BaseService
 
     # We raise here to rollback the entire transaction
     raise NoChangesSubmittedError unless significant_changes?
+    
+    update_expiration!
 
     @status.edited_at = Time.now.utc
     @status.save!
+  end
+
+  def update_expiration!
+    UpdateStatusExpirationService.new.call(@status)
   end
 
   def reset_preview_card!

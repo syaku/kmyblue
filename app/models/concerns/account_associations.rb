@@ -19,6 +19,7 @@ module AccountAssociations
     has_many :notifications, inverse_of: :account, dependent: :destroy
     has_many :conversations, class_name: 'AccountConversation', dependent: :destroy, inverse_of: :account
     has_many :scheduled_statuses, inverse_of: :account, dependent: :destroy
+    has_many :scheduled_expiration_statuses, inverse_of: :account, dependent: :destroy
 
     # Pinned statuses
     has_many :status_pins, inverse_of: :account, dependent: :destroy
