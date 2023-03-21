@@ -76,6 +76,8 @@ class PostStatusService < BaseService
     @status = @account.statuses.new(status_attributes)
     process_mentions_service.call(@status, save_records: false)
     safeguard_mentions!(@status)
+    
+    UpdateStatusExpirationService.new.call(@status)
 
     # The following transaction block is needed to wrap the UPDATEs to
     # the media attachments when the status is created
@@ -116,7 +118,6 @@ class PostStatusService < BaseService
   end
 
   def postprocess_status!
-    UpdateStatusExpirationService.new.call(@status)
     process_hashtags_service.call(@status)
     Trends.tags.register(@status)
     LinkCrawlWorker.perform_async(@status.id)

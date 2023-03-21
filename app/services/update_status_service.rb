@@ -30,7 +30,6 @@ class UpdateStatusService < BaseService
       update_media_attachments! if @options.key?(:media_ids)
       update_poll! if @options.key?(:poll)
       update_immediate_attributes!
-      update_expiration!
       create_edit! unless @options[:no_history]
     end
 
@@ -118,6 +117,8 @@ class UpdateStatusService < BaseService
 
     # We raise here to rollback the entire transaction
     raise NoChangesSubmittedError unless significant_changes?
+    
+    update_expiration!
 
     @status.edited_at = Time.now.utc
     @status.save!
