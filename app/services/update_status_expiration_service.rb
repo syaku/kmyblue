@@ -12,8 +12,9 @@ class UpdateStatusExpirationService < BaseService
 
     expiration_num = expiration[0].to_f
     expiration_option = expiration[1]
+    base_time = status.created_at || Time.now.utc
 
-    expired_at = Time.now.utc + (expiration_option == 'd' ? expiration_num.days : expiration_option == 'h' ? expiration_num.hours : expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes)
+    expired_at = base_time + (expiration_option == 'd' ? expiration_num.days : expiration_option == 'h' ? expiration_num.hours : expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes)
     ScheduledExpirationStatus.create!(account: status.account, status: status, scheduled_at: expired_at)
   end
 end

@@ -8,17 +8,6 @@ import classNames from 'classnames';
 import Icon from 'mastodon/components/icon';
 
 const messages = defineMessages({
-  public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
-  public_long: { id: 'privacy.public.long', defaultMessage: 'Visible for all' },
-  unlisted_short: { id: 'privacy.unlisted.short', defaultMessage: 'Unlisted' },
-  unlisted_long: { id: 'privacy.unlisted.long', defaultMessage: 'Visible for all, but opted-out of discovery features' },
-  public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
-  public_unlisted_long: { id: 'privacy.public_unlisted.long', defaultMessage: 'Visible for all without GTL' },
-  private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
-  private_long: { id: 'privacy.private.long', defaultMessage: 'Visible for followers only' },
-  direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
-  direct_long: { id: 'privacy.direct.long', defaultMessage: 'Visible for mentioned users only' },
-  change_privacy: { id: 'privacy.change', defaultMessage: 'Adjust status privacy' },
   add_expiration: { id: 'status.expiration.add', defaultMessage: 'Set status expiration' },
 });
 
