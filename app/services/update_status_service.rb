@@ -30,6 +30,7 @@ class UpdateStatusService < BaseService
       update_media_attachments! if @options.key?(:media_ids)
       update_poll! if @options.key?(:poll)
       update_immediate_attributes!
+      update_expiration!
       create_edit! unless @options[:no_history]
     end
 
@@ -120,6 +121,10 @@ class UpdateStatusService < BaseService
 
     @status.edited_at = Time.now.utc
     @status.save!
+  end
+
+  def update_expiration!
+    UpdateStatusExpirationService.new.call(@status)
   end
 
   def reset_preview_card!

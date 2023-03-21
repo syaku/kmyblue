@@ -26,6 +26,7 @@ class DeleteAccountService < BaseService
     passive_relationships
     report_notes
     scheduled_statuses
+    scheduled_expiration_statuses
     status_pins
   ).freeze
 
@@ -51,6 +52,7 @@ class DeleteAccountService < BaseService
     notifications
     owned_lists
     scheduled_statuses
+    scheduled_expiration_statuses
     status_pins
   )
 

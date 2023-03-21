@@ -116,6 +116,7 @@ class PostStatusService < BaseService
   end
 
   def postprocess_status!
+    UpdateStatusExpirationService.new.call(@status)
     process_hashtags_service.call(@status)
     Trends.tags.register(@status)
     LinkCrawlWorker.perform_async(@status.id)

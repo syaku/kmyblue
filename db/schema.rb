@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_14_121142) do
+ActiveRecord::Schema.define(version: 2023_03_20_234918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -844,6 +844,17 @@ ActiveRecord::Schema.define(version: 2023_03_14_121142) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "scheduled_expiration_statuses", force: :cascade do |t|
+    t.bigint "account_id"
+    t.bigint "status_id", null: false
+    t.datetime "scheduled_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_scheduled_expiration_statuses_on_account_id"
+    t.index ["scheduled_at"], name: "index_scheduled_expiration_statuses_on_scheduled_at"
+    t.index ["status_id"], name: "index_scheduled_expiration_statuses_on_status_id"
+  end
+
   create_table "scheduled_statuses", force: :cascade do |t|
     t.bigint "account_id"
     t.datetime "scheduled_at"
@@ -1222,6 +1233,8 @@ ActiveRecord::Schema.define(version: 2023_03_14_121142) do
   add_foreign_key "reports", "accounts", column: "assigned_account_id", on_delete: :nullify
   add_foreign_key "reports", "accounts", column: "target_account_id", name: "fk_eb37af34f0", on_delete: :cascade
   add_foreign_key "reports", "accounts", name: "fk_4b81f7522c", on_delete: :cascade
+  add_foreign_key "scheduled_expiration_statuses", "accounts", on_delete: :cascade
+  add_foreign_key "scheduled_expiration_statuses", "statuses", on_delete: :cascade
   add_foreign_key "scheduled_statuses", "accounts", on_delete: :cascade
   add_foreign_key "session_activations", "oauth_access_tokens", column: "access_token_id", name: "fk_957e5bda89", on_delete: :cascade
   add_foreign_key "session_activations", "users", name: "fk_e5fda67334", on_delete: :cascade
