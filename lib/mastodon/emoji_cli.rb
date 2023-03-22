@@ -142,6 +142,7 @@ module Mastodon
       count = 0
       scope.find_each do |emoji|
         emoji.update_size
+        emoji.save!
         count += 1
         say("(#{count}/#{size}) proceed #{emoji.shortcode}@#{emoji.domain}")
       end
