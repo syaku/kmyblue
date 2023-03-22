@@ -56,6 +56,8 @@ class CustomEmoji < ApplicationRecord
 
   after_commit :remove_entity_cache
 
+  after_post_process :set_size
+
   def local?
     domain.nil?
   end
@@ -98,5 +100,16 @@ class CustomEmoji < ApplicationRecord
 
   def downcase_domain
     self.domain = domain.downcase unless domain.nil?
+  end
+
+  def set_size
+    image.queued_for_write.each do |style, file|
+      if style == :original
+        image_size = FastImage.size(file.path)
+        self.image_width = image_size[0]
+        self.image_height = image_size[1]
+        return
+      end
+    end
   end
 end
