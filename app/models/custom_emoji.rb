@@ -56,7 +56,7 @@ class CustomEmoji < ApplicationRecord
 
   after_commit :remove_entity_cache
 
-  after_post_process :set_size
+  after_post_process :set_post_size
 
   def local?
     domain.nil?
@@ -74,6 +74,10 @@ class CustomEmoji < ApplicationRecord
 
   def to_log_human_identifier
     shortcode
+  end
+
+  def update_size
+    set_size(image)
   end
 
   class << self
@@ -102,14 +106,17 @@ class CustomEmoji < ApplicationRecord
     self.domain = domain.downcase unless domain.nil?
   end
 
-  def set_size
+  def set_post_size
     image.queued_for_write.each do |style, file|
       if style == :original
-        image_size = FastImage.size(file.path)
-        self.image_width = image_size[0]
-        self.image_height = image_size[1]
-        return
+        set_size(file)
       end
     end
+  end
+
+  def set_size(file)
+    image_size = FastImage.size(file.path)
+    self.image_width = image_size[0]
+    self.image_height = image_size[1]
   end
 end
