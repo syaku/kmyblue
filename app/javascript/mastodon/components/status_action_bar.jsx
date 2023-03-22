@@ -141,6 +141,8 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   };
 
+  handleEmojiPickInnerButton = () => {};
+
   handleReblogClick = e => {
     const { signedIn } = this.context.identity;
 
@@ -371,7 +373,7 @@ class StatusActionBar extends ImmutablePureComponent {
     );
 
     const emojiPickerButton = (
-      <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.emojiReaction)} icon='smile-o' />
+      <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.emojiReaction)} icon='smile-o' onClick={this.handleEmojiPickInnerButton} />
     );
 
     return (

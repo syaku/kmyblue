@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'fastimage'
-
 module Admin
   class CustomEmojisController < BaseController
     def index
@@ -20,11 +18,7 @@ module Admin
     def create
       authorize :custom_emoji, :create?
 
-      image_size = FastImage.size(params[:custom_emoji][:image])
-
       @custom_emoji = CustomEmoji.new(resource_params)
-      @custom_emoji.image_width = image_size[0]
-      @custom_emoji.image_height = image_size[1]
 
       if @custom_emoji.save
         log_action :create, @custom_emoji

@@ -13,8 +13,13 @@ class UpdateStatusExpirationService < BaseService
     expiration_num = expiration[1].to_f
     expiration_option = expiration[2]
     base_time = status.created_at || Time.now.utc
+    due = expiration_option == 'd' ? expiration_num.days :
+          expiration_option == 'h' ? expiration_num.hours :
+          expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes
 
-    expired_at = base_time + (expiration_option == 'd' ? expiration_num.days : expiration_option == 'h' ? expiration_num.hours : expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes)
-    ScheduledExpirationStatus.create!(account: status.account, status: status, scheduled_at: expired_at)
+    expired_at = base_time + due
+    expired_status = ScheduledExpirationStatus.create!(account: status.account, status: status, scheduled_at: expired_at)
+
+    RemoveExpiredStatusWorker.perform_at(expired_at, expired_status.id) if due < PostStatusService::MIN_SCHEDULE_OFFSET
   end
 end

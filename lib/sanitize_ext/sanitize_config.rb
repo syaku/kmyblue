@@ -54,11 +54,14 @@ class Sanitize
       return unless env[:node_name] == 'a'
 
       current_node = env[:node]
-      href = current_node['href']
+      href = current_node['href'] || ''
       text = current_node.text
       cls = current_node['class'] || ''
 
-      scheme = if current_node['href'] =~ Sanitize::REGEX_PROTOCOL
+      dot_pos = text.index('.')
+      return unless dot_pos.present? && dot_pos > 0 && dot_pos < text.size - 1
+
+      scheme = if href =~ Sanitize::REGEX_PROTOCOL
                  Regexp.last_match(1).downcase
                else
                  :relative

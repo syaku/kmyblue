@@ -24,7 +24,7 @@ module AccountLimitable
   end
 
   def scope_status_mentioned(status)
-    status.active_mentions.where.joins(:account).merge(Account.local).select('account_id AS id').reorder(nil)
+    status.active_mentions.joins(:account).merge(Account.local).select('account_id AS id').reorder(nil)
   end
 
   # TODO: not work
