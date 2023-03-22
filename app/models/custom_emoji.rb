@@ -77,7 +77,7 @@ class CustomEmoji < ApplicationRecord
   end
 
   def update_size
-    set_size(image)
+    set_size(Rails.configuration.x.use_s3 ? image.url : image.path)
   end
 
   class << self
@@ -109,13 +109,13 @@ class CustomEmoji < ApplicationRecord
   def set_post_size
     image.queued_for_write.each do |style, file|
       if style == :original
-        set_size(file)
+        set_size(file.path)
       end
     end
   end
 
-  def set_size(file)
-    image_size = FastImage.size(file.path)
+  def set_size(path)
+    image_size = FastImage.size(path)
     self.image_width = image_size[0]
     self.image_height = image_size[1]
   end
