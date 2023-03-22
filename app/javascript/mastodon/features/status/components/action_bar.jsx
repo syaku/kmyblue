@@ -186,6 +186,8 @@ class ActionBar extends React.PureComponent {
     this.props.onEmojiReact(this.props.status, data);
   };
 
+  handleEmojiPickInnerButton = () => {};
+
   render () {
     const { status, relationship, intl } = this.props;
     const { signedIn, permissions } = this.context.identity;
@@ -268,7 +270,7 @@ class ActionBar extends React.PureComponent {
     );
 
     const emojiPickerButton = (
-      <IconButton icon='smile-o' />
+      <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} />
     );
 
     let replyIcon;
