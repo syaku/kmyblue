@@ -2,7 +2,6 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
-import emojify from '../features/emoji/emoji';
 import classNames from 'classnames';
 import EmojiView from './emoji_view';
 
@@ -50,7 +49,6 @@ class EmojiReactionButton extends React.PureComponent {
 
 }
 
-export default @injectIntl
 class StatusEmojiReactionsBar extends React.PureComponent {
 
   static propTypes = {
@@ -73,7 +71,7 @@ class StatusEmojiReactionsBar extends React.PureComponent {
   render () {
     const { emojiReactions } = this.props;
 
-    const emojiButtons = Array.from(emojiReactions).filter(emoji => emoji.get('count') != 0).map((emoji, index) => (
+    const emojiButtons = Array.from(emojiReactions).filter(emoji => emoji.get('count') !== 0).map((emoji, index) => (
       <EmojiReactionButton
         key={index}
         name={emoji.get('name')}
@@ -94,3 +92,5 @@ class StatusEmojiReactionsBar extends React.PureComponent {
   }
 
 }
+
+export default injectIntl(StatusEmojiReactionsBar);

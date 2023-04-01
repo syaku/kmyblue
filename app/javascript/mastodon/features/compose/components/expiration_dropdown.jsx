@@ -5,7 +5,6 @@ import IconButton from '../../../components/icon_button';
 import Overlay from 'react-overlays/Overlay';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import classNames from 'classnames';
-import Icon from 'mastodon/components/icon';
 
 const messages = defineMessages({
   add_expiration: { id: 'status.expiration.add', defaultMessage: 'Set status expiration' },
@@ -119,7 +118,6 @@ class ExpirationDropdownMenu extends React.PureComponent {
 
 }
 
-export default @injectIntl
 class ExpirationDropdown extends React.PureComponent {
 
   static propTypes = {
@@ -266,3 +264,5 @@ class ExpirationDropdown extends React.PureComponent {
   }
 
 }
+
+export default injectIntl(ExpirationDropdown);

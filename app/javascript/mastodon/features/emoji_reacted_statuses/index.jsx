@@ -22,8 +22,6 @@ const mapStateToProps = state => ({
   hasMore: !!state.getIn(['status_lists', 'emoji_reactions', 'next']),
 });
 
-export default @connect(mapStateToProps)
-@injectIntl
 class EmojiReactions extends ImmutablePureComponent {
 
   static propTypes = {
@@ -106,3 +104,5 @@ class EmojiReactions extends ImmutablePureComponent {
   }
 
 }
+
+export default connect(mapStateToProps)(injectIntl(EmojiReactions));
