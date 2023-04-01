@@ -19,6 +19,8 @@ media_host ||= assets_host
 google_host = 'https://www.googletagmanager.com'
 google_host2 = 'https://googleads.g.doubleclick.net'
 google_host3 = 'https://www.googleadservices.com'
+google_host4 = 'https://www.google.co.jp'
+google_host5 = 'https://www.google.com'
 google_tag_script_hash = "'sha256-CS1WvLDd3zJOdxpEk+N+VigcWMa6V345p2HS0WYiFWE='"
 
 Rails.application.config.content_security_policy do |p|
@@ -42,7 +44,7 @@ Rails.application.config.content_security_policy do |p|
     p.worker_src  :self, :blob, assets_host
   else
     p.connect_src :self, :data, :blob, assets_host, media_host, Rails.configuration.x.streaming_api_base_url
-    p.script_src  :self, assets_host, "'wasm-unsafe-eval'", google_host, google_host2, google_host3, google_tag_script_hash
+    p.script_src  :self, assets_host, "'wasm-unsafe-eval'", google_host, google_host2, google_host3, google_host4, google_host5, google_tag_script_hash
     p.child_src   :self, :blob, assets_host
     p.worker_src  :self, :blob, assets_host
   end
