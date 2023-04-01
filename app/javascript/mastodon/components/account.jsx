@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import Avatar from './avatar';
@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import { counterRenderer } from 'mastodon/components/common_counter';
 import ShortNumber from 'mastodon/components/short_number';
 import Icon from 'mastodon/components/icon';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
@@ -57,6 +58,7 @@ class Account extends ImmutablePureComponent {
     onMuteNotifications: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     hidden: PropTypes.bool,
+    minimal: PropTypes.bool,
     actionIcon: PropTypes.string,
     actionTitle: PropTypes.string,
     defaultAction: PropTypes.string,
@@ -93,14 +95,14 @@ class Account extends ImmutablePureComponent {
   };
 
   render () {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, defaultAction, size, children } = this.props;
+    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, defaultAction, size, minimal, children } = this.props;
 
     if (!account) {
       return (
-        <div className='account'>
+        <div className={classNames('account', { 'account--minimal': minimal })}>
           <div className='account__wrapper'>
             <div className='account__display-name'>
-              <div className='account__avatar-wrapper'><Skeleton width={36} height={36} /></div>
+              <div className='account__avatar-wrapper'><Skeleton width={size} height={size} /></div>
 
               <div>
                 <DisplayName />
@@ -114,10 +116,10 @@ class Account extends ImmutablePureComponent {
 
     if (hidden) {
       return (
-        <Fragment>
+        <>
           {account.get('display_name')}
           {account.get('username')}
-        </Fragment>
+        </>
       );
     }
 
@@ -145,10 +147,10 @@ class Account extends ImmutablePureComponent {
           hidingNotificationsButton = <IconButton active icon='bell-slash' title={intl.formatMessage(messages.mute_notifications, { name: account.get('username')  })} onClick={this.handleMuteNotifications} />;
         }
         buttons = (
-          <Fragment>
+          <>
             <IconButton active icon='volume-up' title={intl.formatMessage(messages.unmute, { name: account.get('username') })} onClick={this.handleMute} />
             {hidingNotificationsButton}
-          </Fragment>
+          </>
         );
       } else if (defaultAction === 'mute') {
         buttons = <IconButton icon='volume-off' title={intl.formatMessage(messages.mute, { name: account.get('username') })} onClick={this.handleMute} />;
@@ -174,7 +176,7 @@ class Account extends ImmutablePureComponent {
     }
 
     return (
-      <div className='account'>
+      <div className={classNames('account', { 'account--minimal': minimal })}>
         <div className='account__wrapper'>
           <Link key={account.get('id')} className='account__display-name' title={account.get('acct')} to={`/@${account.get('acct')}`}>
             <div className='account__avatar-wrapper'>
@@ -183,17 +185,20 @@ class Account extends ImmutablePureComponent {
 
             <div>
               <DisplayName account={account} />
-              <ShortNumber value={account.get('followers_count')} renderer={counterRenderer('followers')} /> {verification} {muteTimeRemaining}
+              {!minimal && <><ShortNumber value={account.get('followers_count')} renderer={counterRenderer('followers')} /> {verification} {muteTimeRemaining}</>}
             </div>
           </Link>
 
-          <div>
-            {children}
-          </div>
-
-          <div className='account__relationship'>
-            {buttons}
-          </div>
+          {!minimal && (
+            <div>
+              <div>
+                {children}
+              </div>
+              <div className='account__relationship'>
+                {buttons}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );

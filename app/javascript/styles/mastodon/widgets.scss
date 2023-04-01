@@ -40,8 +40,8 @@
       max-width: min(8em, 100%);
       height: 20px;
       margin: -3px 0 0;
-      margin-left: 0.075em;
-      margin-right: 0.075em;
+      margin-inline-start: 0.075em;
+      margin-inline-end: 0.075em;
     }
 
     p {
@@ -172,7 +172,7 @@
     margin-bottom: 15px;
 
     .fa {
-      margin-right: 5px;
+      margin-inline-end: 5px;
       color: $darker-text-color;
     }
   }
@@ -285,7 +285,7 @@
     }
 
     .trends__item__current {
-      padding-right: 0;
+      padding-inline-end: 0;
     }
   }
 }
@@ -310,7 +310,7 @@
     padding: 10px;
 
     &:first-child {
-      text-align: left;
+      text-align: start;
     }
   }
 
@@ -341,9 +341,9 @@
 
   tbody td.accounts-table__extra {
     width: 120px;
-    text-align: right;
+    text-align: end;
     color: $darker-text-color;
-    padding-right: 16px;
+    padding-inline-end: 16px;
 
     a {
       text-decoration: none;
@@ -364,7 +364,7 @@
 
   tbody td.accounts-table__interrelationships {
     width: 21px;
-    padding-right: 16px;
+    padding-inline-end: 16px;
   }
 
   .fa {

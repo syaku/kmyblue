@@ -292,7 +292,13 @@ class DetailedStatus extends ImmutablePureComponent {
 
     return (
       <div style={outerStyle}>
-        <div ref={this.setRef} className={classNames('detailed-status', `detailed-status-${status.get('visibility')}`, { compact })}>
+        <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
+          {status.get('visibility') === 'direct' && (
+            <div className='status__prepend'>
+              <div className='status__prepend-icon-wrapper'><Icon id='at' className='status__prepend-icon' fixedWidth /></div>
+              <FormattedMessage id='status.direct_indicator' defaultMessage='Private mention' />
+            </div>
+          )}
           <a href={`/@${status.getIn(['account', 'acct'])}`} onClick={this.handleAccountClick} className='detailed-status__display-name'>
             <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={46} /></div>
             <DisplayName account={status.get('account')} localDomain={this.props.domain} />
