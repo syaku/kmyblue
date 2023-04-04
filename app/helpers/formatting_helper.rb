@@ -19,7 +19,7 @@ module FormattingHelper
   end
 
   def emoji_name_format(emoji_reaction, status)
-    html_aware_format(emoji_reaction['domain'].nil? ? (emoji_reaction['url'].present? ? ":#{emoji_reaction['name']}:" : emoji_reaction['name']) : ":#{emoji_reaction['name']}@#{emoji_reaction['domain']}:", status.local?)
+    html_aware_format(emoji_reaction['url'].present? ? ":#{emoji_reaction['name']}:" : emoji_reaction['name'], status.local?)
   end
 
   def rss_status_content_format(status)
