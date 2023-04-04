@@ -58,7 +58,7 @@
       - grouped_emoji_reactions.each do |reaction|
         %button.emoji-reactions-bar__button
           %span.emojify= prerender_custom_emojis_from_hash(emoji_name_format(reaction, status), reaction)
-          %span.count= reaction.count
+          %span.count= reaction['count']
 
   .status__action-bar
     %span.status__action-bar-button.icon-button.icon-button--with-counter
