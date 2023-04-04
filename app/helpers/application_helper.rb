@@ -245,4 +245,8 @@ module ApplicationHelper
   def prerender_custom_emojis(html, custom_emojis, other_options = {})
     EmojiFormatter.new(html, custom_emojis, other_options.merge(animate: prefers_autoplay?)).to_s
   end
+
+  def prerender_custom_emojis_from_hash(html, custom_emojis_hash)
+    prerender_custom_emojis(html, JSON.parse([custom_emojis_hash].to_json, object_class: OpenStruct))
+  end
 end

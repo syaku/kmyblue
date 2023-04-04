@@ -18,6 +18,10 @@ module FormattingHelper
     html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []))
   end
 
+  def emoji_name_format(emoji_reaction, status)
+    html_aware_format(emoji_reaction['domain'].nil? ? (emoji_reaction['url'].present? ? ":#{emoji_reaction['name']}:" : emoji_reaction['name']) : ":#{emoji_reaction['name']}@#{emoji_reaction['domain']}:", status.local?)
+  end
+
   def rss_status_content_format(status)
     html = status_content_format(status)
 
@@ -45,7 +49,7 @@ module FormattingHelper
     prerender_custom_emojis(
       safe_join([before_html, html, after_html]),
       status.emojis,
-      style: 'width: 1.1em; height: 1.1em; object-fit: contain; vertical-align: middle; margin: -.2ex .15em .2ex'
+      style: 'min-width: 1.1em; height: 1.1em; object-fit: contain; vertical-align: middle; margin: -.2ex .15em .2ex'
     ).to_str
   end
 
