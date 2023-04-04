@@ -1,5 +1,6 @@
 :ruby
   grouped_emoji_reactions ||= Oj.load(status.status_stat&.emoji_reactions || '', mode: :strict) || []
+  p '=================== DEBUG ' + grouped_emoji_reactions.first&.to_s
 
 .detailed-status.detailed-status--flex{ class: "detailed-status-#{status.visibility}" }
   .p-author.h-card
@@ -44,7 +45,7 @@
       - grouped_emoji_reactions.each do |reaction|
         %button.emoji-reactions-bar__button
           %span.emojify= prerender_custom_emojis_from_hash(emoji_name_format(reaction, status), reaction)
-          %span.count= reaction.count
+          %span.count= reaction['count']
 
   .detailed-status__meta
     %data.dt-published{ value: status.created_at.to_time.iso8601 }
