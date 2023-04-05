@@ -79,26 +79,28 @@ class SearchResults extends ImmutablePureComponent {
 
     if (results.get('accounts') && results.get('accounts').size > 0) {
       count   += results.get('accounts').size;
+      const showMore = this.showMoreResults('accounts');
       accounts = (
         <div className='search-results__section'>
           <h5><Icon id='users' fixedWidth /><FormattedMessage id='search_results.accounts' defaultMessage='People' /></h5>
 
           {results.get('accounts').map(accountId => <AccountContainer key={accountId} id={accountId} />)}
 
-          {this.showMoreResults('accounts') && <LoadMore visible onClick={this.handleLoadMoreAccounts} />}
+          {showMore && <LoadMore visible onClick={this.handleLoadMoreAccounts} />}
         </div>
       );
     }
 
     if (results.get('statuses') && results.get('statuses').size > 0) {
       count   += results.get('statuses').size;
+      const showMore = this.showMoreResults('statuses');
       statuses = (
         <div className='search-results__section'>
           <h5><Icon id='quote-right' fixedWidth /><FormattedMessage id='search_results.statuses' defaultMessage='Posts' /></h5>
 
           {results.get('statuses').map(statusId => <StatusContainer key={statusId} id={statusId} />)}
 
-          {this.showMoreResults('statuses') && <LoadMore visible onClick={this.handleLoadMoreStatuses} />}
+          {showMore && <LoadMore visible onClick={this.handleLoadMoreStatuses} />}
         </div>
       );
     } else if(results.get('statuses') && results.get('statuses').size === 0 && !searchEnabled && !(searchTerm.startsWith('@') || searchTerm.startsWith('#') || searchTerm.includes(' '))) {
@@ -115,13 +117,14 @@ class SearchResults extends ImmutablePureComponent {
 
     if (results.get('hashtags') && results.get('hashtags').size > 0) {
       count += results.get('hashtags').size;
+      const showMore = this.showMoreResults('hashtags');
       hashtags = (
         <div className='search-results__section'>
           <h5><Icon id='hashtag' fixedWidth /><FormattedMessage id='search_results.hashtags' defaultMessage='Hashtags' /></h5>
 
           {results.get('hashtags').map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />)}
 
-          {this.showMoreResults('hashtags') && <LoadMore visible onClick={this.handleLoadMoreHashtags} />}
+          {showMore && <LoadMore visible onClick={this.handleLoadMoreHashtags} />}
         </div>
       );
     }
