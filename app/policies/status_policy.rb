@@ -19,6 +19,10 @@ class StatusPolicy < ApplicationPolicy
     end
   end
 
+  def search?
+    show? && (record.public_visibility? || record.public_unlisted_visibility?)
+  end
+
   def reblog?
     !requires_mention? && (!private? || owned?) && show? && !blocking_author?
   end
