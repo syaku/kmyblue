@@ -20,7 +20,15 @@ class StatusPolicy < ApplicationPolicy
   end
 
   def search?
-    show? && (record.public_visibility? || record.public_unlisted_visibility?)
+    return false if author.suspended?
+
+    if requires_mention?
+      owned? || mention_exists?
+    elsif !public?
+      owned? || following_author? || mention_exists?
+    else
+      current_account.nil? || (!author_blocking? && !author_blocking_domain?)
+    end
   end
 
   def reblog?
@@ -57,6 +65,10 @@ class StatusPolicy < ApplicationPolicy
 
   def private?
     record.private_visibility?
+  end
+
+  def public?
+    record.public_visibility? || record.public_unlisted_visibility?
   end
 
   def mention_exists?
