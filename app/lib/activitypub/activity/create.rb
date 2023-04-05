@@ -464,4 +464,26 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       :direct
     end
   end
+
+  def visibility_from_audience
+    if audience_to.any? { |to| ActivityPub::TagManager.instance.public_collection?(to) }
+      :public
+    elsif audience_cc.any? { |cc| ActivityPub::TagManager.instance.public_collection?(cc) }
+      :unlisted
+    elsif audience_to.include?(@account.followers_url)
+      :private
+    else
+      :direct
+    end
+  end
+
+  def visibility_from_audience_with_silence
+    visibility = visibility_from_audience
+
+    if @account.silenced? && %i(public).include?(visibility)
+      :unlisted
+    else
+      visibility
+    end
+  end
 end
