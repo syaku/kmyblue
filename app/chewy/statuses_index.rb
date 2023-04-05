@@ -30,7 +30,20 @@ class StatusesIndex < Chewy::Index
           english_stemmer
         ),
       },
+      sudachi_analyzer: {
+        filter: [],
+        type: 'custom',
+        tokenizer: 'sudachi_tokenizer',
+      },
     },
+    tokenizer: {
+      sudachi_tokenizer: {
+        resources_path: '/etc/elasticsearch/sudachi',
+        split_mode: 'C',
+        type: 'sudachi_tokenizer',
+        discard_punctuation: 'true',
+      }
+    }
   }
 
   # We do not use delete_if option here because it would call a method that we
