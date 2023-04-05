@@ -150,12 +150,14 @@ class Status < ApplicationRecord
     if preloaded.nil?
       ids += mentions.joins(:account).merge(Account.local).active.pluck(:account_id)
       ids += favourites.joins(:account).merge(Account.local).pluck(:account_id)
+      ids += emoji_reactions.joins(:account).merge(Account.local).pluck(:account_id)
       ids += reblogs.joins(:account).merge(Account.local).pluck(:account_id)
       ids += bookmarks.joins(:account).merge(Account.local).pluck(:account_id)
       ids += poll.votes.joins(:account).merge(Account.local).pluck(:account_id) if poll.present?
     else
       ids += preloaded.mentions[id] || []
       ids += preloaded.favourites[id] || []
+      ids += preloaded.emoji_reactions[id] || []
       ids += preloaded.reblogs[id] || []
       ids += preloaded.bookmarks[id] || []
       ids += preloaded.votes[id] || []
