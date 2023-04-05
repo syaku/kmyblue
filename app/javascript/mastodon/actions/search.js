@@ -43,7 +43,7 @@ export function submitSearch() {
       params: {
         q: value,
         resolve: signedIn,
-        limit: 5,
+        limit: 10,
       },
     }).then(response => {
       if (response.data.accounts) {

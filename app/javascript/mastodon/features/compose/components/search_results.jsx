@@ -25,6 +25,7 @@ class SearchResults extends ImmutablePureComponent {
     dismissSuggestion: PropTypes.func.isRequired,
     searchTerm: PropTypes.string,
     intl: PropTypes.object.isRequired,
+    noMoreResults: ImmutablePropTypes.map,
   };
 
   componentDidMount () {
@@ -44,6 +45,8 @@ class SearchResults extends ImmutablePureComponent {
   handleLoadMoreStatuses = () => this.props.expandSearch('statuses');
 
   handleLoadMoreHashtags = () => this.props.expandSearch('hashtags');
+
+  showMoreResults = (searchType) => this.props.noMoreResults ? !this.props.noMoreResults.get(searchType) : true;
 
   render () {
     const { intl, results, suggestions, dismissSuggestion, searchTerm } = this.props;
@@ -82,7 +85,7 @@ class SearchResults extends ImmutablePureComponent {
 
           {results.get('accounts').map(accountId => <AccountContainer key={accountId} id={accountId} />)}
 
-          {results.get('accounts').size >= 5 && <LoadMore visible onClick={this.handleLoadMoreAccounts} />}
+          {this.showMoreResults('accounts') && <LoadMore visible onClick={this.handleLoadMoreAccounts} />}
         </div>
       );
     }
@@ -95,7 +98,7 @@ class SearchResults extends ImmutablePureComponent {
 
           {results.get('statuses').map(statusId => <StatusContainer key={statusId} id={statusId} />)}
 
-          {results.get('statuses').size >= 5 && <LoadMore visible onClick={this.handleLoadMoreStatuses} />}
+          {this.showMoreResults('statuses') && <LoadMore visible onClick={this.handleLoadMoreStatuses} />}
         </div>
       );
     } else if(results.get('statuses') && results.get('statuses').size === 0 && !searchEnabled && !(searchTerm.startsWith('@') || searchTerm.startsWith('#') || searchTerm.includes(' '))) {
@@ -118,7 +121,7 @@ class SearchResults extends ImmutablePureComponent {
 
           {results.get('hashtags').map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />)}
 
-          {results.get('hashtags').size >= 5 && <LoadMore visible onClick={this.handleLoadMoreHashtags} />}
+          {this.showMoreResults('hashtags') && <LoadMore visible onClick={this.handleLoadMoreHashtags} />}
         </div>
       );
     }
