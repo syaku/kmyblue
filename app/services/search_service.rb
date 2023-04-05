@@ -35,7 +35,8 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
+    # definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id })).order(id: :desc)
+    definition = parsed_query.apply(StatusesIndex).order(id: :desc)
 
     definition = definition.filter(term: { account_id: @options[:account_id] }) if @options[:account_id].present?
 
@@ -51,7 +52,7 @@ class SearchService < BaseService
     account_domains     = results.map(&:account_domain)
     preloaded_relations = @account.relations_map(account_ids, account_domains)
 
-    results.reject { |status| StatusFilter.new(status, @account, preloaded_relations).filtered? }
+    results.reject { |status| StatusFilter.new(status, @account, preloaded_relations).search_filtered? }
   rescue Faraday::ConnectionFailed, Parslet::ParseFailed
     []
   end

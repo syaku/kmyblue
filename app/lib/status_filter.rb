@@ -15,6 +15,12 @@ class StatusFilter
     blocked_by_policy? || (account_present? && filtered_status?) || silenced_account?
   end
 
+  def search_filtered?
+    return false if !account.nil? && account.id == status.account_id
+
+    blocked_by_policy_search? || (account_present? && filtered_status?) || silenced_account?
+  end
+
   private
 
   def account_present?
@@ -53,7 +59,15 @@ class StatusFilter
     !policy_allows_show?
   end
 
+  def blocked_by_policy_search?
+    !policy_allows_search?
+  end
+
   def policy_allows_show?
     StatusPolicy.new(account, status, @preloaded_relations).show?
+  end
+
+  def policy_allows_search?
+    StatusPolicy.new(account, status, @preloaded_relations).search?
   end
 end

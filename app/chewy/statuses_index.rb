@@ -30,7 +30,20 @@ class StatusesIndex < Chewy::Index
           english_stemmer
         ),
       },
+      sudachi_analyzer: {
+        filter: [],
+        type: 'custom',
+        tokenizer: 'sudachi_tokenizer',
+      },
     },
+    tokenizer: {
+      sudachi_tokenizer: {
+        resources_path: '/etc/elasticsearch/sudachi',
+        split_mode: 'C',
+        type: 'sudachi_tokenizer',
+        discard_punctuation: 'true',
+      }
+    }
   }
 
   # We do not use delete_if option here because it would call a method that we
@@ -44,6 +57,11 @@ class StatusesIndex < Chewy::Index
 
   crutch :favourites do |collection|
     data = ::Favourite.where(status_id: collection.map(&:id)).where(account: Account.local).pluck(:status_id, :account_id)
+    data.each.with_object({}) { |(id, name), result| (result[id] ||= []).push(name) }
+  end
+
+  crutch :emoji_reactions do |collection|
+    data = ::EmojiReaction.where(status_id: collection.map(&:id)).where(account: Account.local).pluck(:status_id, :account_id)
     data.each.with_object({}) { |(id, name), result| (result[id] ||= []).push(name) }
   end
 

@@ -21,6 +21,7 @@ const initialState = ImmutableMap({
   submitted: false,
   hidden: false,
   results: ImmutableMap(),
+  noMoreResults: ImmutableMap(),
   isLoading: false,
   searchTerm: '',
   recent: ImmutableOrderedSet(),
@@ -34,6 +35,7 @@ export default function search(state = initialState, action) {
     return state.withMutations(map => {
       map.set('value', '');
       map.set('results', ImmutableMap());
+      map.set('noMoreResults', ImmutableMap());
       map.set('submitted', false);
       map.set('hidden', false);
     });
@@ -57,13 +59,18 @@ export default function search(state = initialState, action) {
         statuses: ImmutableList(action.results.statuses.map(item => item.id)),
         hashtags: fromJS(action.results.hashtags),
       }));
+      map.set('noMoreResults', ImmutableMap({
+        accounts: action.results.accounts.length <= 0,
+        statuses: action.results.statuses.length <= 0,
+        hashtags: false,
+      }));
 
       map.set('searchTerm', action.searchTerm);
       map.set('isLoading', false);
     });
   case SEARCH_EXPAND_SUCCESS:
     const results = action.searchType === 'hashtags' ? fromJS(action.results.hashtags) : action.results[action.searchType].map(item => item.id);
-    return state.updateIn(['results', action.searchType], list => list.concat(results));
+    return state.updateIn(['results', action.searchType], list => list.concat(results)).setIn(['noMoreResults', action.searchType], results.size <= 0);
   case SEARCH_RESULT_CLICK:
     return state.update('recent', set => set.add(fromJS(action.result)));
   case SEARCH_RESULT_FORGET:
