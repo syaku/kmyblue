@@ -25,6 +25,10 @@ const messages = defineMessages({
   public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers-only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
+  searchability_public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
+  searchability_unlisted_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
+  searchability_private_short: { id: 'searchability.private.short', defaultMessage: 'Reactionners' },
+  searchability_direct_short: { id: 'searchability.direct.short', defaultMessage: 'Self only' },
 });
 
 export default  @injectIntl
@@ -218,6 +222,16 @@ class DetailedStatus extends ImmutablePureComponent {
     const visibilityIcon = visibilityIconInfo[status.get('visibility')];
     const visibilityLink = <React.Fragment> · <Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></React.Fragment>;
 
+    const searchabilityIconInfo = {
+      'public': { icon: 'globe', text: intl.formatMessage(messages.searchability_public_short) },
+      'unlisted': { icon: 'unlock', text: intl.formatMessage(messages.searchability_unlisted_short) },
+      'private': { icon: 'lock', text: intl.formatMessage(messages.searchability_private_short) },
+      'direct': { icon: 'at', text: intl.formatMessage(messages.searchability_direct_short) },
+    };
+
+    const searchabilityIcon = searchabilityIconInfo[status.get('searchability')];
+    const searchabilityLink = <React.Fragment> · <Icon id={searchabilityIcon.icon} title={searchabilityIcon.text} /></React.Fragment>;
+
     if (['private', 'direct'].includes(status.get('visibility'))) {
       reblogLink = '';
     } else if (this.context.router) {
@@ -313,7 +327,7 @@ class DetailedStatus extends ImmutablePureComponent {
           <div className='detailed-status__meta'>
             <a className='detailed-status__datetime' href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} target='_blank' rel='noopener noreferrer'>
               <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
-            </a>{edited}{visibilityLink}{applicationLink}{reblogLink} · {favouriteLink} · {emojiReactionsLink}
+            </a>{edited}{visibilityLink}{searchabilityLink}{applicationLink}{reblogLink} · {favouriteLink} · {emojiReactionsLink}
           </div>
         </div>
       </div>

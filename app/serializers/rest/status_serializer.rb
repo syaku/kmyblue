@@ -5,7 +5,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   attributes :id, :created_at, :in_reply_to_id, :in_reply_to_account_id,
              :sensitive, :spoiler_text, :visibility, :language, :translatable,
-             :uri, :url, :replies_count, :reblogs_count,
+             :uri, :url, :replies_count, :reblogs_count, :searchability,
              :favourites_count, :emoji_reactions, :edited_at
 
   attribute :favourited, if: :current_user?
@@ -63,6 +63,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
     else
       object.visibility
     end
+  end
+
+  def searchability
+    object.compute_searchability
   end
 
   def sensitive

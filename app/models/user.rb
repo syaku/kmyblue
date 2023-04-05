@@ -39,6 +39,7 @@
 #  webauthn_id               :string
 #  sign_up_ip                :inet
 #  role_id                   :bigint(8)
+#  settings                  :text
 #
 
 class User < ApplicationRecord
@@ -312,6 +313,10 @@ class User < ApplicationRecord
 
   def setting_default_privacy
     settings.default_privacy || (account.locked? ? 'private' : 'public')
+  end
+
+  def setting_default_searchability
+    settings.default_searchability || 'public'
   end
 
   def allows_report_emails?

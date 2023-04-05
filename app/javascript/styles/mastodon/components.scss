@@ -468,6 +468,13 @@ body > [data-popper-placement] {
     right: 0;
   }
 
+  .expiration-dropdown {
+    position: absolute;
+    top: 32px;
+    right: 4px;
+    transform: scale(1.2);
+  }
+
   .compose-form__autosuggest-wrapper {
     position: relative;
   }
@@ -4642,7 +4649,8 @@ a.status-card.compact:hover {
   filter: none;
 }
 
-.privacy-dropdown__dropdown {
+.privacy-dropdown__dropdown,
+.expiration-dropdown__dropdown {
   background: $simple-background-color;
   box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
   border-radius: 4px;
@@ -4658,16 +4666,19 @@ a.status-card.compact:hover {
   }
 }
 
-.modal-root__container .privacy-dropdown {
+.modal-root__container .privacy-dropdown,
+.modal-root__container .expiration-dropdown {
   flex-grow: 0;
 }
 
-.modal-root__container .privacy-dropdown__dropdown {
+.modal-root__container .privacy-dropdown__dropdown,
+.modal-root__container .ezpiration-dropdown__dropdown {
   pointer-events: auto;
   z-index: 9999;
 }
 
-.privacy-dropdown__option {
+.privacy-dropdown__option,
+.expiration-dropdown__option {
   color: $inverted-text-color;
   padding: 10px;
   cursor: pointer;
@@ -4717,8 +4728,8 @@ a.status-card.compact:hover {
   }
 }
 
-.privacy-dropdown.active {
-  .privacy-dropdown__value {
+.privacy-dropdown.active, .expiration-dropdown.active {
+  .privacy-dropdown__value, .expiration-dropdown__value {
     background: $simple-background-color;
     border-radius: 4px 4px 0 0;
     box-shadow: 0 -4px 4px rgba($base-shadow-color, 0.1);
@@ -4736,13 +4747,23 @@ a.status-card.compact:hover {
     }
   }
 
-  &.top .privacy-dropdown__value {
+  &.top .privacy-dropdown__value, &.top .expiration-dropdown__value {
     border-radius: 0 0 4px 4px;
   }
 
-  .privacy-dropdown__dropdown {
+  .privacy-dropdown__dropdown, .expiration-dropdown__dropdown {
     display: block;
     box-shadow: 2px 4px 6px rgba($base-shadow-color, 0.1);
+  }
+}
+
+.privacy-dropdown .privacy-dropdown__value.searchability {
+  position: relative;
+
+  .searchability-dropdown__value-overlay {
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
 }
 

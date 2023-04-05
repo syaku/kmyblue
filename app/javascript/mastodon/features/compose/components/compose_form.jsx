@@ -11,6 +11,7 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
+import SearchabilityDropdownContainer from '../containers/searchability_dropdown_container';
 import ExpirationDropdownContainer from '../containers/expiration_dropdown_container';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import PollFormContainer from '../containers/poll_form_container';
@@ -45,6 +46,7 @@ class ComposeForm extends ImmutablePureComponent {
     suggestions: ImmutablePropTypes.list,
     spoiler: PropTypes.bool,
     privacy: PropTypes.string,
+    searchability: PropTypes.string,
     spoilerText: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
     caretPosition: PropTypes.number,
@@ -272,6 +274,7 @@ class ComposeForm extends ImmutablePureComponent {
           lang={this.props.lang}
         >
           <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
+          <ExpirationDropdownContainer onPickExpiration={this.handleExpirationPick} />
 
           <div className='compose-form__modifiers'>
             <UploadFormContainer />
@@ -284,9 +287,9 @@ class ComposeForm extends ImmutablePureComponent {
             <UploadButtonContainer />
             <PollButtonContainer />
             <PrivacyDropdownContainer disabled={this.props.isEditing} />
+            <SearchabilityDropdownContainer disabled={this.props.isEditing} />
             <SpoilerButtonContainer />
             <LanguageDropdown />
-            <ExpirationDropdownContainer onPickExpiration={this.handleExpirationPick} />
           </div>
 
           <div className='character-counter__wrapper'>

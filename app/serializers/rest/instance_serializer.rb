@@ -100,6 +100,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       :visibility_public_unlisted,
       :enable_wide_emoji,
       :enable_wide_emoji_reaction,
+      :searchability,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?

@@ -3,22 +3,17 @@
 class StatusFilter
   attr_reader :status, :account
 
-  def initialize(status, account, preloaded_relations = {})
+  def initialize(status, account, preloaded_relations = {}, preloaded_status_relations = {})
     @status              = status
     @account             = account
     @preloaded_relations = preloaded_relations
+    @preloaded_status_relations = preloaded_status_relations
   end
 
   def filtered?
     return false if !account.nil? && account.id == status.account_id
 
     blocked_by_policy? || (account_present? && filtered_status?) || silenced_account?
-  end
-
-  def search_filtered?
-    return false if !account.nil? && account.id == status.account_id
-
-    blocked_by_policy_search? || (account_present? && filtered_status?) || silenced_account?
   end
 
   private
@@ -59,15 +54,7 @@ class StatusFilter
     !policy_allows_show?
   end
 
-  def blocked_by_policy_search?
-    !policy_allows_search?
-  end
-
   def policy_allows_show?
-    StatusPolicy.new(account, status, @preloaded_relations).show?
-  end
-
-  def policy_allows_search?
-    StatusPolicy.new(account, status, @preloaded_relations).search?
+    StatusPolicy.new(account, status, @preloaded_relations, @preloaded_status_relations).show?
   end
 end

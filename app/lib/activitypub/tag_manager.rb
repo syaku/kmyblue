@@ -185,4 +185,31 @@ class ActivityPub::TagManager
   rescue ActiveRecord::RecordNotFound
     nil
   end
+
+  def searchable_by(status)
+    searchable_by =
+      case status.compute_searchability
+      when 'public'
+        [COLLECTIONS[:public]]
+      when 'unlisted', 'private'
+        [account_followers_url(status.account)]
+      when 'limited'
+        status.conversation_id.present? ? [uri_for(status.conversation)] : []
+      else
+        []
+      end
+
+    searchable_by.concat(mentions_uris(status))
+  end
+
+  def account_searchable_by(account)
+    case account.searchability
+    when 'public'
+      [COLLECTIONS[:public]]
+    when 'unlisted', 'private'
+      [account_followers_url(account)]
+    else
+      []
+    end
+  end
 end

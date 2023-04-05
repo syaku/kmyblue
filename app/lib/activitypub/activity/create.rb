@@ -70,6 +70,12 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     as_array(@object['cc'] || @json['cc']).map { |x| value_or_id(x) }
   end
 
+  def audience_searchable_by
+    return nil if @object['searchableBy'].nil?
+
+    @audience_searchable_by = as_array(@object['searchableBy']).map { |x| value_or_id(x) }
+  end
+
   def process_status
     @tags                 = []
     @mentions             = []
@@ -122,6 +128,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       reply: @status_parser.reply,
       sensitive: @account.sensitized? || @status_parser.sensitive || false,
       visibility: @status_parser.visibility,
+      searchability: searchability,
       thread: replied_to_status,
       conversation: conversation_from_uri(@object['conversation']),
       media_attachment_ids: process_attachments.take(4).map(&:id),
@@ -428,5 +435,33 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def join_group!
     GroupReblogService.new.call(@status)
+  end
+
+  def searchability_from_audience
+    if audience_searchable_by.nil?
+      nil
+    elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
+      :public
+    elsif audience_searchable_by.include?(@account.followers_url)
+      :private
+    else
+      :direct
+    end
+  end
+
+  def searchability
+    searchability = searchability_from_audience
+
+    return nil if searchability.nil?
+
+    visibility    = visibility_from_audience_with_silence
+
+    if searchability === visibility
+      searchability
+    elsif [:public, :private].include?(searchability) && [:public, :unlisted].include?(visibility)
+      :private
+    else
+      :direct
+    end
   end
 end

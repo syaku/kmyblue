@@ -22,6 +22,7 @@ class PostStatusService < BaseService
   # @option [Status] :thread Optional status to reply to
   # @option [Boolean] :sensitive
   # @option [String] :visibility
+  # @option [String] :searchability
   # @option [String] :spoiler_text
   # @option [String] :language
   # @option [String] :scheduled_at
@@ -66,10 +67,26 @@ class PostStatusService < BaseService
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
+    @searchability= searchability
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
+  end
+
+  def searchability
+    case @options[:searchability]&.to_sym
+    when :public
+      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted, :private then :private else :direct end
+    when :unlisted
+      case @visibility&.to_sym when :public, :public_unlisted, :unlisted then :unlisted when :private then :private else :direct end
+    when :private
+      case @visibility&.to_sym when :public, :public_unlisted, :unlisted, :private then :private else :direct end
+    when nil
+      @account.searchability
+    else
+      :direct
+    end
   end
 
   def process_status!
@@ -196,6 +213,7 @@ class PostStatusService < BaseService
       sensitive: @sensitive,
       spoiler_text: @options[:spoiler_text] || '',
       visibility: @visibility,
+      searchability: @searchability,
       language: valid_locale_cascade(@options[:language], @account.user&.preferred_posting_language, I18n.default_locale),
       application: @options[:application],
       rate_limit: @options[:with_rate_limit],

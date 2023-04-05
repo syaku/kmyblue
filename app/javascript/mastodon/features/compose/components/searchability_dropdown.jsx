@@ -5,14 +5,23 @@ import IconButton from '../../../components/icon_button';
 import Overlay from 'react-overlays/Overlay';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import classNames from 'classnames';
+import Icon from 'mastodon/components/icon';
 
 const messages = defineMessages({
-  add_expiration: { id: 'status.expiration.add', defaultMessage: 'Set status expiration' },
+  public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
+  public_long: { id: 'searchability.public.long', defaultMessage: 'Anyone can find' },
+  unlisted_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
+  unlisted_long: { id: 'searchability.unlisted.long', defaultMessage: 'Your followers can find' },
+  private_short: { id: 'searchability.private.short', defaultMessage: 'Reactionners' },
+  private_long: { id: 'searchability.private.long', defaultMessage: 'Reacter of this post can find' },
+  direct_short: { id: 'searchability.direct.short', defaultMessage: 'Self only' },
+  direct_long: { id: 'searchability.direct.long', defaultMessage: 'Nobody can find, but you can' },
+  change_searchability: { id: 'searchability.change', defaultMessage: 'Set status searchability' },
 });
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-class ExpirationDropdownMenu extends React.PureComponent {
+class SearchabilityDropdownMenu extends React.PureComponent {
 
   static propTypes = {
     style: PropTypes.object,
@@ -107,8 +116,13 @@ class ExpirationDropdownMenu extends React.PureComponent {
       <div style={{ ...style }} role='listbox' ref={this.setRef}>
         {items.map(item => (
           <div role='option' tabIndex='0' key={item.value} data-index={item.value} onKeyDown={this.handleKeyDown} onClick={this.handleClick} className={classNames('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? this.setFocusRef : null}>
-            <div className='expiration-dropdown__option__content'>
+            <div className='privacy-dropdown__option__icon'>
+              <Icon id={item.icon} fixedWidth />
+            </div>
+
+            <div className='privacy-dropdown__option__content'>
               <strong>{item.text}</strong>
+              {item.meta}
             </div>
           </div>
         ))}
@@ -119,7 +133,7 @@ class ExpirationDropdownMenu extends React.PureComponent {
 }
 
 export default @injectIntl
-class ExpirationDropdown extends React.PureComponent {
+class SearchabilityDropdown extends React.PureComponent {
 
   static propTypes = {
     isUserTouching: PropTypes.func,
@@ -200,14 +214,13 @@ class ExpirationDropdown extends React.PureComponent {
   };
 
   componentWillMount () {
+    const { intl: { formatMessage } } = this.props;
+
     this.options = [
-      { value: '#exp5m', text: '#exp5m (5 minutes)' },
-      { value: '#exp30m', text: '#exp30m (30 minutes)' },
-      { value: '#exp1h', text: '#exp1h (1 hour)' },
-      { value: '#exp3h', text: '#exp3h (3 hours)' },
-      { value: '#exp12h', text: '#exp12h (12 hours)' },
-      { value: '#exp1d', text: '#exp1d (1 day)' },
-      { value: '#exp7d', text: '#exp7d (7 days)' },
+      { icon: 'globe', value: 'public', text: formatMessage(messages.public_short), meta: formatMessage(messages.public_long) },
+      { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
+      { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
+      { icon: 'at', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },
     ];
   }
 
@@ -227,13 +240,15 @@ class ExpirationDropdown extends React.PureComponent {
     const { value, container, disabled, intl } = this.props;
     const { open, placement } = this.state;
 
+    const valueOption = this.options.find(item => item.value === value);
+
     return (
-      <div className={classNames('expiration-dropdown', placement, { active: open })} onKeyDown={this.handleKeyDown}>
-        <div className={classNames('expiration-dropdown__value')} ref={this.setTargetRef}>
+      <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={this.handleKeyDown}>
+        <div className={classNames('privacy-dropdown__value', 'searchability', { active: this.options.indexOf(valueOption) === (placement === 'bottom' ? 0 : (this.options.length - 1)) })} ref={this.setTargetRef}>
           <IconButton
-            className='expiration-dropdown__value-icon'
-            icon='clock-o'
-            title={intl.formatMessage(messages.add_expiration)}
+            className='privacy-dropdown__value-icon'
+            icon={valueOption.icon}
+            title={intl.formatMessage(messages.change_searchability)}
             size={18}
             expanded={open}
             active={open}
@@ -244,13 +259,17 @@ class ExpirationDropdown extends React.PureComponent {
             style={{ height: null, lineHeight: '27px' }}
             disabled={disabled}
           />
+          <Icon
+            className='searchability-dropdown__value-overlay'
+            id='search'
+          />
         </div>
 
         <Overlay show={open} placement={'bottom'} flip target={this.findTarget} container={container} popperConfig={{ strategy: 'fixed', onFirstUpdate: this.handleOverlayEnter }}>
           {({ props, placement }) => (
             <div {...props}>
-              <div className={`dropdown-animation expiration-dropdown__dropdown ${placement}`}>
-                <ExpirationDropdownMenu
+              <div className={`dropdown-animation privacy-dropdown__dropdown ${placement}`}>
+                <SearchabilityDropdownMenu
                   items={this.options}
                   value={value}
                   onClose={this.handleClose}
