@@ -358,7 +358,12 @@ class Status < ApplicationRecord
   end
 
   def compute_searchability
-    searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
+    # Fedibird code
+    #searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
+    # Reactions only (generic: direct)
+    return searchability if searchability
+    return account.searchability if account.local? && account.searchability
+    'private'
   end
 
   after_create_commit  :increment_counter_caches

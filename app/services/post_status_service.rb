@@ -77,7 +77,7 @@ class PostStatusService < BaseService
   def searchability
     case @options[:searchability]&.to_sym
     when :public
-      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted, :private then :private else :direct end
+      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted then :unlisted when :private then :private else :direct end
     when :unlisted
       case @visibility&.to_sym when :public, :public_unlisted, :unlisted then :unlisted when :private then :private else :direct end
     when :private
