@@ -781,6 +781,7 @@ ja:
       remove: 投稿を削除
       remove_media: メディアを削除
       remove_history: 編集履歴を削除
+      searchability: 検索許可
       status_changed: 投稿を変更しました
       title: 投稿一覧
       trending: トレンド
@@ -1519,6 +1520,15 @@ ja:
       total_votes:
         other: "%{count}票"
       vote: 投票
+    searchabilities:
+      direct: 自分のみ
+      direct_long: この投稿はあなたしか検索できません
+      private: リアクションした人
+      private_long: この投稿にリアクションした人しか検索できません
+      public: 公開
+      public_long: この投稿は誰でも検索できます
+      unlisted: フォロワーのみ
+      unlisted_long: この投稿はフォロワーのみが検索できます
     show_more: もっと見る
     show_newer: 新しいものを表示
     show_older: 古いものを表示
