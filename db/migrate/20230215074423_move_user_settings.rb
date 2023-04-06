@@ -5,6 +5,7 @@ class MoveUserSettings < ActiveRecord::Migration[6.1]
 
   MAPPING = {
     default_privacy: 'default_privacy',
+    default_searchability: 'default_searchability',
     default_sensitive: 'web.default_sensitive',
     default_language: 'default_language',
     noindex: 'noindex',

@@ -2,6 +2,7 @@
 
 class REST::PreferencesSerializer < ActiveModel::Serializer
   attribute :posting_default_privacy, key: 'posting:default:visibility'
+  attribute :posting_default_searchability, key: 'posting:default:searchability'
   attribute :posting_default_sensitive, key: 'posting:default:sensitive'
   attribute :posting_default_language, key: 'posting:default:language'
 
@@ -11,6 +12,10 @@ class REST::PreferencesSerializer < ActiveModel::Serializer
 
   def posting_default_privacy
     object.user.setting_default_privacy
+  end
+
+  def posting_default_searchability
+    object.user.setting_default_searchability
   end
 
   def posting_default_sensitive
