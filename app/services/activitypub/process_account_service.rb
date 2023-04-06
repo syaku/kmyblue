@@ -238,7 +238,7 @@ class ActivityPub::ProcessAccountService < BaseService
 
   def searchability_from_audience
     if audience_searchable_by.nil?
-      nil
+      :private
     elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
