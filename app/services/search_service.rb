@@ -8,7 +8,7 @@ class SearchService < BaseService
     @limit   = limit.to_i
     @offset  = options[:type].blank? ? 0 : options[:offset].to_i
     @resolve = options[:resolve] || false
-    @searchability = options[:searchability] || @account.user&.setting_default_searchability || 'private'
+    @searchability = options[:searchability] || 'public'
 
     default_results.tap do |results|
       next if @query.blank? || @limit.zero?
@@ -69,7 +69,7 @@ class SearchService < BaseService
     account_relations   = relations_map_for_account(@account, account_ids, account_domains)  # old name: preloaded_relations
     status_relations    = relations_map_for_status(@account, results)
 
-    results.reject { |status| StatusFilter.new(status, @account, account_relations, status_relations).filtered? }
+    results.reject { |status| StatusFilter.new(status, @account, account_relations).filtered? }
   rescue Faraday::ConnectionFailed, Parslet::ParseFailed
     []
   end
@@ -136,18 +136,6 @@ class SearchService < BaseService
       muting: Account.muting_map(account_ids, account.id),
       following: Account.following_map(account_ids, account.id),
       domain_blocking_by_domain: Account.domain_blocking_map_by_domain(domains, account.id),
-    }
-  end
-
-  def relations_map_for_status(account, statuses)
-    presenter = StatusRelationshipsPresenter.new(statuses, account)
-    {
-      reblogs_map: presenter.reblogs_map,
-      favourites_map: presenter.favourites_map,
-      bookmarks_map: presenter.bookmarks_map,
-      emoji_reactions_map: presenter.emoji_reactions_map,
-      mutes_map: presenter.mutes_map,
-      pins_map: presenter.pins_map,
     }
   end
 
