@@ -233,18 +233,18 @@ class ActivityPub::ProcessAccountService < BaseService
   def audience_searchable_by
     return nil if @json['searchableBy'].nil?
 
-    @audience_searchable_by = as_array(@json['searchableBy']).map { |x| value_or_id(x) }
+    @audience_searchable_by_processaccountservice = as_array(@json['searchableBy']).map { |x| value_or_id(x) }
   end
 
   def searchability_from_audience
     if audience_searchable_by.nil?
-      :direct
+      nil
     elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
-      :private
+      :unlisted    # Followers only in kmyblue (generics: private)
     else
-      :direct
+      :private     # Reaction only in kmyblue (generics: direct)
     end
   end
 
