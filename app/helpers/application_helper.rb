@@ -202,9 +202,13 @@ module ApplicationHelper
     }
 
     permit_visibilities = %w(public unlisted public_unlisted private direct)
+    permit_searchabilities = %w(public unlisted public_unlisted private direct)
     default_privacy     = current_account&.user&.setting_default_privacy
     permit_visibilities.shift(permit_visibilities.index(default_privacy) + 1) if default_privacy.present?
     state_params[:visibility] = params[:visibility] if permit_visibilities.include? params[:visibility]
+    default_searchability = current_account&.user&.setting_default_searchability
+    permit_searchabilities.shift(permit_searchabilities.index(default_privacy) + 1) if default_searchability.present?
+    state_params[:searchability] = params[:searchability] if permit_searchabilities.include? params[:searchability]
 
     if user_signed_in? && current_user.functional?
       state_params[:settings]          = state_params[:settings].merge(Web::Setting.find_by(user: current_user)&.data || {})

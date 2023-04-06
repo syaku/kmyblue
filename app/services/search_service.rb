@@ -8,6 +8,7 @@ class SearchService < BaseService
     @limit   = limit.to_i
     @offset  = options[:type].blank? ? 0 : options[:offset].to_i
     @resolve = options[:resolve] || false
+    @searchability = options[:searchability] || 'public'
 
     default_results.tap do |results|
       next if @query.blank? || @limit.zero?
@@ -35,10 +36,25 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    # definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id })).order(id: :desc)
-    definition = parsed_query.apply(StatusesIndex).order(id: :desc)
+    privacy_definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
 
+    # 'private' searchability posts are NOT in here because it's already added at previous line.
+    case @searchability
+    when 'public'
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'unlisted' }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }))
+    when 'unlisted', 'private'
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public unlisted) }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }))
+    when 'direct'
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }))
+    end
+
+    definition = parsed_query.apply(StatusesIndex).order(id: :desc)
     definition = definition.filter(term: { account_id: @options[:account_id] }) if @options[:account_id].present?
+
+    definition = definition.and(privacy_definition)
 
     if @options[:min_id].present? || @options[:max_id].present?
       range      = {}
@@ -50,9 +66,9 @@ class SearchService < BaseService
     results             = definition.limit(@limit).offset(@offset).objects.compact
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)
-    preloaded_relations = @account.relations_map(account_ids, account_domains)
+    account_relations   = @account.relations_map(account_ids, account_domains)  # variable old name: preloaded_relations
 
-    results.reject { |status| StatusFilter.new(status, @account, preloaded_relations).search_filtered? }
+    results.reject { |status| StatusFilter.new(status, @account, account_relations).filtered? }
   rescue Faraday::ConnectionFailed, Parslet::ParseFailed
     []
   end
@@ -114,5 +130,14 @@ class SearchService < BaseService
 
   def parsed_query
     SearchQueryTransformer.new.apply(SearchQueryParser.new.parse(@query))
+  end
+
+  def following_account_ids
+    return @following_account_ids if defined?(@following_account_ids)
+
+    account_exists_sql     = Account.where('accounts.id = follows.target_account_id').where(searchability: %w(public unlisted private)).reorder(nil).select(1).to_sql
+    status_exists_sql      = Status.where('statuses.account_id = follows.target_account_id').where(reblog_of_id: nil).where(searchability: %w(public unlisted private)).reorder(nil).select(1).to_sql
+    following_accounts     = Follow.where(account_id: @account.id).merge(Account.where("EXISTS (#{account_exists_sql})").or(Account.where("EXISTS (#{status_exists_sql})")))
+    @following_account_ids = following_accounts.pluck(:target_account_id)
   end
 end

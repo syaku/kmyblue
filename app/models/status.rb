@@ -27,6 +27,7 @@
 #  edited_at                    :datetime
 #  trendable                    :boolean
 #  ordered_media_attachment_ids :bigint(8)        is an Array
+#  searchability                :integer
 #
 
 require 'ostruct'
@@ -52,6 +53,7 @@ class Status < ApplicationRecord
   update_index('statuses', :proper)
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10 }, _suffix: :visibility
+  enum searchability: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10 }, _suffix: :searchability
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
 
@@ -115,6 +117,7 @@ class Status < ApplicationRecord
   scope :tagged_with_none, lambda { |tag_ids|
     where('NOT EXISTS (SELECT * FROM statuses_tags forbidden WHERE forbidden.status_id = statuses.id AND forbidden.tag_id IN (?))', tag_ids)
   }
+  scope :unset_searchability, -> { where(searchability: nil, reblog_of_id: nil) }
 
   after_create_commit :trigger_create_webhooks
   after_update_commit :trigger_update_webhooks
@@ -252,6 +255,11 @@ class Status < ApplicationRecord
     ordered_media_attachments.any?
   end
 
+  def expired?
+    false
+    # !expired_at.nil?
+  end
+
   def with_preview_card?
     preview_cards.any?
   end
@@ -346,6 +354,15 @@ class Status < ApplicationRecord
     attributes['trendable'].nil? && account.requires_review_notification?
   end
 
+  def compute_searchability
+    # Fedibird code
+    #searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
+    # Reactions only (generic: direct)
+    return searchability if searchability
+    return account.searchability if account.local? && account.searchability
+    'private'
+  end
+
   after_create_commit  :increment_counter_caches
   after_destroy_commit :decrement_counter_caches
 
@@ -355,6 +372,7 @@ class Status < ApplicationRecord
   before_validation :prepare_contents, if: :local?
   before_validation :set_reblog
   before_validation :set_visibility
+  before_validation :set_searchability
   before_validation :set_conversation
   before_validation :set_local
 
@@ -365,6 +383,10 @@ class Status < ApplicationRecord
   class << self
     def selectable_visibilities
       visibilities.keys - %w(direct limited)
+    end
+
+    def selectable_searchabilities
+      searchabilities.keys - %w(public_unlisted limited)
     end
 
     def favourites_map(status_ids, account_id)
@@ -533,6 +555,12 @@ class Status < ApplicationRecord
     self.visibility = reblog.visibility if reblog? && visibility.nil?
     self.visibility = (account.locked? ? :private : :public) if visibility.nil?
     self.sensitive  = false if sensitive.nil?
+  end
+
+  def set_searchability
+    return if searchability.nil?
+
+    self.searchability = [Status.searchabilities[searchability], Status.visibilities[visibility == 'public_unlisted' ? 'public' : visibility]].max
   end
 
   def set_conversation

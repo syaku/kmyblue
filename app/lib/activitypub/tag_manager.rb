@@ -185,4 +185,53 @@ class ActivityPub::TagManager
   rescue ActiveRecord::RecordNotFound
     nil
   end
+
+  def searchable_by(status)
+    searchable_by =
+      case status.compute_searchability
+      when 'public'
+        [COLLECTIONS[:public]]
+      when 'unlisted'  # Followers only in kmyblue (generics: private)
+        [account_followers_url(status.account)]
+      when 'private'   # Reaction only in kmyblue (generics: direct)
+        []
+      when 'limited'
+        status.conversation_id.present? ? [uri_for(status.conversation)] : []
+      else
+        []
+      end
+
+    searchable_by.concat(mentions_uris(status))
+  end
+
+  def account_searchable_by(account)
+    case account.searchability
+    when 'public'
+      [COLLECTIONS[:public]]
+    when 'unlisted', 'private'
+      [account_followers_url(account)]
+    else
+      []
+    end
+  end
+
+  def mentions_uris(status)
+    if status.account.silenced?
+      # Only notify followers if the account is locally silenced
+      account_ids = status.active_mentions.pluck(:account_id)
+      uris = status.account.followers.where(id: account_ids).each_with_object([]) do |account, result|
+        result << uri_for(account)
+        result << account_followers_url(account) if account.group?
+      end
+      uris.concat(FollowRequest.where(target_account_id: status.account_id, account_id: account_ids).each_with_object([]) do |request, result|
+        result << uri_for(request.account)
+        result << account_followers_url(request.account) if request.account.group?
+      end)
+    else
+      status.active_mentions.each_with_object([]) do |mention, result|
+        result << uri_for(mention.account)
+        result << account_followers_url(mention.account) if mention.account.group?
+      end
+    end
+  end
 end

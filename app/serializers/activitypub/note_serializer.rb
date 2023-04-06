@@ -3,13 +3,13 @@
 class ActivityPub::NoteSerializer < ActivityPub::Serializer
   include FormattingHelper
 
-  context_extensions :atom_uri, :conversation, :sensitive, :voters_count
+  context_extensions :atom_uri, :conversation, :sensitive, :voters_count, :searchable_by
 
   attributes :id, :type, :summary,
              :in_reply_to, :published, :url,
              :attributed_to, :to, :cc, :sensitive,
              :atom_uri, :in_reply_to_atom_uri,
-             :conversation
+             :conversation, :searchable_by
 
   attribute :content
   attribute :content_map, if: :language?
@@ -136,6 +136,10 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
     else
       OStatus::TagManager.instance.unique_tag(object.conversation.created_at, object.conversation.id, 'Conversation')
     end
+  end
+
+  def searchable_by
+    ActivityPub::TagManager.instance.searchable_by(object)
   end
 
   def local?

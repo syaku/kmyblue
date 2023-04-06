@@ -29,6 +29,7 @@ class ActivityPub::ProcessAccountService < BaseService
       @account          ||= Account.find_remote(@username, @domain)
       @old_public_key     = @account&.public_key
       @old_protocol       = @account&.protocol
+      @old_searchability  = @account&.searchability
       @suspension_changed = false
 
       if @account.nil?
@@ -112,6 +113,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.fields                  = property_values || {}
     @account.also_known_as           = as_array(@json['alsoKnownAs'] || []).map { |item| value_or_id(item) }
     @account.discoverable            = @json['discoverable'] || false
+    @account.searchability           = searchability_from_audience
   end
 
   def set_fetchable_key!
@@ -148,6 +150,10 @@ class ActivityPub::ProcessAccountService < BaseService
       @account.suspend!(origin: :remote)
       @suspension_changed = true
     end
+  end
+
+  def after_searchability_change!
+    SearchabilityUpdateWorker.perform_async(@account.id) if @account.statuses.unset_searchability.exists?
   end
 
   def after_protocol_change!
@@ -221,6 +227,24 @@ class ActivityPub::ProcessAccountService < BaseService
       nil
     else
       url_candidate
+    end
+  end
+
+  def audience_searchable_by
+    return nil if @json['searchableBy'].nil?
+
+    @audience_searchable_by_processaccountservice = as_array(@json['searchableBy']).map { |x| value_or_id(x) }
+  end
+
+  def searchability_from_audience
+    if audience_searchable_by.nil?
+      :private
+    elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
+      :public
+    elsif audience_searchable_by.include?(@account.followers_url)
+      :unlisted    # Followers only in kmyblue (generics: private)
+    else
+      :private     # Reaction only in kmyblue (generics: direct)
     end
   end
 
@@ -308,6 +332,10 @@ class ActivityPub::ProcessAccountService < BaseService
 
   def protocol_changed?
     !@old_protocol.nil? && @old_protocol != @account.protocol
+  end
+
+  def searchability_changed?
+    !@old_searchability.nil? && @old_searchability != @account.searchability
   end
 
   def process_tags

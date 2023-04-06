@@ -3,7 +3,37 @@
 class StatusesIndex < Chewy::Index
   include FormattingHelper
 
-  settings index: { refresh_interval: '30s' }, analysis: {
+  DEVELOPMENT_SETTINGS = {
+    filter: {
+      english_stop: {
+        type: 'stop',
+        stopwords: '_english_',
+      },
+      english_stemmer: {
+        type: 'stemmer',
+        language: 'english',
+      },
+      english_possessive_stemmer: {
+        type: 'stemmer',
+        language: 'possessive_english',
+      },
+    },
+    analyzer: {
+      content: {
+        tokenizer: 'uax_url_email',
+        filter: %w(
+          english_possessive_stemmer
+          lowercase
+          asciifolding
+          cjk_width
+          english_stop
+          english_stemmer
+        ),
+      },
+    },
+  }
+
+  PRODUCTION_SETTINGS = {
     filter: {
       english_stop: {
         type: 'stop',
@@ -45,6 +75,8 @@ class StatusesIndex < Chewy::Index
       }
     }
   }
+
+  settings index: { refresh_interval: '30s' }, analysis: Rails.env.development? ? DEVELOPMENT_SETTINGS : PRODUCTION_SETTINGS
 
   # We do not use delete_if option here because it would call a method that we
   # expect to be called with crutches without crutches, causing n+1 queries
@@ -89,5 +121,6 @@ class StatusesIndex < Chewy::Index
     end
 
     field :searchable_by, type: 'long', value: ->(status, crutches) { status.searchable_by(crutches) }
+    field :searchability, type: 'keyword', value: ->(status) { status.compute_searchability }
   end
 end

@@ -795,6 +795,7 @@ en:
       remove: Remove post
       remove_media: Remove medias
       remove_history: Remove edit history
+      searchability: Searchability
       status_changed: Post changed
       title: Account posts
       trending: Trending
@@ -1562,6 +1563,15 @@ en:
         one: "%{count} vote"
         other: "%{count} votes"
       vote: Vote
+    searchabilities:
+      direct: Self only
+      direct_long: Nobody can find, but you can
+      private: Reactionners
+      private_long: Reacter of this post can find
+      public: Public
+      public_long: Anyone can find
+      unlisted: Followers only
+      unlisted_long: Your followers can find
     show_more: Show more
     show_newer: Show newer
     show_older: Show older

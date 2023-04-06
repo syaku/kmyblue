@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
 class StatusPolicy < ApplicationPolicy
-  def initialize(current_account, record, preloaded_relations = {})
+  def initialize(current_account, record, preloaded_relations = {}, preloaded_status_relations = {})
     super(current_account, record)
 
     @preloaded_relations = preloaded_relations
+    @preloaded_status_relations = preloaded_status_relations
   end
+
+  delegate :reply?, :expired?, to: :record
 
   def show?
     return false if author.suspended?
@@ -13,18 +16,6 @@ class StatusPolicy < ApplicationPolicy
     if requires_mention?
       owned? || mention_exists?
     elsif private?
-      owned? || following_author? || mention_exists?
-    else
-      current_account.nil? || (!author_blocking? && !author_blocking_domain?)
-    end
-  end
-
-  def search?
-    return false if author.suspended?
-
-    if requires_mention?
-      owned? || mention_exists?
-    elsif !public?
       owned? || following_author? || mention_exists?
     else
       current_account.nil? || (!author_blocking? && !author_blocking_domain?)

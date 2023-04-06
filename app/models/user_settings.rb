@@ -15,6 +15,7 @@ class UserSettings
   setting :default_language, default: nil
   setting :default_sensitive, default: false
   setting :default_privacy, default: nil
+  setting :default_searchability, default: :private,
 
   namespace :web do
     setting :crop_images, default: true
