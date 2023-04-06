@@ -251,8 +251,8 @@ class StatusActionBar extends ImmutablePureComponent {
     const { signedIn, permissions } = this.context.identity;
 
     const anonymousAccess    = !signedIn;
-    const publicStatus       = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility'));
-    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'private'].includes(status.get('visibility'));
+    const publicStatus       = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility_ex'));
+    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'private'].includes(status.get('visibility_ex'));
     const mutingConversation = status.get('muted');
     const account            = status.get('account');
     const writtenByMe        = status.getIn(['account', 'id']) === me;
@@ -351,7 +351,7 @@ class StatusActionBar extends ImmutablePureComponent {
       replyTitle = intl.formatMessage(messages.replyAll);
     }
 
-    const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility') === 'private';
+    const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility_ex') === 'private';
 
     let reblogTitle = '';
     if (status.get('reblogged')) {

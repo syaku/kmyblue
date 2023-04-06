@@ -219,7 +219,7 @@ class DetailedStatus extends ImmutablePureComponent {
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility')];
+    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')];
     const visibilityLink = <React.Fragment> · <Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></React.Fragment>;
 
     const searchabilityIconInfo = {
@@ -232,7 +232,7 @@ class DetailedStatus extends ImmutablePureComponent {
     const searchabilityIcon = searchabilityIconInfo[status.get('searchability')];
     const searchabilityLink = <React.Fragment> · <Icon id={searchabilityIcon.icon} title={searchabilityIcon.text} /></React.Fragment>;
 
-    if (['private', 'direct'].includes(status.get('visibility'))) {
+    if (['private', 'direct'].includes(status.get('visibility_ex'))) {
       reblogLink = '';
     } else if (this.context.router) {
       reblogLink = (
@@ -307,7 +307,7 @@ class DetailedStatus extends ImmutablePureComponent {
 
     return (
       <div style={outerStyle}>
-        <div ref={this.setRef} className={classNames('detailed-status', `detailed-status-${status.get('visibility')}`, { compact })}>
+        <div ref={this.setRef} className={classNames('detailed-status', `detailed-status-${status.get('visibility_ex')}`, { compact })}>
           <a href={`/@${status.getIn(['account', 'acct'])}`} onClick={this.handleAccountClick} className='detailed-status__display-name'>
             <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={46} /></div>
             <DisplayName account={status.get('account')} localDomain={this.props.domain} />

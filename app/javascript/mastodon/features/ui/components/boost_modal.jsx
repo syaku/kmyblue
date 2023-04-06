@@ -93,12 +93,12 @@ class BoostModal extends ImmutablePureComponent {
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility')];
+    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')];
 
     return (
       <div className='modal-root__modal boost-modal'>
         <div className='boost-modal__container'>
-          <div className={classNames('status', `status-${status.get('visibility')}`, 'light')}>
+          <div className={classNames('status', `status-${status.get('visibility_ex')}`, 'light')}>
             <div className='status__info'>
               <a href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
                 <span className='status__visibility-icon'><Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></span>
@@ -127,7 +127,7 @@ class BoostModal extends ImmutablePureComponent {
 
         <div className='boost-modal__action-bar'>
           <div><FormattedMessage id='boost_modal.combo' defaultMessage='You can press {combo} to skip this next time' values={{ combo: <span>Shift + <Icon id='retweet' /></span> }} /></div>
-          {status.get('visibility') !== 'private' && !status.get('reblogged') && (
+          {status.get('visibility_ex') !== 'private' && !status.get('reblogged') && (
             <PrivacyDropdown
               noDirect
               value={privacy}
