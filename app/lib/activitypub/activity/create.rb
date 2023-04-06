@@ -458,10 +458,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     if searchability === visibility
       searchability
-    elsif [:public, :private].include?(searchability) && [:public, :unlisted].include?(visibility)
-      :private
+    elsif [:public, :unlisted].include?(searchability) && [:public, :unlisted].include?(visibility) # unlisted is Followers only in kmyblue (generics: private)
+      :unlisted
     else
-      :direct
+      :private    # Reaction only in kmyblue (generics: direct)
     end
   end
 
