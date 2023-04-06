@@ -191,8 +191,10 @@ class ActivityPub::TagManager
       case status.compute_searchability
       when 'public'
         [COLLECTIONS[:public]]
-      when 'unlisted', 'private'
+      when 'unlisted'  # Followers only in kmyblue (generics: private)
         [account_followers_url(status.account)]
+      when 'private'   # Reaction only in kmyblue (generics: direct)
+        []
       when 'limited'
         status.conversation_id.present? ? [uri_for(status.conversation)] : []
       else

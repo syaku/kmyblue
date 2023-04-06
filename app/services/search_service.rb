@@ -67,7 +67,6 @@ class SearchService < BaseService
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)
     account_relations   = relations_map_for_account(@account, account_ids, account_domains)  # old name: preloaded_relations
-    status_relations    = relations_map_for_status(@account, results)
 
     results.reject { |status| StatusFilter.new(status, @account, account_relations).filtered? }
   rescue Faraday::ConnectionFailed, Parslet::ParseFailed

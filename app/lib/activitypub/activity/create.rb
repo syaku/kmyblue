@@ -443,9 +443,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
-      :private
+      :unlisted    # Followers only in kmyblue (generics: private)
     else
-      :direct
+      :private     # Reaction only in kmyblue (generics: direct)
     end
   end
 
