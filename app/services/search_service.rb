@@ -42,7 +42,7 @@ class SearchService < BaseService
     case @searchability
     when 'public'
       privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }))
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(unlisted) }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'unlisted' }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
       privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }))
     when 'unlisted', 'private'
       privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public unlisted) }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
