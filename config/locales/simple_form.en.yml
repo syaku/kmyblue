@@ -212,6 +212,7 @@ en:
         setting_disable_swiping: Disable swiping motions
         setting_display_media: Media display
         setting_display_media_default: Default
+        setting_display_media_expand: Show more medias
         setting_display_media_hide_all: Hide all
         setting_display_media_show_all: Show all
         setting_expand_spoilers: Always expand posts marked with content warnings

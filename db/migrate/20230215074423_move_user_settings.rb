@@ -16,6 +16,7 @@ class MoveUserSettings < ActiveRecord::Migration[6.1]
     delete_modal: 'web.delete_modal',
     auto_play_gif: 'web.auto_play',
     display_media: 'web.display_media',
+    display_media_expand: 'web.display_media_expand',
     expand_spoilers: 'web.expand_content_warnings',
     reduce_motion: 'web.reduce_motion',
     disable_swiping: 'web.disable_swiping',

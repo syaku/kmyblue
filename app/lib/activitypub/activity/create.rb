@@ -131,7 +131,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       searchability: searchability,
       thread: replied_to_status,
       conversation: conversation_from_uri(@object['conversation']),
-      media_attachment_ids: process_attachments.take(4).map(&:id),
+      media_attachment_ids: process_attachments.take(MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX).map(&:id),
       poll: process_poll,
     }
   end
@@ -263,7 +263,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     as_array(@object['attachment']).each do |attachment|
       media_attachment_parser = ActivityPub::Parser::MediaAttachmentParser.new(attachment)
 
-      next if media_attachment_parser.remote_url.blank? || media_attachments.size >= 4
+      next if media_attachment_parser.remote_url.blank? || media_attachments.size >= MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX
 
       begin
         media_attachment = MediaAttachment.create(

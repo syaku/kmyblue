@@ -59,6 +59,10 @@ module HasUserSettings
     settings['web.display_media']
   end
 
+  def setting_display_media_expand
+    settings['web.display_media_expand']
+  end
+
   def setting_expand_spoilers
     settings['web.expand_content_warnings']
   end

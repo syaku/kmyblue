@@ -56,6 +56,7 @@
  * @property {boolean=} disable_swiping
  * @property {string=} disabled_account_id
  * @property {string} display_media
+ * @property {boolean} display_media_expand
  * @property {string} domain
  * @property {boolean=} expand_spoilers
  * @property {boolean} limited_federation_mode
@@ -108,6 +109,7 @@ export const deleteModal = getMeta('delete_modal');
 export const disableSwiping = getMeta('disable_swiping');
 export const disabledAccountId = getMeta('disabled_account_id');
 export const displayMedia = getMeta('display_media');
+export const displayMediaExpand = getMeta('display_media_expand');
 export const domain = getMeta('domain');
 export const expandSpoilers = getMeta('expand_spoilers');
 export const forceSingleColumn = !getMeta('advanced_layout');

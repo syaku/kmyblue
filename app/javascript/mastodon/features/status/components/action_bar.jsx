@@ -42,6 +42,7 @@ const messages = defineMessages({
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   openOriginalPage: { id: 'account.open_original_page', defaultMessage: 'Open original page' },
+  pickEmoji: { id: 'status.emoji_reaction.pick', defaultMessage: 'Pick emoji' },
 });
 
 const mapStateToProps = (state, { status }) => ({
@@ -268,7 +269,7 @@ class ActionBar extends React.PureComponent {
     );
 
     const emojiPickerButton = (
-      <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} />
+      <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} title={intl.formatMessage(messages.pickEmoji)} />
     );
 
     let replyIcon;
