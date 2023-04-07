@@ -190,8 +190,8 @@ class ActionBar extends React.PureComponent {
     const { status, relationship, intl } = this.props;
     const { signedIn, permissions } = this.context.identity;
 
-    const publicStatus       = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility'));
-    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'private'].includes(status.get('visibility'));
+    const publicStatus       = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility_ex'));
+    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'private'].includes(status.get('visibility_ex'));
     const mutingConversation = status.get('muted');
     const account            = status.get('account');
     const writtenByMe        = status.getIn(['account', 'id']) === me;
@@ -278,7 +278,7 @@ class ActionBar extends React.PureComponent {
       replyIcon = 'reply-all';
     }
 
-    const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility') === 'private';
+    const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility_ex') === 'private';
 
     let reblogTitle;
     if (status.get('reblogged')) {

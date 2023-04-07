@@ -48,7 +48,7 @@ class StatusCheckBox extends React.PureComponent {
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility')];
+    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')];
 
     const labelComponent = (
       <div className='status-check-box__status poll__option__text'>

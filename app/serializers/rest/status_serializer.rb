@@ -4,7 +4,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   include FormattingHelper
 
   attributes :id, :created_at, :in_reply_to_id, :in_reply_to_account_id,
-             :sensitive, :spoiler_text, :visibility, :language,
+             :sensitive, :spoiler_text, :visibility, :visibility_ex, :language,
              :uri, :url, :replies_count, :reblogs_count, :searchability,
              :favourites_count, :emoji_reactions, :edited_at
 
@@ -56,9 +56,15 @@ class REST::StatusSerializer < ActiveModel::Serializer
     # UX differences
     if object.limited_visibility?
       'private'
+    elsif object.public_unlisted_visibility?
+      'public'
     else
       object.visibility
     end
+  end
+
+  def visibility_ex
+    object.visibility
   end
 
   def searchability

@@ -221,11 +221,11 @@ export function submitCompose(routerHistory) {
         dispatch(importFetchedStatus({ ...response.data }));
       }
 
-      if (statusId === null && response.data.visibility !== 'direct') {
+      if (statusId === null && response.data.visibility_ex !== 'direct') {
         insertIfOnline('home');
       }
 
-      if (statusId === null && response.data.in_reply_to_id === null && response.data.visibility === 'public') {
+      if (statusId === null && response.data.in_reply_to_id === null && response.data.visibility_ex === 'public') {
         insertIfOnline('community');
         insertIfOnline('public');
         insertIfOnline(`account:${response.data.account.id}`);

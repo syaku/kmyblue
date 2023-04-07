@@ -218,7 +218,7 @@ class DetailedStatus extends ImmutablePureComponent {
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility')];
+    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')];
     const visibilityLink = <React.Fragment> · <Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></React.Fragment>;
 
     const searchabilityIconInfo = {
@@ -231,7 +231,7 @@ class DetailedStatus extends ImmutablePureComponent {
     const searchabilityIcon = searchabilityIconInfo[status.get('searchability')];
     const searchabilityLink = <React.Fragment> · <Icon id={searchabilityIcon.icon} title={searchabilityIcon.text} /></React.Fragment>;
 
-    if (['private', 'direct'].includes(status.get('visibility'))) {
+    if (['private', 'direct'].includes(status.get('visibility_ex'))) {
       reblogLink = '';
     } else if (this.context.router) {
       reblogLink = (
@@ -307,7 +307,7 @@ class DetailedStatus extends ImmutablePureComponent {
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
-          {status.get('visibility') === 'direct' && (
+          {status.get('visibility_ex') === 'direct' && (
             <div className='status__prepend'>
               <div className='status__prepend-icon-wrapper'><Icon id='at' className='status__prepend-icon' fixedWidth /></div>
               <FormattedMessage id='status.direct_indicator' defaultMessage='Private mention' />
