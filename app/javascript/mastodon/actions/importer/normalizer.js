@@ -66,7 +66,7 @@ export function normalizeStatus(status, normalOldStatus) {
     normalStatus.filtered = status.filtered.map(normalizeFilterResult);
   }
 
-  if (status.emoji_reactions && normalOldStatus) {
+  if (status.emoji_reactions && normalOldStatus && normalOldStatus.get('emoji_reactions')) {
     normalStatus.emoji_reactions = normalizeEmojiReactions(normalOldStatus.get('emoji_reactions').toArray());
   }
 

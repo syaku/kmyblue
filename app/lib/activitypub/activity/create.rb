@@ -131,7 +131,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       searchability: searchability,
       thread: replied_to_status,
       conversation: conversation_from_uri(@object['conversation']),
-      media_attachment_ids: process_attachments.take(4).map(&:id),
+      media_attachment_ids: process_attachments.take(MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX).map(&:id),
       poll: process_poll,
     }
   end
