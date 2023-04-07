@@ -63,7 +63,7 @@ class PublicFeed
   end
 
   def media_only?
-    options[:only_media]
+    !local_only? && options[:only_media]
   end
 
   def public_scope
