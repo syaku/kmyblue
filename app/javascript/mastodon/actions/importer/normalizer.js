@@ -1,7 +1,7 @@
 import escapeTextContentForBrowser from 'escape-html';
 import emojify from '../../features/emoji/emoji';
 import { unescapeHTML } from '../../utils/html';
-import { expandSpoilers } from '../../initial_state';
+import { expandSpoilers, me } from '../../initial_state';
 
 const domParser = new DOMParser();
 
@@ -66,8 +66,8 @@ export function normalizeStatus(status, normalOldStatus) {
     normalStatus.filtered = status.filtered.map(normalizeFilterResult);
   }
 
-  if (status.emoji_reactions) {
-    normalStatus.emojiReactions = status.emoji_reactions;
+  if (status.emoji_reactions && normalOldStatus) {
+    normalStatus.emoji_reactions = normalizeEmojiReactions(normalOldStatus.get('emoji_reactions').toArray());
   }
 
   // Only calculate these values when status first encountered and
@@ -98,6 +98,17 @@ export function normalizeStatus(status, normalOldStatus) {
   }
 
   return normalStatus;
+}
+
+export function normalizeEmojiReactions(emoji_reactions) {
+  const myAccountId = me;
+  let converted = [];
+  for (let emoji_reaction of emoji_reactions) {
+    let obj = emoji_reaction.toObject();
+    obj.me = obj.account_ids.toArray().some((id) => id === myAccountId);
+    converted.push(obj);
+  }
+  return converted;
 }
 
 export function normalizePoll(poll) {
