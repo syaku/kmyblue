@@ -5,7 +5,7 @@ import { is } from 'immutable';
 import IconButton from './icon_button';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import { autoPlayGif, cropImages, displayMedia, useBlurhash } from '../initial_state';
+import { autoPlayGif, cropImages, displayMedia, displayMediaExpand, useBlurhash } from '../initial_state';
 import { debounce } from 'lodash';
 import Blurhash from 'mastodon/components/blurhash';
 
@@ -357,13 +357,16 @@ class MediaGallery extends React.PureComponent {
       style.height = height;
     }
 
-    const size     = media.take(8).size;
+    const maxSize = displayMediaExpand ? 8 : 4;
+    console.log(displayMediaExpand)
+
+    const size     = media.take(maxSize).size;
     const uncached = media.every(attachment => attachment.get('type') === 'unknown');
 
     if (standalone && this.isFullSizeEligible()) {
       children = <Item standalone autoplay={autoplay} onClick={this.handleClick} attachment={media.get(0)} lang={lang} displayWidth={width} visible={visible} />;
     } else {
-      children = media.take(8).map((attachment, i) => <Item key={attachment.get('id')} autoplay={autoplay} onClick={this.handleClick} attachment={attachment} index={i} lang={lang} size={size} displayWidth={width} visible={visible || uncached} />);
+      children = media.take(maxSize).map((attachment, i) => <Item key={attachment.get('id')} autoplay={autoplay} onClick={this.handleClick} attachment={attachment} index={i} lang={lang} size={size} displayWidth={width} visible={visible || uncached} />);
     }
 
     if (uncached) {

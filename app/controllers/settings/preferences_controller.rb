@@ -42,6 +42,7 @@ class Settings::PreferencesController < Settings::BaseController
       :setting_delete_modal,
       :setting_auto_play_gif,
       :setting_display_media,
+      :setting_display_media_expand,
       :setting_expand_spoilers,
       :setting_reduce_motion,
       :setting_disable_swiping,

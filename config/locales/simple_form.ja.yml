@@ -58,6 +58,7 @@ ja:
         setting_display_media_hide_all: メディアを常に隠す
         setting_display_media_show_all: メディアを常に表示する
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
+        setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大8個まで表示します。kmyblueからアップロードはできません
         setting_noindex: 公開プロフィールおよび各投稿ページに影響します
         setting_show_application: 投稿するのに使用したアプリが投稿の詳細ビューに表示されるようになります
         setting_use_blurhash: ぼかしはメディアの色を元に生成されますが、細部は見えにくくなっています
@@ -212,6 +213,7 @@ ja:
         setting_disable_swiping: スワイプでの切り替えを無効にする
         setting_display_media: メディアの表示
         setting_display_media_default: 標準
+        setting_display_media_expand: 5個目以降のメディアも表示する (最大8)
         setting_display_media_hide_all: 非表示
         setting_display_media_show_all: 表示
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
