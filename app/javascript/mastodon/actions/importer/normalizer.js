@@ -66,8 +66,12 @@ export function normalizeStatus(status, normalOldStatus) {
     normalStatus.filtered = status.filtered.map(normalizeFilterResult);
   }
 
-  if (status.emoji_reactions && normalOldStatus && normalOldStatus.get('emoji_reactions')) {
-    normalStatus.emoji_reactions = normalizeEmojiReactions(normalOldStatus.get('emoji_reactions').toArray());
+  if (status.emoji_reactions) {
+    normalStatus.emoji_reactions = normalizeEmojiReactions(status.emoji_reactions);
+  }
+
+  if (status.media_attachments_ex) {
+    normalStatus.media_attachments = status.media_attachments.concat(status.media_attachments_ex);
   }
 
   // Only calculate these values when status first encountered and
@@ -104,8 +108,8 @@ export function normalizeEmojiReactions(emoji_reactions) {
   const myAccountId = me;
   let converted = [];
   for (let emoji_reaction of emoji_reactions) {
-    let obj = emoji_reaction.toObject();
-    obj.me = obj.account_ids.toArray().some((id) => id === myAccountId);
+    let obj = emoji_reaction;
+    obj.me = obj.account_ids.some((id) => id === myAccountId);
     converted.push(obj);
   }
   return converted;
