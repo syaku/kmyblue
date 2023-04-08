@@ -358,7 +358,6 @@ class MediaGallery extends React.PureComponent {
     }
 
     const maxSize = displayMediaExpand ? 8 : 4;
-    console.log(displayMediaExpand)
 
     const size     = media.take(maxSize).size;
     const uncached = media.every(attachment => attachment.get('type') === 'unknown');
