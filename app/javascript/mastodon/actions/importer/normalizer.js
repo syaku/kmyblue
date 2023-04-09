@@ -74,6 +74,10 @@ export function normalizeStatus(status, normalOldStatus) {
     normalStatus.media_attachments = status.media_attachments.concat(status.media_attachments_ex);
   }
 
+  if (!status.visibility_ex) {
+    normalStatus.visibility_ex = status.visibility;
+  }
+
   // Only calculate these values when status first encountered and
   // when the underlying values change. Otherwise keep the ones
   // already in the reducer

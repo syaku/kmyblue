@@ -512,7 +512,7 @@ class Status extends ImmutablePureComponent {
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')];
+    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')] || visibilityIconInfo[status.get('visibility')];
 
     let emojiReactionsBar = null;
     if (!this.props.withoutEmojiReactions && status.get('emoji_reactions')) {
