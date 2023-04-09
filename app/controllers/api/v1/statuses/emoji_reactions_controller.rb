@@ -41,11 +41,7 @@ class Api::V1::Statuses::EmojiReactionsController < Api::BaseController
 
   def create_private(emoji)
     count = EmojiReaction.where(account: current_account, status: @status).count
-
-    if count >= EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT
-      bad_request
-      return
-    end
+    raise Mastodon::ValidationError, I18n.t('reactions.errors.limit_reached') if count >= EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT
 
     EmojiReactService.new.call(current_account, @status, emoji)
     render json: @status, serializer: REST::StatusSerializer

@@ -18,7 +18,6 @@ export function fetchEmojiReactedStatuses() {
     dispatch(fetchEmojiReactedStatusesRequest());
 
     api(getState).get('/api/v1/emoji_reactions').then(response => {
-      console.dir(response.data)
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
       dispatch(fetchEmojiReactedStatusesSuccess(response.data, next ? next.uri : null));
