@@ -16,14 +16,15 @@ class Api::V1::Statuses::EmojiReactionedByAccountsController < Api::BaseControll
 
   def load_accounts
     scope = default_accounts
-    # scope = scope.where.not(account_id: current_account.excluded_from_timeline_account_ids) unless current_account.nil?
+    scope = scope.where.not(account_id: current_account.excluded_from_timeline_account_ids) unless current_account.nil?
     scope.merge(paginated_emoji_reactions).to_a
   end
 
   def default_accounts
     EmojiReaction
       .where(status_id: @status.id)
-      #.where(account: { suspended_at: nil })
+      .includes(:account)
+      .where(account: { suspended_at: nil })
   end
 
   def paginated_emoji_reactions
