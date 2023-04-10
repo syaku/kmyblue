@@ -36,6 +36,7 @@ class Settings::PreferencesController < Settings::BaseController
       :setting_default_privacy,
       :setting_default_searchability,
       :setting_default_sensitive,
+      :setting_public_post_to_unlisted,
       :setting_default_language,
       :setting_unfollow_modal,
       :setting_boost_modal,

@@ -67,6 +67,7 @@ class PostStatusService < BaseService
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
+    @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
     @searchability= searchability
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
@@ -81,9 +82,10 @@ class PostStatusService < BaseService
     when :unlisted
       case @visibility&.to_sym when :public, :public_unlisted, :unlisted then :unlisted when :private then :private else :direct end
     when :private
-      case @visibility&.to_sym when :public, :public_unlisted, :unlisted, :private then :private else :direct end
+      # direct message also can be searched by receiver
+      :private
     when nil
-      @account.searchability
+      @account.user&.setting_default_searchability || @account.searchability
     else
       :direct
     end

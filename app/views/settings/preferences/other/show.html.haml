@@ -26,6 +26,9 @@
     = f.input :setting_default_searchability, collection: Status.selectable_searchabilities, wrapper: :with_label, include_blank: false, label_method: lambda { |searchability| safe_join([I18n.t("statuses.searchabilities.#{searchability}"), I18n.t("statuses.searchabilities.#{searchability}_long")], ' - ') }, required: false, hint: false
 
   .fields-group
+    = f.input :setting_public_post_to_unlisted, as: :boolean, wrapper: :with_label
+
+  .fields-group
     = f.input :setting_default_sensitive, as: :boolean, wrapper: :with_label
 
   .fields-group

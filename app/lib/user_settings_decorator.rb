@@ -20,6 +20,7 @@ class UserSettingsDecorator
     user.settings['default_privacy']     = default_privacy_preference if change?('setting_default_privacy')
     user.settings['default_searchability']=default_searchability_preference if change?('setting_default_searchability')
     user.settings['default_sensitive']   = default_sensitive_preference if change?('setting_default_sensitive')
+    user.settings['public_post_to_unlisted']=public_post_to_unlisted_preference if change?('setting_public_post_to_unlisted')
     user.settings['default_language']    = default_language_preference if change?('setting_default_language')
     user.settings['unfollow_modal']      = unfollow_modal_preference if change?('setting_unfollow_modal')
     user.settings['boost_modal']         = boost_modal_preference if change?('setting_boost_modal')
@@ -61,6 +62,10 @@ class UserSettingsDecorator
 
   def default_sensitive_preference
     boolean_cast_setting 'setting_default_sensitive'
+  end
+
+  def public_post_to_unlisted_preference
+    boolean_cast_setting 'setting_public_post_to_unlisted'
   end
 
   def unfollow_modal_preference
