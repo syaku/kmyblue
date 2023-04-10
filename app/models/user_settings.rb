@@ -16,6 +16,7 @@ class UserSettings
   setting :default_sensitive, default: false
   setting :default_privacy, default: nil
   setting :default_searchability, default: :private
+  setting :public_post_to_unlisted, default: false
 
   namespace :web do
     setting :crop_images, default: true

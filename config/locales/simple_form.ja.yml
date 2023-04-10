@@ -60,6 +60,7 @@ ja:
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
         setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大8個まで表示します。kmyblueからアップロードはできません
         setting_noindex: 公開プロフィールおよび各投稿ページに影響します
+        setting_public_post_to_unlisted: 未対応のサードパーティアプリからもローカル公開で投稿できますが、公開投稿はWeb以外できなくなります
         setting_show_application: 投稿するのに使用したアプリが投稿の詳細ビューに表示されるようになります
         setting_use_blurhash: ぼかしはメディアの色を元に生成されますが、細部は見えにくくなっています
         setting_use_pending_items: 新着があってもタイムラインを自動的にスクロールしないようにします
@@ -219,6 +220,7 @@ ja:
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
         setting_hide_network: 繋がりを隠す
         setting_noindex: 検索エンジンによるインデックスを拒否する
+        setting_public_post_to_unlisted: サードパーティアプリから投稿するとき、公開投稿をローカル公開に変更する
         setting_reduce_motion: アニメーションの動きを減らす
         setting_show_application: 送信したアプリを開示する
         setting_system_font_ui: システムのデフォルトフォントを使う

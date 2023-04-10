@@ -28,6 +28,8 @@ class EmojiReaction < ApplicationRecord
 
   has_one :notification, as: :activity, dependent: :destroy
 
+  validate :status_emoji_reactions_count
+
   after_create :refresh_cache
   after_destroy :refresh_cache
   after_destroy :invalidate_cleanup_info
@@ -50,4 +52,10 @@ class EmojiReaction < ApplicationRecord
     query = query.where(arel_table[:id].gt(since_id)) if since_id.present?
     query
   end
+
+  def status_emoji_reactions_count
+    if status && account && status.emoji_reactions.where(account: account).count >= EMOJI_REACTION_PER_ACCOUNT_LIMIT
+      raise Mastodon::ValidationError, I18n.t('reactions.errors.limit_reached')
+    end
+   end
 end

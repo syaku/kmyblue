@@ -27,6 +27,10 @@ module HasUserSettings
     settings['default_sensitive']
   end
 
+  def setting_public_post_to_unlisted
+    settings['public_post_to_unlisted']
+  end
+
   def setting_unfollow_modal
     settings['web.unfollow_modal']
   end

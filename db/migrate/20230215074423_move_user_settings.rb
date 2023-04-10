@@ -8,6 +8,7 @@ class MoveUserSettings < ActiveRecord::Migration[6.1]
     default_searchability: 'default_searchability',
     default_sensitive: 'web.default_sensitive',
     default_language: 'default_language',
+    public_post_to_unlisted: 'public_post_to_unlisted',
     noindex: 'noindex',
     theme: 'theme',
     trends: 'web.trends',
