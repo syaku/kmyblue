@@ -339,8 +339,8 @@ class Status < ApplicationRecord
   end
 
   def refresh_emoji_reactions_grouped_by_name!
-    generate_emoji_reactions_grouped_by_name.tap do |emoji_reactions|
-      update_status_stat!(emoji_reactions: emoji_reactions)
+    generate_emoji_reactions_grouped_by_name.tap do |emoji_reactions_json|
+      update_status_stat!(emoji_reactions: emoji_reactions_json, emoji_reactions_count: emoji_reactions.size)
     end
   end
 

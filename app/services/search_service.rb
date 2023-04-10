@@ -53,7 +53,7 @@ class SearchService < BaseService
       privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).min_score(MIN_SCORE))
     end
 
-    definition = parsed_query.apply(StatusesIndex.min_score(MIN_SCORE)).order(id: :desc)
+    definition = parsed_query.apply(StatusesIndex.min_score(MIN_SCORE).track_scores(true)).order(id: :desc)
     definition = definition.filter(term: { account_id: @options[:account_id] }) if @options[:account_id].present?
 
     definition = definition.and(privacy_definition)
