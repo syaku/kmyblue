@@ -25,6 +25,8 @@ class SearchService < BaseService
 
   private
 
+  MIN_SCORE = 0.7
+
   def perform_accounts_search!
     AccountSearchService.new.call(
       @query,
@@ -36,22 +38,22 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    privacy_definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
+    privacy_definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }).min_score(MIN_SCORE))
 
     # 'private' searchability posts are NOT in here because it's already added at previous line.
     case @searchability
     when 'public'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }))
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'unlisted' }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }).min_score(MIN_SCORE))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'unlisted' }).filter(terms: { account_id: following_account_ids }).min_score(MIN_SCORE)) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).min_score(MIN_SCORE))
     when 'unlisted', 'private'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public unlisted) }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public unlisted) }).filter(terms: { account_id: following_account_ids }).min_score(MIN_SCORE)) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).min_score(MIN_SCORE))
     when 'direct'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).min_score(MIN_SCORE))
     end
 
-    definition = parsed_query.apply(StatusesIndex).order(id: :desc)
+    definition = parsed_query.apply(StatusesIndex.min_score(MIN_SCORE)).order(id: :desc)
     definition = definition.filter(term: { account_id: @options[:account_id] }) if @options[:account_id].present?
 
     definition = definition.and(privacy_definition)
