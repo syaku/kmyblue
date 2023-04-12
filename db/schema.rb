@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_10_004651) do
+ActiveRecord::Schema.define(version: 2023_04_12_005311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -934,6 +934,7 @@ ActiveRecord::Schema.define(version: 2023_04_10_004651) do
     t.datetime "updated_at", null: false
     t.string "emoji_reactions"
     t.integer "emoji_reactions_count", default: 0, null: false
+    t.integer "test", default: 0, null: false
     t.index ["status_id"], name: "index_status_stats_on_status_id", unique: true
   end
 
@@ -972,6 +973,7 @@ ActiveRecord::Schema.define(version: 2023_04_10_004651) do
     t.boolean "trendable"
     t.bigint "ordered_media_attachment_ids", array: true
     t.integer "searchability"
+    t.boolean "markdown", default: false
     t.index ["account_id", "id", "visibility", "updated_at"], name: "index_statuses_20190820", order: { id: :desc }, where: "(deleted_at IS NULL)"
     t.index ["account_id"], name: "index_statuses_on_account_id"
     t.index ["deleted_at"], name: "index_statuses_on_deleted_at", where: "(deleted_at IS NOT NULL)"

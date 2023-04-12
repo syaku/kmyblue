@@ -28,6 +28,7 @@
 #  trendable                    :boolean
 #  ordered_media_attachment_ids :bigint(8)        is an Array
 #  searchability                :integer
+#  markdown                     :boolean          default(FALSE)
 #
 
 require 'ostruct'

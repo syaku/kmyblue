@@ -18,6 +18,7 @@ import PollFormContainer from '../containers/poll_form_container';
 import UploadFormContainer from '../containers/upload_form_container';
 import WarningContainer from '../containers/warning_container';
 import LanguageDropdown from '../containers/language_dropdown_container';
+import MarkdownButtonContainer from '../containers/markdown_button_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { length } from 'stringz';
 import { countableText } from '../util/counter';
@@ -290,6 +291,7 @@ class ComposeForm extends ImmutablePureComponent {
             <SearchabilityDropdownContainer disabled={this.props.isEditing} />
             <SpoilerButtonContainer />
             <LanguageDropdown />
+            <MarkdownButtonContainer />
           </div>
 
           <div className='character-counter__wrapper'>

@@ -15,11 +15,11 @@ module FormattingHelper
   module_function :extract_status_plain_text
 
   def status_content_format(status)
-    html_aware_format(status.text, status.local?, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []))
+    html_aware_format(status.text, status.local?, markdown: status.markdown, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []))
   end
 
   def emoji_name_format(emoji_reaction, status)
-    html_aware_format(emoji_reaction['url'].present? ? ":#{emoji_reaction['name']}:" : emoji_reaction['name'], status.local?)
+    html_aware_format(emoji_reaction['url'].present? ? ":#{emoji_reaction['name']}:" : emoji_reaction['name'], status.local?, markdown: status.markdown)
   end
 
   def rss_status_content_format(status)
@@ -54,10 +54,10 @@ module FormattingHelper
   end
 
   def account_bio_format(account)
-    html_aware_format(account.note, account.local?)
+    html_aware_format(account.note, account.local?, markdown: true)
   end
 
   def account_field_value_format(field, with_rel_me: true)
-    html_aware_format(field.value, field.account.local?, with_rel_me: with_rel_me, with_domains: true, multiline: false)
+    html_aware_format(field.value, field.account.local?, markdown: true, with_rel_me: with_rel_me, with_domains: true, multiline: false)
   end
 end

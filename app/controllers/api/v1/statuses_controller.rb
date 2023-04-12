@@ -58,6 +58,7 @@ class Api::V1::StatusesController < Api::BaseController
       media_ids: status_params[:media_ids],
       sensitive: status_params[:sensitive],
       spoiler_text: status_params[:spoiler_text],
+      markdown: status_params[:markdown],
       visibility: status_params[:visibility],
       searchability: status_params[:searchability],
       language: status_params[:language],
@@ -91,6 +92,7 @@ class Api::V1::StatusesController < Api::BaseController
       sensitive: status_params[:sensitive],
       language: status_params[:language],
       spoiler_text: status_params[:spoiler_text],
+      markdown: status_params[:markdown],
       poll: status_params[:poll]
     )
 
@@ -136,6 +138,7 @@ class Api::V1::StatusesController < Api::BaseController
       :visibility,
       :searchability,
       :language,
+      :markdown,
       :scheduled_at,
       allowed_mentions: [],
       media_ids: [],

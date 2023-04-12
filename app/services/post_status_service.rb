@@ -24,6 +24,7 @@ class PostStatusService < BaseService
   # @option [String] :visibility
   # @option [String] :searchability
   # @option [String] :spoiler_text
+  # @option [Boolean] :markdown
   # @option [String] :language
   # @option [String] :scheduled_at
   # @option [Hash] :poll Optional poll to attach
@@ -69,6 +70,7 @@ class PostStatusService < BaseService
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
     @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
     @searchability= searchability
+    @markdown     = !!@options[:markdown]
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
   rescue ArgumentError
@@ -214,6 +216,7 @@ class PostStatusService < BaseService
       poll_attributes: poll_attributes,
       sensitive: @sensitive,
       spoiler_text: @options[:spoiler_text] || '',
+      markdown: @markdown,
       visibility: @visibility,
       searchability: @searchability,
       language: valid_locale_cascade(@options[:language], @account.user&.preferred_posting_language, I18n.default_locale),
