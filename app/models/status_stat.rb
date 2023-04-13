@@ -13,6 +13,7 @@
 #  updated_at            :datetime         not null
 #  emoji_reactions       :string
 #  emoji_reactions_count :integer          default(0), not null
+#  test                  :integer          default(0), not null
 #
 
 class StatusStat < ApplicationRecord

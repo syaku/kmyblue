@@ -11,6 +11,7 @@ class TextFormatter
 
   DEFAULT_OPTIONS = {
     multiline: true,
+    markdown: false,
   }.freeze
 
   attr_reader :text, :options
@@ -44,9 +45,9 @@ class TextFormatter
     end
 
     # line first letter for blockquote
-    html = markdownify(html.gsub(/^&gt;/, '>'))
+    html = markdownify(html.gsub(/^&gt;/, '>')) if markdown?
 
-    # html = simple_format(html, {}, sanitize: false).delete("\n") if multiline?
+    html = simple_format(html, {}, sanitize: false).delete("\n") if !markdown? && multiline?
     html = html.delete("\n")
 
     html.html_safe # rubocop:disable Rails/OutputSafety
@@ -150,6 +151,10 @@ class TextFormatter
 
   def with_rel_me?
     options[:with_rel_me]
+  end
+
+  def markdown?
+    options[:markdown]
   end
 
   def preloaded_accounts

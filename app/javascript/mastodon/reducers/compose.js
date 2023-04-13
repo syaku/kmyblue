@@ -28,6 +28,7 @@ import {
   COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
+  COMPOSE_MARKDOWN_CHANGE,
   COMPOSE_VISIBILITY_CHANGE,
   COMPOSE_LANGUAGE_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
@@ -62,6 +63,7 @@ const initialState = ImmutableMap({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
+  markdown: false,
   privacy: null,
   searchability: null,
   id: null,
@@ -120,6 +122,7 @@ function clearAll(state) {
     map.set('text', '');
     map.set('spoiler', false);
     map.set('spoiler_text', '');
+    map.set('markdown', false);
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
@@ -328,6 +331,11 @@ export default function compose(state = initialState, action) {
     return state
       .set('spoiler_text', action.text)
       .set('idempotencyKey', uuid());
+  case COMPOSE_MARKDOWN_CHANGE:
+    return state.withMutations(map => {
+      map.set('markdown', !state.get('markdown'));
+      map.set('idempotencyKey', uuid());
+    });
   case COMPOSE_VISIBILITY_CHANGE:
     return state
       .set('privacy', action.value)
@@ -488,6 +496,7 @@ export default function compose(state = initialState, action) {
       map.set('idempotencyKey', uuid());
       map.set('sensitive', action.status.get('sensitive'));
       map.set('language', action.status.get('language'));
+      map.set('markdown', action.status.get('markdown'));
       map.set('id', null);
 
       if (action.status.get('spoiler_text').length > 0) {
@@ -518,6 +527,7 @@ export default function compose(state = initialState, action) {
       map.set('idempotencyKey', uuid());
       map.set('sensitive', action.status.get('sensitive'));
       map.set('language', action.status.get('language'));
+      map.set('markdown', action.status.get('markdown'));
 
       if (action.spoiler_text.length > 0) {
         map.set('spoiler', true);

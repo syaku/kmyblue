@@ -28,6 +28,7 @@
 #  trendable                    :boolean
 #  ordered_media_attachment_ids :bigint(8)        is an Array
 #  searchability                :integer
+#  markdown                     :boolean          default(FALSE)
 #
 
 require 'ostruct'
@@ -308,6 +309,10 @@ class Status < ApplicationRecord
 
   def favourites_count
     status_stat&.favourites_count || 0
+  end
+
+  def emoji_reactions_count
+    status_stat&.emoji_reactions_count || 0
   end
 
   def increment_count!(key)

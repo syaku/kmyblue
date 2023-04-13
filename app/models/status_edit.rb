@@ -15,6 +15,7 @@
 #  media_descriptions           :text             is an Array
 #  poll_options                 :string           is an Array
 #  sensitive                    :boolean
+#  markdown                     :boolean          default(FALSE)
 #
 
 class StatusEdit < ApplicationRecord
