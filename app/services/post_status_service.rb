@@ -22,6 +22,7 @@ class PostStatusService < BaseService
   # @option [Status] :thread Optional status to reply to
   # @option [Boolean] :sensitive
   # @option [String] :visibility
+  # @option [Boolean] :force_visibility
   # @option [String] :searchability
   # @option [String] :spoiler_text
   # @option [Boolean] :markdown
@@ -68,7 +69,7 @@ class PostStatusService < BaseService
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
-    @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
+    @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:force_visibility] && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
     @searchability= searchability
     @markdown     = !!@options[:markdown]
     @scheduled_at = @options[:scheduled_at]&.to_datetime
