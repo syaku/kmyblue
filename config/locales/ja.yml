@@ -970,6 +970,7 @@ ja:
   auth:
     apply_for_account: アカウントのリクエスト
     change_password: パスワード
+    cloudflare_with_registering: 登録時にCloudflareの画面が表示されます。登録できないときは tt@kmycode.net までご連絡ください
     confirmations:
       wrong_email_hint: メールアドレスが正しくない場合は、アカウント設定で変更できます。
     delete_account: アカウントの削除

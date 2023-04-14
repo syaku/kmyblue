@@ -994,6 +994,7 @@ en:
   auth:
     apply_for_account: Request an account
     change_password: Password
+    cloudflare_with_registering: With cloudflare on auth
     confirmations:
       wrong_email_hint: If that e-mail address is not correct, you can change it in account settings.
     delete_account: Delete account
