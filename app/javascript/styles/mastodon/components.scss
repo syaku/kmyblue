@@ -1276,7 +1276,7 @@ body > [data-popper-placement] {
   display: flex;
   flex-wrap: wrap;
   gap: 4px 8px;
-  margin: 8px 0 2px 4px;
+  margin: 12px 0 2px 4px;
 
   .emoji-reactions-bar__button {
     background: lighten($ui-base-color, 12%);
@@ -1285,24 +1285,25 @@ body > [data-popper-placement] {
     display: flex;
     justify-items: center;
     align-items: center;
-    height: 20px;
+    height: 24px;
 
     &.toggled {
       background: darken($ui-primary-color, 16%);
     }
 
-    .emoji {
+    > .emoji {
       display: block;
-      height: 16px;
+      height: 20px;
       transition: transform .2s ease;
 
       &:hover {
-        transform: scale(1.2);
+        transform: scale(1.44);
       }
 
       img {
         margin-top: 0;
         margin-bottom: 0;
+        height: 20px;
       }
     }
     .count {
