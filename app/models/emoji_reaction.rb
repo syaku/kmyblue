@@ -28,6 +28,7 @@ class EmojiReaction < ApplicationRecord
 
   has_one :notification, as: :activity, dependent: :destroy
 
+  validate :status_same_emoji_reaction
   validate :status_emoji_reactions_count
 
   after_create :refresh_cache
@@ -51,6 +52,12 @@ class EmojiReaction < ApplicationRecord
     query = query.where(arel_table[:id].lt(max_id)) if max_id.present?
     query = query.where(arel_table[:id].gt(since_id)) if since_id.present?
     query
+  end
+
+  def status_same_emoji_reaction
+    if status && account && status.emoji_reactions.where(account: account).where(name: name).where(custom_emoji_id: custom_emoji_id).any?
+      raise Mastodon::ValidationError, I18n.t('reactions.errors.duplication')
+    end
   end
 
   def status_emoji_reactions_count

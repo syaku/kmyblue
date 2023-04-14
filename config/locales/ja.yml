@@ -976,6 +976,7 @@ ja:
   auth:
     apply_for_account: アカウントのリクエスト
     change_password: パスワード
+    cloudflare_with_registering: 登録時にCloudflareの画面が表示されます。登録できないときは tt@kmycode.net までご連絡ください
     confirmations:
       wrong_email_hint: メールアドレスが正しくない場合は、アカウント設定で変更できます。
     delete_account: アカウントの削除
@@ -1395,6 +1396,7 @@ ja:
     title: プライバシーポリシー
   reactions:
     errors:
+      duplication: 同じリアクションを複数行おうとしました
       limit_reached: リアクションの種類が上限に達しました
       unrecognized_emoji: は絵文字として認識されていません
   relationships:

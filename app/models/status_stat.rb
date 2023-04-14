@@ -4,16 +4,17 @@
 #
 # Table name: status_stats
 #
-#  id                    :bigint(8)        not null, primary key
-#  status_id             :bigint(8)        not null
-#  replies_count         :bigint(8)        default(0), not null
-#  reblogs_count         :bigint(8)        default(0), not null
-#  favourites_count      :bigint(8)        default(0), not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  emoji_reactions       :string
-#  emoji_reactions_count :integer          default(0), not null
-#  test                  :integer          default(0), not null
+#  id                                :bigint(8)        not null, primary key
+#  status_id                         :bigint(8)        not null
+#  replies_count                     :bigint(8)        default(0), not null
+#  reblogs_count                     :bigint(8)        default(0), not null
+#  favourites_count                  :bigint(8)        default(0), not null
+#  created_at                        :datetime         not null
+#  updated_at                        :datetime         not null
+#  emoji_reactions                   :string
+#  emoji_reactions_count             :integer          default(0), not null
+#  test                              :integer          default(0), not null
+#  emoji_reactions_count_per_account :integer          default(0), not null
 #
 
 class StatusStat < ApplicationRecord
@@ -39,6 +40,10 @@ class StatusStat < ApplicationRecord
 
   def emoji_reactions_count
     [attributes['emoji_reactions_count'], 0].max
+  end
+
+  def emoji_reactions_count_per_account
+    [attributes['emoji_reactions_count_per_account'], 0].max
   end
 
   private
