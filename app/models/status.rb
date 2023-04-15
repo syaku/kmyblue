@@ -315,8 +315,8 @@ class Status < ApplicationRecord
     status_stat&.emoji_reactions_count || 0
   end
 
-  def emoji_reactions_count_per_account
-    status_stat&.emoji_reactions_count_per_account || 0
+  def emoji_reaction_accounts_count
+    status_stat&.emoji_reaction_accounts_count || 0
   end
 
   def increment_count!(key)
@@ -346,7 +346,7 @@ class Status < ApplicationRecord
 
   def refresh_emoji_reactions_grouped_by_name!
     generate_emoji_reactions_grouped_by_name.tap do |emoji_reactions_json|
-      update_status_stat!(emoji_reactions: emoji_reactions_json, emoji_reactions_count: emoji_reactions.size, emoji_reactions_count_per_account: emoji_reactions.map(&:account_id).uniq.size)
+      update_status_stat!(emoji_reactions: emoji_reactions_json, emoji_reactions_count: emoji_reactions.size, emoji_reaction_accounts_count: emoji_reactions.map(&:account_id).uniq.size)
     end
   end
 

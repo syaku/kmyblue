@@ -36,6 +36,8 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
         emoji.uri              = uri
         emoji.image_remote_url = image_url
       end
+
+      Trends.statuses.register(@original_status)
     end
 
     return if EmojiReaction.where(account: @account, status: @original_status).count >= EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT

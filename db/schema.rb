@@ -936,7 +936,7 @@ ActiveRecord::Schema.define(version: 2023_04_14_010523) do
     t.string "emoji_reactions"
     t.integer "emoji_reactions_count", default: 0, null: false
     t.integer "test", default: 0, null: false
-    t.integer "emoji_reactions_count_per_account", default: 0, null: false
+    t.integer "emoji_reaction_accounts_count", default: 0, null: false
     t.index ["status_id"], name: "index_status_stats_on_status_id", unique: true
   end
 
