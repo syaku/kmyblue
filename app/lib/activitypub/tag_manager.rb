@@ -188,7 +188,7 @@ class ActivityPub::TagManager
 
   def searchable_by(status)
     searchable_by =
-      case status.compute_searchability
+      case status.compute_searchability_activitypub
       when 'public'
         [COLLECTIONS[:public]]
       when 'unlisted'  # Followers only in kmyblue (generics: private)

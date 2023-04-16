@@ -383,6 +383,11 @@ class Status < ApplicationRecord
     'private'
   end
 
+  def compute_searchability_activitypub
+    return 'unlisted' if public_unlisted_visibility? && public_searchability?
+    compute_searchability
+  end
+
   after_create_commit  :increment_counter_caches
   after_destroy_commit :decrement_counter_caches
 
