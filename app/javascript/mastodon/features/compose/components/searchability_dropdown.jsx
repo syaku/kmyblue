@@ -132,7 +132,6 @@ class SearchabilityDropdownMenu extends React.PureComponent {
 
 }
 
-export default @injectIntl
 class SearchabilityDropdown extends React.PureComponent {
 
   static propTypes = {
@@ -284,3 +283,5 @@ class SearchabilityDropdown extends React.PureComponent {
   }
 
 }
+
+export default injectIntl(SearchabilityDropdown);

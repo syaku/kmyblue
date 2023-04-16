@@ -230,7 +230,7 @@ Rails.application.routes.draw do
     get '/dashboard', to: 'dashboard#index'
 
     resources :domain_allows, only: [:new, :create, :show, :destroy]
-    resources :domain_blocks, only: [:new, :create, :show, :destroy, :update, :edit] do
+    resources :domain_blocks, only: [:new, :create, :destroy, :update, :edit] do
       collection do
         post :batch
       end
@@ -563,6 +563,7 @@ Rails.application.routes.draw do
         resources :domain_blocks, only: [:index], controller: 'instances/domain_blocks'
         resource :privacy_policy, only: [:show], controller: 'instances/privacy_policies'
         resource :extended_description, only: [:show], controller: 'instances/extended_descriptions'
+        resource :translation_languages, only: [:show], controller: 'instances/translation_languages'
         resource :activity, only: [:show], controller: 'instances/activity'
       end
 

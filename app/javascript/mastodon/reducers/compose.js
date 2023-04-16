@@ -85,7 +85,7 @@ const initialState = ImmutableMap({
   suggestion_token: null,
   suggestions: ImmutableList(),
   default_privacy: 'public',
-  default_searchability: 'public',
+  default_searchability: 'private',
   default_sensitive: false,
   default_language: 'en',
   resetFileKey: Math.floor((Math.random() * 0x10000)),
@@ -356,7 +356,7 @@ export default function compose(state = initialState, action) {
       map.set('in_reply_to', action.status.get('id'));
       map.set('text', statusToTextMentions(state, action.status));
       map.set('privacy', privacyPreference(action.status.get('visibility_ex'), state.get('default_privacy')));
-      map.set('searchability', privacyPreference(action.status.get('searchability'), state.get('default_searchability')))
+      map.set('searchability', privacyPreference(action.status.get('searchability'), state.get('default_searchability')));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('preselectDate', new Date());

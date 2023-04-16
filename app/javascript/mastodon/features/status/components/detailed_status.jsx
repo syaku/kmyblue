@@ -31,7 +31,6 @@ const messages = defineMessages({
   searchability_direct_short: { id: 'searchability.direct.short', defaultMessage: 'Self only' },
 });
 
-export default  @injectIntl
 class DetailedStatus extends ImmutablePureComponent {
 
   static contextTypes = {
@@ -307,7 +306,13 @@ class DetailedStatus extends ImmutablePureComponent {
 
     return (
       <div style={outerStyle}>
-        <div ref={this.setRef} className={classNames('detailed-status', `detailed-status-${status.get('visibility_ex')}`, { compact })}>
+        <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
+          {status.get('visibility_ex') === 'direct' && (
+            <div className='status__prepend'>
+              <div className='status__prepend-icon-wrapper'><Icon id='at' className='status__prepend-icon' fixedWidth /></div>
+              <FormattedMessage id='status.direct_indicator' defaultMessage='Private mention' />
+            </div>
+          )}
           <a href={`/@${status.getIn(['account', 'acct'])}`} onClick={this.handleAccountClick} className='detailed-status__display-name'>
             <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={46} /></div>
             <DisplayName account={status.get('account')} localDomain={this.props.domain} />
@@ -335,3 +340,5 @@ class DetailedStatus extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(DetailedStatus);

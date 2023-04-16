@@ -118,7 +118,6 @@ class ExpirationDropdownMenu extends React.PureComponent {
 
 }
 
-export default @injectIntl
 class ExpirationDropdown extends React.PureComponent {
 
   static propTypes = {
@@ -265,3 +264,5 @@ class ExpirationDropdown extends React.PureComponent {
   }
 
 }
+
+export default injectIntl(ExpirationDropdown);

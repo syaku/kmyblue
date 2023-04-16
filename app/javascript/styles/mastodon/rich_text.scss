@@ -13,7 +13,8 @@
     }
   }
 
-  code, pre {
+  code,
+  pre {
     border: 1px solid $ui-primary-color;
     font-family: monospace;
   }
@@ -26,7 +27,7 @@
     padding: 4px 8px;
 
     span.ellipsis::after {
-      content: "";
+      content: '';
     }
 
     span.invisible {
@@ -40,8 +41,8 @@
   }
 
   blockquote {
-    padding-left: 10px;
-    border-left: 3px solid $darker-text-color;
+    padding-inline-start: 10px;
+    border-inline-start: 3px solid $darker-text-color;
     color: $darker-text-color;
     white-space: normal;
 
@@ -67,7 +68,7 @@
 
   ul,
   ol {
-    margin-left: 2em;
+    margin-inline-start: 2em;
 
     p {
       margin: 0;
@@ -87,7 +88,7 @@
   }
 
   .emojione {
-    transition: transform .2s ease;
+    transition: transform 0.2s ease;
 
     &:hover {
       transform: scale(1.2);

@@ -34,7 +34,6 @@ const messages = defineMessages({
   saveChanges: { id: 'compose_form.save_changes', defaultMessage: 'Save changes' },
 });
 
-export default @injectIntl
 class ComposeForm extends ImmutablePureComponent {
 
   static contextTypes = {
@@ -212,7 +211,6 @@ class ComposeForm extends ImmutablePureComponent {
   };
 
   handleExpirationPick = (data) => {
-    const { text }     = this.props;
     const position     = this.autosuggestTextarea.textarea.selectionStart;
 
     this.props.onPickExpiration(position, data);
@@ -314,3 +312,5 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(ComposeForm);

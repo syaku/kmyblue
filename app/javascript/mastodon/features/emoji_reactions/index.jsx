@@ -6,7 +6,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import ColumnHeader from 'mastodon/components/column_header';
 import Icon from 'mastodon/components/icon';
-import { fetchEmojiReactions, fetchFavourites } from 'mastodon/actions/interactions';
+import { fetchEmojiReactions } from 'mastodon/actions/interactions';
 import LoadingIndicator from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import AccountContainer from 'mastodon/containers/account_container';
@@ -18,12 +18,12 @@ const messages = defineMessages({
   refresh: { id: 'refresh', defaultMessage: 'Refresh' },
 });
 
-const mapStateToProps = (state, props) => { return {
-  accountIds: state.getIn(['user_lists', 'emoji_reactioned_by', props.params.statusId]),
-} };
+const mapStateToProps = (state, props) => {
+  return {
+    accountIds: state.getIn(['user_lists', 'emoji_reactioned_by', props.params.statusId]),
+  };
+};
 
-export default @connect(mapStateToProps)
-@injectIntl
 class EmojiReactions extends ImmutablePureComponent {
 
   static propTypes = {
@@ -88,7 +88,7 @@ class EmojiReactions extends ImmutablePureComponent {
         >
           {Object.keys(groups).map((key) =>(
             <AccountContainer key={key} id={key} withNote={false}>
-              <div style={ { 'maxWidth': '100px' } }>
+              <div style={{ 'maxWidth': '100px' }}>
                 {groups[key].map((value, index2) => <EmojiView key={index2} name={value.name} url={value.url} staticUrl={value.static_url} />)}
               </div>
             </AccountContainer>
@@ -103,3 +103,5 @@ class EmojiReactions extends ImmutablePureComponent {
   }
 
 }
+
+export default connect(mapStateToProps)(injectIntl(EmojiReactions));
