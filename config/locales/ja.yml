@@ -1562,6 +1562,7 @@ ja:
     enabled_hint: 設定した期間を過ぎた投稿は、以下の例外に該当しない限り、自動的に削除されます
     exceptions: 例外
     explanation: 投稿の削除はサーバーに負荷がかかるため、サーバーが混み合っていないときに時間をかけて行われます。
+    ignore_emojis: 設定しない
     ignore_favs: 設定しない
     ignore_reblogs: 設定しない
     interaction_exceptions: インタラクションに基づく例外
@@ -1576,6 +1577,8 @@ ja:
     keep_polls_hint: アンケート付きの投稿を削除せずに残します
     keep_self_bookmark: ブックマークした投稿を保持
     keep_self_bookmark_hint: 自分自身でブックマークした投稿を削除せずに残します
+    keep_self_emoji: 絵文字リアクションした投稿を保持
+    keep_self_emoji_hint: 自分自身で絵文字リアクションした投稿を削除せずに残します
     keep_self_fav: お気に入りに登録した投稿を保持
     keep_self_fav_hint: 自分自身でお気に入りに登録した投稿を削除せずに残します
     min_age:
@@ -1588,6 +1591,8 @@ ja:
       '63113904': 2年
       '7889238': 3ヶ月
     min_age_label: 投稿を保持する期間
+    min_emojis: 絵文字リアクションの基準値
+    min_emojis_hint: この数以上、絵文字リアクションされた投稿を削除せずに残します。空白にしておくと、数に関わらず投稿を削除します。
     min_favs: お気に入りの基準値
     min_favs_hint: この数以上、お気に入り登録された投稿を削除せずに残します。空白にしておくと、お気に入りの数に関わらず投稿を削除します。
     min_reblogs: ブーストの基準値

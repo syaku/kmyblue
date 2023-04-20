@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_14_010523) do
+ActiveRecord::Schema.define(version: 2023_04_20_081634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,8 @@ ActiveRecord::Schema.define(version: 2023_04_14_010523) do
     t.integer "min_reblogs"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "min_emojis"
+    t.boolean "keep_self_emoji", default: true, null: false
     t.index ["account_id"], name: "index_account_statuses_cleanup_policies_on_account_id"
   end
 

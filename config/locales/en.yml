@@ -1601,6 +1601,7 @@ en:
     enabled_hint: Automatically deletes your posts once they reach a specified age threshold, unless they match one of the exceptions below
     exceptions: Exceptions
     explanation: Because deleting posts is an expensive operation, this is done slowly over time when the server is not otherwise busy. For this reason, your posts may be deleted a while after they reach the age threshold.
+    ignore_emojis: Ignore emoji reactions
     ignore_favs: Ignore favourites
     ignore_reblogs: Ignore boosts
     interaction_exceptions: Exceptions based on interactions
@@ -1627,6 +1628,8 @@ en:
       '63113904': 2 years
       '7889238': 3 months
     min_age_label: Age threshold
+    min_emojis: Keep posts emoji-reacted at least
+    min_emojis_hint: Doesn't delete any of your posts that has received at least this number of emoji reactions. Leave blank to delete posts regardless of their number of emojis
     min_favs: Keep posts favourited at least
     min_favs_hint: Doesn't delete any of your posts that has received at least this number of favourites. Leave blank to delete posts regardless of their number of favourites
     min_reblogs: Keep posts boosted at least
