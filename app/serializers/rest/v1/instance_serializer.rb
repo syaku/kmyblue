@@ -65,6 +65,7 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
       statuses: {
         max_characters: StatusLengthValidator::MAX_CHARS,
         max_media_attachments: MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX,
+        max_media_attachments_from_activitypub: MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX,
         characters_reserved_per_url: StatusLengthValidator::URL_PLACEHOLDER_CHARS,
       },
 
@@ -107,7 +108,6 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
   def fedibird_capabilities
     capabilities = [
       :emoji_reaction,
-      :kmyblue_extra_media_attachments,
       :kmyblue_visibility_public_unlisted,
       :enable_wide_emoji,
       :enable_wide_emoji_reaction,
