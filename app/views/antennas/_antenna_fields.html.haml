@@ -1,0 +1,45 @@
+.fields-row
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :title, as: :string, wrapper: :with_label, hint: false
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :expires_in, wrapper: :with_label, collection: [30.minutes, 1.hour, 6.hours, 12.hours, 1.day, 1.week].map(&:to_i), label_method: lambda { |i| I18n.t("invites.expires_in.#{i}") }, include_blank: I18n.t('invites.expires_in_prompt')
+
+.fields-row
+  .fields-group.fields-row__column.fields-row__column-6
+    = f.input :list, collection: lists, wrapper: :with_label, label_method: lambda { |list| list.title }, selected: f.object.list&.id, hint: false
+  .fields-group.fields-row__column.fields-row__column-6
+    = f.input :available, wrapper: :with_label, hint: false
+
+%hr.spacer/
+
+%h4= t('antennas.edit.domains')
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :domains_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_domains_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }
+
+%h4= t('antennas.edit.accounts')
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :accounts_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_accounts_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }
+
+%h4= t('antennas.edit.tags')
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :tags_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_tags_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }
+
+%h4= t('antennas.edit.keywords')
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :keywords_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_keywords_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }

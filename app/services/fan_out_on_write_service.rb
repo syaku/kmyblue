@@ -49,6 +49,7 @@ class FanOutOnWriteService < BaseService
     when :public, :unlisted, :public_unlisted, :private
       deliver_to_all_followers!
       deliver_to_lists!
+      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym)
     when :limited
       deliver_to_mentioned_followers!
     else
@@ -109,6 +110,30 @@ class FanOutOnWriteService < BaseService
 
   def deliver_to_lists!
     @account.lists_for_local_distribution.select(:id).reorder(nil).find_in_batches do |lists|
+      FeedInsertWorker.push_bulk(lists) do |list|
+        [@status.id, list.id, 'list', { 'update' => update? }]
+      end
+    end
+  end
+
+  def deliver_to_antennas!
+    lists = []
+    antennas = Antenna.availables
+    p '=========================== DEBUG A ' + antennas.size.to_s
+    antennas = antennas.merge!(Antenna.where(any_accounts: true).or(Antenna.joins(:antenna_accounts).where(antenna_accounts: { account: @status.account }).map(&:antenna)))
+    p '=========================== DEBUG B ' + antennas.size.to_s
+    p '=========================== DEBUG C ' + antennas.size.to_s
+    p '=========================== DEBUG D ' + antennas.size.to_s
+    antennas.in_batches do |ans|
+      ans.each do |antenna|
+        next if !antenna.enabled?
+        next if antenna.keywords.any? && !@status.text.include?(antenna.keywords)
+        next if antenna.exclude_keywords.any? && @status.text.include?(antenna.exclude_keywords)
+        lists << antenna.list
+      end
+    end
+
+    if lists.any?
       FeedInsertWorker.push_bulk(lists) do |list|
         [@status.id, list.id, 'list', { 'update' => update? }]
       end
