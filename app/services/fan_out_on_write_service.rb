@@ -133,6 +133,7 @@ class FanOutOnWriteService < BaseService
         lists << antenna.list
       end
     end
+    lists = lists.uniq
 
     if lists.any?
       FeedInsertWorker.push_bulk(lists) do |list|
