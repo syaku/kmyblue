@@ -457,17 +457,21 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     if searchability.nil?
       note = @account&.note
       return nil unless note.present?
+      p '======================== DEBUG ' + note
 
       searchability_bio = note.scan(SCAN_SEARCHABILITY_RE).first
       return nil unless searchability_bio
+      p '======================== DEBUG ' + searchability_bio.to_s
 
       searchability = searchability_bio[1]
       return nil if searchability.nil?
+      p '======================== DEBUG ' + searchability
 
       searchability = :public   if searchability == 'public'
       searchability = :unlisted if searchability == 'followers'
       searchability = :direct   if searchability == 'private'
       searchability = :private  if searchability == 'reactors'
+      p '======================== DEBUG ' + searchability.to_s
     end
 
     visibility    = visibility_from_audience_with_silence
