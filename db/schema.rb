@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_20_081634) do
+ActiveRecord::Schema.define(version: 2023_04_23_002728) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -251,6 +251,62 @@ ActiveRecord::Schema.define(version: 2023_04_20_081634) do
     t.datetime "updated_at", null: false
     t.datetime "published_at"
     t.bigint "status_ids", array: true
+  end
+
+  create_table "antenna_accounts", force: :cascade do |t|
+    t.bigint "antenna_id", null: false
+    t.bigint "account_id", null: false
+    t.boolean "exclude", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_antenna_accounts_on_account_id"
+    t.index ["antenna_id"], name: "index_antenna_accounts_on_antenna_id"
+    t.index ["exclude"], name: "index_antenna_accounts_on_exclude"
+  end
+
+  create_table "antenna_domains", force: :cascade do |t|
+    t.bigint "antenna_id", null: false
+    t.string "name"
+    t.boolean "exclude", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["antenna_id"], name: "index_antenna_domains_on_antenna_id"
+    t.index ["exclude"], name: "index_antenna_domains_on_exclude"
+    t.index ["name"], name: "index_antenna_domains_on_name"
+  end
+
+  create_table "antenna_tags", force: :cascade do |t|
+    t.bigint "antenna_id", null: false
+    t.bigint "tag_id", null: false
+    t.boolean "exclude", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["antenna_id"], name: "index_antenna_tags_on_antenna_id"
+    t.index ["exclude"], name: "index_antenna_tags_on_exclude"
+    t.index ["tag_id"], name: "index_antenna_tags_on_tag_id"
+  end
+
+  create_table "antennas", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "list_id", null: false
+    t.string "title", default: "", null: false
+    t.jsonb "keywords"
+    t.jsonb "exclude_keywords"
+    t.boolean "any_domains", default: true, null: false
+    t.boolean "any_tags", default: true, null: false
+    t.boolean "any_accounts", default: true, null: false
+    t.boolean "any_keywords", default: true, null: false
+    t.boolean "available", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "expires_at"
+    t.index ["account_id"], name: "index_antennas_on_account_id"
+    t.index ["any_accounts"], name: "index_antennas_on_any_accounts"
+    t.index ["any_domains"], name: "index_antennas_on_any_domains"
+    t.index ["any_keywords"], name: "index_antennas_on_any_keywords"
+    t.index ["any_tags"], name: "index_antennas_on_any_tags"
+    t.index ["available"], name: "index_antennas_on_available"
+    t.index ["list_id"], name: "index_antennas_on_list_id"
   end
 
   create_table "appeals", force: :cascade do |t|
@@ -1175,6 +1231,13 @@ ActiveRecord::Schema.define(version: 2023_04_20_081634) do
   add_foreign_key "announcement_reactions", "accounts", on_delete: :cascade
   add_foreign_key "announcement_reactions", "announcements", on_delete: :cascade
   add_foreign_key "announcement_reactions", "custom_emojis", on_delete: :cascade
+  add_foreign_key "antenna_accounts", "accounts", on_delete: :cascade
+  add_foreign_key "antenna_accounts", "antennas", on_delete: :cascade
+  add_foreign_key "antenna_domains", "antennas", on_delete: :cascade
+  add_foreign_key "antenna_tags", "antennas", on_delete: :cascade
+  add_foreign_key "antenna_tags", "tags", on_delete: :cascade
+  add_foreign_key "antennas", "accounts", on_delete: :cascade
+  add_foreign_key "antennas", "lists", on_delete: :cascade
   add_foreign_key "appeals", "account_warnings", on_delete: :cascade
   add_foreign_key "appeals", "accounts", column: "approved_by_account_id", on_delete: :nullify
   add_foreign_key "appeals", "accounts", column: "rejected_by_account_id", on_delete: :nullify
