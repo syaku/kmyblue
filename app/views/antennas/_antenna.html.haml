@@ -9,6 +9,9 @@
         - else
           = t('antennas.index.expires_in', distance: distance_of_time_in_words_to_now(antenna.expires_at))
 
+  .listname
+    = antenna.list.title
+
   .filters-list__item__permissions
     %ul.permissions-list
       - unless antenna.antenna_domains.empty?
@@ -58,7 +61,7 @@
 
   .announcements-list__item__action-bar
     .announcements-list__item__meta
-      = t('antenna.index.contexts', contexts: antenna.context.map { |context| I18n.t("antenna.contexts.#{context}") }.join(', '))
+      = t('antennas.index.contexts', contexts: antenna.context.map { |context| I18n.t("antennas.contexts.#{context}") }.join(', '))
 
     %div
       = table_link_to 'pencil', t('antennas.edit.title'), edit_antenna_path(antenna)

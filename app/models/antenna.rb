@@ -34,7 +34,7 @@ class Antenna < ApplicationRecord
   scope :availables, -> { where(available: true).where(Arel.sql('any_keywords = FALSE OR any_domains = FALSE OR any_accounts = FALSE OR any_tags = FALSE')) }
 
   def enabled?
-    available && !expires? && !(any_keywords && any_domains && any_accounts && any_tags)
+    available && !expired? && !(any_keywords && any_domains && any_accounts && any_tags)
   end
 
   def expires_in
@@ -42,10 +42,6 @@ class Antenna < ApplicationRecord
     return nil if expires_at.nil?
 
     [30.minutes, 1.hour, 6.hours, 12.hours, 1.day, 1.week].find { |expires_in| expires_in.from_now >= expires_at }
-  end
-
-  def expires?
-    expires_at.present? && expires_at < Time.now.utc
   end
 
   def context
@@ -73,7 +69,7 @@ class Antenna < ApplicationRecord
   end
 
   def keywords_raw=(raw)
-    keywords = raw.split(/\R/).filter { |r| r.present? }.uniq
+    keywords = raw.split(/\R/).filter { |r| r.present? && r.length >= 2 }.uniq
     self[:keywords] = keywords
     self[:any_keywords] = !keywords.any? && !exclude_keywords&.any?
   end

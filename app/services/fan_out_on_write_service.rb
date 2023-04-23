@@ -119,13 +119,14 @@ class FanOutOnWriteService < BaseService
   def deliver_to_antennas!
     lists = []
     antennas = Antenna.availables
-    antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.left_joins(:antenna_accounts)                                                       .where(antenna_accounts: { exclude: false, account: @status.account }))
-    antennas = antennas.left_joins(:antenna_domains) .where(any_domains: true) .or(Antenna.left_joins(:antenna_accounts).left_joins(:antenna_domains)                          .where(antenna_domains:  { exclude: false, name: @status.account.domain }))
-    antennas = antennas.left_joins(:antenna_tags)    .where(any_tags: true)    .or(Antenna.left_joins(:antenna_accounts).left_joins(:antenna_domains).left_joins(:antenna_tags).where(antenna_tags:     { exclude: false, tag: @status.tags }))
+    antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.availables.left_joins(:antenna_accounts)                                                       .where(antenna_accounts: { exclude: false, account: @status.account }))
+    antennas = antennas.left_joins(:antenna_domains) .where(any_domains: true) .or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains)                          .where(antenna_domains:  { exclude: false, name: @status.account.domain }))
+    antennas = antennas.left_joins(:antenna_tags)    .where(any_tags: true)    .or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains).left_joins(:antenna_tags).where(antenna_tags:     { exclude: false, tag: @status.tags }))
+    antennas = antennas.where(account: @status.account.followers) if @status.visibility.to_sym == :unlisted
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next if !antenna.enabled?
-        next if antenna.keywords.any? && !antenna.keywords.any? { |keyword| @status.text.include?(keyword) }
+        next if antenna.keywords.any? && [nil, :public].include?(@status.searchability.to_sym) && !antenna.keywords.any? { |keyword| @status.text.include?(keyword) }
         next if antenna.exclude_keywords.any? && antenna.exclude_keywords.any? { |keyword| @status.text.include?(keyword) }
         next if antenna.antenna_accounts.where(exclude: true, account: @status.account).any?
         next if antenna.antenna_domains.where(exclude: true, name: @status.account.domain).any?

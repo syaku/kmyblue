@@ -8,6 +8,7 @@ class DeleteAccountService < BaseService
     account_pins
     active_relationships
     aliases
+    antennas
     block_relationships
     blocked_by_relationships
     conversation_mutes
