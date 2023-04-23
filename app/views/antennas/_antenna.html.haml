@@ -19,7 +19,7 @@
             .permissions-list__item__text__title
               = t('antennas.index.domains', count: antenna.antenna_domains.size)
             .permissions-list__item__text__type
-              - domains = antenna.antenna_domains
+              - domains = antenna.antenna_domains.map { |domain| domain.name }
               - domains = domains.take(5) + ['…'] if domains.size > 5 # TODO
               = domains.join(', ')
       - unless antenna.antenna_accounts.empty?

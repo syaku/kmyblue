@@ -34,7 +34,7 @@ class Antenna < ApplicationRecord
   scope :availables, -> { where(available: true) }
 
   def enabled?
-    available && !(any_keywords && any_domains && any_accounts && any_tags) && !expires?
+    available && !expires? #&& !(any_keywords && any_domains && any_accounts && any_tags)
   end
 
   def expires_in
@@ -99,11 +99,11 @@ class Antenna < ApplicationRecord
 
     tag_names = raw.split(/\R/).filter { |r| r.present? }
 
-    antenna_tags.where(exclude: false).destroy_all!
+    antenna_tags.where(exclude: false).destroy_all
     Tag.find_or_create_by_names(tag_names).each do |tag|
       antenna_tags.create!(tag: tag, exclude: false)
     end
-    self[:any_tags] = !tag_names.any? && !exclude_tags&.any?
+    self[:any_tags] = !tag_names.any?
   end
 
   def exclude_tags_raw
@@ -115,11 +115,10 @@ class Antenna < ApplicationRecord
 
     tag_names = raw.split(/\R/).filter { |r| r.present? }
 
-    antenna_tags.where(exclude: true).destroy_all!
+    antenna_tags.where(exclude: true).destroy_all
     Tag.find_or_create_by_names(tag_names).each do |tag|
       antenna_tags.create!(tag: tag, exclude: true)
     end
-    self[:any_tags] = !tag_names.any? && !tags&.any?
   end
 
   def domains_raw
@@ -131,11 +130,11 @@ class Antenna < ApplicationRecord
 
     domain_names = raw.split(/\R/).filter { |r| r.present? }
 
-    antenna_domains.where(exclude: false).destroy_all!
+    antenna_domains.where(exclude: false).destroy_all
     domain_names.each do |domain|
       antenna_domains.create!(name: domain, exclude: false)
     end
-    self[:any_domains] = !domain_names.any? && !exclude_domains&.any?
+    self[:any_domains] = !domain_names.any?
   end
   
   def exclude_domains_raw
@@ -147,11 +146,10 @@ class Antenna < ApplicationRecord
 
     domain_names = raw.split(/\R/).filter { |r| r.present? }
 
-    antenna_domains.where(exclude: true).destroy_all!
+    antenna_domains.where(exclude: true).destroy_all
     domain_names.each do |domain|
       antenna_domains.create!(name: domain, exclude: true)
     end
-    self[:any_domains] = !domain_names.any? && !domains&.any?
   end
 
   def accounts_raw
@@ -164,7 +162,7 @@ class Antenna < ApplicationRecord
     account_names = raw.split(/\R/).filter { |r| r.present? }
 
     hit = false
-    antenna_accounts.where(exclude: false).destroy_all!
+    antenna_accounts.where(exclude: false).destroy_all
     account_names.each do |name|
       name = name[1..-1] if name.start_with?('@')
       username, domain = name.split('@')
@@ -174,7 +172,7 @@ class Antenna < ApplicationRecord
         hit = true
       end
     end
-    self[:any_accounts] = !hit && !exclude_accounts&.any?
+    self[:any_accounts] = !hit
   end
 
   def exclude_accounts_raw
@@ -187,7 +185,7 @@ class Antenna < ApplicationRecord
     account_names = raw.split(/\R/).filter { |r| r.present? }
 
     hit = false
-    antenna_accounts.where(exclude: true).destroy_all!
+    antenna_accounts.where(exclude: true).destroy_all
     account_names.each do |name|
       name = name[1..-1] if name.start_with?('@')
       username, domain = name.split('@')
@@ -197,7 +195,6 @@ class Antenna < ApplicationRecord
         hit = true
       end
     end
-    self[:any_accounts] = !hit && !accounts&.any?
   end
   
 end

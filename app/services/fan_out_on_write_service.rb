@@ -119,16 +119,17 @@ class FanOutOnWriteService < BaseService
   def deliver_to_antennas!
     lists = []
     antennas = Antenna.availables
-    p '=========================== DEBUG A ' + antennas.size.to_s
-    antennas = antennas.merge!(Antenna.where(any_accounts: true).or(Antenna.joins(:antenna_accounts).where(antenna_accounts: { account: @status.account }).map(&:antenna)))
-    p '=========================== DEBUG B ' + antennas.size.to_s
-    p '=========================== DEBUG C ' + antennas.size.to_s
-    p '=========================== DEBUG D ' + antennas.size.to_s
+    antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.left_joins(:antenna_accounts)                                                       .where(antenna_accounts: { exclude: false, account: @status.account }))
+    antennas = antennas.left_joins(:antenna_domains) .where(any_domains: true) .or(Antenna.left_joins(:antenna_accounts).left_joins(:antenna_domains)                          .where(antenna_domains:  { exclude: false, name: @status.account.domain }))
+    antennas = antennas.left_joins(:antenna_tags)    .where(any_tags: true)    .or(Antenna.left_joins(:antenna_accounts).left_joins(:antenna_domains).left_joins(:antenna_tags).where(antenna_tags:     { exclude: false, tag: @status.tags }))
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next if !antenna.enabled?
-        next if antenna.keywords.any? && !@status.text.include?(antenna.keywords)
-        next if antenna.exclude_keywords.any? && @status.text.include?(antenna.exclude_keywords)
+        next if antenna.keywords.any? && !antenna.keywords.any? { |keyword| @status.text.include?(keyword) }
+        next if antenna.exclude_keywords.any? && antenna.exclude_keywords.any? { |keyword| @status.text.include?(keyword) }
+        next if antenna.antenna_accounts.where(exclude: true, account: @status.account).any?
+        next if antenna.antenna_domains.where(exclude: true, name: @status.account.domain).any?
+        next if antenna.antenna_tags.where(exclude: true, tag: @status.tags).any?
         lists << antenna.list
       end
     end
