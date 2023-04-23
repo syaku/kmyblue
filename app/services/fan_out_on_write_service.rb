@@ -126,7 +126,7 @@ class FanOutOnWriteService < BaseService
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next if !antenna.enabled?
-        next if antenna.keywords.any? && [nil, :public].include?(@status.searchability.to_sym) && !antenna.keywords.any? { |keyword| @status.text.include?(keyword) }
+        next if antenna.keywords.any? && [nil, :public].include?(@status.searchability&.to_sym) && !antenna.keywords.any? { |keyword| @status.text.include?(keyword) }
         next if antenna.exclude_keywords.any? && antenna.exclude_keywords.any? { |keyword| @status.text.include?(keyword) }
         next if antenna.antenna_accounts.where(exclude: true, account: @status.account).any?
         next if antenna.antenna_domains.where(exclude: true, name: @status.account.domain).any?
