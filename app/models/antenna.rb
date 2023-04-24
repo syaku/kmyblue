@@ -34,6 +34,12 @@ class Antenna < ApplicationRecord
   scope :all_tags, -> { where(any_tags: true) }
   scope :availables, -> { where(available: true).where(Arel.sql('any_keywords = FALSE OR any_domains = FALSE OR any_accounts = FALSE OR any_tags = FALSE')) }
 
+  validate :list_owner
+
+  def list_owner
+    raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if list.account != account
+  end
+
   def enabled?
     enabled_config? && !expired?
   end
