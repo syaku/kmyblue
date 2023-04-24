@@ -216,6 +216,7 @@ Rails.application.routes.draw do
       end
     end
   end
+  resources :antennas, except: [:show]
 
   resource :relationships, only: [:show, :update]
   resource :statuses_cleanup, controller: :statuses_cleanup, only: [:show, :update]
