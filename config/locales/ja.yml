@@ -952,13 +952,29 @@ ja:
       domain: ドメイン
       keyword: キーワード
       tag: ハッシュタグ
+    errors:
+      empty_contexts: 絞り込み条件が1つも指定されていないため無効です（除外条件はカウントされません）
     edit:
+      accounts_hint: ローカルアカウントの場合は「@info」、リモートアカウントの場合は「@info@example.com」の形式で指定します。サーバーが認識していないアカウントは保存時に自動的に削除されます。
+      accounts_raw: 絞り込むアカウント
+      available: 有効
+      description: アンテナは、サーバーが認識した全ての公開・ローカル公開投稿のうち、検索許可が「公開」または明示的に設定されていないもの(検索許可システムに対応していないサーバーからの投稿)、かつ購読を拒否していないすべてのアカウントからの投稿が対象です。検出された投稿は、指定したリストに追加されます。
+      domains_raw: 絞り込むドメイン
+      exclude_accounts_raw: 除外するアカウント
+      exclude_domains_raw: 除外するドメイン
+      exclude_keywords_raw: 除外するキーワード
+      exclude_tags_raw: 除外するハッシュタグ
+      hint: 下のリストに、絞り込み条件・除外条件を入力します。条件は複数指定することができます。1行につき1つずつ入力してください。空行、コメント、重複を含めることはできません。
+      keywords_raw: 絞り込むキーワード
+      list: 投稿配置先リスト
+      tags_raw: 絞り込むハッシュタグ
       title: アンテナを編集
     index:
       accounts:
         other: "%{count}件のアカウント"
       contexts: "%{contexts}のアンテナ"
       delete: 削除
+      disabled: 無効
       domains:
         other: "%{count}件のドメイン"
       empty: アンテナはありません。

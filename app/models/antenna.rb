@@ -35,7 +35,15 @@ class Antenna < ApplicationRecord
   scope :availables, -> { where(available: true).where(Arel.sql('any_keywords = FALSE OR any_domains = FALSE OR any_accounts = FALSE OR any_tags = FALSE')) }
 
   def enabled?
-    available && !expired? && !(any_keywords && any_domains && any_accounts && any_tags)
+    enabled_config? && !expired?
+  end
+
+  def enabled_config?
+    available && enabled_config_raws?
+  end
+
+  def enabled_config_raws?
+    !(any_keywords && any_domains && any_accounts && any_tags)
   end
 
   def expires_in

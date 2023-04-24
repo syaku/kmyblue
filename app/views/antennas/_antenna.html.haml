@@ -1,8 +1,11 @@
-.filters-list__item{ class: [antenna.expired? && 'expired'] }
+.filters-list__item{ class: [(antenna.expired? || !antenna.enabled_config?) && 'expired'] }
   = link_to edit_antenna_path(antenna), class: 'filters-list__item__title' do
     = antenna.title
 
-    - if antenna.expires?
+    - if !antenna.enabled_config?
+      .expiration{ title: t('antennas.index.disabled') }
+        = t('antennas.index.disabled')
+    - elsif antenna.expires?
       .expiration{ title: t('antennas.index.expires_on', date: l(antenna.expires_at)) }
         - if antenna.expired?
           = t('invites.expired')
@@ -61,7 +64,10 @@
 
   .announcements-list__item__action-bar
     .announcements-list__item__meta
-      = t('antennas.index.contexts', contexts: antenna.context.map { |context| I18n.t("antennas.contexts.#{context}") }.join(', '))
+      - if antenna.enabled_config_raws?
+        = t('antennas.index.contexts', contexts: antenna.context.map { |context| I18n.t("antennas.contexts.#{context}") }.join(', '))
+      - else
+        = t('antennas.errors.empty_contexts')
 
     %div
       = table_link_to 'pencil', t('antennas.edit.title'), edit_antenna_path(antenna)
