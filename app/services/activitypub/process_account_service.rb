@@ -78,6 +78,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.suspension_origin = :local if auto_suspend?
     @account.silenced_at       = domain_block.created_at if auto_silence?
     @account.searchability     = :private  # not null
+    @account.dissubscribable   = false     # not null
     @account.save
   end
 
@@ -115,6 +116,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.also_known_as           = as_array(@json['alsoKnownAs'] || []).map { |item| value_or_id(item) }
     @account.discoverable            = @json['discoverable'] || false
     @account.searchability           = searchability_from_audience
+    @account.dissubscribable         = !subscribable(@account.note)
   end
 
   def set_fetchable_key!
@@ -246,6 +248,20 @@ class ActivityPub::ProcessAccountService < BaseService
       :unlisted    # Followers only in kmyblue (generics: private)
     else
       :private     # Reaction only in kmyblue (generics: direct)
+    end
+  end
+
+  def subscribable_by
+    return nil if @json['subscribableBy'].nil?
+
+    @subscribable_by = as_array(@json['subscribableBy']).map { |x| value_or_id(x) }
+  end
+
+  def subscribable(note)
+    if subscribable_by.nil?
+      !note.include?('[subscribable:no]')
+    else
+      subscribable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
     end
   end
 

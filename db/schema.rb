@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_23_002728) do
+ActiveRecord::Schema.define(version: 2023_04_23_233429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 2023_04_23_002728) do
     t.datetime "requested_review_at"
     t.boolean "group_allow_private_message"
     t.integer "searchability", default: 2, null: false
+    t.boolean "dissubscribable", default: false, null: false
     t.index "(((setweight(to_tsvector('simple'::regconfig, (display_name)::text), 'A'::\"char\") || setweight(to_tsvector('simple'::regconfig, (username)::text), 'B'::\"char\")) || setweight(to_tsvector('simple'::regconfig, (COALESCE(domain, ''::character varying))::text), 'C'::\"char\")))", name: "search_index", using: :gin
     t.index "lower((username)::text), COALESCE(lower((domain)::text), ''::text)", name: "index_accounts_on_username_and_domain_lower", unique: true
     t.index ["moved_to_account_id"], name: "index_accounts_on_moved_to_account_id", where: "(moved_to_account_id IS NOT NULL)"
@@ -300,6 +301,7 @@ ActiveRecord::Schema.define(version: 2023_04_23_002728) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "expires_at"
+    t.boolean "with_media_only", default: false, null: false
     t.index ["account_id"], name: "index_antennas_on_account_id"
     t.index ["any_accounts"], name: "index_antennas_on_any_accounts"
     t.index ["any_domains"], name: "index_antennas_on_any_domains"

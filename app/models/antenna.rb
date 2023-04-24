@@ -16,6 +16,7 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  expires_at       :datetime
+#  with_media_only  :boolean          default(FALSE), not null
 #
 class Antenna < ApplicationRecord
   include Expireable

@@ -186,6 +186,10 @@ class ActivityPub::TagManager
     nil
   end
 
+  def subscribable_by(account)
+    account.dissubscribable ? [] :  [COLLECTIONS[:public]]
+  end
+
   def searchable_by(status)
     searchable_by =
       case status.compute_searchability_activitypub

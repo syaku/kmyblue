@@ -49,7 +49,7 @@ class FanOutOnWriteService < BaseService
     when :public, :unlisted, :public_unlisted, :private
       deliver_to_all_followers!
       deliver_to_lists!
-      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym)
+      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym) && !@status.account.dissubscribable
     when :limited
       deliver_to_mentioned_followers!
     else
