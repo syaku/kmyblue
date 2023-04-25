@@ -17,6 +17,7 @@ const messages = defineMessages({
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  antennas: { id: 'navigation_bar.antennas', defaultMessage: 'Antennas' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   bookmarks: { id: 'navigation_bar.bookmarks', defaultMessage: 'Bookmarks' },
 });
@@ -53,6 +54,7 @@ class ActionBar extends React.PureComponent {
     menu.push({ text: intl.formatMessage(messages.blocks), to: '/blocks' });
     menu.push({ text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' });
     menu.push({ text: intl.formatMessage(messages.filters), href: '/filters' });
+    menu.push({ text: intl.formatMessage(messages.antennas), href: '/antennas' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.logout), action: this.handleLogout });
 
