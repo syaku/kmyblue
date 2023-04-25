@@ -93,7 +93,7 @@ export const addAccountToAntennaSuccess = (antennaId, accountId) => ({
   accountId,
 });
 
-export const addAntennaToAntennaFail = (antennaId, accountId, error) => ({
+export const addAccountToAntennaFail = (antennaId, accountId, error) => ({
   type: ANTENNA_EDITOR_ADD_ACCOUNT_FAIL,
   antennaId,
   accountId,

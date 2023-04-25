@@ -18,6 +18,7 @@
 %hr.spacer/
 
 %h4= t('antennas.contexts.domain')
+%p.hint= t 'antennas.edit.domains_hint'
 
 .fields-row 
   .fields-row__column.fields-row__column-6.fields-group
@@ -43,9 +44,14 @@
     = f.input :exclude_tags_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.exclude_tags_raw')
 
 %h4= t('antennas.contexts.keyword')
+%p.hint= t 'antennas.edit.keywords_hint'
 
 .fields-row 
   .fields-row__column.fields-row__column-6.fields-group
     = f.input :keywords_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.keywords_raw')
   .fields-row__column.fields-row__column-6.fields-group
     = f.input :exclude_keywords_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.exclude_keywords_raw')
+
+%hr.spacer/
+.fields-group
+  = f.input :with_media_only, wrapper: :with_label, label: t('antennas.edit.with_media_only'), hint: false
