@@ -976,16 +976,19 @@ en:
       accounts_raw: Account list
       available: Available
       description: アンテナは、サーバーが認識した全ての公開・ローカル公開投稿のうち、検索許可が「公開」または明示的に設定されていないもの(検索許可システムに対応していないサーバーからの投稿)、かつ購読を拒否していないすべてのアカウントからの投稿が対象です。検出された投稿は、指定したリストに追加されます。
+      domains_hint: ドメインとは、アカウントIDやサイトのURLのうち「kmy.blue」「example.com」に該当する部分です。自身のサーバーを指定することはできません
       domains_raw: Domain list
       exclude_accounts_raw: Excluding account list
       exclude_domains_raw: Excluding domain list
       exclude_keywords_raw: Excluding keyword list
       exclude_tags_raw: Excluding hashtag list
       hint: 下のリストに、絞り込み条件・除外条件を入力します。条件は複数指定することができます。1行につき1つずつ入力してください。空行、コメント、重複を含めることはできません。
+      keywords_hint: キーワードは1つあたり最低2文字です。キーワードによる絞り込みを指定した場合、検索許可に対応しているサーバーからの投稿は、検索許可が「公開」以外のものは掲載されなくなります
       keywords_raw: Keyword list
       list: Destination list
       tags_raw: Hashtag list
       title: Edit antenna
+      with_media_only: With media only
     errors:
       deprecated_api_multiple_keywords: These parameters cannot be changed from this application because they apply to more than one filter keyword. Use a more recent application or the web interface.
       empty_contexts: No contexts! You must set any context filters
