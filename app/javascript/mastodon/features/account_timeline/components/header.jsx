@@ -23,6 +23,7 @@ export default class Header extends ImmutablePureComponent {
     onUnblockDomain: PropTypes.func.isRequired,
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
+    onAddToAntenna: PropTypes.func.isRequired,
     onChangeLanguages: PropTypes.func.isRequired,
     onInteractionModal: PropTypes.func.isRequired,
     onOpenAvatar: PropTypes.func.isRequired,
@@ -91,6 +92,10 @@ export default class Header extends ImmutablePureComponent {
     this.props.onAddToList(this.props.account);
   };
 
+  handleAddToAntenna = () => {
+    this.props.onAddToAntenna(this.props.account);
+  };
+
   handleEditAccountNote = () => {
     this.props.onEditAccountNote(this.props.account);
   };
@@ -133,6 +138,7 @@ export default class Header extends ImmutablePureComponent {
           onUnblockDomain={this.handleUnblockDomain}
           onEndorseToggle={this.handleEndorseToggle}
           onAddToList={this.handleAddToList}
+          onAddToAntenna={this.handleAddToAntenna}
           onEditAccountNote={this.handleEditAccountNote}
           onChangeLanguages={this.handleChangeLanguages}
           onInteractionModal={this.handleInteractionModal}

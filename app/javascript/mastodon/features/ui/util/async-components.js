@@ -146,6 +146,10 @@ export function ListAdder () {
   return import(/*webpackChunkName: "features/list_adder" */'../../list_adder');
 }
 
+export function AntennaAdder () {
+  return import(/*webpackChunkName: "features/antenna_adder" */'../../antenna_adder');
+}
+
 export function Tesseract () {
   return import(/*webpackChunkName: "tesseract" */'tesseract.js');
 }
