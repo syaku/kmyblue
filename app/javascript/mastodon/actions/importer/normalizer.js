@@ -70,10 +70,6 @@ export function normalizeStatus(status, normalOldStatus) {
     normalStatus.emoji_reactions = normalizeEmojiReactions(status.emoji_reactions);
   }
 
-  if (status.media_attachments_ex) {
-    normalStatus.media_attachments = status.media_attachments.concat(status.media_attachments_ex);
-  }
-
   if (!status.visibility_ex) {
     normalStatus.visibility_ex = status.visibility;
   }

@@ -38,6 +38,9 @@
   .fields-group
     = f.input :hide_collections, as: :boolean, wrapper: :with_label, label: t('simple_form.labels.defaults.setting_hide_network'), hint: t('simple_form.hints.defaults.setting_hide_network')
 
+  .fields-group
+    = f.input :dissubscribable, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.dissubscribable')
+
   %hr.spacer/
 
   .fields-row

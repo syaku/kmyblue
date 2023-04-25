@@ -52,6 +52,7 @@
 #  requested_review_at           :datetime
 #  group_allow_private_message   :boolean
 #  searchability                 :integer          default("private"), not null
+#  dissubscribable               :boolean          default(FALSE), not null
 #
 
 class Account < ApplicationRecord

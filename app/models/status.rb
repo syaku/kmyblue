@@ -291,14 +291,6 @@ class Status < ApplicationRecord
     end
   end
 
-  def ordered_media_attachments_original_mastodon
-    ordered_media_attachments.take(4)
-  end
-
-  def ordered_media_attachments_extra
-    ordered_media_attachments.drop(4).take(4)
-  end
-
   def replies_count
     status_stat&.replies_count || 0
   end
@@ -378,6 +370,11 @@ class Status < ApplicationRecord
     return searchability if searchability
     return account.searchability if account.local? && account.searchability
     'private'
+  end
+
+  def compute_searchability_activitypub
+    return 'unlisted' if public_unlisted_visibility? && public_searchability?
+    compute_searchability
   end
 
   after_create_commit  :increment_counter_caches

@@ -1,0 +1,51 @@
+%p= t 'antennas.edit.description'
+%hr.spacer/
+
+.fields-row
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :title, as: :string, wrapper: :with_label, hint: false
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :expires_in, wrapper: :with_label, collection: [30.minutes, 1.hour, 6.hours, 12.hours, 1.day, 1.week].map(&:to_i), label_method: lambda { |i| I18n.t("invites.expires_in.#{i}") }, include_blank: I18n.t('invites.expires_in_prompt')
+
+.fields-row
+  .fields-group.fields-row__column.fields-row__column-6
+    = f.input :list, collection: lists, wrapper: :with_label, label_method: lambda { |list| list.title }, label: t('antennas.edit.list'), selected: f.object.list&.id, hint: false
+  .fields-group.fields-row__column.fields-row__column-6
+    = f.input :available, wrapper: :with_label, label: t('antennas.edit.available'), hint: false
+
+%hr.spacer/
+%p.hint= t 'antennas.edit.hint'
+%hr.spacer/
+
+%h4= t('antennas.contexts.domain')
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :domains_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.domains_raw')
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_domains_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.exclude_domains_raw')
+
+%h4= t('antennas.contexts.account')
+%p.hint= t 'antennas.edit.accounts_hint'
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :accounts_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.accounts_raw')
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_accounts_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.exclude_accounts_raw')
+
+%h4= t('antennas.contexts.tag')
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :tags_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.tags_raw')
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_tags_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.exclude_tags_raw')
+
+%h4= t('antennas.contexts.keyword')
+
+.fields-row 
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :keywords_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.keywords_raw')
+  .fields-row__column.fields-row__column-6.fields-group
+    = f.input :exclude_keywords_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.exclude_keywords_raw')

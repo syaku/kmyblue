@@ -39,12 +39,18 @@ module AccountAssociations
 
     has_many :report_notes, dependent: :destroy
     has_many :custom_filters, inverse_of: :account, dependent: :destroy
+    has_many :antennas, inverse_of: :account, dependent: :destroy
+    has_many :antenna_accounts, inverse_of: :account, dependent: :destroy
 
     # Moderation notes
     has_many :account_moderation_notes, dependent: :destroy, inverse_of: :account
     has_many :targeted_moderation_notes, class_name: 'AccountModerationNote', foreign_key: :target_account_id, dependent: :destroy, inverse_of: :target_account
     has_many :account_warnings, dependent: :destroy, inverse_of: :account
     has_many :strikes, class_name: 'AccountWarning', foreign_key: :target_account_id, dependent: :destroy, inverse_of: :target_account
+
+    # Antennas (that the account is on, not owned by the account)
+    has_many :antenna_accounts, inverse_of: :account, dependent: :destroy
+    has_many :joined_antennas, class_name: 'Antenna', through: :antenna_accounts, source: :antenna
 
     # Lists (that the account is on, not owned by the account)
     has_many :list_accounts, inverse_of: :account, dependent: :destroy

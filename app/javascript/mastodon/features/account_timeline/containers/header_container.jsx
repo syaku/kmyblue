@@ -146,6 +146,12 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
+  onAddToAntenna (account) {
+    dispatch(openModal('ANTENNA_ADDER', {
+      accountId: account.get('id'),
+    }));
+  },
+
   onChangeLanguages (account) {
     dispatch(openModal('SUBSCRIBED_LANGUAGES', {
       accountId: account.get('id'),
