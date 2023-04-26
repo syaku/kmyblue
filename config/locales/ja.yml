@@ -950,6 +950,7 @@ ja:
     errors:
       empty_contexts: 絞り込み条件が1つも指定されていないため無効です（除外条件はカウントされません）
       invalid_list_owner: これはあなたのリストではありません
+      remove_list_with_antenna: アンテナが関連付けられているリストは削除できません
     edit:
       accounts_hint: ローカルアカウントの場合は「@info」、リモートアカウントの場合は「@info@example.com」の形式で指定します。サーバーが認識していないアカウントは保存時に自動的に削除されます。
       accounts_raw: 絞り込むアカウント
