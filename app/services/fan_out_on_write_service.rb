@@ -118,30 +118,34 @@ class FanOutOnWriteService < BaseService
 
   def deliver_to_antennas!
     lists = []
+    tag_ids = @status.tags.pluck(:id)
+    domain = @account.domain || Rails.configuration.x.local_domain
+
     antennas = Antenna.availables
     antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.availables.left_joins(:antenna_accounts)                                                       .where(antenna_accounts: { exclude: false, account: @status.account }))
     antennas = antennas.left_joins(:antenna_domains) .where(any_domains: true) .or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains)                          .where(antenna_domains:  { exclude: false, name: @status.account.domain }))
     antennas = antennas.left_joins(:antenna_tags)    .where(any_tags: true)    .or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains).left_joins(:antenna_tags).where(antenna_tags:     { exclude: false, tag: @status.tags }))
     antennas = antennas.where(account: @status.account.followers) if @status.visibility.to_sym == :unlisted
     antennas = antennas.where(with_media_only: false) if !@status.with_media?
+    antennas = antennas.where.not(account: @status.account.blocking)
+    antennas = antennas.includes(:antenna_accounts).includes(:antenna_domains).includes(:antenna_tags)
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next if !antenna.enabled?
-        next if @status.account.blocking?(antenna.account)
         next if antenna.keywords.any? && !([nil, :public].include?(@status.searchability&.to_sym))
         next if antenna.keywords.any? && !antenna.keywords.any? { |keyword| @status.text.include?(keyword) }
-        next if antenna.exclude_keywords.any? && antenna.exclude_keywords.any? { |keyword| @status.text.include?(keyword) }
-        next if antenna.antenna_accounts.where(exclude: true, account: @status.account).any?
-        next if antenna.antenna_domains.where(exclude: true, name: @status.account.domain).any?
-        next if antenna.antenna_tags.where(exclude: true, tag: @status.tags).any?
-        lists << antenna.list
+        next if antenna.exclude_keywords&.any? { |keyword| @status.text.include?(keyword) }
+        next if antenna.exclude_accounts&.include?(@status.account_id)
+        next if antenna.exclude_domains&.include?(domain)
+        next if antenna.exclude_tags&.any? { |tag_id| tag_ids.include?(tag_id) }
+        lists << antenna.list_id
       end
     end
     lists = lists.uniq
 
     if lists.any?
       FeedInsertWorker.push_bulk(lists) do |list|
-        [@status.id, list.id, 'list', { 'update' => update? }]
+        [@status.id, list, 'list', { 'update' => update? }]
       end
     end
   end

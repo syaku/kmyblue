@@ -18,6 +18,8 @@
 #  min_reblogs        :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  min_emojis         :integer
+#  keep_self_emoji    :boolean          default(TRUE), not null
 #
 class AccountStatusesCleanupPolicy < ApplicationRecord
   include Redisable

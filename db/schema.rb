@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_23_233429) do
+ActiveRecord::Schema.define(version: 2023_04_26_013738) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,8 @@ ActiveRecord::Schema.define(version: 2023_04_23_233429) do
     t.integer "min_reblogs"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "min_emojis"
+    t.boolean "keep_self_emoji", default: true, null: false
     t.index ["account_id"], name: "index_account_statuses_cleanup_policies_on_account_id"
   end
 
@@ -300,6 +302,9 @@ ActiveRecord::Schema.define(version: 2023_04_23_233429) do
     t.datetime "updated_at", null: false
     t.datetime "expires_at"
     t.boolean "with_media_only", default: false, null: false
+    t.jsonb "exclude_domains"
+    t.jsonb "exclude_accounts"
+    t.jsonb "exclude_tags"
     t.index ["account_id"], name: "index_antennas_on_account_id"
     t.index ["any_accounts"], name: "index_antennas_on_any_accounts"
     t.index ["any_domains"], name: "index_antennas_on_any_domains"

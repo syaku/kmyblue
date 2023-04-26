@@ -994,6 +994,7 @@ en:
       empty_contexts: No contexts! You must set any context filters
       invalid_context: None or invalid context supplied
       invalid_list_owner: This list is not yours
+      remove_list_with_antenna: Cannot remove list because this list is related to antenna.
     index:
       contexts: Antennas in %{contexts}
       delete: Delete
