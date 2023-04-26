@@ -955,7 +955,7 @@ ja:
       accounts_raw: 絞り込むアカウント
       available: 有効
       description: アンテナは、サーバーが認識した全ての公開・ローカル公開投稿のうち、検索許可が「公開」または明示的に設定されていないもの(検索許可システムに対応していないサーバーからの投稿)、かつ購読を拒否していないすべてのアカウントからの投稿が対象です。検出された投稿は、指定したリストに追加されます。
-      domains_hint: ドメインとは、アカウントIDやサイトのURLのうち「kmy.blue」「example.com」に該当する部分です。自身のサーバーを指定することはできません
+      domains_hint: ドメインとは、アカウントIDやサイトのURLのうち「kmy.blue」「example.com」に該当する部分です
       domains_raw: 絞り込むドメイン
       exclude_accounts_raw: 除外するアカウント
       exclude_domains_raw: 除外するドメイン
