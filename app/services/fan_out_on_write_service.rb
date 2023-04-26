@@ -128,7 +128,6 @@ class FanOutOnWriteService < BaseService
     antennas = antennas.where(account: @status.account.followers) if @status.visibility.to_sym == :unlisted
     antennas = antennas.where(with_media_only: false) if !@status.with_media?
     antennas = antennas.where.not(account: @status.account.blocking)
-    antennas = antennas.includes(:antenna_accounts).includes(:antenna_domains).includes(:antenna_tags)
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next if !antenna.enabled?
