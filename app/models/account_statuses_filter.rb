@@ -34,6 +34,10 @@ class AccountStatusesFilter
   def initial_scope
     if suspended?
       Status.none
+    elsif domain_block != nil && (domain_block&.reject_send_not_public_searchability || domain_block&.reject_send_unlisted_dissubscribable ||
+           domain_block&.reject_send_public_unlisted || domain_block&.reject_send_media || domain_block&.reject_send_sensitive ||
+           domain_block&.reject_send_sensitive)
+      Status.none
     elsif anonymous?
       account.statuses.where(visibility: %i(public unlisted public_unlisted))
     elsif author?
@@ -130,5 +134,9 @@ class AccountStatusesFilter
 
   def truthy_param?(key)
     ActiveModel::Type::Boolean.new.cast(params[key])
+  end
+
+  def domain_block
+    @domain_block = DomainBlock.find_by(domain: @account&.domain)
   end
 end
