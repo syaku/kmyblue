@@ -49,7 +49,18 @@ class DomainBlock < ApplicationRecord
     if suspend?
       [:suspend]
     else
-      [severity.to_sym, reject_media? ? :reject_media : nil, reject_favourite? ? :reject_favourite : nil, reject_reply? ? :reject_reply : nil, reject_reports? ? :reject_reports : nil].reject { |policy| policy == :noop || policy.nil? }
+      [severity.to_sym,
+       reject_media? ? :reject_media : nil,
+       reject_favourite? ? :reject_favourite : nil,
+       reject_reply? ? :reject_reply : nil,
+       reject_send_not_public_searchability? ? :reject_send_not_public_searchability : nil,
+       reject_send_unlisted_dissubscribable? ? :reject_send_unlisted_dissubscribable : nil,
+       reject_send_public_unlisted? ? :reject_send_public_unlisted : nil,
+       reject_send_dissubscribable? ? :reject_send_dissubscribable : nil,
+       reject_send_media? ? :reject_send_media : nil,
+       reject_send_sensitive? ? :reject_send_sensitive : nil,
+       reject_reports? ? :reject_reports : nil
+      ].reject { |policy| policy == :noop || policy.nil? }
     end
   end
 

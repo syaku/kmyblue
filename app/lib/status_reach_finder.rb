@@ -96,7 +96,7 @@ class StatusReachFinder
 
   def banned_domains
     blocks = []
-    blocks << DomainBlock.where(reject_send_not_public_searchability: true).pluck(:domain) if @status.computed_searchability != 'public'
+    blocks << DomainBlock.where(reject_send_not_public_searchability: true).pluck(:domain) if @status.compute_searchability != 'public'
     blocks << DomainBlock.where(reject_send_unlisted_dissubscribable: true).pluck(:domain) if @status.unlisted_visibility? && @status.account.dissubscribable
     blocks << DomainBlock.where(reject_send_public_unlisted: true).pluck(:domain) if @status.public_unlisted_visibility?
     blocks << DomainBlock.where(reject_send_dissubscribable: true).pluck(:domain) if @status.account.dissubscribable

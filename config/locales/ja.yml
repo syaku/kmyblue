@@ -493,6 +493,12 @@ ja:
           reject_media: メディアを拒否する
           reject_reply: リプライを拒否
           reject_reports: 通報を拒否
+          reject_send_dissubscribable: 購読拒否投稿配送なし
+          reject_send_media: メディア付き投稿配送なし
+          reject_send_not_public_searchability: 検索許可全て投稿配送なし
+          reject_send_public_unlisted: ローカル公開投稿配送なし
+          reject_send_sensitive: センシティブ投稿配送なし
+          reject_send_unlisted_dissubscribable: 購読拒否未収載投稿配送なし
           silence: 制限
           suspend: サスペンド
         policy: ポリシー
