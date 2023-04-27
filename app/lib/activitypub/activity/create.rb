@@ -46,6 +46,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def create_status
     return reject_payload! if unsupported_object_type? || non_matching_uri_hosts?(@account.uri, object_uri) || tombstone_exists? || !related_to_local_activity?
+    return reject_payload! if reply_to_local? && reject_reply_to_local?
 
     with_lock("create:#{object_uri}") do
       return if delete_arrived_first?(object_uri) || poll_vote?
@@ -390,6 +391,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def reply_to_local?
     !replied_to_status.nil? && replied_to_status.account.local?
+  end
+
+  def reject_reply_to_local?
+    @reject_reply_to_local ||= DomainBlock.reject_reply?(@account.domain)
   end
 
   def related_to_local_activity?

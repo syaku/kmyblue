@@ -4,7 +4,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   def perform
     @original_status = status_from_uri(object_uri)
 
-    return if @original_status.nil? || !@original_status.account.local? || delete_arrived_first?(@json['id'])
+    return if @original_status.nil? || !@original_status.account.local? || delete_arrived_first?(@json['id']) || reject_favourite?
 
     if shortcode.nil?
       process_favourite
@@ -14,6 +14,10 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   end
 
   private
+
+  def reject_favourite?
+    @reject_favourite ||= DomainBlock.reject_favourite?(@account.domain)
+  end
 
   def process_favourite
     return if @account.favourited?(@original_status)

@@ -78,15 +78,15 @@ module Admin
     end
 
     def update_params
-      params.require(:domain_block).permit(:severity, :reject_media, :reject_reports, :private_comment, :public_comment, :obfuscate)
+      params.require(:domain_block).permit(:severity, :reject_media, :reject_favourite, :reject_reply, :reject_reports, :private_comment, :public_comment, :obfuscate)
     end
 
     def resource_params
-      params.require(:domain_block).permit(:domain, :severity, :reject_media, :reject_reports, :private_comment, :public_comment, :obfuscate)
+      params.require(:domain_block).permit(:domain, :severity, :reject_media, :reject_favourite, :reject_reply, :reject_reports, :private_comment, :public_comment, :obfuscate)
     end
 
     def form_domain_block_batch_params
-      params.require(:form_domain_block_batch).permit(domain_blocks_attributes: [:enabled, :domain, :severity, :reject_media, :reject_reports, :private_comment, :public_comment, :obfuscate])
+      params.require(:form_domain_block_batch).permit(domain_blocks_attributes: [:enabled, :domain, :severity, :reject_media, :reject_favourite, :reject_reply, :reject_reports, :private_comment, :public_comment, :obfuscate])
     end
 
     def action_from_button
