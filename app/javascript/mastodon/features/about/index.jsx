@@ -17,6 +17,8 @@ const messages = defineMessages({
   title: { id: 'column.about', defaultMessage: 'About' },
   rules: { id: 'about.rules', defaultMessage: 'Server rules' },
   blocks: { id: 'about.blocks', defaultMessage: 'Moderated servers' },
+  noop: { id: 'about.domain_blocks.noop.title', defaultMessage: 'Soft limited' },
+  noopExplanation: { id: 'about.domain_blocks.noop.explanation', defaultMessage: 'This server is limited partically.' },
   silenced: { id: 'about.domain_blocks.silenced.title', defaultMessage: 'Limited' },
   silencedExplanation: { id: 'about.domain_blocks.silenced.explanation', defaultMessage: 'You will generally not see profiles and content from this server, unless you explicitly look it up or opt into it by following.' },
   suspended: { id: 'about.domain_blocks.suspended.title', defaultMessage: 'Suspended' },
@@ -32,6 +34,11 @@ const severityMessages = {
   suspend: {
     title: messages.suspended,
     explanation: messages.suspendedExplanation,
+  },
+
+  noop: {
+    title: messages.noop,
+    explanation: messages.noopExplanation,
   },
 };
 
