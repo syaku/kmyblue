@@ -22,6 +22,9 @@
 #  reject_send_dissubscribable          :boolean          default(FALSE), not null
 #  reject_send_media                    :boolean          default(FALSE), not null
 #  reject_send_sensitive                :boolean          default(FALSE), not null
+#  reject_hashtag                       :boolean          default(FALSE), not null
+#  reject_straight_follow               :boolean          default(FALSE), not null
+#  reject_new_follow                    :boolean          default(FALSE), not null
 #
 
 class DomainBlock < ApplicationRecord
@@ -37,8 +40,8 @@ class DomainBlock < ApplicationRecord
   delegate :count, to: :accounts, prefix: true
 
   scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
-  scope :with_user_facing_limitations, -> { where(severity: [:silence, :suspend]) }
-  scope :with_limitations, -> { where(severity: [:silence, :suspend]).or(where(reject_media: true)).or(where(reject_favourite: true)).or(where(reject_reply: true)) }
+  scope :with_user_facing_limitations, -> { where(severity: [:silence, :suspend]).or(where(reject_media: true)) }
+  scope :with_limitations, -> { where(severity: [:silence, :suspend]).or(where(reject_media: true)).or(where(reject_favourite: true)).or(where(reject_reply: true)).or(where(reject_new_follow: true)).or(where(reject_straight_follow: true)) }
   scope :by_severity, -> { order(Arel.sql('(CASE severity WHEN 0 THEN 1 WHEN 1 THEN 2 WHEN 2 THEN 0 END), domain')) }
 
   def to_log_human_identifier
@@ -59,6 +62,9 @@ class DomainBlock < ApplicationRecord
        reject_send_dissubscribable? ? :reject_send_dissubscribable : nil,
        reject_send_media? ? :reject_send_media : nil,
        reject_send_sensitive? ? :reject_send_sensitive : nil,
+       reject_hashtag? ? :reject_hashtag : nil,
+       reject_straight_follow? ? :reject_straight_follow : nil,
+       reject_new_follow? ? :reject_new_follow : nil,
        reject_reports? ? :reject_reports : nil
       ].reject { |policy| policy == :noop || policy.nil? }
     end
@@ -83,6 +89,18 @@ class DomainBlock < ApplicationRecord
 
     def reject_reply?(domain)
       !!rule_for(domain)&.reject_reply?
+    end
+
+    def reject_hashtag?(domain)
+      !!rule_for(domain)&.reject_hashtag?
+    end
+
+    def reject_straight_follow?(domain)
+      !!rule_for(domain)&.reject_straight_follow?
+    end
+
+    def reject_new_follow?(domain)
+      !!rule_for(domain)&.reject_new_follow?
     end
 
     def reject_reports?(domain)

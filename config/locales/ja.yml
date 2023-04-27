@@ -407,8 +407,12 @@ ja:
       public_comment_hint: ドメインブロックの公開を有効にしている場合、このコメントも公開されます。
       reject_favourite: お気に入り、絵文字リアクションを拒否
       reject_favourite_hint: 今後のお気に入り、絵文字リアクションを拒否します。停止とは無関係です
+      reject_hashtag: ハッシュタグを拒否
+      reject_hashtag_hint: ハッシュタグで検索できなくなり、トレンドにも影響しなくなります。停止とは無関係です
       reject_media: メディアファイルを拒否
       reject_media_hint: ローカルに保存されたメディアファイルを削除し、今後のダウンロードを拒否します。停止とは無関係です
+      reject_new_follow: 新規フォローを拒否
+      reject_new_follow_hint: 今後の新規フォローを拒否します。停止とは無関係です
       reject_reply: リプライを拒否
       reject_reply_hint: 今後のリプライを拒否します。停止とは無関係です
       reject_reports: 通報を拒否
@@ -425,6 +429,8 @@ ja:
       reject_send_sensitive_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
       reject_send_unlisted_dissubscribable: 購読拒否アカウントの未収載投稿を配送しない
       reject_send_unlisted_dissubscribable_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
+      reject_straight_follow: フォローを強制的に審査制にする
+      reject_straight_follow_hint: 相手からのフォローは当サーバーのアカウントの承認が必須になります
       undo: ドメインブロックを戻す
       view: ドメインブロックを表示
     email_domain_blocks:
@@ -490,7 +496,9 @@ ja:
         limited_federation_mode_description_html: このドメインとの連合を許可するかどうかを選択できます。
         policies:
           reject_favourite: お気に入りを拒否
+          reject_hashtag: ハッシュタグを拒否
           reject_media: メディアを拒否する
+          reject_new_follow: 新規フォローを拒否
           reject_reply: リプライを拒否
           reject_reports: 通報を拒否
           reject_send_dissubscribable: 購読拒否投稿配送なし
@@ -499,6 +507,7 @@ ja:
           reject_send_public_unlisted: ローカル公開投稿配送なし
           reject_send_sensitive: センシティブ投稿配送なし
           reject_send_unlisted_dissubscribable: 購読拒否未収載投稿配送なし
+          reject_straight_follow: フォローを制限
           silence: 制限
           suspend: サスペンド
         policy: ポリシー
