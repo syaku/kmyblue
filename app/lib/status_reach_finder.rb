@@ -96,13 +96,13 @@ class StatusReachFinder
 
   def banned_domains
     return @banned_domains if @banned_domains
-    blocks = []
-    blocks << DomainBlock.where(reject_send_not_public_searchability: true).pluck(:domain) if @status.compute_searchability != 'public'
-    blocks << DomainBlock.where(reject_send_unlisted_dissubscribable: true).pluck(:domain) if @status.unlisted_visibility? && @status.account.dissubscribable
-    blocks << DomainBlock.where(reject_send_public_unlisted: true).pluck(:domain) if @status.public_unlisted_visibility?
-    blocks << DomainBlock.where(reject_send_dissubscribable: true).pluck(:domain) if @status.account.dissubscribable
-    blocks << DomainBlock.where(reject_send_media: true).pluck(:domain) if @status.with_media?
-    blocks << DomainBlock.where(reject_send_sensitive: true).pluck(:domain) if (@status.with_media? && @status.sensitive) || @status.spoiler_text
-    return @banned_domains = blocks.uniq
+    blocks = DomainBlock.where(domain: nil)
+    blocks = blocks.or(DomainBlock.where(reject_send_not_public_searchability: true)) if @status.compute_searchability != 'public'
+    blocks = blocks.or(DomainBlock.where(reject_send_unlisted_dissubscribable: true)) if @status.unlisted_visibility? && @status.account.dissubscribable
+    blocks = blocks.or(DomainBlock.where(reject_send_public_unlisted: true)) if @status.public_unlisted_visibility?
+    blocks = blocks.or(DomainBlock.where(reject_send_dissubscribable: true)) if @status.account.dissubscribable
+    blocks = blocks.or(DomainBlock.where(reject_send_media: true)) if @status.with_media?
+    blocks = blocks.or(DomainBlock.where(reject_send_sensitive: true)) if (@status.with_media? && @status.sensitive) || @status.spoiler_text
+    return @banned_domains = blocks.pluck(:domain).uniq
   end
 end
