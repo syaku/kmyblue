@@ -5,6 +5,8 @@
   "about.domain_blocks.no_reason_available": "制限理由",
   "about.domain_blocks.preamble": "Mastodonでは連合先のどのようなサーバーのユーザーとも交流できます。ただし次のサーバーには例外が設定されています。",
   "about.domain_blocks.silenced.explanation": "このサーバーのプロフィールやコンテンツは、明示的に検索したり、フォローでオプトインしない限り、通常は表示されません。",
+  "about.domain_blocks.noop.title": "一部制限",
+  "about.domain_blocks.noop.explanation": "このサーバーは部分的に制限されています。",
   "about.domain_blocks.silenced.title": "制限",
   "about.domain_blocks.suspended.explanation": "これらのサーバーからのデータは処理されず、保存や変換もされません。該当するユーザーとの交流もできません。",
   "about.domain_blocks.suspended.title": "停止済み",

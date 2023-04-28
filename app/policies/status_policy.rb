@@ -18,7 +18,7 @@ class StatusPolicy < ApplicationPolicy
     elsif private?
       owned? || following_author? || mention_exists?
     else
-      current_account.nil? || (!author_blocking? && !author_blocking_domain?)
+      current_account.nil? || (!author_blocking? && !author_blocking_domain? && !server_blocking_domain?)
     end
   end
 
@@ -98,5 +98,19 @@ class StatusPolicy < ApplicationPolicy
 
   def author
     record.account
+  end
+
+  def server_blocking_domain?
+    @domain_block = DomainBlock.find_by(domain: current_account&.domain)
+    if @domain_block
+      (@domain_block.reject_send_not_public_searchability && record.compute_searchability != 'public') ||
+      (@domain_block.reject_send_unlisted_dissubscribable && record.unlisted_visibility? && record.account.dissubscribable) ||
+      (@domain_block.reject_send_public_unlisted && record.public_unlisted_visibility?) ||
+      (@domain_block.reject_send_dissubscribable && record.account.dissubscribable) ||
+      (@domain_block.reject_send_media && record.with_media?) ||
+      (@domain_block.reject_send_sensitive && ((record.with_media? && record.sensitive) || record.spoiler_text))
+    else
+      false
+    end
   end
 end
