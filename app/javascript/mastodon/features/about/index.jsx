@@ -193,7 +193,7 @@ class About extends React.PureComponent {
                     <div className='about__domain-blocks__domain' key={block.get('domain')}>
                       <div className='about__domain-blocks__domain__header'>
                         <h6><span title={`SHA-256: ${block.get('digest')}`}>{block.get('domain')}</span></h6>
-                        <span className='about__domain-blocks__domain__type' title={intl.formatMessage(severityMessages[block.get('severity')].explanation)}>{intl.formatMessage(severityMessages[block.get('severity')].title)}</span>
+                        <span className='about__domain-blocks__domain__type' title={intl.formatMessage(severityMessages[block.get('severity')].explanation)}>{intl.formatMessage(severityMessages[block.get('severity_ex') || block.get('severity')].title)}</span>
                       </div>
 
                       <p>{(block.get('comment') || '').length > 0 ? block.get('comment') : <FormattedMessage id='about.domain_blocks.no_reason_available' defaultMessage='Reason not available' />}</p>
