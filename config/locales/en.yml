@@ -412,10 +412,32 @@ en:
       private_comment_hint: Comment about this domain limitation for internal use by the moderators.
       public_comment: Public comment
       public_comment_hint: Comment about this domain limitation for the general public, if advertising the list of domain limitations is enabled.
+      reject_favourite: Reject favourites
+      reject_favourite_hint: Reject favourites or emoji-reaction in the future
+      reject_hashtag: Reject hashtags
+      reject_hashtag_hint: Reject hashtags in the future
       reject_media: Reject media files
       reject_media_hint: Removes locally stored media files and refuses to download any in the future. Irrelevant for suspensions
+      reject_new_follow: Reject follows
+      reject_new_follow_hint: Reject follows in the future
+      reject_reply: Reject replies
+      reject_reply_hint: Reject replies in the future
       reject_reports: Reject reports
       reject_reports_hint: Ignore all reports coming from this domain. Irrelevant for suspensions
+      reject_send_dissubscribable: 購読拒否アカウントの投稿を配送しない
+      reject_send_dissubscribable_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
+      reject_send_media: 画像付き投稿を配送しない
+      reject_send_media_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
+      reject_send_not_public_searchability: 検索許可が「公開」でない投稿を配送しない
+      reject_send_not_public_searchability_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
+      reject_send_public_unlisted: ローカル公開投稿を配送しない
+      reject_send_public_unlisted_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
+      reject_send_sensitive: センシティブな投稿を配送しない
+      reject_send_sensitive_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
+      reject_send_unlisted_dissubscribable: 購読拒否アカウントの未収載投稿を配送しない
+      reject_send_unlisted_dissubscribable_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
+      reject_straight_follow: Reject straight follow
+      reject_straight_follow_hint: The server accounts must be authenticated when follow our accounts
       undo: Undo domain block
       view: View domain block
     email_domain_blocks:
@@ -483,7 +505,12 @@ en:
         description_html: You can define content policies that will be applied to all accounts from this domain and any of its subdomains.
         limited_federation_mode_description_html: You can chose whether to allow federation with this domain.
         policies:
+          reject_favourite: Reject favourite
+          reject_hashtag: Reject hashtags
           reject_media: Reject media
+          reject_new_follow: Reject follows
+          reject_straight_follow: Reject straight follow
+          reject_reply: Reject reply
           reject_reports: Reject reports
           silence: Limit
           suspend: Suspend

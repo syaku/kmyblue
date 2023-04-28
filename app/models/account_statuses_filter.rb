@@ -26,13 +26,20 @@ class AccountStatusesFilter
     scope.merge!(no_reblogs_scope) if exclude_reblogs?
     scope.merge!(hashtag_scope)    if tagged?
 
+    scope.merge!(scope.where(searchability: :public)) if domain_block&.reject_send_not_public_searchability
+    scope.merge!(scope.where.not(visibility: :unlisted)) if domain_block&.reject_send_unlisted_dissubscribable && @account.dissubscribable
+    scope.merge!(scope.where.not(visibility: :public_unlisted)) if domain_block&.reject_send_public_unlisted
+    scope.merge!(scope.where(spoiler_text: ['', nil])) if domain_block&.reject_send_sensitive
+
     scope
   end
 
   private
 
   def initial_scope
-    if suspended?
+    if suspended? || (domain_block&.reject_send_dissubscribable && @account.dissubscribable)
+      Status.none
+    elsif domain_block&.reject_send_media
       Status.none
     elsif anonymous?
       account.statuses.where(visibility: %i(public unlisted public_unlisted))
@@ -130,5 +137,9 @@ class AccountStatusesFilter
 
   def truthy_param?(key)
     ActiveModel::Type::Boolean.new.cast(params[key])
+  end
+
+  def domain_block
+    @domain_block = DomainBlock.find_by(domain: @account&.domain)
   end
 end

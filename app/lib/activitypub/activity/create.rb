@@ -215,7 +215,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def process_hashtag(tag)
-    return if tag['name'].blank?
+    return if tag['name'].blank? || ignore_hashtags?
 
     Tag.find_or_create_by_names(tag['name']) do |hashtag|
       @tags << hashtag unless @tags.include?(hashtag) || !hashtag.valid?
@@ -390,6 +390,14 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def reply_to_local?
     !replied_to_status.nil? && replied_to_status.account.local?
+  end
+
+  def reject_reply_to_local?
+    @reject_reply_to_local ||= DomainBlock.reject_reply?(@account.domain)
+  end
+
+  def ignore_hashtags?
+    @ignore_hashtags ||= DomainBlock.reject_hashtag?(@account.domain)
   end
 
   def related_to_local_activity?
