@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FeedAnyJsonWorker
+class DeliveryEmojiReactionWorker
   include Sidekiq::Worker
   include Redisable
   include Lockable
@@ -12,11 +12,11 @@ class FeedAnyJsonWorker
     status = Status.find(status_id.to_i)
 
     if status.present?
-      scope_status(status).find_each do |account|
+      scope_status(status).where.not(stop_emoji_reaction_streaming: true).find_each do |account|
         redis.publish("timeline:#{account.id}", payload_json) if redis.exists?("subscribed:timeline:#{account.id}")
       end
 
-      if status.visibility.to_sym != :public && status.visibility.to_sym != :unlisted && status.visibility.to_sym != :public_unlisted && status.account_id != my_account_id &&
+      if !([:public, :unlisted, :public_unlisted].include?(status.visibility.to_sym)) && status.account_id != my_account_id &&
           redis.exists?("subscribed:timeline:#{status.account_id}")
         redis.publish("timeline:#{status.account_id}", payload_json)
       end
