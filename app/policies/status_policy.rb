@@ -101,10 +101,10 @@ class StatusPolicy < ApplicationPolicy
   end
 
   def server_blocking_domain?
-    if record.reblog?
-      server_blocking_domain_of_status(record) || server_blocking_domain_of_status(record.reblog)
+    if record.reblog? && record.reblog.local?
+      server_blocking_domain_of_status?(record) || server_blocking_domain_of_status?(record.reblog)
     else
-      server_blocking_domain_of_status(record)
+      server_blocking_domain_of_status?(record)
     end
   end
 

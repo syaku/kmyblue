@@ -98,7 +98,7 @@ class StatusReachFinder
     return @banned_domains if @banned_domains
 
     domains = banned_domains_of_status(@status)
-    domains = domains + banned_domains_of_status(@status.reblog) if @status.reblog?
+    domains = domains + banned_domains_of_status(@status.reblog) if @status.reblog? && @status.reblog.status.local?
     return @banned_domains = domains
   end
 
