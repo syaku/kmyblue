@@ -37,6 +37,8 @@ class Settings::PreferencesController < Settings::BaseController
       :setting_default_searchability,
       :setting_default_sensitive,
       :setting_public_post_to_unlisted,
+      :setting_reject_public_unlisted_subscription,
+      :setting_reject_unlisted_subscription,
       :setting_default_language,
       :setting_unfollow_modal,
       :setting_boost_modal,

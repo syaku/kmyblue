@@ -105,9 +105,10 @@ class StatusReachFinder
   def banned_domains_of_status(status)
     blocks = DomainBlock.where(domain: nil)
     blocks = blocks.or(DomainBlock.where(reject_send_not_public_searchability: true)) if status.compute_searchability != 'public'
-    blocks = blocks.or(DomainBlock.where(reject_send_unlisted_dissubscribable: true)) if status.unlisted_visibility? && status.account.dissubscribable
     blocks = blocks.or(DomainBlock.where(reject_send_public_unlisted: true)) if status.public_unlisted_visibility?
     blocks = blocks.or(DomainBlock.where(reject_send_dissubscribable: true)) if status.account.dissubscribable
+    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.public_unlisted_visibility? && status.account.user&.setting_reject_public_unlisted_subscription
+    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.unlisted_visibility? && status.account.user&.setting_reject_unlisted_subscription
     blocks = blocks.or(DomainBlock.where(reject_send_media: true)) if status.with_media?
     blocks = blocks.or(DomainBlock.where(reject_send_sensitive: true)) if (status.with_media? && status.sensitive) || status.spoiler_text?
     blocks.pluck(:domain).uniq

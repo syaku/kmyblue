@@ -21,6 +21,8 @@ class UserSettingsDecorator
     user.settings['default_searchability']=default_searchability_preference if change?('setting_default_searchability')
     user.settings['default_sensitive']   = default_sensitive_preference if change?('setting_default_sensitive')
     user.settings['public_post_to_unlisted']=public_post_to_unlisted_preference if change?('setting_public_post_to_unlisted')
+    user.settings['reject_public_unlisted_subscription'] = reject_public_unlisted_subscription_preference if change?('setting_reject_public_unlisted_subscription')
+    user.settings['reject_unlisted_subscription'] = reject_unlisted_subscription_preference if change?('setting_reject_unlisted_subscription')
     user.settings['default_language']    = default_language_preference if change?('setting_default_language')
     user.settings['unfollow_modal']      = unfollow_modal_preference if change?('setting_unfollow_modal')
     user.settings['boost_modal']         = boost_modal_preference if change?('setting_boost_modal')
@@ -66,6 +68,14 @@ class UserSettingsDecorator
 
   def public_post_to_unlisted_preference
     boolean_cast_setting 'setting_public_post_to_unlisted'
+  end
+
+  def reject_public_unlisted_subscription_preference
+    boolean_cast_setting 'setting_reject_public_unlisted_subscription_preference'
+  end
+
+  def reject_unlisted_subscription_preference
+    boolean_cast_setting 'setting_reject_unlisted_subscription_preference'
   end
 
   def unfollow_modal_preference
