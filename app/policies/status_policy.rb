@@ -101,14 +101,22 @@ class StatusPolicy < ApplicationPolicy
   end
 
   def server_blocking_domain?
-    @domain_block = DomainBlock.find_by(domain: current_account&.domain)
+    if record.reblog?
+      server_blocking_domain_of_status(record) || server_blocking_domain_of_status(record.reblog)
+    else
+      server_blocking_domain_of_status(record)
+    end
+  end
+
+  def server_blocking_domain_of_status?(status)
+    @domain_block ||= DomainBlock.find_by(domain: current_account&.domain)
     if @domain_block
-      (@domain_block.reject_send_not_public_searchability && record.compute_searchability != 'public') ||
-      (@domain_block.reject_send_unlisted_dissubscribable && record.unlisted_visibility? && record.account.dissubscribable) ||
-      (@domain_block.reject_send_public_unlisted && record.public_unlisted_visibility?) ||
-      (@domain_block.reject_send_dissubscribable && record.account.dissubscribable) ||
-      (@domain_block.reject_send_media && record.with_media?) ||
-      (@domain_block.reject_send_sensitive && ((record.with_media? && record.sensitive) || record.spoiler_text))
+      (@domain_block.reject_send_not_public_searchability && status.compute_searchability != 'public') ||
+      (@domain_block.reject_send_unlisted_dissubscribable && status.unlisted_visibility? && status.account.dissubscribable) ||
+      (@domain_block.reject_send_public_unlisted && status.public_unlisted_visibility?) ||
+      (@domain_block.reject_send_dissubscribable && status.account.dissubscribable) ||
+      (@domain_block.reject_send_media && status.with_media?) ||
+      (@domain_block.reject_send_sensitive && ((status.with_media? && status.sensitive) || status.spoiler_text?))
     else
       false
     end
