@@ -382,6 +382,8 @@ ja:
       add_new: ドメインブロックを追加
       created_msg: ドメインブロック処理を完了しました
       destroyed_msg: ドメインブロックを外しました
+      detect_invalid_subscription: 不正な購読を行うサーバーとしてマークする
+      detect_invalid_subscription_hint: Misskey、Calckeyなどは購読機能で未フォローユーザーの未収載投稿を拾います。これをマークしたサーバーは、ユーザーが任意で配送を拒否できます。停止とは無関係です
       domain: ドメイン
       edit: ドメインブロックを編集
       existing_domain_block: あなたは既に%{name}さんに厳しい制限を課しています。
@@ -499,6 +501,7 @@ ja:
         description_html: このドメインとそのサブドメインのすべてのアカウントに適用されるコンテンツポリシーを定義できます。
         limited_federation_mode_description_html: このドメインとの連合を許可するかどうかを選択できます。
         policies:
+          detect_invalid_subscription: 購読のプライバシーなし
           reject_favourite: お気に入りを拒否
           reject_hashtag: ハッシュタグを拒否
           reject_media: メディアを拒否する

@@ -124,6 +124,24 @@ class ActivityPub::TagManager
       cc << COLLECTIONS[:public]
     end
 
+    cc = cc + cc_private_visibility(status)
+
+    cc
+  end
+
+  def cc_for_misskey(status)
+    if (status.account.user&.setting_reject_unlisted_subscription && status.visibility == 'unlisted') || (status.account.user&.setting_reject_public_unlisted_subscription && status.visibility == 'public_unlisted')
+      cc = cc_private_visibility(status)
+      cc << uri_for(status.reblog.account) if status.reblog?
+      return cc
+    end
+
+    cc(status)
+  end
+
+  def cc_private_visibility(status)
+    cc = []
+
     unless status.direct_visibility? || status.limited_visibility?
       if status.account.silenced?
         # Only notify followers if the account is locally silenced

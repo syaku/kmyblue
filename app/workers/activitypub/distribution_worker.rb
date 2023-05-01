@@ -15,15 +15,31 @@ class ActivityPub::DistributionWorker < ActivityPub::RawDistributionWorker
   protected
 
   def inboxes
-    @inboxes ||= StatusReachFinder.new(@status).inboxes
+    @inboxes ||= status_reach_finder.inboxes
+  end
+
+  def inboxes_for_misskey
+    @inboxes_for_misskey ||= status_reach_finder.inboxes_for_misskey
+  end
+
+  def status_reach_finder
+    @status_reach_finder ||= StatusReachFinder.new(@status)
   end
 
   def payload
     @payload ||= Oj.dump(serialize_payload(activity, ActivityPub::ActivitySerializer, signer: @account))
   end
 
+  def payload_for_misskey
+    @payload_for_misskey ||= Oj.dump(serialize_payload(activity_for_misskey, ActivityPub::ActivityForMisskeySerializer, signer: @account))
+  end
+
   def activity
     ActivityPub::ActivityPresenter.from_status(@status)
+  end
+
+  def activity_for_misskey
+    ActivityPub::ActivityPresenter.from_status(@status, for_misskey: true)
   end
 
   def options

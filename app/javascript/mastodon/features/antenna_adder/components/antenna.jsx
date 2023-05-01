@@ -23,8 +23,6 @@ const mapDispatchToProps = (dispatch, { antennaId }) => ({
   onAdd: () => dispatch(addToAntennaAdder(antennaId)),
 });
 
-export default @connect(MapStateToProps, mapDispatchToProps)
-@injectIntl
 class Antenna extends ImmutablePureComponent {
 
   static propTypes = {
@@ -67,3 +65,5 @@ class Antenna extends ImmutablePureComponent {
   }
 
 }
+
+export default connect(MapStateToProps, mapDispatchToProps)(injectIntl(Antenna));

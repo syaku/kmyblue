@@ -31,6 +31,18 @@ module HasUserSettings
     settings['public_post_to_unlisted']
   end
 
+  def setting_reject_public_unlisted_subscription
+    settings['reject_public_unlisted_subscription']
+  end
+
+  def setting_reject_unlisted_subscription
+    settings['reject_unlisted_subscription']
+  end
+
+  def setting_send_without_domain_blocks
+    settings['send_without_domain_blocks']
+  end
+
   def setting_unfollow_modal
     settings['web.unfollow_modal']
   end
