@@ -35,6 +35,9 @@
     = f.input :setting_show_application, as: :boolean, wrapper: :with_label, recommended: true
 
   .fields-group
+    = f.input :setting_send_without_domain_blocks, as: :boolean, wrapper: :with_label
+
+  .fields-group
     = f.input :setting_reject_public_unlisted_subscription, as: :boolean, wrapper: :with_label
 
   .fields-group

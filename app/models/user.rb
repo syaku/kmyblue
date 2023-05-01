@@ -139,6 +139,7 @@ class User < ApplicationRecord
            :advanced_layout, :use_blurhash, :use_pending_items, :trends, :crop_images,
            :disable_swiping, :always_send_emails, :public_post_to_unlisted,
            :reject_public_unlisted_subscription, :reject_unlisted_subscription,
+           :send_without_domain_blocks,
            to: :settings, prefix: :setting, allow_nil: false
 
   delegate :can?, to: :role
@@ -326,6 +327,10 @@ class User < ApplicationRecord
 
   def reject_unlisted_subscription?
     settings.reject_unlisted_subscription
+  end
+
+  def send_without_domain_blocks?
+    settings.send_without_domain_blocks
   end
 
   def allows_report_emails?

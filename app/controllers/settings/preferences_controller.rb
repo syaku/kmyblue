@@ -39,6 +39,7 @@ class Settings::PreferencesController < Settings::BaseController
       :setting_public_post_to_unlisted,
       :setting_reject_public_unlisted_subscription,
       :setting_reject_unlisted_subscription,
+      :setting_send_without_domain_blocks,
       :setting_default_language,
       :setting_unfollow_modal,
       :setting_boost_modal,

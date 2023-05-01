@@ -224,6 +224,7 @@ en:
         setting_reduce_motion: Reduce motion in animations
         setting_reject_public_unlisted_subscription: Reject sending public unlisted posts to Misskey, Calckey
         setting_reject_unlisted_subscription: Reject sending unlisted posts to Misskey, Calckey
+        setting_send_without_domain_blocks: Send your post to all server with administrator set as rejecting-post-server for protect you [DEPRECATED]
         setting_show_application: Disclose application used to send posts
         setting_system_font_ui: Use system's default font
         setting_theme: Site theme
