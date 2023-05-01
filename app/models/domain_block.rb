@@ -17,7 +17,6 @@
 #  reject_favourite                     :boolean          default(FALSE), not null
 #  reject_reply                         :boolean          default(FALSE), not null
 #  reject_send_not_public_searchability :boolean          default(FALSE), not null
-#  reject_send_unlisted_dissubscribable :boolean          default(FALSE), not null
 #  reject_send_public_unlisted          :boolean          default(FALSE), not null
 #  reject_send_dissubscribable          :boolean          default(FALSE), not null
 #  reject_send_media                    :boolean          default(FALSE), not null
@@ -27,6 +26,7 @@
 #  reject_new_follow                    :boolean          default(FALSE), not null
 #  hidden                               :boolean          default(FALSE), not null
 #  hidden_anonymous                     :boolean          default(FALSE), not null
+#  detect_invalid_subscription          :boolean          default(FALSE), not null
 #
 
 class DomainBlock < ApplicationRecord
@@ -59,7 +59,6 @@ class DomainBlock < ApplicationRecord
        reject_favourite? ? :reject_favourite : nil,
        reject_reply? ? :reject_reply : nil,
        reject_send_not_public_searchability? ? :reject_send_not_public_searchability : nil,
-       reject_send_unlisted_dissubscribable? ? :reject_send_unlisted_dissubscribable : nil,
        reject_send_public_unlisted? ? :reject_send_public_unlisted : nil,
        reject_send_dissubscribable? ? :reject_send_dissubscribable : nil,
        reject_send_media? ? :reject_send_media : nil,
@@ -67,6 +66,7 @@ class DomainBlock < ApplicationRecord
        reject_hashtag? ? :reject_hashtag : nil,
        reject_straight_follow? ? :reject_straight_follow : nil,
        reject_new_follow? ? :reject_new_follow : nil,
+       detect_invalid_subscription? ? :detect_invalid_subscription : nil,
        reject_reports? ? :reject_reports : nil
       ].reject { |policy| policy == :noop || policy.nil? }
     end

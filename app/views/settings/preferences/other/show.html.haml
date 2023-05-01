@@ -35,6 +35,15 @@
     .fields-group
       = ff.input :show_application, wrapper: :with_label, recommended: true, label: I18n.t('simple_form.labels.defaults.setting_show_application'), hint: I18n.t('simple_form.hints.defaults.setting_show_application')
 
+  .fields-group
+    = f.input :setting_send_without_domain_blocks, as: :boolean, wrapper: :with_label
+
+  .fields-group
+    = f.input :setting_reject_public_unlisted_subscription, as: :boolean, wrapper: :with_label
+
+  .fields-group
+    = f.input :setting_reject_unlisted_subscription, as: :boolean, wrapper: :with_label
+
   %h4= t 'preferences.public_timelines'
 
   .fields-group

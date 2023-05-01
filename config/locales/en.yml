@@ -389,6 +389,8 @@ en:
       add_new: Add new domain block
       created_msg: Domain block is now being processed
       destroyed_msg: Domain block has been undone
+      detect_invalid_subscription: 不正な購読を行うサーバーとしてマークする
+      detect_invalid_subscription_hint: Misskey、Calckeyなどは購読機能で未フォローユーザーの未収載投稿を拾います。これをマークしたサーバーは、ユーザーが任意で配送を拒否できます。停止とは無関係です
       domain: Domain
       edit: Edit domain block
       existing_domain_block: You have already imposed stricter limits on %{name}.

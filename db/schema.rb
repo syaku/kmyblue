@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_28_111230) do
+ActiveRecord::Schema.define(version: 2023_04_30_110057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -472,7 +472,6 @@ ActiveRecord::Schema.define(version: 2023_04_28_111230) do
     t.boolean "reject_favourite", default: false, null: false
     t.boolean "reject_reply", default: false, null: false
     t.boolean "reject_send_not_public_searchability", default: false, null: false
-    t.boolean "reject_send_unlisted_dissubscribable", default: false, null: false
     t.boolean "reject_send_public_unlisted", default: false, null: false
     t.boolean "reject_send_dissubscribable", default: false, null: false
     t.boolean "reject_send_media", default: false, null: false
@@ -482,6 +481,7 @@ ActiveRecord::Schema.define(version: 2023_04_28_111230) do
     t.boolean "reject_new_follow", default: false, null: false
     t.boolean "hidden", default: false, null: false
     t.boolean "hidden_anonymous", default: false, null: false
+    t.boolean "detect_invalid_subscription", default: false, null: false
     t.index ["domain"], name: "index_domain_blocks_on_domain", unique: true
   end
 
