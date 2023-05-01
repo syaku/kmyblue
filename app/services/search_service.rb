@@ -2,7 +2,7 @@
 
 class SearchService < BaseService
   def call(query, account, limit, options = {})
-    @query   = query&.strip
+    @query = query&.strip
     pull_query_commands
 
     @account = account
@@ -28,7 +28,7 @@ class SearchService < BaseService
   private
 
   MIN_SCORE = 0.7
-  MIN_SCORE_RE = /MINSCORE=((([\d]+\.[\d]+)|([\d]+)){1,6})/.freeze
+  MIN_SCORE_RE = /MINSCORE=(((\d+\.\d+)|(\d+)){1,6})/
 
   def perform_accounts_search!
     AccountSearchService.new.call(
@@ -71,7 +71,7 @@ class SearchService < BaseService
     results             = definition.limit(@limit).offset(@offset).objects.compact
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)
-    account_relations   = @account.relations_map(account_ids, account_domains)  # variable old name: preloaded_relations
+    account_relations   = @account.relations_map(account_ids, account_domains) # variable old name: preloaded_relations
 
     results.reject { |status| StatusFilter.new(status, @account, account_relations).filtered? }
   rescue Faraday::ConnectionFailed, Parslet::ParseFailed
@@ -137,11 +137,10 @@ class SearchService < BaseService
     @min_score = MIN_SCORE
 
     min_score_result = @query.scan(MIN_SCORE_RE).first
-    if (min_score_result)
-      @min_score = min_score_result[1].to_f
-      @query = @query.gsub(MIN_SCORE_RE, '').strip
-    end
+    return unless min_score_result
 
+    @min_score = min_score_result[1].to_f
+    @query = @query.gsub(MIN_SCORE_RE, '').strip
   end
 
   def parsed_query

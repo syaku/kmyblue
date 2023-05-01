@@ -17,7 +17,7 @@ class FeedAnyJsonWorker
       end
 
       if status.visibility.to_sym != :public && status.visibility.to_sym != :unlisted && status.visibility.to_sym != :public_unlisted && status.account_id != my_account_id &&
-          redis.exists?("subscribed:timeline:#{status.account_id}")
+         redis.exists?("subscribed:timeline:#{status.account_id}")
         redis.publish("timeline:#{status.account_id}", payload_json)
       end
     end

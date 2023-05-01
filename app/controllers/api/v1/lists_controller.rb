@@ -32,6 +32,7 @@ class Api::V1::ListsController < Api::BaseController
 
   def destroy
     raise Mastodon::ValidationError, I18n.t('antennas.errors.remove_list_with_antenna') if Antenna.where(list_id: @list.id).any?
+
     @list.destroy!
     render_empty
   end

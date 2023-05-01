@@ -38,7 +38,7 @@ class DomainBlock < ApplicationRecord
 
   validates :domain, presence: true, uniqueness: true, domain: true
 
-  has_many :accounts, foreign_key: :domain, primary_key: :domain
+  has_many :accounts, foreign_key: :domain, primary_key: :domain, inverse_of: false
   delegate :count, to: :accounts, prefix: true
 
   scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
@@ -67,8 +67,7 @@ class DomainBlock < ApplicationRecord
        reject_straight_follow? ? :reject_straight_follow : nil,
        reject_new_follow? ? :reject_new_follow : nil,
        detect_invalid_subscription? ? :detect_invalid_subscription : nil,
-       reject_reports? ? :reject_reports : nil
-      ].reject { |policy| policy == :noop || policy.nil? }
+       reject_reports? ? :reject_reports : nil].reject { |policy| policy == :noop || policy.nil? }
     end
   end
 

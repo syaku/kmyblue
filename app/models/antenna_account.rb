@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: antenna_accounts
@@ -10,10 +12,6 @@
 #  updated_at :datetime         not null
 #
 class AntennaAccount < ApplicationRecord
-
   belongs_to :antenna
   belongs_to :account
-
-  validates :account_id, uniqueness: { scope: :antenna_id }
-
 end

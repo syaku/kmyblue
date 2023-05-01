@@ -8,6 +8,5 @@ class Form::MediaAttachmentsBatch
 
   attr_accessor :query
 
-  def save
-  end
+  def save; end
 end

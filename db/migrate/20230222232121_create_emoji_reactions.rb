@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateEmojiReactions < ActiveRecord::Migration[6.1]
   def change
     create_table :emoji_reactions do |t|

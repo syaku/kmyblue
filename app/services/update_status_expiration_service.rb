@@ -5,17 +5,24 @@ class UpdateStatusExpirationService < BaseService
 
   def call(status)
     existing_expiration = ScheduledExpirationStatus.find_by(status: status)
-    existing_expiration.destroy! if existing_expiration
+    existing_expiration&.destroy!
 
     expiration = status.text.scan(SCAN_EXPIRATION_RE).first
-    return if !expiration
+    return unless expiration
 
     expiration_num = expiration[1].to_f
     expiration_option = expiration[2]
     base_time = status.created_at || Time.now.utc
-    due = expiration_option == 'd' ? expiration_num.days :
-          expiration_option == 'h' ? expiration_num.hours :
-          expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes
+
+    # rubocop:disable Style/CaseLikeIf
+    due = if expiration_option == 'd'
+            expiration_num.days
+          elsif expiration_option == 'h'
+            expiration_num.hours
+          else
+            expiration_option == 's' ? expiration_num.seconds : expiration_num.minutes
+          end
+    # rubocop:enable Style/CaseLikeIf
 
     expired_at = base_time + due
     expired_status = ScheduledExpirationStatus.create!(account: status.account, status: status, scheduled_at: expired_at)

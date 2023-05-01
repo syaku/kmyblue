@@ -20,6 +20,8 @@ class AntennasController < ApplicationController
     @antenna.antenna_accounts.build
   end
 
+  def edit; end
+
   def create
     @antenna = current_account.antennas.build(thin_resource_params)
 
@@ -32,8 +34,6 @@ class AntennasController < ApplicationController
       render action: :new
     end
   end
-
-  def edit; end
 
   def update
     if @antenna.update(resource_params)

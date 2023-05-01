@@ -4,12 +4,10 @@ module AccountLimitable
   def scope_status(status)
     case status.visibility.to_sym
     when :public, :unlisted, :public_unlisted
-      #scope_local.merge(scope_list_following_account(status.account))
+      # scope_local.merge(scope_list_following_account(status.account))
       scope_local
     when :private
       scope_account_local_followers(status.account)
-    when :limited
-      scope_status_mentioned(status)
     else
       scope_status_mentioned(status)
     end
@@ -32,7 +30,7 @@ module AccountLimitable
     account.lists_for_local_distribution.select(:id).reorder(nil)
   end
 
-  def scope_tag_following_account(status)
+  def scope_tag_following_account(_status)
     TagFollow.where(tag_id: @status.tags.map(&:id)).select('account_id AS id').reorder(nil)
   end
 end

@@ -32,9 +32,9 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
       uri       = emoji_tag['id']
       domain    = URI.split(uri)[2]
 
-      emoji = CustomEmoji.find_or_create_by!(shortcode: shortcode, domain: domain) do |emoji|
-        emoji.uri              = uri
-        emoji.image_remote_url = image_url
+      emoji = CustomEmoji.find_or_create_by!(shortcode: shortcode, domain: domain) do |emoji_data|
+        emoji_data.uri              = uri
+        emoji_data.image_remote_url = image_url
       end
 
       Trends.statuses.register(@original_status)
@@ -55,7 +55,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   end
 
   def forward_for_emoji_reaction
-    return unless @json['signature'].present?
+    return if @json['signature'].blank?
 
     ActivityPub::RawDistributionWorker.perform_async(Oj.dump(@json), @original_status.account.id, [@account.preferred_inbox_url])
   end
@@ -83,7 +83,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   def misskey_favourite?
     misskey_shortcode = @json['_misskey_reaction']&.delete(':')
 
-    return misskey_shortcode == shortcode && misskey_shortcode == '⭐'
+    misskey_shortcode == shortcode && misskey_shortcode == '⭐'
   end
 
   def emoji_tag

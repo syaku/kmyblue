@@ -1,10 +1,25 @@
+# frozen_string_literal: true
+
 class AddRejectSendingToDomainBlocks < ActiveRecord::Migration[6.1]
   def change
-    add_column :domain_blocks, :reject_send_not_public_searchability, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_send_unlisted_dissubscribable, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_send_public_unlisted, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_send_dissubscribable, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_send_media, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_send_sensitive, :boolean, null: false, default: false
+    change_table :domain_blocks, bulk: true do |t|
+      t.boolean :reject_send_not_public_searchability, null: false, default: false
+      t.boolean :reject_send_unlisted_dissubscribable, null: false, default: false
+      t.boolean :reject_send_public_unlisted, null: false, default: false
+      t.boolean :reject_send_dissubscribable, null: false, default: false
+      t.boolean :reject_send_media, null: false, default: false
+      t.boolean :reject_send_sensitive, null: false, default: false
+    end
+  end
+
+  def down
+    change_table :domain_blocks, bulk: true do |t|
+      t.remove :reject_send_not_public_searchability
+      t.remove :reject_send_unlisted_dissubscribable
+      t.remove :reject_send_public_unlisted
+      t.remove :reject_send_dissubscribable
+      t.remove :reject_send_media
+      t.remove :reject_send_sensitive
+    end
   end
 end

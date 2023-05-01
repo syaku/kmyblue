@@ -122,20 +122,21 @@ class FanOutOnWriteService < BaseService
     domain = @account.domain || Rails.configuration.x.local_domain
 
     antennas = Antenna.availables
-    antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.availables.left_joins(:antenna_accounts)                                                       .where(antenna_accounts: { exclude: false, account: @account }))
-    antennas = antennas.left_joins(:antenna_domains) .where(any_domains: true) .or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains)                          .where(antenna_domains:  { exclude: false, name: domain }))
-    antennas = antennas.left_joins(:antenna_tags)    .where(any_tags: true)    .or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains).left_joins(:antenna_tags).where(antenna_tags:     { exclude: false, tag: @status.tags }))
+    antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.availables.left_joins(:antenna_accounts).where(antenna_accounts: { exclude: false, account: @account }))
+    antennas = antennas.left_joins(:antenna_domains).where(any_domains: true).or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains).where(antenna_domains:  { exclude: false, name: domain }))
+    antennas = antennas.left_joins(:antenna_tags).where(any_tags: true).or(Antenna.availables.left_joins(:antenna_accounts).left_joins(:antenna_domains).left_joins(:antenna_tags).where(antenna_tags: { exclude: false, tag: @status.tags }))
     antennas = antennas.where(account: @account.followers) if @status.visibility.to_sym == :unlisted
-    antennas = antennas.where(with_media_only: false) if !@status.with_media?
+    antennas = antennas.where(with_media_only: false) unless @status.with_media?
     antennas = antennas.where.not(account: @account.blocking)
     antennas.in_batches do |ans|
       ans.each do |antenna|
-        next if !antenna.enabled?
-        next if antenna.keywords.any? && !antenna.keywords.any? { |keyword| @status.text.include?(keyword) }
+        next unless antenna.enabled?
+        next if antenna.keywords.any? && antenna.keywords.none? { |keyword| @status.text.include?(keyword) }
         next if antenna.exclude_keywords&.any? { |keyword| @status.text.include?(keyword) }
         next if antenna.exclude_accounts&.include?(@status.account_id)
         next if antenna.exclude_domains&.include?(domain)
         next if antenna.exclude_tags&.any? { |tag_id| tag_ids.include?(tag_id) }
+
         lists << antenna.list_id
       end
     end

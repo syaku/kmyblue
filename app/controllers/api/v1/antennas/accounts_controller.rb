@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class Api::V1::Antennas::AccountsController < Api::BaseController
-  before_action -> { doorkeeper_authorize! :read, :'read:lists' }, only: [:show]
-  before_action -> { doorkeeper_authorize! :write, :'write:lists' }, except: [:show]
+  # before_action -> { doorkeeper_authorize! :read, :'read:lists' }, only: [:show]
+  before_action -> { doorkeeper_authorize! :write, :'write:lists' } # , except: [:show]
 
   before_action :require_user!
   before_action :set_antenna
 
-  after_action :insert_pagination_headers, only: :show
+  # after_action :insert_pagination_headers, only: :show
 
   def create
     ApplicationRecord.transaction do
@@ -22,7 +22,7 @@ class Api::V1::Antennas::AccountsController < Api::BaseController
 
   def destroy
     AntennaAccount.where(antenna: @antenna, account_id: account_ids).destroy_all
-    @antenna.update!(any_accounts: true) if !@antenna.antenna_accounts.where(exclude: false).any?
+    @antenna.update!(any_accounts: true) unless @antenna.antenna_accounts.where(exclude: false).any?
     render_empty
   end
 

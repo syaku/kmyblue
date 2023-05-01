@@ -36,7 +36,7 @@ class CustomEmoji < ApplicationRecord
   IMAGE_MIME_TYPES = %w(image/png image/gif image/webp image/jpeg).freeze
 
   belongs_to :category, class_name: 'CustomEmojiCategory', optional: true
-  has_one :local_counterpart, -> { where(domain: nil) }, class_name: 'CustomEmoji', primary_key: :shortcode, foreign_key: :shortcode
+  has_one :local_counterpart, -> { where(domain: nil) }, class_name: 'CustomEmoji', primary_key: :shortcode, foreign_key: :shortcode, inverse_of: false
   has_many :emoji_reactions, inverse_of: :custom_emoji, dependent: :destroy
 
   has_attached_file :image, styles: { static: { format: 'png', convert_options: '-coalesce +profile "!icc,*" +set modify-date +set create-date' } }, validate_media_type: false
@@ -77,7 +77,7 @@ class CustomEmoji < ApplicationRecord
   end
 
   def update_size
-    set_size(Rails.configuration.x.use_s3 ? image.url : image.path)
+    size(Rails.configuration.x.use_s3 ? image.url : image.path)
   end
 
   class << self
@@ -108,13 +108,11 @@ class CustomEmoji < ApplicationRecord
 
   def set_post_size
     image.queued_for_write.each do |style, file|
-      if style == :original
-        set_size(file.path)
-      end
+      size(file.path) if style == :original
     end
   end
 
-  def set_size(path)
+  def size(path)
     image_size = FastImage.size(path)
     self.image_width = image_size[0]
     self.image_height = image_size[1]

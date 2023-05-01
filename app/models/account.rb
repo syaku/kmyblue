@@ -113,8 +113,8 @@ class Account < ApplicationRecord
   scope :bots, -> { where(actor_type: %w(Application Service)) }
   scope :groups, -> { where(actor_type: 'Group') }
   scope :alphabetic, -> { order(domain: :asc, username: :asc) }
-  scope :matches_username, ->(value) { where('lower((username)::text) ~ lower(?)', "#{value}") }
-  scope :matches_display_name, ->(value) { where(arel_table[:display_name].matches_regexp("#{value}")) }
+  scope :matches_username, ->(value) { where('lower((username)::text) ~ lower(?)', value.to_s) }
+  scope :matches_display_name, ->(value) { where(arel_table[:display_name].matches_regexp(value.to_s)) }
   scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
   scope :without_unapproved, -> { left_outer_joins(:user).remote.or(left_outer_joins(:user).merge(User.approved.confirmed)) }
   scope :searchable, -> { without_unapproved.without_suspended.where(moved_to_account_id: nil) }
@@ -185,11 +185,19 @@ class Account < ApplicationRecord
   alias group group?
 
   def my_actor_type
-    actor_type == 'Service' ? 'bot' : actor_type == 'Group' ? 'group' : 'person'
+    if actor_type == 'Service'
+      'bot'
+    else
+      actor_type == 'Group' ? 'group' : 'person'
+    end
   end
 
   def my_actor_type=(val)
-    self.actor_type = val == 'bot' ? 'Service' : val == 'group' ? 'Group' : 'Person'
+    self.actor_type = if val == 'bot'
+                        'Service'
+                      else
+                        val == 'group' ? 'Group' : 'Person'
+                      end
   end
 
   def acct
