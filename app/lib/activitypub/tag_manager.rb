@@ -130,14 +130,13 @@ class ActivityPub::TagManager
   end
 
   def cc_for_misskey(status)
-    case status.visibility
-    when 'unlisted'
-      status.account.user&.reject_unlisted_subscription? ? cc_private_visibility(status) : cc(status)
-    when 'public_unlisted'
-      status.account.user&.reject_public_unlisted_subscription? ? cc_private_visibility(status) : cc(status)
-    else
-      cc(status)
+    if (status.account.user&.reject_unlisted_subscription? && status.visibility == 'unlisted') || (status.account.user&.reject_public_unlisted_subscription? && status.visibility == 'public_unlisted')
+      cc = cc_private_visibility(status)
+      cc << uri_for(status.reblog.account) if status.reblog?
+      return cc
     end
+
+    cc(status)
   end
 
   def cc_private_visibility(status)

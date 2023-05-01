@@ -31,11 +31,15 @@ class ActivityPub::DistributionWorker < ActivityPub::RawDistributionWorker
   end
 
   def payload_for_misskey
-    @payload ||= Oj.dump(serialize_payload(activity, ActivityPub::ActivityForMisskeySerializer, signer: @account))
+    @payload_for_misskey ||= Oj.dump(serialize_payload(activity_for_misskey, ActivityPub::ActivityForMisskeySerializer, signer: @account))
   end
 
   def activity
     ActivityPub::ActivityPresenter.from_status(@status)
+  end
+
+  def activity_for_misskey
+    ActivityPub::ActivityPresenter.from_status(@status, for_misskey: true)
   end
 
   def options

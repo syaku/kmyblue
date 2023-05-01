@@ -122,6 +122,7 @@ class StatusPolicy < ApplicationPolicy
       else
         (@domain_block.detect_invalid_subscription && status.public_unlisted_visibility? && status.account.user&.reject_public_unlisted_subscription) ||
         (@domain_block.detect_invalid_subscription && status.public_visibility? && status.account.user&.reject_unlisted_subscription)
+      end
     else
       false
     end
