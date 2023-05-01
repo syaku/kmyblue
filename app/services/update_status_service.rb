@@ -113,13 +113,13 @@ class UpdateStatusService < BaseService
   def update_immediate_attributes!
     @status.text         = @options[:text].presence || @options.delete(:spoiler_text) || '' if @options.key?(:text)
     @status.spoiler_text = @options[:spoiler_text] || '' if @options.key?(:spoiler_text)
-    @status.markdown     = !!@options[:markdown]
+    @status.markdown     = @options[:markdown] || false
     @status.sensitive    = @options[:sensitive] || @options[:spoiler_text].present? if @options.key?(:sensitive) || @options.key?(:spoiler_text)
     @status.language     = valid_locale_cascade(@options[:language], @status.language, @status.account.user&.preferred_posting_language, I18n.default_locale)
 
     # We raise here to rollback the entire transaction
     raise NoChangesSubmittedError unless significant_changes?
-    
+
     update_expiration!
 
     @status.edited_at = Time.now.utc

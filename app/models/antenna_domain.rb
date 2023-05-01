@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: antenna_domains
@@ -10,7 +12,5 @@
 #  updated_at :datetime         not null
 #
 class AntennaDomain < ApplicationRecord
-
   belongs_to :antenna
-
 end

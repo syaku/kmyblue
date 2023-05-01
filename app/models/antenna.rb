@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: antennas
@@ -64,10 +66,10 @@ class Antenna < ApplicationRecord
 
   def context
     context = []
-    context << 'domain' if !any_domains
-    context << 'tag' if !any_tags
-    context << 'keyword' if !any_keywords
-    context << 'account' if !any_accounts
+    context << 'domain' unless any_domains
+    context << 'tag' unless any_tags
+    context << 'keyword' unless any_keywords
+    context << 'account' unless any_accounts
     context
   end
 
@@ -81,7 +83,7 @@ class Antenna < ApplicationRecord
   end
 
   def keywords_raw
-    return '' if !keywords.present?
+    return '' if keywords.blank?
 
     keywords.join("\n")
   end
@@ -89,17 +91,17 @@ class Antenna < ApplicationRecord
   def keywords_raw=(raw)
     keywords = raw.split(/\R/).filter { |r| r.present? && r.length >= 2 }.uniq
     self[:keywords] = keywords
-    self[:any_keywords] = !keywords.any?
+    self[:any_keywords] = keywords.none?
   end
 
   def exclude_keywords_raw
-    return '' if !exclude_keywords.present?
+    return '' if exclude_keywords.blank?
 
     exclude_keywords.join("\n")
   end
 
   def exclude_keywords_raw=(raw)
-    exclude_keywords = raw.split(/\R/).filter { |r| r.present? }.uniq
+    exclude_keywords = raw.split(/\R/).filter(&:present?).uniq
     self[:exclude_keywords] = exclude_keywords
   end
 
@@ -110,17 +112,18 @@ class Antenna < ApplicationRecord
   def tags_raw=(raw)
     return if tags_raw == raw
 
-    tag_names = raw.split(/\R/).filter { |r| r.present? }.map { |r| r.start_with?('#') ? r[1..-1] : r }.uniq
+    tag_names = raw.split(/\R/).filter(&:present?).map { |r| r.start_with?('#') ? r[1..] : r }.uniq
 
     antenna_tags.where(exclude: false).destroy_all
     Tag.find_or_create_by_names(tag_names).each do |tag|
       antenna_tags.create!(tag: tag, exclude: false)
     end
-    self[:any_tags] = !tag_names.any?
+    self[:any_tags] = tag_names.none?
   end
 
   def exclude_tags_raw
-    return '' if !exclude_tags.present?
+    return '' if exclude_tags.blank?
+
     Tag.where(id: exclude_tags).map(&:name).join("\n")
   end
 
@@ -128,7 +131,7 @@ class Antenna < ApplicationRecord
     return if exclude_tags_raw == raw
 
     tags = []
-    tag_names = raw.split(/\R/).filter { |r| r.present? }.map { |r| r.start_with?('#') ? r[1..-1] : r }.uniq
+    tag_names = raw.split(/\R/).filter(&:present?).map { |r| r.start_with?('#') ? r[1..] : r }.uniq
     Tag.find_or_create_by_names(tag_names).each do |tag|
       tags << tag.id
     end
@@ -142,24 +145,25 @@ class Antenna < ApplicationRecord
   def domains_raw=(raw)
     return if domains_raw == raw
 
-    domain_names = raw.split(/\R/).filter { |r| r.present? }.uniq
+    domain_names = raw.split(/\R/).filter(&:present?).uniq
 
     antenna_domains.where(exclude: false).destroy_all
     domain_names.each do |domain|
       antenna_domains.create!(name: domain, exclude: false)
     end
-    self[:any_domains] = !domain_names.any?
+    self[:any_domains] = domain_names.none?
   end
-  
+
   def exclude_domains_raw
-    return '' if !exclude_domains.present?
+    return '' if exclude_domains.blank?
+
     exclude_domains.join("\n")
   end
 
   def exclude_domains_raw=(raw)
     return if exclude_domains_raw == raw
 
-    domain_names = raw.split(/\R/).filter { |r| r.present? }.uniq
+    domain_names = raw.split(/\R/).filter(&:present?).uniq
     self[:exclude_domains] = domain_names
   end
 
@@ -170,7 +174,7 @@ class Antenna < ApplicationRecord
   def accounts_raw=(raw)
     return if accounts_raw == raw
 
-    account_names = raw.split(/\R/).filter { |r| r.present? }.map { |r| r.start_with?('@') ? r[1..-1] : r }.uniq
+    account_names = raw.split(/\R/).filter(&:present?).map { |r| r.start_with?('@') ? r[1..] : r }.uniq
 
     hit = false
     antenna_accounts.where(exclude: false).destroy_all
@@ -186,24 +190,22 @@ class Antenna < ApplicationRecord
   end
 
   def exclude_accounts_raw
-    return '' if !exclude_accounts.present?
+    return '' if exclude_accounts.blank?
+
     Account.where(id: exclude_accounts).map { |account| account.domain ? "@#{account.username}@#{account.domain}" : "@#{account.username}" }.join("\n")
   end
 
   def exclude_accounts_raw=(raw)
     return if exclude_accounts_raw == raw
 
-    account_names = raw.split(/\R/).filter { |r| r.present? }.map { |r| r.start_with?('@') ? r[1..-1] : r }.uniq
+    account_names = raw.split(/\R/).filter(&:present?).map { |r| r.start_with?('@') ? r[1..] : r }.uniq
 
     accounts = []
     account_names.each do |name|
       username, domain = name.split('@')
       account = Account.find_by(username: username, domain: domain)
-      if account.present?
-        accounts << account.id
-      end
+      accounts << account.id if account.present?
     end
     self[:exclude_accounts] = accounts
   end
-  
 end

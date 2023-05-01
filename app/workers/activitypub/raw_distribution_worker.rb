@@ -29,10 +29,10 @@ class ActivityPub::RawDistributionWorker
       end
     end
 
-    unless inboxes_for_misskey.empty?
-      ActivityPub::DeliveryWorker.push_bulk(inboxes_for_misskey, limit: 1_000) do |inbox_url|
-        [payload_for_misskey, source_account_id, inbox_url, options]
-      end
+    return if inboxes_for_misskey.empty?
+
+    ActivityPub::DeliveryWorker.push_bulk(inboxes_for_misskey, limit: 1_000) do |inbox_url|
+      [payload_for_misskey, source_account_id, inbox_url, options]
     end
   end
 

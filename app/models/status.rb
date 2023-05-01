@@ -61,7 +61,7 @@ class Status < ApplicationRecord
   belongs_to :account, inverse_of: :statuses
   belongs_to :in_reply_to_account, class_name: 'Account', optional: true
   belongs_to :conversation, optional: true
-  belongs_to :preloadable_poll, class_name: 'Poll', foreign_key: 'poll_id', optional: true
+  belongs_to :preloadable_poll, class_name: 'Poll', foreign_key: 'poll_id', optional: true, inverse_of: false
 
   belongs_to :thread, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :replies, optional: true
   belongs_to :reblog, foreign_key: 'reblog_of_id', class_name: 'Status', inverse_of: :reblogs, optional: true
@@ -343,7 +343,7 @@ class Status < ApplicationRecord
   end
 
   def generate_emoji_reactions_grouped_by_account
-    # TODO for serializer
+    # TODO: for serializer
     EmojiReaction.where(status_id: id).group_by(&:account)
   end
 
@@ -365,15 +365,17 @@ class Status < ApplicationRecord
 
   def compute_searchability
     # Fedibird code
-    #searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
+    # searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
     # Reactions only (generic: direct)
     return searchability if searchability
     return account.searchability if account.local? && account.searchability
+
     'private'
   end
 
   def compute_searchability_activitypub
     return 'unlisted' if public_unlisted_visibility? && public_searchability?
+
     compute_searchability
   end
 

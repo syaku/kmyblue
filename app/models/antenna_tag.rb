@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: antenna_tags
@@ -10,8 +12,6 @@
 #  updated_at :datetime         not null
 #
 class AntennaTag < ApplicationRecord
-
   belongs_to :antenna
   belongs_to :tag
-
 end

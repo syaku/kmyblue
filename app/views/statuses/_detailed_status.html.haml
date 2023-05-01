@@ -1,6 +1,5 @@
 :ruby
   grouped_emoji_reactions ||= Oj.load(status.status_stat&.emoji_reactions || '', mode: :strict) || []
-  p '=================== DEBUG ' + grouped_emoji_reactions.first&.to_s
 
 .detailed-status.detailed-status--flex{ class: "detailed-status-#{status.visibility}" }
   .p-author.h-card

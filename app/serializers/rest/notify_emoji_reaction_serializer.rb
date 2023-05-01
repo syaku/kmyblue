@@ -2,7 +2,7 @@
 
 class REST::NotifyEmojiReactionSerializer < ActiveModel::Serializer
   include RoutingHelper
-  
+
   attributes :name
 
   attribute :count, if: :count?

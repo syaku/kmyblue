@@ -1,7 +1,19 @@
+# frozen_string_literal: true
+
 class AddSomeToDomainBlocks < ActiveRecord::Migration[6.1]
   def change
-    add_column :domain_blocks, :reject_hashtag, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_straight_follow, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_new_follow, :boolean, null: false, default: false
+    change_table :domain_blocks, bulk: true do |t|
+      t.boolean :reject_hashtag, null: false, default: false
+      t.boolean :reject_straight_follow, null: false, default: false
+      t.boolean :reject_new_follow, null: false, default: false
+    end
+  end
+
+  def down
+    change_table :domain_blocks, bulk: true do |t|
+      t.remove :reject_hashtag
+      t.remove :reject_straight_follow
+      t.remove :reject_new_follow
+    end
   end
 end

@@ -458,14 +458,14 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     end
   end
 
-  SCAN_SEARCHABILITY_RE = /\[searchability:(public|followers|reactors|private)\]/.freeze
+  SCAN_SEARCHABILITY_RE = /\[searchability:(public|followers|reactors|private)\]/
 
   def searchability
     searchability = searchability_from_audience
 
     if searchability.nil?
       note = @account&.note
-      return nil unless note.present?
+      return nil if note.blank?
 
       searchability_bio = note.scan(SCAN_SEARCHABILITY_RE).first
       return nil unless searchability_bio
@@ -479,9 +479,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       searchability = :private  if searchability == 'reactors'
     end
 
-    visibility    = visibility_from_audience_with_silence
+    visibility = visibility_from_audience_with_silence
 
-    if searchability === visibility
+    if searchability == visibility
       searchability
     elsif [:public, :unlisted].include?(searchability) && [:public, :unlisted].include?(visibility) # unlisted is Followers only in kmyblue (generics: private)
       :unlisted

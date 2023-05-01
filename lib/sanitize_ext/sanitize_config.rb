@@ -59,7 +59,7 @@ class Sanitize
       cls = current_node['class'] || ''
 
       dot_pos = text.index('.')
-      return unless dot_pos.present? && dot_pos > 0 && dot_pos < text.size - 1
+      return unless dot_pos.present? && dot_pos.positive? && dot_pos < text.size - 1
 
       scheme = if href =~ Sanitize::REGEX_PROTOCOL
                  Regexp.last_match(1).downcase
@@ -67,8 +67,8 @@ class Sanitize
                  :relative
                end
 
-      if LINK_PROTOCOLS.include?(scheme) && href != text && href != 'https://' + text && !text.start_with?('#') && !text.start_with?('@')
-        current_node['class'] = cls + ' kmy-dangerous-link'
+      if LINK_PROTOCOLS.include?(scheme) && href != text && href != "https://#{text}" && !text.start_with?('#') && !text.start_with?('@')
+        current_node['class'] = "#{cls} kmy-dangerous-link"
         current_node.before(Nokogiri::XML::Text.new('⚠', current_node.document))
       end
     end

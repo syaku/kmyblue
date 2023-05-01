@@ -240,9 +240,9 @@ class ActivityPub::ProcessAccountService < BaseService
   end
 
   def searchability_from_audience
-    if audience_searchable_by.nil?
-      :private
-    elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
+    return :private if audience_searchable_by.nil?
+
+    if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
       :unlisted    # Followers only in kmyblue (generics: private)
@@ -259,7 +259,7 @@ class ActivityPub::ProcessAccountService < BaseService
 
   def subscribable(note)
     if subscribable_by.nil?
-      !note.include?('[subscribable:no]')
+      note.exclude?('[subscribable:no]')
     else
       subscribable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
     end

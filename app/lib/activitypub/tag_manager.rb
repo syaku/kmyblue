@@ -124,9 +124,7 @@ class ActivityPub::TagManager
       cc << COLLECTIONS[:public]
     end
 
-    cc = cc + cc_private_visibility(status)
-
-    cc
+    cc + cc_private_visibility(status)
   end
 
   def cc_for_misskey(status)
@@ -205,7 +203,7 @@ class ActivityPub::TagManager
   end
 
   def subscribable_by(account)
-    account.dissubscribable ? [] :  [COLLECTIONS[:public]]
+    account.dissubscribable ? [] : [COLLECTIONS[:public]]
   end
 
   def searchable_by(status)
@@ -213,10 +211,10 @@ class ActivityPub::TagManager
       case status.compute_searchability_activitypub
       when 'public'
         [COLLECTIONS[:public]]
-      when 'unlisted'  # Followers only in kmyblue (generics: private)
+      when 'unlisted' # Followers only in kmyblue (generics: private)
         [account_followers_url(status.account)]
-      when 'private'   # Reaction only in kmyblue (generics: direct)
-        []
+        # when 'private'   # Reaction only in kmyblue (generics: direct)
+        # []
       when 'limited'
         status.conversation_id.present? ? [uri_for(status.conversation)] : []
       else

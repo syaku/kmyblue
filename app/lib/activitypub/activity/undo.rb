@@ -121,9 +121,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
     if shortcode.present?
       emoji_tag = @object['tag'].is_a?(Array) ? @object['tag']&.first : @object['tag']
 
-      if emoji_tag.present? && emoji_tag['id'].present?
-        emoji = CustomEmoji.find_by(shortcode: shortcode, domain: @account.domain)
-      end
+      emoji = CustomEmoji.find_by(shortcode: shortcode, domain: @account.domain) if emoji_tag.present? && emoji_tag['id'].present?
 
       emoji_reaction = @original_status.emoji_reactions.where(account: @account, name: shortcode, custom_emoji: emoji).first
 
@@ -159,7 +157,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
   end
 
   def forward_for_undo_emoji_reaction
-    return unless @json['signature'].present?
+    return if @json['signature'].blank?
 
     ActivityPub::RawDistributionWorker.perform_async(Oj.dump(@json), @original_status.account.id, [@account.preferred_inbox_url])
   end

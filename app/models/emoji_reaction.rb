@@ -17,7 +17,7 @@
 class EmojiReaction < ApplicationRecord
   include Paginable
 
-  EMOJI_REACTION_LIMIT = 32767
+  EMOJI_REACTION_LIMIT = 32_767
   EMOJI_REACTION_PER_ACCOUNT_LIMIT = 3
 
   update_index('statuses', :status)
@@ -55,14 +55,14 @@ class EmojiReaction < ApplicationRecord
   end
 
   def status_same_emoji_reaction
-    if status && account && status.emoji_reactions.where(account: account).where(name: name).where(custom_emoji_id: custom_emoji_id).any?
-      raise Mastodon::ValidationError, I18n.t('reactions.errors.duplication')
-    end
+    return unless status && account && status.emoji_reactions.where(account: account).where(name: name).where(custom_emoji_id: custom_emoji_id).any?
+
+    raise Mastodon::ValidationError, I18n.t('reactions.errors.duplication')
   end
 
   def status_emoji_reactions_count
-    if status && account && status.emoji_reactions.where(account: account).count >= EMOJI_REACTION_PER_ACCOUNT_LIMIT
-      raise Mastodon::ValidationError, I18n.t('reactions.errors.limit_reached')
-    end
-   end
+    return unless status && account && status.emoji_reactions.where(account: account).count >= EMOJI_REACTION_PER_ACCOUNT_LIMIT
+
+    raise Mastodon::ValidationError, I18n.t('reactions.errors.limit_reached')
+  end
 end

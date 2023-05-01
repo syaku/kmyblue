@@ -111,17 +111,17 @@ class StatusPolicy < ApplicationPolicy
   def server_blocking_domain_of_status?(status)
     @domain_block ||= DomainBlock.find_by(domain: current_account&.domain)
     if @domain_block
-      unless status.account.user&.setting_send_without_domain_blocks
-        (@domain_block.reject_send_not_public_searchability && status.compute_searchability != 'public') ||
-        (@domain_block.reject_send_public_unlisted && status.public_unlisted_visibility?) ||
-        (@domain_block.reject_send_dissubscribable && status.account.dissubscribable) ||
+      if status.account.user&.setting_send_without_domain_blocks
         (@domain_block.detect_invalid_subscription && status.public_unlisted_visibility? && status.account.user&.setting_reject_public_unlisted_subscription) ||
-        (@domain_block.detect_invalid_subscription && status.public_visibility? && status.account.user&.setting_reject_unlisted_subscription) ||
-        (@domain_block.reject_send_media && status.with_media?) ||
-        (@domain_block.reject_send_sensitive && ((status.with_media? && status.sensitive) || status.spoiler_text?))
+          (@domain_block.detect_invalid_subscription && status.public_visibility? && status.account.user&.setting_reject_unlisted_subscription)
       else
-        (@domain_block.detect_invalid_subscription && status.public_unlisted_visibility? && status.account.user&.setting_reject_public_unlisted_subscription) ||
-        (@domain_block.detect_invalid_subscription && status.public_visibility? && status.account.user&.setting_reject_unlisted_subscription)
+        (@domain_block.reject_send_not_public_searchability && status.compute_searchability != 'public') ||
+          (@domain_block.reject_send_public_unlisted && status.public_unlisted_visibility?) ||
+          (@domain_block.reject_send_dissubscribable && status.account.dissubscribable) ||
+          (@domain_block.detect_invalid_subscription && status.public_unlisted_visibility? && status.account.user&.setting_reject_public_unlisted_subscription) ||
+          (@domain_block.detect_invalid_subscription && status.public_visibility? && status.account.user&.setting_reject_unlisted_subscription) ||
+          (@domain_block.reject_send_media && status.with_media?) ||
+          (@domain_block.reject_send_sensitive && ((status.with_media? && status.sensitive) || status.spoiler_text?))
       end
     else
       false

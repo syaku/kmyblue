@@ -120,8 +120,8 @@ class StatusReachFinder
     return @banned_domains if @banned_domains
 
     domains = banned_domains_of_status(@status)
-    domains = domains + banned_domains_of_status(@status.reblog) if @status.reblog? && @status.reblog.local?
-    return @banned_domains = domains.uniq
+    domains += banned_domains_of_status(@status.reblog) if @status.reblog? && @status.reblog.local?
+    @banned_domains = domains.uniq
   end
 
   def banned_domains_of_status(status)
@@ -142,8 +142,8 @@ class StatusReachFinder
     return @banned_domains_for_misskey if @banned_domains_for_misskey
 
     domains = banned_domains_for_misskey_of_status(@status)
-    domains = domains + banned_domains_for_misskey_of_status(@status.reblog) if @status.reblog? && @status.reblog.local?
-    return @banned_domains_for_misskey = domains.uniq
+    domains += banned_domains_for_misskey_of_status(@status.reblog) if @status.reblog? && @status.reblog.local?
+    @banned_domains_for_misskey = domains.uniq
   end
 
   def banned_domains_for_misskey_of_status(status)

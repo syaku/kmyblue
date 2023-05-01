@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatusEmojiReactionsGroupedByAccountObject
   def initialize(account, emoji_reactions)
     @account = account

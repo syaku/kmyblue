@@ -70,8 +70,8 @@ class PostStatusService < BaseService
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
     @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:force_visibility] && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
-    @searchability= searchability
-    @markdown     = !!@options[:markdown]
+    @searchability = searchability
+    @markdown     = @options[:markdown] || false
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
   rescue ArgumentError
@@ -98,7 +98,7 @@ class PostStatusService < BaseService
     @status = @account.statuses.new(status_attributes)
     process_mentions_service.call(@status, save_records: false)
     safeguard_mentions!(@status)
-    
+
     UpdateStatusExpirationService.new.call(@status)
 
     # The following transaction block is needed to wrap the UPDATEs to

@@ -1,6 +1,17 @@
+# frozen_string_literal: true
+
 class AddHiddenToDomainBlocks < ActiveRecord::Migration[6.1]
   def change
-    add_column :domain_blocks, :hidden, :boolean, null: false, default: false
-    add_column :domain_blocks, :hidden_anonymous, :boolean, null: false, default: false
+    change_table :domain_blocks, bulk: true do |t|
+      t.boolean :hidden, null: false, default: false
+      t.boolean :hidden_anonymous, null: false, default: false
+    end
+  end
+
+  def down
+    change_table :domain_blocks, bulk: true do |t|
+      t.remove :hidden
+      t.remove :hidden_anonymous
+    end
   end
 end

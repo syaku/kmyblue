@@ -168,28 +168,27 @@ class TextFormatter
   def markdownify(html)
     # not need filter_html because escape is already done
     @htmlobj ||= MyMarkdownHTML.new(
-        filter_html: false,
-        hard_wrap: true
-      )
+      filter_html: false,
+      hard_wrap: true
+    )
     @markdown ||= Redcarpet::Markdown.new(@htmlobj,
-        autolink: false,
-        tables: false,
-        disable_indented_code_blocks: false,
-        fenced_code_blocks: true,
-        strikethrough: true,
-        superscript: true,
-        underline: true,
-        highlight: false
-      )
+                                          autolink: false,
+                                          tables: false,
+                                          disable_indented_code_blocks: false,
+                                          fenced_code_blocks: true,
+                                          strikethrough: true,
+                                          superscript: true,
+                                          underline: true,
+                                          highlight: false)
     @markdown.render(html)
   end
 
   class MyMarkdownHTML < Redcarpet::Render::HTML
-    def link(link, title, content)
+    def link(_link, _title, _content)
       nil
     end
 
-    def block_code(code, language)
+    def block_code(code, _language)
       "<pre>#{process_program_code(code)}</pre>"
     end
 
@@ -197,15 +196,15 @@ class TextFormatter
       "<code>#{process_program_code(code)}</code>"
     end
 
-    def header(text, header_level)
+    def header(text, _header_level)
       "<p>#{text}</p>"
     end
 
     def underline(text)
-      text.include?(':') ? nil : '<u>' + text + '</u>'
+      text.include?(':') ? nil : "<u>#{text}</u>"
     end
 
-    def image(link, title, alt_text)
+    def image(_link, _title, _alt_text)
       nil
     end
 

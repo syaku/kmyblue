@@ -31,7 +31,7 @@ class StatusesIndex < Chewy::Index
         ),
       },
     },
-  }
+  }.freeze
 
   PRODUCTION_SETTINGS = {
     filter: {
@@ -72,9 +72,9 @@ class StatusesIndex < Chewy::Index
         split_mode: 'C',
         type: 'sudachi_tokenizer',
         discard_punctuation: 'true',
-      }
-    }
-  }
+      },
+    },
+  }.freeze
 
   settings index: { refresh_interval: '30s' }, analysis: Rails.env.development? ? DEVELOPMENT_SETTINGS : PRODUCTION_SETTINGS
 
