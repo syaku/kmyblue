@@ -13,6 +13,10 @@ class StatusReachFinder
     (reached_account_inboxes + followers_inboxes + relay_inboxes).uniq
   end
 
+  def inboxes_for_misskey
+    (reached_account_inboxes_for_misskey + followers_inboxes_for_misskey).uniq
+  end
+
   private
 
   def reached_account_inboxes
@@ -23,6 +27,14 @@ class StatusReachFinder
       []
     else
       Account.where(id: reached_account_ids).where.not(domain: banned_domains).inboxes
+    end
+  end
+
+  def reached_account_inboxes_for_misskey
+    if @status.reblog?
+      []
+    else
+      Account.where(id: reached_account_ids).where(domain: banned_domains_for_misskey).inboxes
     end
   end
 
@@ -70,11 +82,21 @@ class StatusReachFinder
 
   def followers_inboxes
     if @status.in_reply_to_local_account? && distributable?
-      @status.account.followers.or(@status.thread.account.followers.not_domain_blocked_by_account(@status.account)).inboxes
+      @status.account.followers.or(@status.thread.account.followers.not_domain_blocked_by_account(@status.account)).where.not(domain: banned_domains).inboxes
     elsif @status.direct_visibility? || @status.limited_visibility?
       []
     else
       @status.account.followers.where.not(domain: banned_domains).inboxes
+    end
+  end
+
+  def followers_inboxes_for_misskey
+    if @status.in_reply_to_local_account? && distributable?
+      @status.account.followers.or(@status.thread.account.followers.not_domain_blocked_by_account(@status.account)).where(domain: banned_domains_for_misskey).inboxes
+    elsif @status.direct_visibility? || @status.limited_visibility?
+      []
+    else
+      @status.account.followers.where(domain: banned_domains_for_misskey).inboxes
     end
   end
 
@@ -98,8 +120,8 @@ class StatusReachFinder
     return @banned_domains if @banned_domains
 
     domains = banned_domains_of_status(@status)
-    domains = domains + banned_domains_of_status(@status.reblog) if @status.reblog? && @status.reblog.status.local?
-    return @banned_domains = domains
+    domains = domains + banned_domains_of_status(@status.reblog) if @status.reblog? && @status.reblog.local?
+    return @banned_domains = domains.uniq
   end
 
   def banned_domains_of_status(status)
@@ -107,10 +129,25 @@ class StatusReachFinder
     blocks = blocks.or(DomainBlock.where(reject_send_not_public_searchability: true)) if status.compute_searchability != 'public'
     blocks = blocks.or(DomainBlock.where(reject_send_public_unlisted: true)) if status.public_unlisted_visibility?
     blocks = blocks.or(DomainBlock.where(reject_send_dissubscribable: true)) if status.account.dissubscribable
-    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.public_unlisted_visibility? && status.account.user&.setting_reject_public_unlisted_subscription
-    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.unlisted_visibility? && status.account.user&.setting_reject_unlisted_subscription
+    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.public_unlisted_visibility? && status.account.user&.reject_public_unlisted_subscription?
+    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.unlisted_visibility? && status.account.user&.reject_unlisted_subscription?
     blocks = blocks.or(DomainBlock.where(reject_send_media: true)) if status.with_media?
     blocks = blocks.or(DomainBlock.where(reject_send_sensitive: true)) if (status.with_media? && status.sensitive) || status.spoiler_text?
+    blocks.pluck(:domain).uniq
+  end
+
+  def banned_domains_for_misskey
+    return @banned_domains_for_misskey if @banned_domains_for_misskey
+
+    domains = banned_domains_for_misskey_of_status(@status)
+    domains = domains + banned_domains_for_misskey_of_status(@status.reblog) if @status.reblog? && @status.reblog.local?
+    return @banned_domains_for_misskey = domains.uniq
+  end
+
+  def banned_domains_for_misskey_of_status(status)
+    blocks = DomainBlock.where(domain: nil)
+    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.public_unlisted_visibility? && status.account.user&.reject_public_unlisted_subscription?
+    blocks = blocks.or(DomainBlock.where(detect_invalid_subscription: true)) if status.unlisted_visibility? && status.account.user&.reject_unlisted_subscription?
     blocks.pluck(:domain).uniq
   end
 end

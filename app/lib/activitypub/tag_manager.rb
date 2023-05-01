@@ -124,6 +124,25 @@ class ActivityPub::TagManager
       cc << COLLECTIONS[:public]
     end
 
+    cc = cc + cc_private_visibility(status)
+
+    cc
+  end
+
+  def cc_for_misskey(status)
+    case status.visibility
+    when 'unlisted'
+      status.account.user&.reject_unlisted_subscription? ? cc_private_visibility(status) : cc(status)
+    when 'public_unlisted'
+      status.account.user&.reject_public_unlisted_subscription? ? cc_private_visibility(status) : cc(status)
+    else
+      cc(status)
+    end
+  end
+
+  def cc_private_visibility(status)
+    cc = []
+
     unless status.direct_visibility? || status.limited_visibility?
       if status.account.silenced?
         # Only notify followers if the account is locally silenced

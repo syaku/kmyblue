@@ -23,15 +23,25 @@ class ActivityPub::RawDistributionWorker
   protected
 
   def distribute!
-    return if inboxes.empty?
+    return if inboxes.empty? && inboxes_for_misskey.empty?
 
     ActivityPub::DeliveryWorker.push_bulk(inboxes) do |inbox_url|
       [payload, source_account_id, inbox_url, options]
+    end
+
+    return if inboxes_for_misskey.empty?
+
+    ActivityPub::DeliveryWorker.push_bulk(inboxes_for_misskey) do |inbox_url|
+      [payload_for_misskey, source_account_id, inbox_url, options]
     end
   end
 
   def payload
     @json
+  end
+
+  def payload_for_misskey
+    payload
   end
 
   def source_account_id
@@ -40,6 +50,10 @@ class ActivityPub::RawDistributionWorker
 
   def inboxes
     @inboxes ||= @account.followers.inboxes - @exclude_inboxes
+  end
+
+  def inboxes_for_misskey
+    []
   end
 
   def options

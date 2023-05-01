@@ -320,6 +320,14 @@ class User < ApplicationRecord
     settings.default_searchability || 'public'
   end
 
+  def reject_public_unlisted_subscription?
+    settings.reject_public_unlisted_subscription
+  end
+
+  def reject_unlisted_subscription?
+    settings.reject_unlisted_subscription
+  end
+
   def allows_report_emails?
     settings.notification_emails['report']
   end
