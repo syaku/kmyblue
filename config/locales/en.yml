@@ -1490,6 +1490,7 @@ en:
     other: Other
     posting_defaults: Posting defaults
     public_timelines: Public timelines
+    stop_deliver: Stop delivering
   privacy_policy:
     title: Privacy Policy
   reactions:

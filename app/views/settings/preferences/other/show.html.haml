@@ -34,6 +34,8 @@
   .fields-group
     = f.input :setting_show_application, as: :boolean, wrapper: :with_label, recommended: true
 
+  %h4= t 'preferences.stop_deliver'
+
   .fields-group
     = f.input :setting_send_without_domain_blocks, as: :boolean, wrapper: :with_label
 
