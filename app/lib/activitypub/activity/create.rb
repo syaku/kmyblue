@@ -46,9 +46,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def create_status
     return reject_payload! if unsupported_object_type? || non_matching_uri_hosts?(@account.uri, object_uri) || tombstone_exists? || !related_to_local_activity?
-    return reject_payload! if reply_to_local? && reject_reply_to_local?
+    return reject_payload! if (reply_to_local? || reply_to_local_account?) && reject_reply_to_local?
 
-    with_lock("create:#{object_uri}") do
+    with_redis_lock("create:#{object_uri}") do
       return if delete_arrived_first?(object_uri) || poll_vote?
 
       @status = find_existing_status
@@ -137,7 +137,13 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     }
   end
 
-  def process_audience
+  def reply_to_local_account?
+    accounts_in_audience.any?(&:local?)
+  end
+
+  def accounts_in_audience
+    return @accounts_in_audience if @accounts_in_audience
+
     # Unlike with tags, there is no point in resolving accounts we don't already
     # know here, because silent mentions would only be used for local access control anyway
     accounts_in_audience = (audience_to + audience_cc).uniq.filter_map do |audience|
@@ -151,6 +157,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       accounts_in_audience.uniq!
     end
 
+    @accounts_in_audience = accounts_in_audience
+  end
+
+  def process_audience
     accounts_in_audience.each do |account|
       # This runs after tags are processed, and those translate into non-silent
       # mentions, which take precedence
@@ -322,7 +332,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     poll = replied_to_status.preloadable_poll
     already_voted = true
 
-    with_lock("vote:#{replied_to_status.poll_id}:#{@account.id}") do
+    with_redis_lock("vote:#{replied_to_status.poll_id}:#{@account.id}") do
       already_voted = poll.votes.where(account: @account).exists?
       poll.votes.create!(account: @account, choice: poll.options.index(@object['name']), uri: object_uri)
     end

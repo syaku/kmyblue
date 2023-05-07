@@ -1488,6 +1488,7 @@ ja:
     other: その他
     posting_defaults: デフォルトの投稿設定
     public_timelines: 公開タイムライン
+    stop_deliver: 配送停止
   privacy_policy:
     title: プライバシーポリシー
   reactions:

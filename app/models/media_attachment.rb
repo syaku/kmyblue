@@ -38,8 +38,8 @@ class MediaAttachment < ApplicationRecord
   LOCAL_STATUS_ATTACHMENT_MAX = 4
   ACTIVITYPUB_STATUS_ATTACHMENT_MAX = 16
 
-  enum type: { :image => 0, :gifv => 1, :video => 2, :unknown => 3, :audio => 4 }
-  enum processing: { :queued => 0, :in_progress => 1, :complete => 2, :failed => 3 }, _prefix: true
+  enum type: { image: 0, gifv: 1, video: 2, unknown: 3, audio: 4 }
+  enum processing: { queued: 0, in_progress: 1, complete: 2, failed: 3 }, _prefix: true
 
   MAX_DESCRIPTION_LENGTH = 1_500
 
@@ -139,7 +139,7 @@ class MediaAttachment < ApplicationRecord
       convert_options: {
         output: {
           'loglevel' => 'fatal',
-          vf: 'scale=\'min(400\, iw):min(400\, ih)\':force_original_aspect_ratio=decrease',
+          :vf => 'scale=\'min(400\, iw):min(400\, ih)\':force_original_aspect_ratio=decrease',
         }.freeze,
       }.freeze,
       format: 'png',
@@ -172,6 +172,8 @@ class MediaAttachment < ApplicationRecord
   THUMBNAIL_STYLES = {
     original: IMAGE_STYLES[:small].freeze,
   }.freeze
+
+  DEFAULT_STYLES = [:original].freeze
 
   GLOBAL_CONVERT_OPTIONS = {
     all: '-quality 90 +profile "!icc,*" +set modify-date +set create-date',
@@ -280,11 +282,11 @@ class MediaAttachment < ApplicationRecord
     full_asset_url(file.url(:original))
   end
 
-  after_commit :enqueue_processing, on: :create
-  after_commit :reset_parent_cache, on: :update
-
   before_create :set_unknown_type
   before_create :set_processing
+
+  after_commit :enqueue_processing, on: :create
+  after_commit :reset_parent_cache, on: :update
 
   after_post_process :set_meta
 

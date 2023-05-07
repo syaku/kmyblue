@@ -37,16 +37,12 @@ class AccountStatusesFilter
   private
 
   def initial_scope
-    if suspended? || (domain_block&.reject_send_dissubscribable && @account.dissubscribable)
-      Status.none
-    elsif domain_block&.reject_send_media
+    if (suspended? || (domain_block&.reject_send_dissubscribable && @account.dissubscribable)) || domain_block&.reject_send_media || blocked?
       Status.none
     elsif anonymous?
       account.statuses.where(visibility: %i(public unlisted public_unlisted))
     elsif author?
       account.statuses.all # NOTE: #merge! does not work without the #all
-    elsif blocked?
-      Status.none
     else
       filtered_scope
     end
