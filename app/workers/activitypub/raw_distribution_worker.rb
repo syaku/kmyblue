@@ -23,16 +23,16 @@ class ActivityPub::RawDistributionWorker
   protected
 
   def distribute!
-    unless inboxes.empty?
-      ActivityPub::DeliveryWorker.push_bulk(inboxes, limit: 1_000) do |inbox_url|
-        [payload, source_account_id, inbox_url, options]
+    unless inboxes_for_misskey.empty?
+      ActivityPub::DeliveryWorker.push_bulk(inboxes_for_misskey, limit: 1_000) do |inbox_url|
+        [payload_for_misskey, source_account_id, inbox_url, options]
       end
     end
 
-    return if inboxes_for_misskey.empty?
+    return if inboxes.empty?
 
-    ActivityPub::DeliveryWorker.push_bulk(inboxes_for_misskey, limit: 1_000) do |inbox_url|
-      [payload_for_misskey, source_account_id, inbox_url, options]
+    ActivityPub::DeliveryWorker.push_bulk(inboxes, limit: 1_000) do |inbox_url|
+      [payload, source_account_id, inbox_url, options]
     end
   end
 
