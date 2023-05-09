@@ -40,7 +40,7 @@ class Antenna < ApplicationRecord
   validate :list_owner
 
   def list_owner
-    raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if list.present? && list.account != account
+    raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if !list_id.zero? && list.present? && list.account != account
   end
 
   def enabled?
