@@ -118,6 +118,7 @@ class FanOutOnWriteService < BaseService
 
   def deliver_to_antennas!
     lists = []
+    homes = []
     tag_ids = @status.tags.pluck(:id)
     domain = @account.domain || Rails.configuration.x.local_domain
 
@@ -142,14 +143,25 @@ class FanOutOnWriteService < BaseService
         next if antenna.exclude_domains&.include?(domain)
         next if antenna.exclude_tags&.any? { |tag_id| tag_ids.include?(tag_id) }
 
-        lists << antenna.list_id
+        if antenna.list_id.zero?
+          homes << antenna.account_id
+        else
+          lists << antenna.list_id
+        end
       end
     end
     lists = lists.uniq
+    homes = homes.uniq
 
     if lists.any?
       FeedInsertWorker.push_bulk(lists) do |list|
         [@status.id, list, 'list', { 'update' => update? }]
+      end
+    end
+
+    if homes.any?
+      FeedInsertWorker.push_bulk(homes) do |home|
+        [@status.id, home, 'home', { 'update' => update? }]
       end
     end
   end
