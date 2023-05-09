@@ -13,7 +13,7 @@ import StatusList from 'mastodon/components/status_list';
 import Column from 'mastodon/features/ui/components/column';
 
 const messages = defineMessages({
-  heading: { id: 'column.emoji_reactions', defaultMessage: 'Emoji Reactions' },
+  heading: { id: 'column.emoji_reactions', defaultMessage: 'Stamps' },
 });
 
 const mapStateToProps = state => ({

@@ -411,8 +411,8 @@ ja:
       private_comment_hint: このコメントは同じサーバーのモデレーターも閲覧できます。
       public_comment: コメント (公開)
       public_comment_hint: ドメインブロックの公開を有効にしている場合、このコメントも公開されます。
-      reject_favourite: お気に入り、絵文字リアクションを拒否
-      reject_favourite_hint: 今後のお気に入り、絵文字リアクションを拒否します。停止とは無関係です
+      reject_favourite: お気に入り、スタンプを拒否
+      reject_favourite_hint: 今後のお気に入り、スタンプを拒否します。停止とは無関係です
       reject_hashtag: ハッシュタグを拒否
       reject_hashtag_hint: ハッシュタグで検索できなくなり、トレンドにも影響しなくなります。停止とは無関係です
       reject_media: メディアファイルを拒否
@@ -1418,9 +1418,9 @@ ja:
       subject: "%{name}さんにお気に入りに登録されました"
       title: 新たなお気に入り登録
     emoji_reaction:
-      body: "%{name}さんに絵文字リアクションされた、あなたの投稿があります:"
-      subject: "%{name}さんに絵文字リアクションされました"
-      title: 新たな絵文字リアクション
+      body: "%{name}さんにスタンプをつけられた、あなたの投稿があります:"
+      subject: "%{name}さんにスタンプをつけられました"
+      title: 新たなスタンプ
     follow:
       body: "%{name}さんにフォローされています！"
       subject: "%{name}さんにフォローされています"
@@ -1674,8 +1674,8 @@ ja:
     keep_polls_hint: アンケート付きの投稿を削除せずに残します
     keep_self_bookmark: ブックマークした投稿を保持
     keep_self_bookmark_hint: 自分自身でブックマークした投稿を削除せずに残します
-    keep_self_emoji: 絵文字リアクションした投稿を保持
-    keep_self_emoji_hint: 自分自身で絵文字リアクションした投稿を削除せずに残します
+    keep_self_emoji: スタンプをつけた投稿を保持
+    keep_self_emoji_hint: 自分自身でスタンプをつけた投稿を削除せずに残します
     keep_self_fav: お気に入りに登録した投稿を保持
     keep_self_fav_hint: 自分自身でお気に入りに登録した投稿を削除せずに残します
     min_age:
@@ -1688,8 +1688,8 @@ ja:
       '63113904': 2年
       '7889238': 3ヶ月
     min_age_label: 投稿を保持する期間
-    min_emojis: 絵文字リアクションの基準値
-    min_emojis_hint: この数以上、絵文字リアクションされた投稿を削除せずに残します。空白にしておくと、数に関わらず投稿を削除します。
+    min_emojis: スタンプの基準値
+    min_emojis_hint: この数以上、スタンプをつけられた投稿を削除せずに残します。空白にしておくと、数に関わらず投稿を削除します。
     min_favs: お気に入りの基準値
     min_favs_hint: この数以上、お気に入り登録された投稿を削除せずに残します。空白にしておくと、お気に入りの数に関わらず投稿を削除します。
     min_reblogs: ブーストの基準値
