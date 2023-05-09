@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import IconButton from '../../../components/icon_button';
+import { IconButton } from '../../../components/icon_button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import EmojiPickerDropdown from '../../compose/containers/emoji_picker_dropdown_container';
