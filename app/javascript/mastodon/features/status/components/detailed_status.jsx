@@ -283,14 +283,18 @@ class DetailedStatus extends ImmutablePureComponent {
       emojiReactionsLink = (
         <Link to={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}/emoji_reactions`} className='detailed-status__link'>
           <Icon id='smile-o' />
-          <FormattedMessage id='status.emoji' defaultMessage='Emoji' />
+          <span className='detailed-status__favorites'>
+            <AnimatedNumber value={status.get('emoji_reactions_count')} />
+          </span>
         </Link>
       );
     } else {
       emojiReactionsLink = (
         <a href={`/interact/${status.get('id')}?type=emoji_reactions`} className='detailed-status__link' onClick={this.handleModalLink}>
           <Icon id='smile-o' />
-          <FormattedMessage id='status.emoji' defaultMessage='Emoji' />
+          <span className='detailed-status__favorites'>
+            <AnimatedNumber value={status.get('emoji_reactions_count')} />
+          </span>
         </a>
       );
     }
