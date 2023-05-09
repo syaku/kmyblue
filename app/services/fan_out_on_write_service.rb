@@ -134,6 +134,8 @@ class FanOutOnWriteService < BaseService
     antennas = Antenna.where(id: antennas.select(:id))
     antennas = antennas.left_joins(:antenna_tags).where(any_tags: true).or(Antenna.left_joins(:antenna_tags).where(antenna_tags: { tag_id: tag_ids }))
 
+    antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
+
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next unless antenna.enabled?
