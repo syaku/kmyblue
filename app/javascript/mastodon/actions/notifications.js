@@ -13,7 +13,7 @@ import { defineMessages } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { usePendingItems as preferPendingItems } from 'mastodon/initial_state';
-import compareId from 'mastodon/compare_id';
+import { compareId } from 'mastodon/compare_id';
 import { requestNotificationPermission } from '../utils/notifications';
 import { STATUS_EMOJI_REACTION_UPDATE } from './statuses';
 
