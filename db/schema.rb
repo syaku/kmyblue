@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_30_110057) do
+ActiveRecord::Schema.define(version: 2023_05_09_045358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1256,7 +1256,6 @@ ActiveRecord::Schema.define(version: 2023_04_30_110057) do
   add_foreign_key "antenna_tags", "antennas", on_delete: :cascade
   add_foreign_key "antenna_tags", "tags", on_delete: :cascade
   add_foreign_key "antennas", "accounts", on_delete: :cascade
-  add_foreign_key "antennas", "lists", on_delete: :cascade
   add_foreign_key "appeals", "account_warnings", on_delete: :cascade
   add_foreign_key "appeals", "accounts", column: "approved_by_account_id", on_delete: :nullify
   add_foreign_key "appeals", "accounts", column: "rejected_by_account_id", on_delete: :nullify

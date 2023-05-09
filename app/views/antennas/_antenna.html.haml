@@ -13,7 +13,7 @@
           = t('antennas.index.expires_in', distance: distance_of_time_in_words_to_now(antenna.expires_at))
 
   .listname
-    = antenna.list.title
+    = antenna.list&.title || '[Insert to Home]'
 
   .filters-list__item__permissions
     %ul.permissions-list

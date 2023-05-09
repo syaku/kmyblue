@@ -29,7 +29,7 @@ class Antenna < ApplicationRecord
   has_many :antenna_accounts, inverse_of: :antenna, dependent: :destroy
 
   belongs_to :account
-  belongs_to :list
+  belongs_to :list, optional: true
 
   scope :all_keywords, -> { where(any_keywords: true) }
   scope :all_domains, -> { where(any_domains: true) }
@@ -40,7 +40,7 @@ class Antenna < ApplicationRecord
   validate :list_owner
 
   def list_owner
-    raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if list.account != account
+    raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if list.present? && list.account != account
   end
 
   def enabled?

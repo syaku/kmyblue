@@ -9,7 +9,7 @@
 
 .fields-row
   .fields-group.fields-row__column.fields-row__column-6
-    = f.input :list, collection: lists, wrapper: :with_label, label_method: lambda { |list| list.title }, label: t('antennas.edit.list'), selected: f.object.list&.id, hint: false
+    = f.input :list, collection: lists, wrapper: :with_label, label_method: lambda { |list| list.title }, label: t('antennas.edit.list'), selected: f.object.list&.id, hint: false, include_blank: '[Insert to Home]'
   .fields-group.fields-row__column.fields-row__column-6
     = f.input :available, wrapper: :with_label, label: t('antennas.edit.available'), hint: false
 
