@@ -128,7 +128,6 @@ class FanOutOnWriteService < BaseService
     antennas = antennas.left_joins(:antenna_domains).where(any_domains: true).or(Antenna.left_joins(:antenna_domains).where(antenna_domains: { name: domain }))
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
     antennas = antennas.where(stl: true) if @account.dissubscribable
-    antennas = antennas.where.not(account: @account.blocking)
 
     antennas = Antenna.where(id: antennas.select(:id))
     antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.left_joins(:antenna_accounts).where(antenna_accounts: { account: @account }))
