@@ -117,6 +117,8 @@ class FanOutOnWriteService < BaseService
   end
 
   def deliver_to_antennas!
+    return if @account.dissubscribable && @status.reblog?
+
     lists = []
     homes = []
     tag_ids = @status.tags.pluck(:id)
