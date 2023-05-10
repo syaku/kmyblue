@@ -93,4 +93,6 @@ const reducers = {
   followed_tags,
 };
 
-export default combineReducers(reducers);
+const rootReducer = combineReducers(reducers);
+
+export { rootReducer };
