@@ -43,6 +43,10 @@ module HasUserSettings
     settings['send_without_domain_blocks']
   end
 
+  def setting_stop_emoji_reaction_streaming
+    settings['stop_emoji_reaction_streaming']
+  end
+
   def setting_unfollow_modal
     settings['web.unfollow_modal']
   end

@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 class AddRejectFavouriteToDomainBlocks < ActiveRecord::Migration[6.1]
   def change
-    add_column :domain_blocks, :reject_favourite, :boolean, null: false, default: false
-    add_column :domain_blocks, :reject_reply, :boolean, null: false, default: false
+    change_table :domain_blocks, bulk: true do |t|
+      t.boolean :reject_favourite, null: false, default: false
+      t.boolean :reject_reply, null: false, default: false
+    end
   end
 end

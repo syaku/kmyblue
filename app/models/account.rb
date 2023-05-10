@@ -53,7 +53,6 @@
 #  group_allow_private_message   :boolean
 #  searchability                 :integer          default("private"), not null
 #  dissubscribable               :boolean          default(FALSE), not null
-#  stop_emoji_reaction_streaming :boolean          default(FALSE)
 #
 
 class Account < ApplicationRecord

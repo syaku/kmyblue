@@ -977,6 +977,8 @@ Rails/ThreeStateBooleanColumn:
     - 'db/migrate/20230314081013_add_group_allow_private_message_to_accounts.rb'
     - 'db/migrate/20230412005311_add_markdown_to_statuses.rb'
     - 'db/migrate/20230412073021_add_markdown_to_status_edits.rb'
+    - 'db/migrate/20230428111230_add_emoji_reaction_streaming_to_accounts.rb'
+    - 'db/migrate/20230510004621_remove_stop_emoji_reaction_streaming_from_accounts.rb'
 
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb

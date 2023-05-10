@@ -12,12 +12,12 @@ class DeliveryEmojiReactionWorker
     status = Status.find(status_id.to_i)
 
     if status.present?
-      scope_status(status).where.not(stop_emoji_reaction_streaming: true).find_each do |account|
-        redis.publish("timeline:#{account.id}", payload_json) if redis.exists?("subscribed:timeline:#{account.id}")
+      scope_status(status).includes(:user).find_each do |account|
+        redis.publish("timeline:#{account.id}", payload_json) if !account.user&.setting_stop_emoji_reaction_streaming && redis.exists?("subscribed:timeline:#{account.id}")
       end
 
-      if !([:public, :unlisted, :public_unlisted].include?(status.visibility.to_sym)) && status.account_id != my_account_id &&
-          redis.exists?("subscribed:timeline:#{status.account_id}")
+      if [:public, :unlisted, :public_unlisted].exclude?(status.visibility.to_sym) && status.account_id != my_account_id &&
+         redis.exists?("subscribed:timeline:#{status.account_id}")
         redis.publish("timeline:#{status.account_id}", payload_json)
       end
     end

@@ -20,6 +20,7 @@ class UserSettings
   setting :reject_public_unlisted_subscription, default: false
   setting :reject_unlisted_subscription, default: false
   setting :send_without_domain_blocks, default: false
+  setting :stop_emoji_reaction_streaming, default: false
 
   namespace :web do
     setting :crop_images, default: true
