@@ -23,6 +23,7 @@
 #  exclude_accounts :jsonb
 #  exclude_tags     :jsonb
 #  stl              :boolean          default(FALSE), not null
+#  ignore_reblog    :boolean          default(FALSE), not null
 #
 class Antenna < ApplicationRecord
   include Expireable

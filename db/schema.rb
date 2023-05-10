@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_10_004621) do
+ActiveRecord::Schema.define(version: 2023_05_10_033040) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -308,12 +308,14 @@ ActiveRecord::Schema.define(version: 2023_05_10_004621) do
     t.jsonb "exclude_accounts"
     t.jsonb "exclude_tags"
     t.boolean "stl", default: false, null: false
+    t.boolean "ignore_reblog", default: false, null: false
     t.index ["account_id"], name: "index_antennas_on_account_id"
     t.index ["any_accounts"], name: "index_antennas_on_any_accounts"
     t.index ["any_domains"], name: "index_antennas_on_any_domains"
     t.index ["any_keywords"], name: "index_antennas_on_any_keywords"
     t.index ["any_tags"], name: "index_antennas_on_any_tags"
     t.index ["available"], name: "index_antennas_on_available"
+    t.index ["ignore_reblog"], name: "index_antennas_on_ignore_reblog"
     t.index ["list_id"], name: "index_antennas_on_list_id"
     t.index ["stl"], name: "index_antennas_on_stl"
   end
@@ -1483,4 +1485,4 @@ ActiveRecord::Schema.define(version: 2023_05_10_004621) do
 
 end
 
-#rubocop:enable all
+# rubocop:enable all
