@@ -49,7 +49,7 @@ class FanOutOnWriteService < BaseService
     when :public, :unlisted, :public_unlisted, :private
       deliver_to_all_followers!
       deliver_to_lists!
-      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym) && !@status.account.dissubscribable
+      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym)
     when :limited
       deliver_to_mentioned_followers!
     else
@@ -125,6 +125,7 @@ class FanOutOnWriteService < BaseService
     antennas = Antenna.availables
     antennas = antennas.left_joins(:antenna_domains).where(any_domains: true).or(Antenna.left_joins(:antenna_domains).where(antenna_domains: { name: domain }))
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
+    antennas = antennas.where(stl: true) if @account.dissubscribable
     antennas = antennas.where.not(account: @account.blocking)
 
     antennas = Antenna.where(id: antennas.select(:id))

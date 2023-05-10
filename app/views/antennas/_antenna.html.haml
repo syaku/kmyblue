@@ -65,7 +65,10 @@
   .announcements-list__item__action-bar
     .announcements-list__item__meta
       - if antenna.enabled_config_raws?
-        = t('antennas.index.contexts', contexts: antenna.context.map { |context| I18n.t("antennas.contexts.#{context}") }.join(', '))
+        - if antenna.stl
+          = t('antennas.index.stl')
+        - else
+          = t('antennas.index.contexts', contexts: antenna.context.map { |context| I18n.t("antennas.contexts.#{context}") }.join(', '))
       - else
         = t('antennas.errors.empty_contexts')
 

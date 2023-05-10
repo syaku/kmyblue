@@ -1028,6 +1028,7 @@ ja:
       expires_on: 有効期限 %{date}
       keywords:
         other: "%{count}件のキーワード"
+      stl: STLモードが適用されます。購読拒否設定は無視されます。
       tags:
         other: "%{count}件のタグ"
       title: アンテナ

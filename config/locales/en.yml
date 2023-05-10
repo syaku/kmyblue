@@ -1031,6 +1031,7 @@ en:
       empty: You have no antennas.
       expires_in: Expires in %{distance}
       expires_on: Expires on %{date}
+      stl: This antenna is in STL mode, ignoring reject-subscription settings.
       title: Antennas
     new:
       save: Save new antenna
