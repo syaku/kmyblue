@@ -219,6 +219,7 @@ en:
         setting_display_media_show_all: Show all
         setting_expand_spoilers: Always expand posts marked with content warnings
         setting_hide_network: Hide your social graph
+        setting_noai: Set noai meta tags
         setting_noindex: Opt-out of search engine indexing
         setting_public_post_to_unlisted: Convert public post to public unlisted if not using Web app
         setting_reduce_motion: Reduce motion in animations

@@ -15,6 +15,7 @@ class REST::AccountSerializer < ActiveModel::Serializer
   attribute :suspended, if: :suspended?
   attribute :silenced, key: :limited, if: :silenced?
   attribute :noindex, if: :local?
+  attribute :noai, if: :local?
 
   attribute :memorial, if: :memorial?
 
@@ -144,6 +145,10 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   def noindex
     object.user_prefers_noindex?
+  end
+
+  def noai
+    object.user&.setting_noai
   end
 
   delegate :suspended?, :silenced?, :local?, :memorial?, to: :object

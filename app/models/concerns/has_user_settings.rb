@@ -71,6 +71,10 @@ module HasUserSettings
     settings['noindex']
   end
 
+  def setting_noai
+    settings['noai']
+  end
+
   def setting_theme
     settings['theme']
   end

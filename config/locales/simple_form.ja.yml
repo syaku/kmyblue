@@ -61,6 +61,7 @@ ja:
         setting_display_media_show_all: メディアを常に表示する
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
         setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大8個まで表示します。kmyblueからアップロードはできません
+        setting_noai: AI学習への利用を禁止するメタタグをプロフィールページに追加します。ただし実効性があるとは限りません
         setting_noindex: 公開プロフィールおよび各投稿ページに影響します
         setting_public_post_to_unlisted: 未対応のサードパーティアプリからもローカル公開で投稿できますが、公開投稿はWeb以外できなくなります
         setting_reject_unlisted_subscription: Misskeyやそのフォーク(Calckeyなど)は、フォローしていないアカウントの「未収載」投稿を **購読・検索** することができます。これはkmyblueの挙動と異なります。そのようなサーバーのうち管理人が指定したものに、指定した公開範囲の投稿を「フォロワーのみ」として配送します。ただし構造上、完璧な対応は困難でたまに未収載として配信されること、ご理解ください
@@ -224,6 +225,7 @@ ja:
         setting_display_media_show_all: 表示
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
         setting_hide_network: 繋がりを隠す
+        setting_noai: 自分のコンテンツのAI学習利用に対して不快感を表明する
         setting_noindex: 検索エンジンによるインデックスを拒否する
         setting_public_post_to_unlisted: サードパーティアプリから投稿するとき、公開投稿をローカル公開に変更する
         setting_reduce_motion: アニメーションの動きを減らす
