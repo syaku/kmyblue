@@ -142,6 +142,7 @@ ja:
       webhook:
         events: 送信するイベントを選択
         url: イベントの送信先
+    kmyblue: kmyblue
     labels:
       account:
         fields:

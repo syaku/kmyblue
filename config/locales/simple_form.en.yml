@@ -136,6 +136,7 @@ en:
       webhook:
         events: Select events to send
         url: Where events will be sent to
+    kmyblue: kmyblue
     labels:
       account:
         fields:
