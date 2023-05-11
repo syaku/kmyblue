@@ -3,8 +3,11 @@
 
 - content_for :header_tags do
   - if @account.user_prefers_noindex?
-    %meta{ name: 'robots', content: 'noindex, noarchive' }/
+    %meta{ name: 'robots', content: 'noindex, noarchive, noai, noimageai' }/
+  - else
+    %meta{ name: 'robots', content: 'noai, noimageai' }/
 
+  %meta{ name: 'CCBot', content: 'nofollow' }
   %link{ rel: 'alternate', type: 'application/rss+xml', href: @rss_url }/
   %link{ rel: 'alternate', type: 'application/activity+json', href: ActivityPub::TagManager.instance.uri_for(@account) }/
 

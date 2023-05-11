@@ -1,6 +1,7 @@
 - content_for :header_tags do
   - unless request.path == '/'
-    %meta{ name: 'robots', content: 'noindex' }/
+    %meta{ name: 'robots', content: 'noindex, noai, noimageai' }/
+  %meta{ name: 'CCBot', content: 'nofollow' }
 
   = render partial: 'shared/og'
 
