@@ -338,7 +338,7 @@ class MediaGallery extends React.PureComponent {
     }
 
     return (
-      <div className='media-gallery' style={style} ref={this.handleRef}>
+      <div className={classNames('media-gallery', { 'media-gallery--row3': size === 5 || size === 6, 'media-gallery--row4': size === 7 || size === 8 })} style={style} ref={this.handleRef}>
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible && !uncached, 'spoiler-button--click-thru': uncached })}>
           {spoilerButton}
         </div>

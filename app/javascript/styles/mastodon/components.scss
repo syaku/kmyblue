@@ -6509,6 +6509,14 @@ a.status-card.compact:hover {
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
   gap: 2px;
+
+  &--row3 {
+    grid-template-rows: 34% 33% 33%;
+  }
+
+  &--row4 {
+    grid-template-rows: 25% 25% 25% 25%;
+  }
 }
 
 .media-gallery__item {
