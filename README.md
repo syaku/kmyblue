@@ -1,111 +1,98 @@
-<h1><picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./lib/assets/wordmark.dark.png?raw=true">
-  <source media="(prefers-color-scheme: light)" srcset="./lib/assets/wordmark.light.png?raw=true">
-  <img alt="Mastodon" src="./lib/assets/wordmark.light.png?raw=true" height="34">
-</picture></h1>
+# kmyblue
 
-[![GitHub release](https://img.shields.io/github/release/mastodon/mastodon.svg)][releases]
-[![Ruby Testing](https://github.com/mastodon/mastodon/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/mastodon/mastodon/actions/workflows/test-ruby.yml)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/mastodon/localized.svg)][crowdin]
+kmyblueは[Mastodon](https://github.com/mastodon/mastodon)のフォークです。創作作家のためのMastodonを目指して開発しました。
 
-[releases]: https://github.com/mastodon/mastodon/releases
-[crowdin]: https://crowdin.com/project/mastodon
+kmyblueはフォーク名であり、同時に[サーバー名](https://kmy.blue)でもあります。以下は特に記述がない限り、フォークとしてのkmyblueをさします。
 
-Mastodon is a **free, open-source social network server** based on ActivityPub where users can follow friends and discover new ones. On Mastodon, users can publish anything they want: links, pictures, text, video. All Mastodon servers are interoperable as a federated network (users on one server can seamlessly communicate with users from another one, including non-Mastodon software that implements ActivityPub!)
+kmyblueはAGPLライセンスで公開されているため、どなたでも自由にフォークし、このソースコードを元に自分でサーバーを立てて公開することができます。またActivityPubに参加することもできます。ただしkmyblueにおいてテストコードは飾りでしかないため、不具合が発生しても自己責任になります。既知のバグもいくつかありますし、直す予定のないものも含まれます。
 
-Click below to **learn more** in a video:
+テストコードは飾りですが、Lintは動いています。
 
-[![Screenshot](https://blog.joinmastodon.org/2018/06/why-activitypub-is-the-future/ezgif-2-60f1b00403.gif)][youtube_demo]
+## kmyblueの強み
 
-[youtube_demo]: https://www.youtube.com/watch?v=IPSbNdBmWKE
+### 本家Mastodonへの積極的追従
+kmyblueは、いくつかのフォークと異なり、追加機能を控えめにする代わりに本家Mastodonに積極的に追従を行います。バージョン4には4のよさがありますが、技術的に可能である限り、バージョン5へのアップグレードもやぶさかではありません。  
+kmyblueの追加機能そのままに、Mastodonの新機能も利用できるよう調整を行います。
 
-## Navigation
+### 絵文字リアクション対応
+kmyblueは絵文字リアクションに対応しているフォークの１つです。絵文字リアクションはMisskey標準搭載の機能で、需要が高い機能である割には、サーバーに負荷がかかるため本家Mastodonには搭載されていません。
 
-- [Project homepage 🐘](https://joinmastodon.org)
-- [Support the development via Patreon][patreon]
-- [View sponsors](https://joinmastodon.org/sponsors)
-- [Blog](https://blog.joinmastodon.org)
-- [Documentation](https://docs.joinmastodon.org)
-- [Roadmap](https://joinmastodon.org/roadmap)
-- [Official Docker image](https://github.com/mastodon/mastodon/pkgs/container/mastodon)
-- [Browse Mastodon servers](https://joinmastodon.org/communities)
-- [Browse Mastodon apps](https://joinmastodon.org/apps)
+## kmyblueのブランチ
 
-[patreon]: https://www.patreon.com/mastodon
+- **main** - 現在はメンテナンスされていません
+- **kb_development** - 現在kmyblue本体で使われているソースコードです
+- **kb_migration** - 本家Mastodonへの追従を目的としたブランチです。`kb_development`上で開発を進めているときに利用します
+- **kb_migration_development** - 本家Mastodonへ追従し、かつその上で開発するときに使うブランチです。最新の本家コードでリファクタリングが行われ、`kb_development`と`kb_migration`の互換性の維持が困難になったときに利用します。ここで追加された機能は原則、本家Mastodonのバージョンアップと同時に`kb_development`に反映されます
 
-## Features
+## 本家Mastodonからの追加機能
 
-<img src="/app/javascript/images/elephant_ui_working.svg?raw=true" align="right" width="30%" />
+kmyblueは、本家Mastodonにいくつかの改造を加えています。以下に示します。
 
-### No vendor lock-in: Fully interoperable with any conforming platform
+### ローカル公開
+未収載を拡張した公開範囲です。本来のみ収載の公開範囲に加えて、自分のサーバーのローカルタイムラインに掲載されます。他のサーバーの連合タイムラインに載せたくない、自分と属性の近い人達が集まったサーバーと自分のフォロワーにだけ見せたい投稿に用います。
 
-It doesn't have to be Mastodon; whatever implements ActivityPub is part of the social network! [Learn more](https://blog.joinmastodon.org/2018/06/why-activitypub-is-the-future/)
+### スタンプ（絵文字リアクション）
+kmyblue内での呼称はスタンプですが、一般には絵文字リアクションと呼ばれる機能です。自分や他人の投稿に絵文字をつけることができます。kmyblueのスタンプはFedibirdの絵文字リアクションと互換性のあるAPIを持っているため、Fedibird対応アプリでkmyblueのスタンプ機能を利用できる場合があります。
 
-### Real-time, chronological timeline updates
+kmyblueは、１つのアカウントが１つの投稿に複数のスタンプ（絵文字リアクション）を最大３個までつけることが可能です。また、下記機能にも対応しています。
 
-Updates of people you're following appear in real-time in the UI via WebSockets. There's a firehose view as well!
+- 他のサーバーのアカウントがつけたスタンプに相乗りする
+- 自分がスタンプを付けた投稿一覧を見る
+- トレンド投稿の選定条件にスタンプを付けたアカウントの数を考慮する
+- 投稿の自動削除で削除条件にスタンプの数を指定する
 
-### Media attachments like images and short videos
+kmyblueは、他のサーバーの投稿にスタンプをつけることで、相手サーバーに情報を送信します。ただしスタンプに対応していないサーバーにおいては、通知されることはありません。
 
-Upload and view images and WebM/MP4 videos attached to the updates. Videos with no audio track are treated like GIFs; normal videos loop continuously!
+### アンテナ
+「自分はフォローしていないが連合タイムラインに流れているアカウント」の投稿を購読することが可能です。アンテナはドメイン、アカウント、ハッシュタグ、キーワードの４種類の絞り込み条件を持ち、複合指定することでAND条件として働きます。アンテナによって検出された投稿は、指定されたリスト、またはホームタイムラインに追加されます。
 
-### Safety and moderation tools
+ドメイン購読において、自分自身のドメインを指定できることも特長の１つです。隠し機能として、ドメイン絞り込み条件に自身のドメイン１つだけ、他の絞り込み条件や除外条件をすべて空欄、投稿の配置先をホームにした場合に限り、STL（ソーシャルタイムライン）モードが有効になり購読拒否設定が無視されます。
 
-Mastodon includes private posts, locked accounts, phrase filtering, muting, blocking and all sorts of other features, along with a reporting and moderation system. [Learn more](https://blog.joinmastodon.org/2018/07/cage-the-mastodon/)
+自分の投稿がアンテナに検出されるのを拒否することもできます。
 
-### OAuth2 and a straightforward REST API
+### ドメインブロックの拡張
+ドメインブロック機能が大幅に拡張され、「制限」「停止」としなくても、細分化された操作を個別にブロックすることができます。これによって、相手サーバーとの交流が完全に遮断されるリスクを減らします。適切に管理されておらず善良なユーザーとスパム／攻撃者が同居するようなサーバーへの対策として有効です。
 
-Mastodon acts as an OAuth2 provider, so 3rd party apps can use the REST and Streaming APIs. This results in a rich app ecosystem with a lot of choices!
+- お気に入り・絵文字リアクションのみをブロック
+- メンションのみをブロック
+- 相手からのフォローを強制的に審査制にする
+- 相手からのフォローを全てブロック
 
-## Deployment
+他にも、「自分のサーバーの特定投稿を相手サーバーに送信しない」設定が可能です。これはセンシティブな投稿などを政治的な理由で送信することが難しいサーバーへの対策として実装しました。
 
-### Tech stack:
+#### Misskey対策
+Misskeyおよびそのフォーク（Calckeyなど）は、**フォローしていないアカウントの未収載投稿**を自由に検索・購読することができます。これはMastodonの設計とは根本的に異なる仕様です。kmyblueでは、別途手動でドメインブロックデータにフラグを付けたサーバーに限り、そのサーバーに未収載投稿を送信するときに「フォロワーのみ」に変更します。他のサーバーには未収載として送信されます。この動作には、管理者だけでなくユーザー各自の設定も必要になります。
 
-- **Ruby on Rails** powers the REST API and other web pages
-- **React.js** and Redux are used for the dynamic parts of the interface
-- **Node.js** powers the streaming API
+### モデレーションの拡張
+管理の効率化、規約違反・法律違反コンテンツへの迅速な対応（特にアカウント停止を伴わずに済むようにすること）を目的として、モデレーション機能を拡張しています。
 
-### Requirements:
+#### 各投稿の操作
+各投稿について、強制的なCW付与、強制的な画像NSFWフラグ付与、編集履歴の削除、画像の削除、投稿の削除が行なえます。操作は即時反映されます。
 
-- **PostgreSQL** 9.5+
-- **Redis** 4+
-- **Ruby** 2.7+
-- **Node.js** 14+
+#### アカウントの正規表現検索
+アカウント名、表示名について正規表現で検索できます。ただし動作は重くなります。
 
-The repository includes deployment configurations for **Docker and docker-compose** as well as specific platforms like **Heroku**, **Scalingo**, and **Nanobox**. For Helm charts, reference the [mastodon/chart repository](https://github.com/mastodon/chart). The [**standalone** installation guide](https://docs.joinmastodon.org/admin/install/) is available in the documentation.
+### AI学習禁止メタタグ
+ユーザー生成コンテンツが含まれる全てのページに、AI学習を禁止するメタタグを挿入しています。ただし各ユーザーのプロフィールページ・投稿ページに限り、ユーザーは各自設定でAI学習禁止メタタグを除去することが可能です。
 
-A **Vagrant** configuration is included for development purposes. To use it, complete following steps:
+### リンクのテキストと実際のリンク先の異なるものの強調表示
+Misskeyおよびそのフォーク（Calckeyなど）では、MFMを利用することにより、例えば「https://google.co.jp/ 」に向けたリンクを「https://www.yahoo.co.jp/ 」というテキストで掲載することが容易です。それに関する基本的な詐欺を見分けることができます。ただし実際にフィッシング詐欺への効果があるかは疑問です。
 
-- Install Vagrant and Virtualbox
-- Install the `vagrant-hostsupdater` plugin: `vagrant plugin install vagrant-hostsupdater`
-- Run `vagrant up`
-- Run `vagrant ssh -c "cd /vagrant && foreman start"`
-- Open `http://mastodon.local` in your browser
+### 投票項目数の拡張
+投票について、本家Mastodonでは４項目までですが、kmyblueでは８個までに拡張しています。
 
-### Getting Started with GitHub Codespaces
+### 連合から送られてくる投稿の添付画像最大数の拡張
+本家Mastodonでは４個までですが、kmyblueでは８個までに拡張しています。ただしWebクライアントでの表示には、各自ユーザーによる設定が必要です。kmyblueローカルから投稿できる画像の枚数に変更はありません。
 
-To get started, create a codespace for this repository by clicking this 👇
+### 検索許可
+ユーザーは各投稿に「検索許可」パラメータを付与できます。ここで「公開」が指定された投稿は、誰でも自由に検索機能を用いて検索することができます（全文検索に限る）。検索許可に対応していないクライアントアプリから投稿した時の値は、ユーザーが設定することができます。
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=52281283)
+これはFedibirdの「検索範囲」機能に対応します。APIに互換性はありませんが、ActivityPub仕様は共通しています。
 
-A codespace will open in a web-based version of Visual Studio Code. The [dev container](.devcontainer/devcontainer.json) is fully configured with software needed for this project.
+### トレンドの拡張
+本家マストドンでは、センシティブフラグのついた全ての投稿がトレンドに掲載されません。kmyblueはその中でも、「センシティブフラグはついているが、画像が添付されておらずCW付きでもない」投稿をトレンドに掲載します。
 
-**Note**: Dev containers is an open spec which is supported by [GitHub Codespaces](https://github.com/codespaces) and [other tools](https://containers.dev/supporting).
+本来このような投稿はトレンドに掲載すべきでありませんが、本家MastodonのWebクライアントでは文章だけの投稿のセンシティブフラグを自由に操作できないことを理由とした独自対応となります。
 
-## Contributing
-
-Mastodon is **free, open-source software** licensed under **AGPLv3**.
-
-You can open issues for bugs you've found or features you think are missing. You can also submit pull requests to this repository or submit translations using Crowdin. To get started, take a look at [CONTRIBUTING.md](CONTRIBUTING.md). If your contributions are accepted into Mastodon, you can request to be paid through [our OpenCollective](https://opencollective.com/mastodon).
-
-**IRC channel**: #mastodon on irc.libera.chat
-
-## License
-
-Copyright (C) 2016-2022 Eugen Rochko & other Mastodon contributors (see [AUTHORS.md](AUTHORS.md))
-
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
-
-You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+### Sidekiqヘルスチェック
+Sidekiqのヘルスチェックを目的として、３０秒に１回ずつ指定されたURLにHEADリクエストを送信します。送信先URLは、環境変数（または`.env.production`）に`SIDEKIQ_HEALTH_FETCH_URL`として指定します。
