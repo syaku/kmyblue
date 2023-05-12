@@ -27,6 +27,7 @@
 #  hidden                               :boolean          default(FALSE), not null
 #  hidden_anonymous                     :boolean          default(FALSE), not null
 #  detect_invalid_subscription          :boolean          default(FALSE), not null
+#  reject_reply_exclude_followers       :boolean          default(FALSE), not null
 #
 
 class DomainBlock < ApplicationRecord
@@ -43,7 +44,7 @@ class DomainBlock < ApplicationRecord
 
   scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
   scope :with_user_facing_limitations, -> { where(hidden: false) }
-  scope :with_limitations, -> { where(severity: [:silence, :suspend]).or(where(reject_media: true)).or(where(reject_favourite: true)).or(where(reject_reply: true)).or(where(reject_new_follow: true)).or(where(reject_straight_follow: true)) }
+  scope :with_limitations, -> { where(severity: [:silence, :suspend]).or(where(reject_media: true)).or(where(reject_favourite: true)).or(where(reject_reply: true)).or(where(reject_reply_exclude_followers: true)).or(where(reject_new_follow: true)).or(where(reject_straight_follow: true)) }
   scope :by_severity, -> { order(Arel.sql('(CASE severity WHEN 0 THEN 1 WHEN 1 THEN 2 WHEN 2 THEN 0 END), domain')) }
 
   def to_log_human_identifier
@@ -58,6 +59,7 @@ class DomainBlock < ApplicationRecord
        reject_media? ? :reject_media : nil,
        reject_favourite? ? :reject_favourite : nil,
        reject_reply? ? :reject_reply : nil,
+       reject_reply_exclude_followers? ? :reject_reply_exclude_followers : nil,
        reject_send_not_public_searchability? ? :reject_send_not_public_searchability : nil,
        reject_send_public_unlisted? ? :reject_send_public_unlisted : nil,
        reject_send_dissubscribable? ? :reject_send_dissubscribable : nil,
@@ -90,6 +92,10 @@ class DomainBlock < ApplicationRecord
 
     def reject_reply?(domain)
       !!rule_for(domain)&.reject_reply?
+    end
+
+    def reject_reply_exclude_followers?(domain)
+      !!rule_for(domain)&.reject_reply_exclude_followers?
     end
 
     def reject_hashtag?(domain)
@@ -128,7 +134,7 @@ class DomainBlock < ApplicationRecord
     return false if other_block.suspend? && (silence? || noop?)
     return false if other_block.silence? && noop?
 
-    (reject_media || !other_block.reject_media) && (reject_favourite || !other_block.reject_favourite) && (reject_reply || !other_block.reject_reply) && (reject_reports || !other_block.reject_reports)
+    (reject_media || !other_block.reject_media) && (reject_favourite || !other_block.reject_favourite) && (reject_reply || !other_block.reject_reply) && (reject_reply_exclude_followers || !other_block.reject_reply_exclude_followers) && (reject_reports || !other_block.reject_reports)
   end
 
   def affected_accounts_count
