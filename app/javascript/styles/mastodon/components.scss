@@ -6517,6 +6517,14 @@ a.status-card.compact:hover {
   &--row4 {
     grid-template-rows: 25% 25% 25% 25%;
   }
+
+  &--column3 {
+    grid-template-columns: 33% 34% 33%;
+  }
+
+  &--column4 {
+    grid-template-columns: 25% 25% 25% 25%;
+  }
 }
 
 .media-gallery__item {
