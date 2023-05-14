@@ -26,9 +26,9 @@ const messages = defineMessages({
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers-only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
   searchability_public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
-  searchability_unlisted_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
-  searchability_private_short: { id: 'searchability.private.short', defaultMessage: 'Reactionners' },
-  searchability_direct_short: { id: 'searchability.direct.short', defaultMessage: 'Self only' },
+  searchability_private_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
+  searchability_direct_short: { id: 'searchability.private.short', defaultMessage: 'Reactionners' },
+  searchability_limited_short: { id: 'searchability.direct.short', defaultMessage: 'Self only' },
 });
 
 class DetailedStatus extends ImmutablePureComponent {
@@ -223,9 +223,9 @@ class DetailedStatus extends ImmutablePureComponent {
 
     const searchabilityIconInfo = {
       'public': { icon: 'globe', text: intl.formatMessage(messages.searchability_public_short) },
-      'unlisted': { icon: 'unlock', text: intl.formatMessage(messages.searchability_unlisted_short) },
-      'private': { icon: 'lock', text: intl.formatMessage(messages.searchability_private_short) },
-      'direct': { icon: 'at', text: intl.formatMessage(messages.searchability_direct_short) },
+      'private': { icon: 'unlock', text: intl.formatMessage(messages.searchability_private_short) },
+      'direct': { icon: 'lock', text: intl.formatMessage(messages.searchability_direct_short) },
+      'limited': { icon: 'at', text: intl.formatMessage(messages.searchability_limited_short) },
     };
 
     const searchabilityIcon = searchabilityIconInfo[status.get('searchability')];

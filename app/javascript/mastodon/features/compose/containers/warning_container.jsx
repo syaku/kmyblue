@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
   needsLockWarning: state.getIn(['compose', 'privacy']) === 'private' && !state.getIn(['accounts', me, 'locked']),
   hashtagWarning: ['public', 'public_unlisted'].indexOf(state.getIn(['compose', 'privacy'])) < 0 && HASHTAG_PATTERN_REGEX.test(state.getIn(['compose', 'text'])),
   directMessageWarning: state.getIn(['compose', 'privacy']) === 'direct',
-  searchabilityWarning: state.getIn(['compose', 'searchability']) === 'direct',
+  searchabilityWarning: state.getIn(['compose', 'searchability']) === 'limited',
 });
 
 const WarningWrapper = ({ needsLockWarning, hashtagWarning, directMessageWarning, searchabilityWarning }) => {

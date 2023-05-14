@@ -53,7 +53,7 @@ class Status < ApplicationRecord
   update_index('statuses', :proper)
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10 }, _suffix: :visibility
-  enum searchability: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10 }, _suffix: :searchability
+  enum searchability: { public: 0, private: 1, direct: 2, limited: 3, public_unlisted: 10 }, _suffix: :searchability
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
 

@@ -103,6 +103,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       :enable_wide_emoji,
       :enable_wide_emoji_reaction,
       :kmyblue_searchability,
+      :searchability,
       :kmyblue_markdown,
     ]
 

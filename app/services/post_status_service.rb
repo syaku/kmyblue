@@ -81,16 +81,15 @@ class PostStatusService < BaseService
   def searchability
     case @options[:searchability]&.to_sym
     when :public
-      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted then :unlisted when :private then :private else :direct end
-    when :unlisted
-      case @visibility&.to_sym when :public, :public_unlisted, :unlisted then :unlisted when :private then :private else :direct end
+      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted, :private then :private else :direct end
     when :private
-      # direct message also can be searched by receiver
-      :private
+      case @visibility&.to_sym when :public, :public_unlisted, :unlisted, :private then :private else :direct end
+    when :direct
+      :direct
     when nil
       @account.user&.setting_default_searchability || @account.searchability
     else
-      :direct
+      :limited
     end
   end
 
