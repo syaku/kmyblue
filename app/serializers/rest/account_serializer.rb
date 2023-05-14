@@ -123,10 +123,6 @@ class REST::AccountSerializer < ActiveModel::Serializer
     object.suspended? ? [] : object.fields
   end
 
-  def other_settings
-    object.suspended? || object.settings.nil? ? {} : object.settings
-  end
-
   def suspended
     object.suspended?
   end
@@ -159,5 +155,21 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   def moved_and_not_nested?
     object.moved?
+  end
+
+  def statuses_count
+    object.settings.present? && object.settings['hide_statuses_count'] ? 0 : object.statuses_count
+  end
+
+  def followers_count
+    object.settings.present? && object.settings['hide_followers_count'] ? 0 : object.followers_count
+  end
+
+  def following_count
+    object.settings.present? && object.settings['hide_followers_count'] ? 0 : object.following_count
+  end
+
+  def other_settings
+    object.suspended? || object.settings.nil? ? {} : object.settings
   end
 end
