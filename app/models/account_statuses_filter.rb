@@ -100,6 +100,8 @@ class AccountStatusesFilter
   end
 
   def blocked?
+    return false if current_account.nil?
+
     account.blocking?(current_account) || (current_account.domain.present? && account.domain_blocking?(current_account.domain))
   end
 
