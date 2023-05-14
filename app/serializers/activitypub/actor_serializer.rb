@@ -172,18 +172,15 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   end
 
   def other_setting
-    hash = []
-    if object.settings.present?
-      hash = object.settings.map do |k, v|
-        {
-          type: 'PropertyValue',
-          name: k,
-          value: v,
-        }
-      end
+    config = { 'noindex' => object.noindex?, 'noai' => object.noai?, 'hide_network' => object.hide_collections }
+    config.merge(object.settings) if object.settings.present?
+    config.map do |k, v|
+      {
+        type: 'PropertyValue',
+        name: k,
+        value: v,
+      }
     end
-    hash << { type: 'PropertyValue', name: 'noindex', value: object.noindex? }
-    hash << { type: 'PropertyValue', name: 'noai', value: object.noai? }
   end
 
   class CustomEmojiSerializer < ActivityPub::EmojiSerializer
