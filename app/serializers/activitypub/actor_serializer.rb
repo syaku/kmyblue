@@ -7,13 +7,14 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   context :security
 
   context_extensions :manually_approves_followers, :featured, :also_known_as,
-                     :moved_to, :property_value, :discoverable, :olm, :suspended, :searchable_by, :subscribable_by
+                     :moved_to, :property_value, :discoverable, :olm, :suspended, :searchable_by, :subscribable_by,
+                     :other_setting
 
   attributes :id, :type, :following, :followers,
              :inbox, :outbox, :featured, :featured_tags,
              :preferred_username, :name, :summary,
              :url, :manually_approves_followers,
-             :discoverable, :published, :searchable_by, :subscribable_by, :obher_setting
+             :discoverable, :published, :searchable_by, :subscribable_by, :other_setting
 
   has_one :public_key, serializer: ActivityPub::PublicKeySerializer
 
@@ -168,6 +169,21 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
 
   def subscribable_by
     ActivityPub::TagManager.instance.subscribable_by(object)
+  end
+
+  def other_setting
+    hash = []
+    if object.settings.present?
+      hash = object.settings.map do |k, v|
+        {
+          type: 'PropertyValue',
+          name: k,
+          value: v,
+        }
+      end
+    end
+    hash << { type: 'PropertyValue', name: 'noindex', value: object.noindex? }
+    hash << { type: 'PropertyValue', name: 'noai', value: object.noai? }
   end
 
   class CustomEmojiSerializer < ActivityPub::EmojiSerializer

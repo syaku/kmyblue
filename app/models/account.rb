@@ -293,6 +293,14 @@ class Account < ApplicationRecord
     true
   end
 
+  def noindex?
+    user_prefers_noindex? || (settings.present? && settings['noindex']) || false
+  end
+
+  def noai?
+    user&.setting_noai || (settings.present? && settings['noai']) || false
+  end
+
   def previous_strikes_count
     strikes.where(overruled_at: nil).count
   end

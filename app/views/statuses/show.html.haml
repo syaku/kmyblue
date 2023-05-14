@@ -2,10 +2,10 @@
   = t('statuses.title', name: display_name(@account), quote: truncate(@status.spoiler_text.presence || @status.text, length: 50, omission: '…', escape: false))
 
 - content_for :header_tags do
-  - if @account.user_prefers_noindex?
+  - if @account.noindex?
     %meta{ name: 'robots', content: 'noindex, noarchive, noai, noimageai' }/
     %meta{ name: 'CCBot', content: 'nofollow' }/
-  - elsif @account.user&.setting_noai
+  - elsif @account.noai?
     %meta{ name: 'robots', content: 'noai, noimageai' }/
     %meta{ name: 'CCBot', content: 'nofollow' }/
 

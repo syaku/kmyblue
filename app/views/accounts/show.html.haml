@@ -2,10 +2,10 @@
   = "#{display_name(@account)} (#{acct(@account)})"
 
 - content_for :header_tags do
-  - if @account.user_prefers_noindex?
+  - if @account.noindex?
     %meta{ name: 'robots', content: 'noindex, noarchive, noai, noimageai' }/
     %meta{ name: 'CCBot', content: 'nofollow' }/
-  - elsif @account.user&.setting_noai
+  - elsif @account.noai?
     %meta{ name: 'robots', content: 'noai, noimageai' }/
     %meta{ name: 'CCBot', content: 'nofollow' }/
 
