@@ -53,6 +53,7 @@
 #  group_allow_private_message   :boolean
 #  searchability                 :integer          default("private"), not null
 #  dissubscribable               :boolean          default(FALSE), not null
+#  settings                      :jsonb
 #
 
 class Account < ApplicationRecord

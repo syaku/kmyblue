@@ -152,7 +152,7 @@ class Account extends ImmutablePureComponent {
 
             <div>
               <DisplayName account={account} />
-              {!minimal && <><ShortNumber value={account.get('followers_count')} renderer={counterRenderer('followers')} /> {verification} {muteTimeRemaining}</>}
+              {!minimal && <><ShortNumber value={account.get('followers_count')} isHide={account.getIn(['other_settings', 'hide_followers_count']) || false} renderer={counterRenderer('followers')} /> {verification} {muteTimeRemaining}</>}
             </div>
           </Link>
 

@@ -13,7 +13,7 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
              :inbox, :outbox, :featured, :featured_tags,
              :preferred_username, :name, :summary,
              :url, :manually_approves_followers,
-             :discoverable, :published, :searchable_by, :subscribable_by
+             :discoverable, :published, :searchable_by, :subscribable_by, :obher_setting
 
   has_one :public_key, serializer: ActivityPub::PublicKeySerializer
 

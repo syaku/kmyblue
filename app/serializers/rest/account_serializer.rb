@@ -6,7 +6,7 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   attributes :id, :username, :acct, :display_name, :locked, :bot, :discoverable, :group, :created_at,
              :note, :url, :avatar, :avatar_static, :header, :header_static, :searchability, :subscribable,
-             :followers_count, :following_count, :statuses_count, :last_status_at
+             :followers_count, :following_count, :statuses_count, :last_status_at, :other_settings
 
   has_one :moved_to_account, key: :moved, serializer: REST::AccountSerializer, if: :moved_and_not_nested?
 
@@ -121,6 +121,10 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   def fields
     object.suspended? ? [] : object.fields
+  end
+
+  def other_settings
+    object.suspended? || object.settings.nil? ? {} : object.settings
   end
 
   def suspended

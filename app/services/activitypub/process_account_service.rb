@@ -117,6 +117,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.discoverable            = @json['discoverable'] || false
     @account.searchability           = searchability_from_audience
     @account.dissubscribable         = !subscribable(@account.note)
+    @account.settings                = other_settings
   end
 
   def set_fetchable_key!
@@ -263,6 +264,12 @@ class ActivityPub::ProcessAccountService < BaseService
     else
       subscribable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
     end
+  end
+
+  def other_settings
+    return {} unless @json['otherSetting'].is_a?(Array)
+
+    @json['otherSetting'].each_with_object({}) { |v, h| h.merge!({ v['name'] => v['value'] }) if v['type'] == 'PropertyValue' }
   end
 
   def property_values
