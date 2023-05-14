@@ -1019,6 +1019,8 @@ en:
       keywords_hint: キーワードは1つあたり最低2文字です。キーワードによる絞り込みを指定した場合、検索許可に対応しているサーバーからの投稿は、検索許可が「公開」以外のものは掲載されなくなります
       keywords_raw: Keyword list
       list: Destination list
+      stl: Enable stl (Social timeline) mode
+      stl_hint: All of under settings will be ignored, but rejecting subscription settings are ignored
       tags_raw: Hashtag list
       title: Edit antenna
       with_media_only: With media only

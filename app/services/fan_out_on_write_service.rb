@@ -49,7 +49,8 @@ class FanOutOnWriteService < BaseService
     when :public, :unlisted, :public_unlisted, :private
       deliver_to_all_followers!
       deliver_to_lists!
-      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym)
+      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym) && !@account.dissubscribable
+      deliver_to_stl_antennas!
     when :limited
       deliver_to_mentioned_followers!
     else
@@ -116,11 +117,27 @@ class FanOutOnWriteService < BaseService
     end
   end
 
-  def deliver_to_antennas!
-    return if @account.dissubscribable && @status.reblog?
+  def deliver_to_stl_antennas!
+    return if @status.reblog?
 
-    lists = []
-    homes = []
+    antennas = Antenna.available_stls
+    antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
+    antennas = antennas.where(account: @account.followers) unless @account.domain.nil?
+
+    collection = AntennaCollection.new(@status, @options[:update])
+
+    antennas.in_batches do |ans|
+      ans.each do |antenna|
+        next if antenna.expired?
+
+        collection.push(antenna)
+      end
+    end
+
+    collection.deliver!
+  end
+
+  def deliver_to_antennas!
     tag_ids = @status.tags.pluck(:id)
     domain = @account.domain || Rails.configuration.x.local_domain
 
@@ -128,7 +145,7 @@ class FanOutOnWriteService < BaseService
     antennas = antennas.left_joins(:antenna_domains).where(any_domains: true).or(Antenna.left_joins(:antenna_domains).where(antenna_domains: { name: domain }))
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
     antennas = antennas.where(ignore_reblog: false) unless @status.reblog?
-    antennas = antennas.where(stl: true) if @account.dissubscribable
+    antennas = antennas.where(stl: false)
 
     antennas = Antenna.where(id: antennas.select(:id))
     antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.left_joins(:antenna_accounts).where(antenna_accounts: { account: @account }))
@@ -139,6 +156,8 @@ class FanOutOnWriteService < BaseService
 
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
 
+    collection = AntennaCollection.new(@status, @options[:update])
+
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next unless antenna.enabled?
@@ -148,27 +167,11 @@ class FanOutOnWriteService < BaseService
         next if antenna.exclude_domains&.include?(domain)
         next if antenna.exclude_tags&.any? { |tag_id| tag_ids.include?(tag_id) }
 
-        if antenna.list_id.zero?
-          homes << antenna.account_id
-        else
-          lists << antenna.list_id
-        end
-      end
-    end
-    lists = lists.uniq
-    homes = homes.uniq
-
-    if lists.any?
-      FeedInsertWorker.push_bulk(lists) do |list|
-        [@status.id, list, 'list', { 'update' => update? }]
+        collection.push(antenna)
       end
     end
 
-    if homes.any?
-      FeedInsertWorker.push_bulk(homes) do |home|
-        [@status.id, home, 'home', { 'update' => update? }]
-      end
-    end
+    collection.deliver!
   end
 
   def deliver_to_mentioned_followers!
@@ -237,5 +240,39 @@ class FanOutOnWriteService < BaseService
 
   def broadcastable_unlisted?
     @status.public_unlisted_visibility? && !@status.reblog? && !@account.silenced?
+  end
+
+  class AntennaCollection
+    def initialize(status, update)
+      @status = status
+      @update = update
+      @home_account_ids = []
+      @list_ids = []
+    end
+
+    def push(antenna)
+      if antenna.list_id.zero?
+        @home_account_ids << antenna.account_id
+      else
+        @list_ids << antenna.list_id
+      end
+    end
+
+    def deliver!
+      lists = @list_ids.uniq
+      homes = @home_account_ids.uniq
+
+      if lists.any?
+        FeedInsertWorker.push_bulk(lists) do |list|
+          [@status.id, list, 'list', { 'update' => @update }]
+        end
+      end
+
+      if homes.any?
+        FeedInsertWorker.push_bulk(homes) do |home|
+          [@status.id, home, 'home', { 'update' => @update }]
+        end
+      end
+    end
   end
 end

@@ -13,6 +13,9 @@
   .fields-group.fields-row__column.fields-row__column-6
     = f.input :available, wrapper: :with_label, label: t('antennas.edit.available'), hint: false
 
+.fields-row
+  = f.input :stl, wrapper: :with_label, label: t('antennas.edit.stl'), hint: t('antennas.edit.stl_hint')
+
 %hr.spacer/
 %p.hint= t 'antennas.edit.hint'
 %hr.spacer/
@@ -20,7 +23,7 @@
 %h4= t('antennas.contexts.domain')
 %p.hint= t 'antennas.edit.domains_hint'
 
-.fields-row 
+.fields-row
   .fields-row__column.fields-row__column-6.fields-group
     = f.input :domains_raw, wrapper: :with_label, as: :text, input_html: { rows: 5 }, label: t('antennas.edit.domains_raw')
   .fields-row__column.fields-row__column-6.fields-group

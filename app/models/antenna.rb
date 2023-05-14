@@ -41,10 +41,9 @@ class Antenna < ApplicationRecord
   scope :all_accounts, -> { where(any_accounts: true) }
   scope :all_tags, -> { where(any_tags: true) }
   scope :availables, -> { where(available: true).where(Arel.sql('any_keywords = FALSE OR any_domains = FALSE OR any_accounts = FALSE OR any_tags = FALSE')) }
+  scope :available_stls, -> { where(available: true, stl: true) }
 
   validate :list_owner
-
-  before_save :check_stl_mode
 
   def list_owner
     raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if !list_id.zero? && list.present? && list.account != account
@@ -212,17 +211,5 @@ class Antenna < ApplicationRecord
       accounts << account.id if account.present?
     end
     self[:exclude_accounts] = accounts
-  end
-
-  private
-
-  def check_stl_mode
-    self[:stl] = stl_mode?
-  end
-
-  def stl_mode?
-    list_id.zero? && !any_domains && any_accounts && any_keywords && any_tags &&
-      exclude_accounts.blank? && exclude_domains.blank? && exclude_keywords.blank? && exclude_tags.blank? &&
-      antenna_domains.count == 1 && antenna_domains.first.name == Rails.configuration.x.local_domain
   end
 end
