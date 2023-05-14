@@ -43,17 +43,17 @@ class SearchService < BaseService
   def perform_statuses_search!
     privacy_definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }).track_scores(true).min_score(@min_score))
 
-    # 'private' searchability posts are NOT in here because it's already added at previous line.
+    # 'direct' searchability posts are NOT in here because it's already added at previous line.
     case @searchability
     when 'public'
       privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }).track_scores(true).min_score(@min_score))
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'unlisted' }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
-    when 'unlisted', 'private'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public unlisted) }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
-    when 'direct'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'private' }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+    when 'private', 'direct'
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public private) }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+    when 'limited'
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
     end
 
     definition = parsed_query.apply(StatusesIndex.min_score(@min_score).track_scores(true))
