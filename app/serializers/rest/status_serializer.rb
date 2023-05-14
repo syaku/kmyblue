@@ -6,13 +6,14 @@ class REST::StatusSerializer < ActiveModel::Serializer
   attributes :id, :created_at, :in_reply_to_id, :in_reply_to_account_id,
              :sensitive, :spoiler_text, :visibility, :visibility_ex, :language,
              :uri, :url, :replies_count, :reblogs_count, :searchability, :markdown,
-             :favourites_count, :emoji_reactions, :emoji_reactions_count, :edited_at
+             :favourites_count, :emoji_reactions, :emoji_reactions_count, :reactions, :edited_at
 
   attribute :favourited, if: :current_user?
   attribute :reblogged, if: :current_user?
   attribute :muted, if: :current_user?
   attribute :bookmarked, if: :current_user?
   attribute :pinned, if: :pinnable?
+  attribute :reactions, if: :reactions?
   has_many :filtered, serializer: REST::FilterResultSerializer, if: :current_user?
 
   attribute :content, unless: :source_requested?
@@ -103,6 +104,17 @@ class REST::StatusSerializer < ActiveModel::Serializer
     object.emoji_reactions_grouped_by_name(current_user&.account)
   end
 
+  def reactions
+    emoji_reactions.tap do |rs|
+      rs.each do |emoji_reaction|
+        emoji_reaction['name'] = emoji_reaction['domain'].present? ? "#{emoji_reaction['name']}@#{emoji_reaction['domain']}" : emoji_reaction['name']
+        emoji_reaction.delete('account_ids')
+        emoji_reaction.delete('me')
+        emoji_reaction.delete('domain')
+      end
+    end
+  end
+
   def reblogged
     if instance_options && instance_options[:relationships]
       instance_options[:relationships].reblogs_map[object.id] || false
@@ -148,6 +160,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
       current_user.account_id == object.account_id &&
       !object.reblog? &&
       %w(public unlisted public_unlisted private).include?(object.visibility)
+  end
+
+  def reactions?
+    current_user? && current_user.setting_emoji_reaction_streaming_notify_impl2
   end
 
   def source_requested?

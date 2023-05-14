@@ -37,6 +37,7 @@ class Notification < ApplicationRecord
     follow_request
     favourite
     emoji_reaction
+    reaction
     poll
     update
     admin.sign_up
@@ -49,6 +50,7 @@ class Notification < ApplicationRecord
     mention: [mention: :status],
     favourite: [favourite: :status],
     emoji_reaction: [emoji_reaction: :status],
+    reaction: [emoji_reaction: :status],
     poll: [poll: :status],
     update: :status,
     'admin.report': [report: :target_account],
@@ -85,7 +87,7 @@ class Notification < ApplicationRecord
       status&.reblog
     when :favourite
       favourite&.status
-    when :emoji_reaction
+    when :emoji_reaction, :reaction
       emoji_reaction&.status
     when :mention
       mention&.status
@@ -136,7 +138,7 @@ class Notification < ApplicationRecord
           notification.status.reblog = cached_status
         when :favourite
           notification.favourite.status = cached_status
-        when :emoji_reaction
+        when :emoji_reaction, :reaction
           notification.emoji_reaction.status = cached_status
         when :mention
           notification.mention.status = cached_status
@@ -158,7 +160,7 @@ class Notification < ApplicationRecord
     return unless new_record?
 
     case activity_type
-    when 'Status', 'Follow', 'Favourite', 'EmojiReaction', 'FollowRequest', 'Poll', 'Report'
+    when 'Status', 'Follow', 'Favourite', 'EmojiReaction', 'EmojiReact', 'FollowRequest', 'Poll', 'Report'
       self.from_account_id = activity&.account_id
     when 'Mention'
       self.from_account_id = activity&.status&.account_id

@@ -47,6 +47,10 @@ module HasUserSettings
     settings['stop_emoji_reaction_streaming']
   end
 
+  def setting_emoji_reaction_streaming_notify_impl2
+    settings['emoji_reaction_streaming_notify_impl2']
+  end
+
   def setting_unfollow_modal
     settings['web.unfollow_modal']
   end

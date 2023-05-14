@@ -34,6 +34,8 @@ namespace :api, format: false do
 
         resources :emoji_reactions, only: [:create, :update, :destroy], constraints: { id: %r{[^/]+} }
         post :emoji_unreaction, to: 'emoji_reactions#destroy'
+        post :react, to: 'emoji_reactions#create'
+        post :unreact, to: 'emoji_reactions#destroy'
       end
 
       member do

@@ -9,7 +9,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
       undo_accept
     when 'Follow'
       undo_follow
-    when 'Like'
+    when 'Like', 'EmojiReaction', 'EmojiReact'
       undo_like
     when 'Block'
       undo_block

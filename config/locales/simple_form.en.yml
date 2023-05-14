@@ -218,6 +218,7 @@ en:
         setting_display_media_expand: Show more medias
         setting_display_media_hide_all: Hide all
         setting_display_media_show_all: Show all
+        setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
         setting_expand_spoilers: Always expand posts marked with content warnings
         setting_hide_network: Hide your social graph
         setting_noai: Set noai meta tags
