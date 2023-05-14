@@ -9,7 +9,7 @@ class Api::V1::Statuses::EmojiReactionsController < Api::BaseController
   before_action :set_status_without_authorize, only: [:destroy]
 
   def create
-    create_private(params[:emoji])
+    create_private(params[:emoji] || params[:id])
   end
 
   # For compatible with Fedibird API
