@@ -92,7 +92,7 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
       },
 
       reactions: {
-        max_reactions: EmojiReaction::EMOJI_REACTION_LIMIT,
+        max_reactions: EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT,
       },
     }
   end
