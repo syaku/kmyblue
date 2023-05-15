@@ -12,6 +12,9 @@ class UserSettings
   setting :theme, default: -> { ::Setting.theme }
   setting :noindex, default: -> { ::Setting.noindex }
   setting :noai, default: true
+  setting :hide_statuses_count, default: false
+  setting :hide_following_count, default: false
+  setting :hide_followers_count, default: false
   setting :show_application, default: true
   setting :default_language, default: nil
   setting :default_sensitive, default: false

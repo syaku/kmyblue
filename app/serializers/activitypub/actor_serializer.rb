@@ -172,8 +172,7 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   end
 
   def other_setting
-    config = { 'noindex' => object.noindex?, 'noai' => object.noai?, 'hide_network' => object.hide_collections }
-    config = config.merge(object.settings) if object.settings.present?
+    config = object.public_settings
     config.map do |k, v|
       {
         type: 'PropertyValue',

@@ -79,6 +79,18 @@ module HasUserSettings
     settings['noai']
   end
 
+  def setting_hide_statuses_count
+    settings['hide_statuses_count']
+  end
+
+  def setting_hide_following_count
+    settings['hide_following_count']
+  end
+
+  def setting_hide_followers_count
+    settings['hide_followers_count']
+  end
+
   def setting_theme
     settings['theme']
   end
