@@ -4,7 +4,7 @@ class DeliveryEmojiReactionWorker
   include Sidekiq::Worker
   include Redisable
   include Lockable
-  include AccountLimitable
+  include AccountScope
 
   def perform(payload_json, status_id, my_account_id = nil)
     redis.publish("timeline:#{my_account_id}", payload_json) if my_account_id.present? && !Account.find(my_account_id)&.user&.setting_stop_emoji_reaction_streaming

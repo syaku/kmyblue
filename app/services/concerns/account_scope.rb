@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module AccountLimitable
+module AccountScope
   def scope_status(status)
     case status.visibility.to_sym
     when :public, :unlisted, :public_unlisted
