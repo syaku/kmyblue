@@ -26,9 +26,9 @@ class Api::V1::Statuses::EmojiReactionsController < Api::BaseController
                                     .find { |reaction| domain == '' ? reaction.custom_emoji.nil? : reaction.custom_emoji&.domain == domain }
 
       authorize @status, :show? if emoji_reaction.nil?
-    end
 
-    UnEmojiReactWorker.perform_async(current_account.id, @status.id, emoji)
+      UnEmojiReactService.new.call(current_account.id, @status.id, emoji_reaction) if emoji_reaction.present?
+    end
 
     render json: @status, serializer: REST::StatusSerializer, relationships: StatusRelationshipsPresenter.new(
       [@status], current_account.id, emoji_reactions_map: { @status.id => false }
