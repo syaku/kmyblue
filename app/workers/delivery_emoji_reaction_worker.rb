@@ -7,7 +7,7 @@ class DeliveryEmojiReactionWorker
   include AccountLimitable
 
   def perform(payload_json, status_id, my_account_id = nil)
-    redis.publish("timeline:#{my_account_id}", payload_json) if my_account_id.present?
+    redis.publish("timeline:#{my_account_id}", payload_json) if my_account_id.present? && !Account.find(my_account_id)&.user&.setting_stop_emoji_reaction_streaming
 
     status = Status.find(status_id.to_i)
 
@@ -17,7 +17,7 @@ class DeliveryEmojiReactionWorker
       end
 
       if [:public, :unlisted, :public_unlisted].exclude?(status.visibility.to_sym) && status.account_id != my_account_id &&
-         redis.exists?("subscribed:timeline:#{status.account_id}")
+         redis.exists?("subscribed:timeline:#{status.account_id}") && !status.account.user&.setting_stop_emoji_reaction_streaming
         redis.publish("timeline:#{status.account_id}", payload_json)
       end
     end
