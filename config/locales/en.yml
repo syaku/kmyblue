@@ -423,7 +423,9 @@ en:
       reject_new_follow: Reject follows
       reject_new_follow_hint: Reject follows in the future
       reject_reply: Reject replies
+      reject_reply_exclude_followers: Reject replies exclude followers
       reject_reply_hint: Reject replies in the future
+      reject_reply_exclude_followers_hint: Reject replies exclude followers in the future
       reject_reports: Reject reports
       reject_reports_hint: Ignore all reports coming from this domain. Irrelevant for suspensions
       reject_send_dissubscribable: 購読拒否アカウントの投稿を配送しない
@@ -513,6 +515,7 @@ en:
           reject_new_follow: Reject follows
           reject_straight_follow: Reject straight follow
           reject_reply: Reject reply
+          reject_reply_exclude_followers: Reject reply exclude followers
           reject_reports: Reject reports
           silence: Limit
           suspend: Suspend

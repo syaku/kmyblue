@@ -47,6 +47,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def create_status
     return reject_payload! if unsupported_object_type? || invalid_origin?(object_uri) || tombstone_exists? || !related_to_local_activity?
     return reject_payload! if (reply_to_local? || reply_to_local_account?) && reject_reply_to_local?
+    return reject_payload! if (!reply_to_local_account_following? || !reply_to_local_status_following?) && reject_reply_exclude_followers?
 
     with_lock("create:#{object_uri}") do
       return if delete_arrived_first?(object_uri) || poll_vote?
@@ -139,6 +140,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def reply_to_local_account?
     accounts_in_audience.any? { |account| account.local? }
+  end
+
+  def reply_to_local_account_following?
+    !reply_to_local_account? || accounts_in_audience.none? { |account| account.local? && !account.following?(@account) }
   end
 
   def accounts_in_audience
@@ -403,8 +408,16 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     !replied_to_status.nil? && replied_to_status.account.local?
   end
 
+  def reply_to_local_status_following?
+    !reply_to_local? || replied_to_status.account.following?(@account)
+  end
+
   def reject_reply_to_local?
     @reject_reply_to_local ||= DomainBlock.reject_reply?(@account.domain)
+  end
+
+  def reject_reply_exclude_followers?
+    @reject_reply_exclude_followers ||= DomainBlock.reject_reply_exclude_followers?(@account.domain)
   end
 
   def ignore_hashtags?
