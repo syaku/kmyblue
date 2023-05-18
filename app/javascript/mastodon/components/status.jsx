@@ -368,7 +368,7 @@ class Status extends ImmutablePureComponent {
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')] || visibilityIconInfo[status.get('visibility')];
+    let visibilityIcon = visibilityIconInfo[status.get('visibility_ex')] || visibilityIconInfo[status.get('visibility')];
 
     if (this.state.forceFilter === undefined ? matchedFilters : this.state.forceFilter) {
       const minHandlers = this.props.muted ? {} : {
@@ -524,6 +524,8 @@ class Status extends ImmutablePureComponent {
     } else {
       statusAvatar = <AvatarOverlay account={status.get('account')} friend={account} />;
     }
+
+    visibilityIcon = visibilityIconInfo[status.get('visibility_ex')] || visibilityIconInfo[status.get('visibility')];
 
     let emojiReactionsBar = null;
     if (!this.props.withoutEmojiReactions && status.get('emoji_reactions')) {
