@@ -1662,6 +1662,8 @@ ja:
       public_unlisted_long: 誰でも見ることができますが、連合タイムラインには表示されません
       unlisted: 未収載
       unlisted_long: 誰でも見ることができますが、連合・ローカルタイムラインには表示されません
+      unset: 設定なし
+      unset_long: デフォルトの挙動に従います
   statuses_cleanup:
     enabled: 古い投稿を自動的に削除する
     enabled_hint: 設定した期間を過ぎた投稿は、以下の例外に該当しない限り、自動的に削除されます

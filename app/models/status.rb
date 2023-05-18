@@ -404,6 +404,10 @@ class Status < ApplicationRecord
       visibilities.keys - %w(direct limited)
     end
 
+    def selectable_reblog_visibilities
+      %w(unset) + visibilities.keys - %w(direct limited)
+    end
+
     def selectable_searchabilities
       searchabilities.keys - %w(public_unlisted limited)
     end
