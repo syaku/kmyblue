@@ -120,7 +120,7 @@ class FanOutOnWriteService < BaseService
   end
 
   def deliver_to_stl_antennas!
-    return if @status.reblog?
+    return if @status.reblog? && @account.dissubscribable
 
     antennas = Antenna.available_stls
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
