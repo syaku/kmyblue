@@ -55,6 +55,7 @@ ja:
         setting_send_without_domain_blocks: 管理人が同人コンテンツの配送にふさわしくないと判断したサーバーに、制限に関係なく全ての投稿を配送します。ただし何が起きても自己責任になります
         setting_aggregate_reblogs: 最近ブーストされた投稿が新たにブーストされても表示しません (設定後受信したものにのみ影響)
         setting_always_send_emails: 通常、Mastodon からメール通知は行われません。
+        setting_boost_modal: ブーストの公開範囲が指定できるようになります
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
         setting_display_media_hide_all: メディアを常に隠す
