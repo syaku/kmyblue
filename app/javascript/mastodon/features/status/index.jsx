@@ -310,7 +310,7 @@ class Status extends ImmutablePureComponent {
     this.props.dispatch(reblog(status, privacy));
   };
 
-  handleReblogClick = (status, e) => {
+  handleReblogClick = (status, e, force = false) => {
     const { dispatch } = this.props;
     const { signedIn } = this.context.identity;
 
@@ -318,7 +318,7 @@ class Status extends ImmutablePureComponent {
       if (status.get('reblogged')) {
         dispatch(unreblog(status));
       } else {
-        if ((e && e.shiftKey) || !boostModal) {
+        if (!force && ((e && e.shiftKey) || !boostModal)) {
           this.handleModalReblog(status);
         } else {
           dispatch(initBoostModal({ status, onReblog: this.handleModalReblog }));
@@ -331,6 +331,10 @@ class Status extends ImmutablePureComponent {
         url: status.get('url'),
       }));
     }
+  };
+
+  handleReblogForceModalClick = (status, e) => {
+    this.handleReblogClick(status, e, true);
   };
 
   handleBookmarkClick = (status) => {
@@ -678,6 +682,7 @@ class Status extends ImmutablePureComponent {
                   onFavourite={this.handleFavouriteClick}
                   onEmojiReact={this.handleEmojiReact}
                   onReblog={this.handleReblogClick}
+                  onReblogForceModal={this.handleReblogForceModalClick}
                   onBookmark={this.handleBookmarkClick}
                   onDelete={this.handleDeleteClick}
                   onEdit={this.handleEditClick}

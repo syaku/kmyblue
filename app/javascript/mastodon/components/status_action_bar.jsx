@@ -24,6 +24,7 @@ const messages = defineMessages({
   more: { id: 'status.more', defaultMessage: 'More' },
   replyAll: { id: 'status.replyAll', defaultMessage: 'Reply to thread' },
   reblog: { id: 'status.reblog', defaultMessage: 'Boost' },
+  cancelReblog: { id: 'status.cancel_reblog', defaultMessage: 'Unboost' },
   reblog_private: { id: 'status.reblog_private', defaultMessage: 'Boost with original visibility' },
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Unboost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be boosted' },
@@ -69,6 +70,7 @@ class StatusActionBar extends ImmutablePureComponent {
     onFavourite: PropTypes.func,
     onEmojiReact: PropTypes.func,
     onReblog: PropTypes.func,
+    onReblogForceModal: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
     onMention: PropTypes.func,
@@ -149,6 +151,10 @@ class StatusActionBar extends ImmutablePureComponent {
     } else {
       this.props.onInteractionModal('reblog', this.props.status);
     }
+  };
+
+  handleReblogForceModalClick = e => {
+    this.props.onReblogForceModal(this.props.status, e);
   };
 
   handleBookmarkClick = () => {
@@ -272,6 +278,7 @@ class StatusActionBar extends ImmutablePureComponent {
 
     menu.push(null);
 
+    menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancelReblog : messages.reblog), action: this.handleReblogForceModalClick });
     menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark), action: this.handleBookmarkClick });
 
     if (writtenByMe && pinnableStatus) {

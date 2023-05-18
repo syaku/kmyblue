@@ -79,6 +79,7 @@ class Status extends ImmutablePureComponent {
     onEmojiReact: PropTypes.func,
     onUnEmojiReact: PropTypes.func,
     onReblog: PropTypes.func,
+    onReblogForceModal: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
     onMention: PropTypes.func,

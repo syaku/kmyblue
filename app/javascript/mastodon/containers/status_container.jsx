@@ -110,6 +110,10 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
     }
   },
 
+  onReblogForceModal (status) {
+    dispatch(initBoostModal({ status, onReblog: this.onModalReblog }));
+  },
+
   onFavourite (status) {
     if (status.get('favourited')) {
       dispatch(unfavourite(status));
