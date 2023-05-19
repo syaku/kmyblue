@@ -124,7 +124,7 @@ class FanOutOnWriteService < BaseService
 
     antennas = Antenna.available_stls
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
-    antennas = antennas.where(account: @account.followers) unless @account.domain.nil?
+    antennas = antennas.where(account: @account.followers).where.not(list_id: 0) unless @account.domain.nil?
 
     collection = AntennaCollection.new(@status, @options[:update])
 
