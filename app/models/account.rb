@@ -301,6 +301,18 @@ class Account < ApplicationRecord
     user&.setting_noai || (settings.present? && settings['noai']) || false
   end
 
+  def public_statuses_count
+    hide_statuses_count? ? 0 : statuses_count
+  end
+
+  def public_following_count
+    hide_following_count? ? 0 : following_count
+  end
+
+  def public_followers_count
+    hide_followers_count? ? 0 : followers_count
+  end
+
   def hide_statuses_count?
     return user&.setting_hide_statuses_count unless user&.setting_hide_statuses_count.nil?
     return settings['hide_statuses_count'] if settings.present?

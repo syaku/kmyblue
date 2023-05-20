@@ -153,15 +153,15 @@ class REST::AccountSerializer < ActiveModel::Serializer
   end
 
   def statuses_count
-    object.hide_statuses_count? ? 0 : object.statuses_count
+    object.public_statuses_count
   end
 
   def followers_count
-    object.hide_followers_count? ? 0 : object.followers_count
+    object.public_followers_count
   end
 
   def following_count
-    object.hide_following_count? ? 0 : object.following_count
+    object.public_following_count
   end
 
   def other_settings
