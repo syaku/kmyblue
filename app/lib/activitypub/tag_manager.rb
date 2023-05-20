@@ -34,6 +34,8 @@ class ActivityPub::TagManager
   def uri_for(target)
     return target.uri if target.respond_to?(:local?) && !target.local?
 
+    return unless target.respond_to?(:object_type)
+
     case target.object_type
     when :person
       target.instance_actor? ? instance_actor_url : account_url(target)
