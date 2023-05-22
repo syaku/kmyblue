@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_14_030455) do
+ActiveRecord::Schema.define(version: 2023_05_21_122642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -438,6 +438,7 @@ ActiveRecord::Schema.define(version: 2023_05_14_030455) do
     t.integer "image_storage_schema_version"
     t.integer "image_width"
     t.integer "image_height"
+    t.jsonb "aliases"
     t.index ["shortcode", "domain"], name: "index_custom_emojis_on_shortcode_and_domain", unique: true
   end
 
@@ -1487,4 +1488,4 @@ ActiveRecord::Schema.define(version: 2023_05_14_030455) do
 
 end
 
-# rubocop:enable all
+#rubocop:enable all

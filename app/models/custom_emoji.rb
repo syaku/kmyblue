@@ -21,6 +21,7 @@
 #  image_storage_schema_version :integer
 #  image_width                  :integer
 #  image_height                 :integer
+#  aliases                      :jsonb
 #
 
 class CustomEmoji < ApplicationRecord
@@ -78,6 +79,17 @@ class CustomEmoji < ApplicationRecord
 
   def update_size
     size(Rails.configuration.x.use_s3 ? image.url : image.path)
+  end
+
+  def aliases_raw
+    return '' if aliases.nil? || aliases.blank?
+
+    aliases.join(',')
+  end
+
+  def aliases_raw=(raw)
+    aliases = raw.split(',').filter(&:present?).uniq
+    self[:aliases] = aliases
   end
 
   class << self

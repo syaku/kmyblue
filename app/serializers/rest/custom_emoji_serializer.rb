@@ -8,6 +8,7 @@ class REST::CustomEmojiSerializer < ActiveModel::Serializer
   attribute :category, if: :category_loaded?
   attribute :width, if: :width?
   attribute :height, if: :height?
+  attribute :aliases, if: :aliases?
 
   def url
     full_asset_url(object.image.url)
@@ -39,5 +40,9 @@ class REST::CustomEmojiSerializer < ActiveModel::Serializer
 
   def height
     object.respond_to?(:image_height) ? object.image_height : object.height
+  end
+
+  def aliases?
+    object.respond_to?(:aliases) && object.aliases.present?
   end
 end
