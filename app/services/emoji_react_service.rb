@@ -23,9 +23,7 @@ class EmojiReactService < BaseService
 
     emoji_reaction = EmojiReaction.create!(account: account, status: status, name: shortcode, custom_emoji: custom_emoji)
 
-    # rubocop:disable Rails/SkipsModelValidations
-    status.touch
-    # rubocop:enable Rails/SkipsModelValidations
+    status.touch # rubocop:disable Rails/SkipsModelValidations
 
     Trends.statuses.register(status)
 
