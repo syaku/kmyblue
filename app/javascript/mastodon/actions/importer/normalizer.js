@@ -91,6 +91,11 @@ export function normalizeStatus(status, normalOldStatus) {
       normalStatus.spoiler_text = '';
     }
 
+    console.dir(normalStatus.emojis);
+    if (normalStatus.emojis && normalStatus.emojis.some((emoji) => emoji.is_sensitive) && !normalStatus.spoiler_text) {
+      normalStatus.spoiler_text = '[Contains sensitive custom emoji(s)]';
+    }
+
     const spoilerText   = normalStatus.spoiler_text || '';
     const searchContent = ([spoilerText, status.content].concat((status.poll && status.poll.options) ? status.poll.options.map(option => option.title) : [])).concat(status.media_attachments.map(att => att.description)).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
     const emojiMap      = makeEmojiMap(normalStatus);
