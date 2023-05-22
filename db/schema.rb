@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_05_22_082252) do
+ActiveRecord::Schema.define(version: 2023_05_22_093135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -440,6 +440,7 @@ ActiveRecord::Schema.define(version: 2023_05_22_082252) do
     t.integer "image_height"
     t.jsonb "aliases"
     t.boolean "is_sensitive", default: false, null: false
+    t.string "license"
     t.index ["shortcode", "domain"], name: "index_custom_emojis_on_shortcode_and_domain", unique: true
   end
 

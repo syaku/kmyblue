@@ -28,4 +28,8 @@ class ActivityPub::Parser::CustomEmojiParser
   def is_sensitive # rubocop:disable Naming/PredicateName
     (@json['isSensitive'].presence || false)
   end
+
+  def license
+    @json['license']
+  end
 end

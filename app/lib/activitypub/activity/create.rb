@@ -263,7 +263,13 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     return unless emoji.nil? || custom_emoji_parser.image_remote_url != emoji.image_remote_url || (custom_emoji_parser.updated_at && custom_emoji_parser.updated_at >= emoji.updated_at)
 
     begin
-      emoji ||= CustomEmoji.new(domain: @account.domain, shortcode: custom_emoji_parser.shortcode, uri: custom_emoji_parser.uri, is_sensitive: custom_emoji_parser.is_sensitive)
+      emoji ||= CustomEmoji.new(
+        domain: @account.domain,
+        shortcode: custom_emoji_parser.shortcode,
+        uri: custom_emoji_parser.uri,
+        is_sensitive: custom_emoji_parser.is_sensitive,
+        license: custom_emoji_parser.license
+      )
       emoji.image_remote_url = custom_emoji_parser.image_remote_url
       emoji.save
     rescue Seahorse::Client::NetworkingError => e
