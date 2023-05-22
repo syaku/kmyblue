@@ -9,6 +9,7 @@ class REST::CustomEmojiSerializer < ActiveModel::Serializer
   attribute :width, if: :width?
   attribute :height, if: :height?
   attribute :aliases, if: :aliases?
+  attribute :is_sensitive, if: :is_sensitive?
 
   def url
     full_asset_url(object.image.url)
@@ -44,5 +45,9 @@ class REST::CustomEmojiSerializer < ActiveModel::Serializer
 
   def aliases?
     object.respond_to?(:aliases) && object.aliases.present?
+  end
+
+  def is_sensitive? # rubocop:disable Naming/PredicateName
+    object.respond_to?(:is_sensitive)
   end
 end
