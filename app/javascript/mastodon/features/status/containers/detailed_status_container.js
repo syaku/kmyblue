@@ -87,6 +87,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
+  onReblogForceModal (status) {
+    if (status.get('reblogged')) {
+      dispatch(unreblog(status));
+    } else {
+      dispatch(initBoostModal({ status, onReblog: this.onModalReblog }));
+    }
+  },
+
   onFavourite (status) {
     if (status.get('favourited')) {
       dispatch(unfavourite(status));
@@ -138,12 +146,12 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(mentionCompose(account, router));
   },
 
-  onOpenMedia (media, index) {
-    dispatch(openModal('MEDIA', { media, index }));
+  onOpenMedia (media, index, lang) {
+    dispatch(openModal('MEDIA', { media, index, lang }));
   },
 
-  onOpenVideo (media, options) {
-    dispatch(openModal('VIDEO', { media, options }));
+  onOpenVideo (media, lang, options) {
+    dispatch(openModal('VIDEO', { media, lang, options }));
   },
 
   onBlock (status) {

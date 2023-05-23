@@ -451,6 +451,7 @@ class Header extends ImmutablePureComponent {
                 <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
                   <ShortNumber
                     value={account.get('statuses_count')}
+                    isHide={account.getIn(['other_settings', 'hide_statuses_count']) || false}
                     renderer={counterRenderer('statuses')}
                   />
                 </NavLink>
@@ -458,6 +459,7 @@ class Header extends ImmutablePureComponent {
                 <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
                   <ShortNumber
                     value={account.get('following_count')}
+                    isHide={account.getIn(['other_settings', 'hide_following_count']) || false}
                     renderer={counterRenderer('following')}
                   />
                 </NavLink>
@@ -465,6 +467,7 @@ class Header extends ImmutablePureComponent {
                 <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
                   <ShortNumber
                     value={account.get('followers_count')}
+                    isHide={account.getIn(['other_settings', 'hide_followers_count']) || false}
                     renderer={counterRenderer('followers')}
                   />
                 </NavLink>

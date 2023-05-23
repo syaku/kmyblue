@@ -61,6 +61,7 @@ class ActionBar extends React.PureComponent {
     relationship: ImmutablePropTypes.map,
     onReply: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
+    onReblogForceModal: PropTypes.func.isRequired,
     onFavourite: PropTypes.func.isRequired,
     onEmojiReact: PropTypes.func.isRequired,
     onBookmark: PropTypes.func.isRequired,
@@ -87,6 +88,10 @@ class ActionBar extends React.PureComponent {
 
   handleReblogClick = (e) => {
     this.props.onReblog(this.props.status, e);
+  };
+
+  handleReblogForceModalClick = (e) => {
+    this.props.onReblogForceModal(this.props.status, e);
   };
 
   handleFavouriteClick = () => {
@@ -207,6 +212,8 @@ class ActionBar extends React.PureComponent {
 
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
       menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      menu.push(null);
+      menu.push({ text: intl.formatMessage(messages.reblog), action: this.handleReblogForceModalClick });
       menu.push(null);
     }
 

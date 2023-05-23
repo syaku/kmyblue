@@ -411,8 +411,8 @@ ja:
       private_comment_hint: このコメントは同じサーバーのモデレーターも閲覧できます。
       public_comment: コメント (公開)
       public_comment_hint: ドメインブロックの公開を有効にしている場合、このコメントも公開されます。
-      reject_favourite: お気に入り、絵文字リアクションを拒否
-      reject_favourite_hint: 今後のお気に入り、絵文字リアクションを拒否します。停止とは無関係です
+      reject_favourite: お気に入り、スタンプを拒否
+      reject_favourite_hint: 今後のお気に入り、スタンプを拒否します。停止とは無関係です
       reject_hashtag: ハッシュタグを拒否
       reject_hashtag_hint: ハッシュタグで検索できなくなり、トレンドにも影響しなくなります。停止とは無関係です
       reject_media: メディアファイルを拒否
@@ -420,7 +420,9 @@ ja:
       reject_new_follow: 新規フォローを拒否
       reject_new_follow_hint: 今後の新規フォローを拒否します。停止とは無関係です
       reject_reply: リプライを拒否
+      reject_reply_exclude_followers: フォロー相手以外からのリプライを拒否
       reject_reply_hint: 今後のリプライを拒否します。停止とは無関係です
+      reject_reply_exclude_followers_hint: 今後のリプライを拒否します。停止とは無関係です
       reject_reports: 通報を拒否
       reject_reports_hint: このドメインからの通報をすべて無視します。停止とは無関係です
       reject_send_dissubscribable: 購読拒否アカウントの投稿を配送しない
@@ -507,6 +509,7 @@ ja:
           reject_media: メディアを拒否する
           reject_new_follow: 新規フォローを拒否
           reject_reply: リプライを拒否
+          reject_reply_exclude_followers: フォロー相手以外からのリプライを拒否
           reject_reports: 通報を拒否
           reject_send_dissubscribable: 購読拒否投稿配送なし
           reject_send_media: メディア付き投稿配送なし
@@ -1009,9 +1012,12 @@ ja:
       exclude_keywords_raw: 除外するキーワード
       exclude_tags_raw: 除外するハッシュタグ
       hint: 下のリストに、絞り込み条件・除外条件を入力します。条件は複数指定することができます。1行につき1つずつ入力してください。空行、コメント、重複を含めることはできません。絞り込み条件（除外条件ではない）は最低1つ設定しなければいけません。
+      ignore_reblog: ブーストを含めない
       keywords_hint: キーワードは1つあたり最低2文字です。キーワードによる絞り込みを指定した場合、検索許可に対応しているサーバーからの投稿は、検索許可が「公開」以外のものは掲載されなくなります
       keywords_raw: 絞り込むキーワード
       list: 投稿配置先リスト
+      stl: STL(ソーシャルタイムライン)モードを有効にする
+      stl_hint: STLモードが有効になったアンテナは、全てのフォロワーとローカルタイムラインの発言を流します。STLが有効になっていると、これより下の設定が例外なく全て何もかも無視されます。その代わり購読拒否設定は無視されます。
       tags_raw: 絞り込むハッシュタグ
       title: アンテナを編集
       with_media_only: メディアのみ
@@ -1028,6 +1034,7 @@ ja:
       expires_on: 有効期限 %{date}
       keywords:
         other: "%{count}件のキーワード"
+      stl: STLモードが適用されます。購読拒否設定は無視されます。
       tags:
         other: "%{count}件のタグ"
       title: アンテナ
@@ -1418,9 +1425,9 @@ ja:
       subject: "%{name}さんにお気に入りに登録されました"
       title: 新たなお気に入り登録
     emoji_reaction:
-      body: "%{name}さんに絵文字リアクションされた、あなたの投稿があります:"
-      subject: "%{name}さんに絵文字リアクションされました"
-      title: 新たな絵文字リアクション
+      body: "%{name}さんにスタンプをつけられた、あなたの投稿があります:"
+      subject: "%{name}さんにスタンプをつけられました"
+      title: 新たなスタンプ
     follow:
       body: "%{name}さんにフォローされています！"
       subject: "%{name}さんにフォローされています"
@@ -1485,6 +1492,7 @@ ja:
       too_few_options: は複数必要です
       too_many_options: は%{max}個までです
   preferences:
+    hide: 隠蔽
     other: その他
     posting_defaults: デフォルトの投稿設定
     public_timelines: 公開タイムライン
@@ -1654,11 +1662,14 @@ ja:
       public_unlisted_long: 誰でも見ることができますが、連合タイムラインには表示されません
       unlisted: 未収載
       unlisted_long: 誰でも見ることができますが、連合・ローカルタイムラインには表示されません
+      unset: 設定なし
+      unset_long: デフォルトの挙動に従います
   statuses_cleanup:
     enabled: 古い投稿を自動的に削除する
     enabled_hint: 設定した期間を過ぎた投稿は、以下の例外に該当しない限り、自動的に削除されます
     exceptions: 例外
     explanation: 投稿の削除はサーバーに負荷がかかるため、サーバーが混み合っていないときに時間をかけて行われます。
+    ignore_emojis: 設定しない
     ignore_favs: 設定しない
     ignore_reblogs: 設定しない
     interaction_exceptions: インタラクションに基づく例外
@@ -1673,6 +1684,8 @@ ja:
     keep_polls_hint: アンケート付きの投稿を削除せずに残します
     keep_self_bookmark: ブックマークした投稿を保持
     keep_self_bookmark_hint: 自分自身でブックマークした投稿を削除せずに残します
+    keep_self_emoji: スタンプをつけた投稿を保持
+    keep_self_emoji_hint: 自分自身でスタンプをつけた投稿を削除せずに残します
     keep_self_fav: お気に入りに登録した投稿を保持
     keep_self_fav_hint: 自分自身でお気に入りに登録した投稿を削除せずに残します
     min_age:
@@ -1685,6 +1698,8 @@ ja:
       '63113904': 2年
       '7889238': 3ヶ月
     min_age_label: 投稿を保持する期間
+    min_emojis: スタンプの基準値
+    min_emojis_hint: この数以上、スタンプをつけられた投稿を削除せずに残します。空白にしておくと、数に関わらず投稿を削除します。
     min_favs: お気に入りの基準値
     min_favs_hint: この数以上、お気に入り登録された投稿を削除せずに残します。空白にしておくと、お気に入りの数に関わらず投稿を削除します。
     min_reblogs: ブーストの基準値

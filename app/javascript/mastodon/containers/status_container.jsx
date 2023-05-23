@@ -110,6 +110,10 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
     }
   },
 
+  onReblogForceModal (status) {
+    dispatch(initBoostModal({ status, onReblog: this.onModalReblog }));
+  },
+
   onFavourite (status) {
     if (status.get('favourited')) {
       dispatch(unfavourite(status));
@@ -192,12 +196,12 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
     dispatch(mentionCompose(account, router));
   },
 
-  onOpenMedia (statusId, media, index) {
-    dispatch(openModal('MEDIA', { statusId, media, index }));
+  onOpenMedia (statusId, media, index, lang) {
+    dispatch(openModal('MEDIA', { statusId, media, index, lang }));
   },
 
-  onOpenVideo (statusId, media, options) {
-    dispatch(openModal('VIDEO', { statusId, media, options }));
+  onOpenVideo (statusId, media, lang, options) {
+    dispatch(openModal('VIDEO', { statusId, media, lang, options }));
   },
 
   onBlock (status) {

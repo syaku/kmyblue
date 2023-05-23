@@ -214,7 +214,7 @@ class PrivacyDropdown extends React.PureComponent {
     this.props.onChange(value);
   };
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     const { intl: { formatMessage } } = this.props;
 
     this.options = [

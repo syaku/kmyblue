@@ -27,7 +27,7 @@ import { FormattedMessage, FormattedNumber } from 'react-intl';
  * @param {ShortNumberProps} param0 Props for the component
  * @returns {JSX.Element} Rendered number
  */
-function ShortNumber({ value, renderer, children }) {
+function ShortNumber({ value, isHide, renderer, children }) {
   const shortNumber = toShortNumber(value);
   const [, division] = shortNumber;
 
@@ -37,7 +37,7 @@ function ShortNumber({ value, renderer, children }) {
 
   const customRenderer = children != null ? children : renderer;
 
-  const displayNumber = <ShortNumberCounter value={shortNumber} />;
+  const displayNumber = !isHide ? <ShortNumberCounter value={shortNumber} /> : <span>-</span>;
 
   return customRenderer != null
     ? customRenderer(displayNumber, pluralReady(value, division))
@@ -46,6 +46,7 @@ function ShortNumber({ value, renderer, children }) {
 
 ShortNumber.propTypes = {
   value: PropTypes.number.isRequired,
+  isHide: PropTypes.bool,
   renderer: PropTypes.func,
   children: PropTypes.func,
 };

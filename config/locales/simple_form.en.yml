@@ -136,6 +136,7 @@ en:
       webhook:
         events: Select events to send
         url: Where events will be sent to
+    kmyblue: kmyblue
     labels:
       account:
         fields:
@@ -208,6 +209,7 @@ en:
         setting_crop_images: Crop images in non-expanded posts to 16x9
         setting_default_language: Posting language
         setting_default_privacy: Posting privacy
+        setting_default_reblog_privacy: Reblogging privacy
         setting_default_searchability: Searchability
         setting_default_sensitive: Always mark media as sensitive
         setting_delete_modal: Show confirmation dialog before deleting a post
@@ -217,8 +219,13 @@ en:
         setting_display_media_expand: Show more medias
         setting_display_media_hide_all: Hide all
         setting_display_media_show_all: Show all
+        setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
         setting_expand_spoilers: Always expand posts marked with content warnings
+        setting_hide_followers_count: Hide followers count
+        setting_hide_following_count: Hide following count
         setting_hide_network: Hide your social graph
+        setting_hide_statuses_count: Hide statuses count
+        setting_noai: Set noai meta tags
         setting_noindex: Opt-out of search engine indexing
         setting_public_post_to_unlisted: Convert public post to public unlisted if not using Web app
         setting_reduce_motion: Reduce motion in animations
@@ -226,6 +233,7 @@ en:
         setting_reject_unlisted_subscription: Reject sending unlisted posts to Misskey, Calckey
         setting_send_without_domain_blocks: Send your post to all server with administrator set as rejecting-post-server for protect you [DEPRECATED]
         setting_show_application: Disclose application used to send posts
+        setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font
         setting_theme: Site theme
         setting_trends: Show today's trends

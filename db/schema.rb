@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_04_30_110057) do
+ActiveRecord::Schema.define(version: 2023_05_22_093135) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -194,7 +194,7 @@ ActiveRecord::Schema.define(version: 2023_04_30_110057) do
     t.boolean "group_allow_private_message"
     t.integer "searchability", default: 2, null: false
     t.boolean "dissubscribable", default: false, null: false
-    t.boolean "stop_emoji_reaction_streaming", default: false
+    t.jsonb "settings"
     t.index "(((setweight(to_tsvector('simple'::regconfig, (display_name)::text), 'A'::\"char\") || setweight(to_tsvector('simple'::regconfig, (username)::text), 'B'::\"char\")) || setweight(to_tsvector('simple'::regconfig, (COALESCE(domain, ''::character varying))::text), 'C'::\"char\")))", name: "search_index", using: :gin
     t.index "lower((username)::text), COALESCE(lower((domain)::text), ''::text)", name: "index_accounts_on_username_and_domain_lower", unique: true
     t.index ["moved_to_account_id"], name: "index_accounts_on_moved_to_account_id", where: "(moved_to_account_id IS NOT NULL)"
@@ -308,13 +308,17 @@ ActiveRecord::Schema.define(version: 2023_04_30_110057) do
     t.jsonb "exclude_domains"
     t.jsonb "exclude_accounts"
     t.jsonb "exclude_tags"
+    t.boolean "stl", default: false, null: false
+    t.boolean "ignore_reblog", default: false, null: false
     t.index ["account_id"], name: "index_antennas_on_account_id"
     t.index ["any_accounts"], name: "index_antennas_on_any_accounts"
     t.index ["any_domains"], name: "index_antennas_on_any_domains"
     t.index ["any_keywords"], name: "index_antennas_on_any_keywords"
     t.index ["any_tags"], name: "index_antennas_on_any_tags"
     t.index ["available"], name: "index_antennas_on_available"
+    t.index ["ignore_reblog"], name: "index_antennas_on_ignore_reblog"
     t.index ["list_id"], name: "index_antennas_on_list_id"
+    t.index ["stl"], name: "index_antennas_on_stl"
   end
 
   create_table "appeals", force: :cascade do |t|
@@ -434,6 +438,9 @@ ActiveRecord::Schema.define(version: 2023_04_30_110057) do
     t.integer "image_storage_schema_version"
     t.integer "image_width"
     t.integer "image_height"
+    t.jsonb "aliases"
+    t.boolean "is_sensitive", default: false, null: false
+    t.string "license"
     t.index ["shortcode", "domain"], name: "index_custom_emojis_on_shortcode_and_domain", unique: true
   end
 
@@ -509,6 +516,7 @@ ActiveRecord::Schema.define(version: 2023_04_30_110057) do
     t.boolean "hidden", default: false, null: false
     t.boolean "hidden_anonymous", default: false, null: false
     t.boolean "detect_invalid_subscription", default: false, null: false
+    t.boolean "reject_reply_exclude_followers", default: false, null: false
     t.index ["domain"], name: "index_domain_blocks_on_domain", unique: true
   end
 
@@ -1285,7 +1293,6 @@ ActiveRecord::Schema.define(version: 2023_04_30_110057) do
   add_foreign_key "antenna_tags", "antennas", on_delete: :cascade
   add_foreign_key "antenna_tags", "tags", on_delete: :cascade
   add_foreign_key "antennas", "accounts", on_delete: :cascade
-  add_foreign_key "antennas", "lists", on_delete: :cascade
   add_foreign_key "appeals", "account_warnings", on_delete: :cascade
   add_foreign_key "appeals", "accounts", column: "approved_by_account_id", on_delete: :nullify
   add_foreign_key "appeals", "accounts", column: "rejected_by_account_id", on_delete: :nullify

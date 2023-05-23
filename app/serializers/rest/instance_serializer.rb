@@ -55,6 +55,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       statuses: {
         max_characters: StatusLengthValidator::MAX_CHARS,
         max_media_attachments: MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX,
+        max_media_attachments_with_poll: MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX_WITH_POLL,
         max_media_attachments_from_activitypub: MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX,
         characters_reserved_per_url: StatusLengthValidator::URL_PLACEHOLDER_CHARS,
       },
@@ -83,6 +84,10 @@ class REST::InstanceSerializer < ActiveModel::Serializer
         max_reactions: EmojiReaction::EMOJI_REACTION_LIMIT,
         max_reactions_per_account: EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT,
       },
+
+      reactions: {
+        max_reactions: EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT,
+      },
     }
   end
 
@@ -102,6 +107,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       :enable_wide_emoji,
       :enable_wide_emoji_reaction,
       :kmyblue_searchability,
+      :searchability,
       :kmyblue_markdown,
     ]
 

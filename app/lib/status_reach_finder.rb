@@ -145,7 +145,7 @@ class StatusReachFinder
   def banned_domains_for_misskey
     return @banned_domains_for_misskey if @banned_domains_for_misskey
 
-    return @banned_domains_for_misskey = [] if (!@status.account.user&.reject_public_unlisted_subscription? && !@status.account.user&.reject_unlisted_subscription?) || (!@status.public_unlisted_visibility? && !@status.unlisted_visibility?)
+    return @banned_domains_for_misskey = [] if (!@status.account.user&.setting_reject_public_unlisted_subscription && !@status.account.user&.setting_reject_unlisted_subscription) || (!@status.public_unlisted_visibility? && !@status.unlisted_visibility?)
 
     domains = banned_domains_for_misskey_of_status(@status)
     domains += banned_domains_for_misskey_of_status(@status.reblog) if @status.reblog? && @status.reblog.local?

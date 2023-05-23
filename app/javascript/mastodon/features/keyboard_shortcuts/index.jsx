@@ -139,7 +139,7 @@ class KeyboardShortcuts extends ImmutablePureComponent {
               </tr>
               <tr>
                 <td><kbd>g</kbd>+<kbd>e</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.emoji_reactions' defaultMessage='to open emoji reactions list' /></td>
+                <td><FormattedMessage id='keyboard_shortcuts.emoji_reactions' defaultMessage='to open stamps list' /></td>
               </tr>
               <tr>
                 <td><kbd>g</kbd>+<kbd>p</kbd></td>

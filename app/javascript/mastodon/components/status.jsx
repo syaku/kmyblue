@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Avatar } from './avatar';
 import { AvatarOverlay } from './avatar_overlay';
 import { RelativeTimestamp } from './relative_timestamp';
-import DisplayName from './display_name';
+import { DisplayName } from './display_name';
 import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
 import StatusEmojiReactionsBar from './status_emoji_reactions_bar';
@@ -79,6 +79,7 @@ class Status extends ImmutablePureComponent {
     onEmojiReact: PropTypes.func,
     onUnEmojiReact: PropTypes.func,
     onReblog: PropTypes.func,
+    onReblogForceModal: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
     onMention: PropTypes.func,
@@ -199,11 +200,12 @@ class Status extends ImmutablePureComponent {
 
   handleOpenVideo = (options) => {
     const status = this._properStatus();
-    this.props.onOpenVideo(status.get('id'), status.getIn(['media_attachments', 0]), options);
+    this.props.onOpenVideo(status.get('id'), status.getIn(['media_attachments', 0]), status.get('language'), options);
   };
 
   handleOpenMedia = (media, index) => {
-    this.props.onOpenMedia(this._properStatus().get('id'), media, index);
+    const status = this._properStatus();
+    this.props.onOpenMedia(status.get('id'), media, index, status.get('language'));
   };
 
   handleHotkeyOpenMedia = e => {
@@ -213,10 +215,11 @@ class Status extends ImmutablePureComponent {
     e.preventDefault();
 
     if (status.get('media_attachments').size > 0) {
+      const lang = status.get('language');
       if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
-        onOpenVideo(status.get('id'), status.getIn(['media_attachments', 0]), { startTime: 0 });
+        onOpenVideo(status.get('id'), status.getIn(['media_attachments', 0]), lang, { startTime: 0 });
       } else {
-        onOpenMedia(status.get('id'), status.get('media_attachments'), 0);
+        onOpenMedia(status.get('id'), status.get('media_attachments'), 0, lang);
       }
     }
   };
@@ -357,6 +360,16 @@ class Status extends ImmutablePureComponent {
     const connectReply = nextInReplyToId && nextInReplyToId === status.get('id');
     const matchedFilters = status.get('matched_filters');
 
+    const visibilityIconInfo = {
+      'public': { icon: 'globe', text: intl.formatMessage(messages.public_short) },
+      'unlisted': { icon: 'unlock', text: intl.formatMessage(messages.unlisted_short) },
+      'public_unlisted': { icon: 'cloud', text: intl.formatMessage(messages.public_unlisted_short) },
+      'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
+      'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
+    };
+
+    let visibilityIcon = visibilityIconInfo[status.get('visibility_ex')] || visibilityIconInfo[status.get('visibility')];
+
     if (this.state.forceFilter === undefined ? matchedFilters : this.state.forceFilter) {
       const minHandlers = this.props.muted ? {} : {
         moveUp: this.handleHotkeyMoveUp,
@@ -389,6 +402,7 @@ class Status extends ImmutablePureComponent {
       prepend = (
         <div className='status__prepend'>
           <div className='status__prepend-icon-wrapper'><Icon id='retweet' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'><Icon id={visibilityIcon.icon} className='status__prepend-icon' /></div>
           <FormattedMessage id='status.reblogged_by' defaultMessage='{name} boosted' values={{ name: <a onClick={this.handlePrependAccountClick} data-id={status.getIn(['account', 'id'])} href={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'><bdi><strong dangerouslySetInnerHTML={display_name_html} /></bdi></a> }} />
         </div>
       );
@@ -511,15 +525,7 @@ class Status extends ImmutablePureComponent {
       statusAvatar = <AvatarOverlay account={status.get('account')} friend={account} />;
     }
 
-    const visibilityIconInfo = {
-      'public': { icon: 'globe', text: intl.formatMessage(messages.public_short) },
-      'unlisted': { icon: 'unlock', text: intl.formatMessage(messages.unlisted_short) },
-      'public_unlisted': { icon: 'cloud', text: intl.formatMessage(messages.public_unlisted_short) },
-      'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
-      'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
-    };
-
-    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')] || visibilityIconInfo[status.get('visibility')];
+    visibilityIcon = visibilityIconInfo[status.get('visibility_ex')] || visibilityIconInfo[status.get('visibility')];
 
     let emojiReactionsBar = null;
     if (!this.props.withoutEmojiReactions && status.get('emoji_reactions')) {

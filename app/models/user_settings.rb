@@ -11,15 +11,22 @@ class UserSettings
   setting :aggregate_reblogs, default: true
   setting :theme, default: -> { ::Setting.theme }
   setting :noindex, default: -> { ::Setting.noindex }
+  setting :noai, default: true
+  setting :hide_statuses_count, default: false
+  setting :hide_following_count, default: false
+  setting :hide_followers_count, default: false
   setting :show_application, default: true
   setting :default_language, default: nil
   setting :default_sensitive, default: false
   setting :default_privacy, default: nil
+  setting :default_reblog_privacy, default: nil
   setting :default_searchability, default: :private
   setting :public_post_to_unlisted, default: false
   setting :reject_public_unlisted_subscription, default: false
   setting :reject_unlisted_subscription, default: false
   setting :send_without_domain_blocks, default: false
+  setting :stop_emoji_reaction_streaming, default: false
+  setting :emoji_reaction_streaming_notify_impl2, default: false
 
   namespace :web do
     setting :crop_images, default: true

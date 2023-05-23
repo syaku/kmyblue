@@ -94,11 +94,6 @@ Lint/AmbiguousBlockAssociation:
     - 'spec/services/unsuspend_account_service_spec.rb'
     - 'spec/workers/scheduler/accounts_statuses_cleanup_scheduler_spec.rb'
 
-# This cop supports safe autocorrection (--autocorrect).
-Lint/AmbiguousOperatorPrecedence:
-  Exclude:
-    - 'config/initializers/rack_attack.rb'
-
 # Configuration parameters: AllowComments, AllowEmptyLambdas.
 Lint/EmptyBlock:
   Exclude:
@@ -643,24 +638,6 @@ RSpec/RepeatedExampleGroupBody:
   Exclude:
     - 'spec/controllers/statuses_controller_spec.rb'
 
-RSpec/RepeatedExampleGroupDescription:
-  Exclude:
-    - 'spec/controllers/admin/reports/actions_controller_spec.rb'
-    - 'spec/policies/report_note_policy_spec.rb'
-
-RSpec/ScatteredSetup:
-  Exclude:
-    - 'spec/controllers/activitypub/followers_synchronizations_controller_spec.rb'
-    - 'spec/controllers/activitypub/outboxes_controller_spec.rb'
-    - 'spec/controllers/admin/disputes/appeals_controller_spec.rb'
-    - 'spec/controllers/auth/registrations_controller_spec.rb'
-    - 'spec/services/activitypub/process_account_service_spec.rb'
-
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/SharedContext:
-  Exclude:
-    - 'spec/services/unsuspend_account_service_spec.rb'
-
 RSpec/StubbedMock:
   Exclude:
     - 'spec/controllers/api/base_controller_spec.rb'
@@ -977,6 +954,8 @@ Rails/ThreeStateBooleanColumn:
     - 'db/migrate/20230314081013_add_group_allow_private_message_to_accounts.rb'
     - 'db/migrate/20230412005311_add_markdown_to_statuses.rb'
     - 'db/migrate/20230412073021_add_markdown_to_status_edits.rb'
+    - 'db/migrate/20230428111230_add_emoji_reaction_streaming_to_accounts.rb'
+    - 'db/migrate/20230510004621_remove_stop_emoji_reaction_streaming_from_accounts.rb'
 
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb

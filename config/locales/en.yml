@@ -414,8 +414,8 @@ en:
       private_comment_hint: Comment about this domain limitation for internal use by the moderators.
       public_comment: Public comment
       public_comment_hint: Comment about this domain limitation for the general public, if advertising the list of domain limitations is enabled.
-      reject_favourite: Reject favourites
-      reject_favourite_hint: Reject favourites or emoji-reaction in the future
+      reject_favourite: Reject favorites
+      reject_favourite_hint: Reject favorites or emoji-reaction in the future
       reject_hashtag: Reject hashtags
       reject_hashtag_hint: Reject hashtags in the future
       reject_media: Reject media files
@@ -423,7 +423,9 @@ en:
       reject_new_follow: Reject follows
       reject_new_follow_hint: Reject follows in the future
       reject_reply: Reject replies
+      reject_reply_exclude_followers: Reject replies exclude followers
       reject_reply_hint: Reject replies in the future
+      reject_reply_exclude_followers_hint: Reject replies exclude followers in the future
       reject_reports: Reject reports
       reject_reports_hint: Ignore all reports coming from this domain. Irrelevant for suspensions
       reject_send_dissubscribable: 購読拒否アカウントの投稿を配送しない
@@ -507,12 +509,13 @@ en:
         description_html: You can define content policies that will be applied to all accounts from this domain and any of its subdomains.
         limited_federation_mode_description_html: You can chose whether to allow federation with this domain.
         policies:
-          reject_favourite: Reject favourite
+          reject_favourite: Reject favorite
           reject_hashtag: Reject hashtags
           reject_media: Reject media
           reject_new_follow: Reject follows
           reject_straight_follow: Reject straight follow
           reject_reply: Reject reply
+          reject_reply_exclude_followers: Reject reply exclude followers
           reject_reports: Reject reports
           silence: Limit
           suspend: Suspend
@@ -767,6 +770,9 @@ en:
       branding:
         preamble: Your server's branding differentiates it from other servers in the network. This information may be displayed across a variety of environments, such as Mastodon's web interface, native applications, in link previews on other websites and within messaging apps, and so on. For this reason, it is best to keep this information clear, short and concise.
         title: Branding
+      captcha_enabled:
+        desc_html: This relies on external scripts from hCaptcha, which may be a security and privacy concern. In addition, <strong>this can make the registration process significantly less accessible to some (especially disabled) people</strong>. For these reasons, please consider alternative measures such as approval-based or invite-based registration.
+        title: Require new users to solve a CAPTCHA to confirm their account
       content_retention:
         preamble: Control how user-generated content is stored in Mastodon.
         title: Content retention
@@ -808,7 +814,7 @@ en:
         remove_from_report: Remove from report
         report: Report
       deleted: Deleted
-      favourites: Favourites
+      favourites: Favorites
       force_cw: Force CW
       force_nsfw: Force NSFW
       history: Version history
@@ -1012,9 +1018,12 @@ en:
       exclude_keywords_raw: Excluding keyword list
       exclude_tags_raw: Excluding hashtag list
       hint: 下のリストに、絞り込み条件・除外条件を入力します。条件は複数指定することができます。1行につき1つずつ入力してください。空行、コメント、重複を含めることはできません。
+      ignore_reblog: Ignore BTs
       keywords_hint: キーワードは1つあたり最低2文字です。キーワードによる絞り込みを指定した場合、検索許可に対応しているサーバーからの投稿は、検索許可が「公開」以外のものは掲載されなくなります
       keywords_raw: Keyword list
       list: Destination list
+      stl: Enable stl (Social timeline) mode
+      stl_hint: All of under settings will be ignored, but rejecting subscription settings are ignored
       tags_raw: Hashtag list
       title: Edit antenna
       with_media_only: With media only
@@ -1031,6 +1040,7 @@ en:
       empty: You have no antennas.
       expires_in: Expires in %{distance}
       expires_on: Expires on %{date}
+      stl: This antenna is in STL mode, ignoring reject-subscription settings.
       title: Antennas
     new:
       save: Save new antenna
@@ -1064,6 +1074,9 @@ en:
     your_token: Your access token
   auth:
     apply_for_account: Request an account
+    captcha_confirmation:
+      hint_html: Just one more step! To confirm your account, this server requires you to solve a CAPTCHA. You can <a href="/about/more">contact the server administrator</a> if you have questions or need assistance with confirming your account.
+      title: User verification
     change_password: Password
     cloudflare_with_registering: With cloudflare on auth
     confirmations:
@@ -1113,8 +1126,8 @@ en:
       new_confirmation_instructions_sent: You will receive a new e-mail with the confirmation link in a few minutes!
       title: Check your inbox
     sign_in:
-      preamble_html: Sign in with your <strong>%{domain}</strong> credentials. If your account is hosted on a different server, you will not be able to log in here.
-      title: Sign in to %{domain}
+      preamble_html: Login with your <strong>%{domain}</strong> credentials. If your account is hosted on a different server, you will not be able to log in here.
+      title: Login to %{domain}
     sign_up:
       manual_review: Sign-ups on %{domain} go through manual review by our moderators. To help us process your registration, write a bit about yourself and why you want an account on %{domain}.
       preamble: With an account on this Mastodon server, you'll be able to follow any other person on the network, regardless of where their account is hosted.
@@ -1461,13 +1474,13 @@ en:
       sign_up:
         subject: "%{name} signed up"
     favourite:
-      body: 'Your post was favourited by %{name}:'
-      subject: "%{name} favourited your post"
-      title: New favourite
+      body: 'Your post was favorited by %{name}:'
+      subject: "%{name} favorited your post"
+      title: New favorite
     emoji_reaction:
-      body: 'Your post was reacted with emoji by %{name}:'
-      subject: "%{name} reacted your post with emoji"
-      title: New emoji reaction
+      body: 'Your post was stamped by %{name}:'
+      subject: "%{name} stamped your post"
+      title: New stamp
     follow:
       body: "%{name} is now following you!"
       subject: "%{name} is now following you"
@@ -1530,6 +1543,7 @@ en:
       expired: The poll has already ended
       invalid_choice: The chosen vote option does not exist
       over_character_limit: cannot be longer than %{max} characters each
+      self_vote: You cannot vote in your own polls
       too_few_options: must have more than one item
       too_many_options: can't contain more than %{max} items
   preferences:
@@ -1696,7 +1710,7 @@ en:
     show_newer: Show newer
     show_older: Show older
     show_thread: Show thread
-    sign_in_to_participate: Sign in to participate in the conversation
+    sign_in_to_participate: Login to participate in the conversation
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: Direct
@@ -1711,6 +1725,7 @@ en:
     enabled_hint: Automatically deletes your posts once they reach a specified age threshold, unless they match one of the exceptions below
     exceptions: Exceptions
     explanation: Because deleting posts is an expensive operation, this is done slowly over time when the server is not otherwise busy. For this reason, your posts may be deleted a while after they reach the age threshold.
+    ignore_emojis: Ignore stamps
     ignore_favs: Ignore favorites
     ignore_reblogs: Ignore boosts
     interaction_exceptions: Exceptions based on interactions
@@ -1737,6 +1752,8 @@ en:
       '63113904': 2 years
       '7889238': 3 months
     min_age_label: Age threshold
+    min_emojis: Keep posts stamped at least
+    min_emojis_hint: Doesn't delete any of your posts that has received at least this number of stamps. Leave blank to delete posts regardless of their number of emojis
     min_favs: Keep posts favorited at least
     min_favs_hint: Doesn't delete any of your posts that has received at least this number of favorites. Leave blank to delete posts regardless of their number of favorites
     min_reblogs: Keep posts boosted at least

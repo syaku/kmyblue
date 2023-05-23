@@ -55,16 +55,20 @@ ja:
         setting_send_without_domain_blocks: 管理人が同人コンテンツの配送にふさわしくないと判断したサーバーに、制限に関係なく全ての投稿を配送します。ただし何が起きても自己責任になります
         setting_aggregate_reblogs: 最近ブーストされた投稿が新たにブーストされても表示しません (設定後受信したものにのみ影響)
         setting_always_send_emails: 通常、Mastodon からメール通知は行われません。
+        setting_boost_modal: ブーストの公開範囲が指定できるようになります
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
         setting_display_media_hide_all: メディアを常に隠す
         setting_display_media_show_all: メディアを常に表示する
+        setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、スタンプ機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
-        setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大8個まで表示します。kmyblueからアップロードはできません
+        setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大16個まで表示します。kmyblueからアップロードはできません
+        setting_noai: AI学習への利用を禁止するメタタグをプロフィールページに追加します。ただし実効性があるとは限りません
         setting_noindex: 公開プロフィールおよび各投稿ページに影響します
         setting_public_post_to_unlisted: 未対応のサードパーティアプリからもローカル公開で投稿できますが、公開投稿はWeb以外できなくなります
         setting_reject_unlisted_subscription: Misskeyやそのフォーク(Calckeyなど)は、フォローしていないアカウントの「未収載」投稿を **購読・検索** することができます。これはkmyblueの挙動と異なります。そのようなサーバーのうち管理人が指定したものに、指定した公開範囲の投稿を「フォロワーのみ」として配送します。ただし構造上、完璧な対応は困難でたまに未収載として配信されること、ご理解ください
         setting_show_application: 投稿するのに使用したアプリが投稿の詳細ビューに表示されるようになります
+        setting_stop_emoji_reaction_streaming: 通信容量の節約に役立ちます
         setting_use_blurhash: ぼかしはメディアの色を元に生成されますが、細部は見えにくくなっています
         setting_use_pending_items: 新着があってもタイムラインを自動的にスクロールしないようにします
         username: アルファベット大文字と小文字、数字、アンダーバー「_」が使えます
@@ -140,6 +144,7 @@ ja:
       webhook:
         events: 送信するイベントを選択
         url: イベントの送信先
+    kmyblue: kmyblue
     labels:
       account:
         fields:
@@ -212,17 +217,23 @@ ja:
         setting_crop_images: 投稿の詳細以外では画像を16:9に切り抜く
         setting_default_language: 投稿する言語
         setting_default_privacy: 投稿の公開範囲
+        setting_default_reblog_privacy: BTの公開範囲
         setting_default_searchability: 投稿の検索を許可する範囲
         setting_default_sensitive: メディアを常に閲覧注意としてマークする
         setting_delete_modal: 投稿を削除する前に確認ダイアログを表示する
         setting_disable_swiping: スワイプでの切り替えを無効にする
         setting_display_media: メディアの表示
         setting_display_media_default: 標準
-        setting_display_media_expand: 5個目以降のメディアも表示する (最大8)
+        setting_display_media_expand: 5個目以降のメディアも表示する (最大16)
         setting_display_media_hide_all: 非表示
         setting_display_media_show_all: 表示
+        setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換のスタンプ機能を有効にする
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
+        setting_hide_followers_count: フォロワー数を隠す
+        setting_hide_following_count: フォロー数を隠す
         setting_hide_network: 繋がりを隠す
+        setting_hide_statuses_count: 投稿数を隠す
+        setting_noai: 自分のコンテンツのAI学習利用に対して不快感を表明する
         setting_noindex: 検索エンジンによるインデックスを拒否する
         setting_public_post_to_unlisted: サードパーティアプリから投稿するとき、公開投稿をローカル公開に変更する
         setting_reduce_motion: アニメーションの動きを減らす
@@ -230,6 +241,7 @@ ja:
         setting_reject_unlisted_subscription: 管理者の指定したサーバーに「未収載」投稿を「フォロワーのみ」に変換して配送する
         setting_send_without_domain_blocks: 管理人の設定した配送停止設定を拒否する (非推奨)
         setting_show_application: 送信したアプリを開示する
+        setting_stop_emoji_reaction_streaming: スタンプのストリーミングを停止する
         setting_system_font_ui: システムのデフォルトフォントを使う
         setting_theme: サイトテーマ
         setting_trends: 本日のトレンドタグを表示する

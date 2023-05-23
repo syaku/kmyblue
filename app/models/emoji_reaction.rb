@@ -44,7 +44,7 @@ class EmojiReaction < ApplicationRecord
   def invalidate_cleanup_info
     return unless status&.account_id == account_id && account.local?
 
-    account.statuses_cleanup_policy&.invalidate_last_inspected(status, :unfav)
+    account.statuses_cleanup_policy&.invalidate_last_inspected(status, :unemoji)
   end
 
   def paginate_by_max_id(limit, max_id = nil, since_id = nil)

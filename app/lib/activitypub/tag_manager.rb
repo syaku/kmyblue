@@ -34,6 +34,8 @@ class ActivityPub::TagManager
   def uri_for(target)
     return target.uri if target.respond_to?(:local?) && !target.local?
 
+    return unless target.respond_to?(:object_type)
+
     case target.object_type
     when :person
       target.instance_actor? ? instance_actor_url : account_url(target)
@@ -211,11 +213,9 @@ class ActivityPub::TagManager
       case status.compute_searchability_activitypub
       when 'public'
         [COLLECTIONS[:public]]
-      when 'unlisted' # Followers only in kmyblue (generics: private)
+      when 'private'
         [account_followers_url(status.account)]
-        # when 'private'   # Reaction only in kmyblue (generics: direct)
-        # []
-      when 'limited'
+      when 'direct'
         status.conversation_id.present? ? [uri_for(status.conversation)] : []
       else
         []
@@ -228,7 +228,7 @@ class ActivityPub::TagManager
     case account.searchability
     when 'public'
       [COLLECTIONS[:public]]
-    when 'unlisted', 'private'
+    when 'private', 'direct'
       [account_followers_url(account)]
     else
       []

@@ -22,6 +22,8 @@
 #  exclude_domains  :jsonb
 #  exclude_accounts :jsonb
 #  exclude_tags     :jsonb
+#  stl              :boolean          default(FALSE), not null
+#  ignore_reblog    :boolean          default(FALSE), not null
 #
 class Antenna < ApplicationRecord
   include Expireable
@@ -31,18 +33,20 @@ class Antenna < ApplicationRecord
   has_many :antenna_accounts, inverse_of: :antenna, dependent: :destroy
 
   belongs_to :account
-  belongs_to :list
+  belongs_to :list, optional: true
 
+  scope :stls, -> { where(stl: true) }
   scope :all_keywords, -> { where(any_keywords: true) }
   scope :all_domains, -> { where(any_domains: true) }
   scope :all_accounts, -> { where(any_accounts: true) }
   scope :all_tags, -> { where(any_tags: true) }
   scope :availables, -> { where(available: true).where(Arel.sql('any_keywords = FALSE OR any_domains = FALSE OR any_accounts = FALSE OR any_tags = FALSE')) }
+  scope :available_stls, -> { where(available: true, stl: true) }
 
   validate :list_owner
 
   def list_owner
-    raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if list.account != account
+    raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if !list_id.zero? && list.present? && list.account != account
   end
 
   def enabled?

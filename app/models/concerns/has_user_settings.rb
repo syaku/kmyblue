@@ -43,6 +43,14 @@ module HasUserSettings
     settings['send_without_domain_blocks']
   end
 
+  def setting_stop_emoji_reaction_streaming
+    settings['stop_emoji_reaction_streaming']
+  end
+
+  def setting_emoji_reaction_streaming_notify_impl2
+    settings['emoji_reaction_streaming_notify_impl2']
+  end
+
   def setting_unfollow_modal
     settings['web.unfollow_modal']
   end
@@ -65,6 +73,22 @@ module HasUserSettings
 
   def setting_noindex
     settings['noindex']
+  end
+
+  def setting_noai
+    settings['noai']
+  end
+
+  def setting_hide_statuses_count
+    settings['hide_statuses_count']
+  end
+
+  def setting_hide_following_count
+    settings['hide_following_count']
+  end
+
+  def setting_hide_followers_count
+    settings['hide_followers_count']
   end
 
   def setting_theme
@@ -125,6 +149,10 @@ module HasUserSettings
 
   def setting_default_privacy
     settings['default_privacy'] || (account.locked? ? 'private' : 'public')
+  end
+
+  def setting_default_reblog_privacy
+    settings['default_reblog_privacy'] || 'unset'
   end
 
   def setting_default_searchability

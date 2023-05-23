@@ -72,9 +72,11 @@ class UpdateStatusService < BaseService
   def validate_media!
     return [] if @options[:media_ids].blank? || !@options[:media_ids].is_a?(Enumerable)
 
-    raise Mastodon::ValidationError, I18n.t('media_attachments.validations.too_many') if @options[:media_ids].size > MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX || @options[:poll].present?
+    media_max = @options[:poll] ? MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX_WITH_POLL : MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX
 
-    media_attachments = @status.account.media_attachments.where(status_id: [nil, @status.id]).where(scheduled_status_id: nil).where(id: @options[:media_ids].take(MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX).map(&:to_i)).to_a
+    raise Mastodon::ValidationError, I18n.t('media_attachments.validations.too_many') if @options[:media_ids].size > media_max
+
+    media_attachments = @status.account.media_attachments.where(status_id: [nil, @status.id]).where(scheduled_status_id: nil).where(id: @options[:media_ids].take(media_max).map(&:to_i)).to_a
 
     raise Mastodon::ValidationError, I18n.t('media_attachments.validations.images_and_video') if media_attachments.size > 1 && media_attachments.find(&:audio_or_video?)
     raise Mastodon::ValidationError, I18n.t('media_attachments.validations.not_ready') if media_attachments.any?(&:not_processed?)

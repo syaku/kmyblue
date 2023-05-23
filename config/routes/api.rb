@@ -34,6 +34,8 @@ namespace :api, format: false do
 
         resources :emoji_reactions, only: [:create, :update, :destroy], constraints: { id: %r{[^/]+} }
         post :emoji_unreaction, to: 'emoji_reactions#destroy'
+        post '/react/:id', to: 'emoji_reactions#create', constraints: { id: %r{[^/]+} }
+        post '/unreact/:id', to: 'emoji_reactions#destroy', constraints: { id: %r{[^/]+} }
       end
 
       member do
@@ -115,6 +117,7 @@ namespace :api, format: false do
 
     namespace :emails do
       resources :confirmations, only: [:create]
+      get :check_confirmation, to: 'confirmations#check'
     end
 
     resource :instance, only: [:show] do

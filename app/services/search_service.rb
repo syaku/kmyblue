@@ -43,20 +43,20 @@ class SearchService < BaseService
   def perform_statuses_search!
     privacy_definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }).track_scores(true).min_score(@min_score))
 
-    # 'private' searchability posts are NOT in here because it's already added at previous line.
+    # 'direct' searchability posts are NOT in here because it's already added at previous line.
     case @searchability
     when 'public'
       privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }).track_scores(true).min_score(@min_score))
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'unlisted' }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
-    when 'unlisted', 'private'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public unlisted) }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
-    when 'direct'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'direct' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'private' }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+    when 'private', 'direct'
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public private) }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+    when 'limited'
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
     end
 
-    definition = parsed_query.apply(StatusesIndex.min_score(@min_score).track_scores(true)).order(id: :desc)
+    definition = parsed_query.apply(StatusesIndex.min_score(@min_score).track_scores(true))
     definition = definition.filter(term: { account_id: @options[:account_id] }) if @options[:account_id].present?
 
     definition = definition.and(privacy_definition)
@@ -150,8 +150,8 @@ class SearchService < BaseService
   def following_account_ids
     return @following_account_ids if defined?(@following_account_ids)
 
-    account_exists_sql     = Account.where('accounts.id = follows.target_account_id').where(searchability: %w(public unlisted private)).reorder(nil).select(1).to_sql
-    status_exists_sql      = Status.where('statuses.account_id = follows.target_account_id').where(reblog_of_id: nil).where(searchability: %w(public unlisted private)).reorder(nil).select(1).to_sql
+    account_exists_sql     = Account.where('accounts.id = follows.target_account_id').where(searchability: %w(public private)).reorder(nil).select(1).to_sql
+    status_exists_sql      = Status.where('statuses.account_id = follows.target_account_id').where(reblog_of_id: nil).where(searchability: %w(public private)).reorder(nil).select(1).to_sql
     following_accounts     = Follow.where(account_id: @account.id).merge(Account.where("EXISTS (#{account_exists_sql})").or(Account.where("EXISTS (#{status_exists_sql})")))
     @following_account_ids = following_accounts.pluck(:target_account_id)
   end

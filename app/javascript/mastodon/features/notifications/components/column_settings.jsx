@@ -116,7 +116,7 @@ export default class ColumnSettings extends React.PureComponent {
         </div>
 
         <div role='group' aria-labelledby='notifications-emoji_reaction'>
-          <span id='notifications-emoji_reaction' className='column-settings__section'><FormattedMessage id='notifications.column_settings.emoji_reaction' defaultMessage='Emoji Reactions:' /></span>
+          <span id='notifications-emoji_reaction' className='column-settings__section'><FormattedMessage id='notifications.column_settings.emoji_reaction' defaultMessage='Stamps:' /></span>
 
           <div className='column-settings__row'>
             <SettingToggle disabled={browserPermission === 'denied'} prefix='notifications_desktop' settings={settings} settingPath={['alerts', 'emoji_reaction']} onChange={onChange} label={alertStr} />

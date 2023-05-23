@@ -23,6 +23,8 @@ class EmojiReactService < BaseService
 
     emoji_reaction = EmojiReaction.create!(account: account, status: status, name: shortcode, custom_emoji: custom_emoji)
 
+    status.touch # rubocop:disable Rails/SkipsModelValidations
+
     Trends.statuses.register(status)
 
     create_notification(emoji_reaction)
@@ -39,6 +41,7 @@ class EmojiReactService < BaseService
     status = emoji_reaction.status
 
     if status.account.local?
+      LocalNotificationWorker.perform_async(status.account_id, emoji_reaction.id, 'EmojiReaction', 'reaction') if status.account.user&.setting_emoji_reaction_streaming_notify_impl2
       LocalNotificationWorker.perform_async(status.account_id, emoji_reaction.id, 'EmojiReaction', 'emoji_reaction')
     elsif status.account.activitypub?
       ActivityPub::DeliveryWorker.perform_async(build_json(emoji_reaction), emoji_reaction.account_id, status.account.inbox_url)
@@ -57,7 +60,7 @@ class EmojiReactService < BaseService
     emoji_group = emoji_reaction.status.emoji_reactions_grouped_by_name
                                 .find { |reaction_group| reaction_group['name'] == emoji_reaction.name && (!reaction_group.key?(:domain) || reaction_group['domain'] == emoji_reaction.custom_emoji&.domain) }
     emoji_group['status_id'] = emoji_reaction.status_id.to_s
-    FeedAnyJsonWorker.perform_async(render_emoji_reaction(emoji_group), emoji_reaction.status_id, emoji_reaction.account_id)
+    DeliveryEmojiReactionWorker.perform_async(render_emoji_reaction(emoji_group), emoji_reaction.status_id, emoji_reaction.account_id)
   end
 
   def bump_potential_friendship(account, status)

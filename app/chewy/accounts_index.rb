@@ -36,8 +36,8 @@ class AccountsIndex < Chewy::Index
       field :edge_ngram, type: 'text', analyzer: 'edge_ngram', search_analyzer: 'content'
     end
 
-    field :following_count, type: 'long', value: ->(account) { account.following_count }
-    field :followers_count, type: 'long', value: ->(account) { account.followers_count }
+    field :following_count, type: 'long', value: ->(account) { account.public_following_count }
+    field :followers_count, type: 'long', value: ->(account) { account.public_followers_count }
     field :last_status_at, type: 'date', value: ->(account) { account.last_status_at || account.created_at }
   end
 end

@@ -65,7 +65,11 @@ class PostStatusService < BaseService
   private
 
   def preprocess_attributes!
-    @sensitive    = (@options[:sensitive].nil? ? @account.user&.setting_default_sensitive : @options[:sensitive]) || @options[:spoiler_text].present?
+    @sensitive    = (if @options[:sensitive].nil?
+                       @media.any? ? @account.user&.setting_default_sensitive : false
+                     else
+                       @options[:sensitive]
+                     end) || @options[:spoiler_text].present?
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
@@ -81,16 +85,15 @@ class PostStatusService < BaseService
   def searchability
     case @options[:searchability]&.to_sym
     when :public
-      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted then :unlisted when :private then :private else :direct end
-    when :unlisted
-      case @visibility&.to_sym when :public, :public_unlisted, :unlisted then :unlisted when :private then :private else :direct end
+      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted, :private then :private else :direct end
     when :private
-      # direct message also can be searched by receiver
-      :private
+      case @visibility&.to_sym when :public, :public_unlisted, :unlisted, :private then :private else :direct end
+    when :direct
+      :direct
     when nil
       @account.user&.setting_default_searchability || @account.searchability
     else
-      :direct
+      :limited
     end
   end
 
@@ -155,9 +158,11 @@ class PostStatusService < BaseService
       return
     end
 
-    raise Mastodon::ValidationError, I18n.t('media_attachments.validations.too_many') if @options[:media_ids].size > MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX || @options[:poll].present?
+    media_max = @options[:poll] ? MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX_WITH_POLL : MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX
 
-    @media = @account.media_attachments.where(status_id: nil).where(id: @options[:media_ids].take(MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX).map(&:to_i))
+    raise Mastodon::ValidationError, I18n.t('media_attachments.validations.too_many') if @options[:media_ids].size > media_max
+
+    @media = @account.media_attachments.where(status_id: nil).where(id: @options[:media_ids].take(media_max).map(&:to_i))
 
     raise Mastodon::ValidationError, I18n.t('media_attachments.validations.images_and_video') if @media.size > 1 && @media.find(&:audio_or_video?)
     raise Mastodon::ValidationError, I18n.t('media_attachments.validations.not_ready') if @media.any?(&:not_processed?)

@@ -4,7 +4,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   def perform
     @original_status = status_from_uri(object_uri)
 
-    return if @original_status.nil? || !@original_status.account.local? || delete_arrived_first?(@json['id'])
+    return if @original_status.nil? || !@original_status.account.local? || delete_arrived_first?(@json['id']) || reject_favourite?
 
     if shortcode.nil?
       process_favourite
@@ -14,6 +14,10 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   end
 
   private
+
+  def reject_favourite?
+    @reject_favourite ||= DomainBlock.reject_favourite?(@account.domain)
+  end
 
   def process_favourite
     return if @account.favourited?(@original_status)
@@ -96,7 +100,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
     emoji_group = @original_status.emoji_reactions_grouped_by_name
                                   .find { |reaction_group| reaction_group['name'] == emoji_reaction.name && (!reaction_group.key?(:domain) || reaction_group['domain'] == emoji_reaction.custom_emoji&.domain) }
     emoji_group['status_id'] = @original_status.id.to_s
-    FeedAnyJsonWorker.perform_async(render_emoji_reaction(emoji_group), @original_status.id, emoji_reaction.account_id)
+    DeliveryEmojiReactionWorker.perform_async(render_emoji_reaction(emoji_group), @original_status.id, emoji_reaction.account_id)
   end
 
   def render_emoji_reaction(emoji_group)

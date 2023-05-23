@@ -6,7 +6,8 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   attributes :id, :username, :acct, :display_name, :locked, :bot, :discoverable, :group, :created_at,
              :note, :url, :avatar, :avatar_static, :header, :header_static, :searchability, :subscribable,
-             :followers_count, :following_count, :statuses_count, :last_status_at
+             :followers_count, :following_count, :statuses_count, :last_status_at, :other_settings,
+             :noindex
 
   has_one :moved_to_account, key: :moved, serializer: REST::AccountSerializer, if: :moved_and_not_nested?
 
@@ -14,7 +15,6 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   attribute :suspended, if: :suspended?
   attribute :silenced, key: :limited, if: :silenced?
-  attribute :noindex, if: :local?
 
   attribute :memorial, if: :memorial?
 
@@ -143,12 +143,28 @@ class REST::AccountSerializer < ActiveModel::Serializer
   end
 
   def noindex
-    object.user_prefers_noindex?
+    object.noindex?
   end
 
   delegate :suspended?, :silenced?, :local?, :memorial?, to: :object
 
   def moved_and_not_nested?
     object.moved?
+  end
+
+  def statuses_count
+    object.public_statuses_count
+  end
+
+  def followers_count
+    object.public_followers_count
+  end
+
+  def following_count
+    object.public_following_count
+  end
+
+  def other_settings
+    object.suspended? ? {} : object.public_settings
   end
 end

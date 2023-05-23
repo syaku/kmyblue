@@ -47,6 +47,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def create_status
     return reject_payload! if unsupported_object_type? || non_matching_uri_hosts?(@account.uri, object_uri) || tombstone_exists? || !related_to_local_activity?
     return reject_payload! if (reply_to_local? || reply_to_local_account?) && reject_reply_to_local?
+    return reject_payload! if (!reply_to_local_account_following? || !reply_to_local_status_following?) && reject_reply_exclude_followers?
 
     with_redis_lock("create:#{object_uri}") do
       return if delete_arrived_first?(object_uri) || poll_vote?
@@ -139,6 +140,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def reply_to_local_account?
     accounts_in_audience.any?(&:local?)
+  end
+
+  def reply_to_local_account_following?
+    !reply_to_local_account? || accounts_in_audience.none? { |account| account.local? && !account.following?(@account) }
   end
 
   def accounts_in_audience
@@ -258,7 +263,13 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     return unless emoji.nil? || custom_emoji_parser.image_remote_url != emoji.image_remote_url || (custom_emoji_parser.updated_at && custom_emoji_parser.updated_at >= emoji.updated_at)
 
     begin
-      emoji ||= CustomEmoji.new(domain: @account.domain, shortcode: custom_emoji_parser.shortcode, uri: custom_emoji_parser.uri)
+      emoji ||= CustomEmoji.new(
+        domain: @account.domain,
+        shortcode: custom_emoji_parser.shortcode,
+        uri: custom_emoji_parser.uri,
+        is_sensitive: custom_emoji_parser.is_sensitive,
+        license: custom_emoji_parser.license
+      )
       emoji.image_remote_url = custom_emoji_parser.image_remote_url
       emoji.save
     rescue Seahorse::Client::NetworkingError => e
@@ -403,8 +414,16 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     !replied_to_status.nil? && replied_to_status.account.local?
   end
 
+  def reply_to_local_status_following?
+    !reply_to_local? || replied_to_status.account.following?(@account)
+  end
+
   def reject_reply_to_local?
     @reject_reply_to_local ||= DomainBlock.reject_reply?(@account.domain)
+  end
+
+  def reject_reply_exclude_followers?
+    @reject_reply_exclude_followers ||= DomainBlock.reject_reply_exclude_followers?(@account.domain)
   end
 
   def ignore_hashtags?
@@ -462,9 +481,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
-      :unlisted    # Followers only in kmyblue (generics: private)
+      :private
     else
-      :private     # Reaction only in kmyblue (generics: direct)
+      :direct
     end
   end
 
@@ -493,10 +512,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     if searchability == visibility
       searchability
-    elsif [:public, :unlisted].include?(searchability) && [:public, :unlisted].include?(visibility) # unlisted is Followers only in kmyblue (generics: private)
-      :unlisted
+    elsif [:public, :unlisted, :private].include?(searchability) && [:public, :unlisted, :private].include?(visibility)
+      :private
     else
-      :private    # Reaction only in kmyblue (generics: direct)
+      :direct
     end
   end
 

@@ -94,14 +94,20 @@ class Item extends React.PureComponent {
       height = 50;
     }
 
-    if (size === 5 || size === 6) {
+    if (size === 5 || size === 6 || size === 9 || size === 10 || size === 11 || size === 12) {
       height = 33;
     }
-    if (size === 7 || size === 8) {
+    if (size === 7 || size === 8 || size === 13 || size === 14 || size === 15 || size === 16) {
       height = 25;
     }
     if ((size === 5 && index === 4) || (size === 7 && index === 6)) {
       width = 100;
+    }
+    if (size === 9) {
+      width = 33;
+    }
+    if (size === 10 || size === 11 || size === 12 || size === 13 || size === 14 || size === 15 || size === 16) {
+      width = 25;
     }
 
     if (attachment.get('description')?.length > 0) {
@@ -241,7 +247,7 @@ class MediaGallery extends React.PureComponent {
     window.removeEventListener('resize', this.handleResize);
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (!is(nextProps.media, this.props.media) && nextProps.visible === undefined) {
       this.setState({ visible: displayMedia !== 'hide_all' && !nextProps.sensitive || displayMedia === 'show_all' });
     } else if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
@@ -266,7 +272,7 @@ class MediaGallery extends React.PureComponent {
   };
 
   handleClick = (index) => {
-    this.props.onOpenMedia(this.props.media, index);
+    this.props.onOpenMedia(this.props.media, index, this.props.lang);
   };
 
   handleRef = c => {
@@ -310,7 +316,7 @@ class MediaGallery extends React.PureComponent {
       style.aspectRatio = '16 / 9';
     }
 
-    const maxSize = displayMediaExpand ? 8 : 4;
+    const maxSize = displayMediaExpand ? 16 : 4;
 
     const size     = media.take(maxSize).size;
     const uncached = media.every(attachment => attachment.get('type') === 'unknown');
@@ -337,8 +343,15 @@ class MediaGallery extends React.PureComponent {
       );
     }
 
+    const rowClass = (size === 5 || size === 6 || size === 9 || size === 10 || size === 11 || size === 12) ? 'media-gallery--row3' :
+      (size === 7 || size === 8 || size === 13 || size === 14 || size === 15 || size === 16) ? 'media-gallery--row4' :
+      'media-gallery--row2';
+    const columnClass = (size === 9) ? 'media-gallery--column3' :
+      (size === 10 || size === 11 || size === 12 || size === 13 || size === 14 || size === 15 || size === 16) ? 'media-gallery--column4' :
+      'media-gallery--column2';
+
     return (
-      <div className='media-gallery' style={style} ref={this.handleRef}>
+      <div className={classNames('media-gallery', rowClass, columnClass)} style={style} ref={this.handleRef}>
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible && !uncached, 'spoiler-button--click-thru': uncached })}>
           {spoilerButton}
         </div>

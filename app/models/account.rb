@@ -53,7 +53,7 @@
 #  group_allow_private_message   :boolean
 #  searchability                 :integer          default("private"), not null
 #  dissubscribable               :boolean          default(FALSE), not null
-#  stop_emoji_reaction_streaming :boolean          default(FALSE)
+#  settings                      :jsonb
 #
 
 class Account < ApplicationRecord
@@ -99,7 +99,7 @@ class Account < ApplicationRecord
   validates_with UnreservedUsernameValidator, if: -> { local? && will_save_change_to_username? && actor_type != 'Application' }
   validates :display_name, length: { maximum: 30 }, if: -> { local? && will_save_change_to_display_name? }
   validates :note, note_length: { maximum: 500 }, if: -> { local? && will_save_change_to_note? }
-  validates :fields, length: { maximum: 4 }, if: -> { local? && will_save_change_to_fields? }
+  validates :fields, length: { maximum: 6 }, if: -> { local? && will_save_change_to_fields? }
 
   scope :remote, -> { where.not(domain: nil) }
   scope :local, -> { where(domain: nil) }
@@ -293,6 +293,60 @@ class Account < ApplicationRecord
     true
   end
 
+  def noindex?
+    user_prefers_noindex? || (settings.present? && settings['noindex']) || false
+  end
+
+  def noai?
+    user&.setting_noai || (settings.present? && settings['noai']) || false
+  end
+
+  def public_statuses_count
+    hide_statuses_count? ? 0 : statuses_count
+  end
+
+  def public_following_count
+    hide_following_count? ? 0 : following_count
+  end
+
+  def public_followers_count
+    hide_followers_count? ? 0 : followers_count
+  end
+
+  def hide_statuses_count?
+    return user&.setting_hide_statuses_count unless user&.setting_hide_statuses_count.nil?
+    return settings['hide_statuses_count'] if settings.present?
+
+    false
+  end
+
+  def hide_following_count?
+    return user&.setting_hide_following_count unless user&.setting_hide_following_count.nil?
+    return settings['hide_following_count'] if settings.present?
+
+    false
+  end
+
+  def hide_followers_count?
+    return user&.setting_hide_followers_count unless user&.setting_hide_followers_count.nil?
+    return settings['hide_followers_count'] if settings.present?
+
+    false
+  end
+
+  def public_settings
+    config = {
+      'noindex' => noindex?,
+      'noai' => noai?,
+      'hide_network' => hide_collections,
+      'hide_statuses_count' => hide_statuses_count?,
+      'hide_following_count' => hide_following_count?,
+      'hide_followers_count' => hide_followers_count?,
+    }
+    config = config.merge(settings) if settings.present?
+    config
+  end
+
   def previous_strikes_count
     strikes.where(overruled_at: nil).count
   end
@@ -351,7 +405,7 @@ class Account < ApplicationRecord
     self[:fields] = fields
   end
 
-  DEFAULT_FIELDS_SIZE = 4
+  DEFAULT_FIELDS_SIZE = 6
 
   def build_fields
     return if fields.size >= DEFAULT_FIELDS_SIZE

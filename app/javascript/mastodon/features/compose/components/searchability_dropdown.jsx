@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, defineMessages } from 'react-intl';
-import IconButton from '../../../components/icon_button';
+import { IconButton } from '../../../components/icon_button';
 import Overlay from 'react-overlays/Overlay';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import classNames from 'classnames';
-import Icon from 'mastodon/components/icon';
+import { Icon } from 'mastodon/components/icon';
 
 const messages = defineMessages({
   public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
   public_long: { id: 'searchability.public.long', defaultMessage: 'Anyone can find' },
-  unlisted_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
-  unlisted_long: { id: 'searchability.unlisted.long', defaultMessage: 'Your followers can find' },
-  private_short: { id: 'searchability.private.short', defaultMessage: 'Reactionners' },
-  private_long: { id: 'searchability.private.long', defaultMessage: 'Reacter of this post can find' },
-  direct_short: { id: 'searchability.direct.short', defaultMessage: 'Self only' },
-  direct_long: { id: 'searchability.direct.long', defaultMessage: 'Nobody can find, but you can' },
+  private_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
+  private_long: { id: 'searchability.unlisted.long', defaultMessage: 'Your followers can find' },
+  direct_short: { id: 'searchability.private.short', defaultMessage: 'Reactionners' },
+  direct_long: { id: 'searchability.private.long', defaultMessage: 'Reacter of this post can find' },
+  limited_short: { id: 'searchability.direct.short', defaultMessage: 'Self only' },
+  limited_long: { id: 'searchability.direct.long', defaultMessage: 'Nobody can find, but you can' },
   change_searchability: { id: 'searchability.change', defaultMessage: 'Set status searchability' },
 });
 
@@ -212,14 +212,14 @@ class SearchabilityDropdown extends React.PureComponent {
     this.props.onChange(value);
   };
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     const { intl: { formatMessage } } = this.props;
 
     this.options = [
       { icon: 'globe', value: 'public', text: formatMessage(messages.public_short), meta: formatMessage(messages.public_long) },
-      { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
-      { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
-      { icon: 'at', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },
+      { icon: 'unlock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
+      { icon: 'lock', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },
+      { icon: 'at', value: 'limited', text: formatMessage(messages.limited_short), meta: formatMessage(messages.limited_long) },
     ];
   }
 

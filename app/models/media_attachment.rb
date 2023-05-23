@@ -36,6 +36,7 @@ class MediaAttachment < ApplicationRecord
   include RoutingHelper
 
   LOCAL_STATUS_ATTACHMENT_MAX = 4
+  LOCAL_STATUS_ATTACHMENT_MAX_WITH_POLL = 4
   ACTIVITYPUB_STATUS_ATTACHMENT_MAX = 16
 
   enum type: { image: 0, gifv: 1, video: 2, unknown: 3, audio: 4 }
