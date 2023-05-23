@@ -28,6 +28,8 @@
 class Antenna < ApplicationRecord
   include Expireable
 
+  LIMIT = 30
+
   has_many :antenna_domains, inverse_of: :antenna, dependent: :destroy
   has_many :antenna_tags, inverse_of: :antenna, dependent: :destroy
   has_many :antenna_accounts, inverse_of: :antenna, dependent: :destroy
@@ -44,6 +46,8 @@ class Antenna < ApplicationRecord
   scope :available_stls, -> { where(available: true, stl: true) }
 
   validate :list_owner
+  validate :validate_limit
+  validate :validate_stl_limit
 
   def list_owner
     raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if !list_id.zero? && list.present? && list.account != account
@@ -211,5 +215,19 @@ class Antenna < ApplicationRecord
       accounts << account.id if account.present?
     end
     self[:exclude_accounts] = accounts
+  end
+
+  private
+
+  def validate_limit
+    errors.add(:base, I18n.t('scheduled_statuses.over_total_limit', limit: LIMIT)) if account.antennas.count >= LIMIT
+  end
+
+  def validate_stl_limit
+    return unless stl
+
+    stls = account.antennas.where(stl: true).where.not(id: id)
+
+    errors.add(:base, I18n.t('scheduled_statuses.over_total_limit', limit: LIMIT)) if list_id.zero? ? stls.any? { |tl| tl.list_id.zero? } : stls.any? { |tl| tl.list_id != 0 }
   end
 end
