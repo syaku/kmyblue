@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, defineMessages } from 'react-intl';
 import { IconButton } from '../../../components/icon_button';
@@ -21,7 +21,7 @@ const messages = defineMessages({
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-class SearchabilityDropdownMenu extends React.PureComponent {
+class SearchabilityDropdownMenu extends PureComponent {
 
   static propTypes = {
     style: PropTypes.object,
@@ -132,7 +132,7 @@ class SearchabilityDropdownMenu extends React.PureComponent {
 
 }
 
-class SearchabilityDropdown extends React.PureComponent {
+class SearchabilityDropdown extends PureComponent {
 
   static propTypes = {
     isUserTouching: PropTypes.func,

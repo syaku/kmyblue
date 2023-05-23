@@ -1,11 +1,11 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import classNames from 'classnames';
 import EmojiView from './emoji_view';
 
-class EmojiReactionButton extends React.PureComponent {
+class EmojiReactionButton extends PureComponent {
 
   static propTypes = {
     name: PropTypes.string,
@@ -49,7 +49,7 @@ class EmojiReactionButton extends React.PureComponent {
 
 }
 
-class StatusEmojiReactionsBar extends React.PureComponent {
+class StatusEmojiReactionsBar extends PureComponent {
 
   static propTypes = {
     emojiReactions: ImmutablePropTypes.list.isRequired,

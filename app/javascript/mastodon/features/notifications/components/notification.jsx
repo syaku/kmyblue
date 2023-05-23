@@ -1,4 +1,3 @@
-import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { HotKeys } from 'react-hotkeys';
@@ -208,7 +207,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -242,7 +241,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -275,7 +274,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -313,7 +312,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -351,7 +350,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -395,7 +394,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>

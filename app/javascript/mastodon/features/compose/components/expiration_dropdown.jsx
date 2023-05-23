@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { injectIntl, defineMessages } from 'react-intl';
 import { IconButton } from '../../../components/icon_button';
@@ -12,7 +12,7 @@ const messages = defineMessages({
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
-class ExpirationDropdownMenu extends React.PureComponent {
+class ExpirationDropdownMenu extends PureComponent {
 
   static propTypes = {
     style: PropTypes.object,
@@ -118,7 +118,7 @@ class ExpirationDropdownMenu extends React.PureComponent {
 
 }
 
-class ExpirationDropdown extends React.PureComponent {
+class ExpirationDropdown extends PureComponent {
 
   static propTypes = {
     isUserTouching: PropTypes.func,

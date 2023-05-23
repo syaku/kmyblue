@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import { PureComponent } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { IntlProvider, addLocaleData } from 'react-intl';
@@ -73,9 +73,16 @@ export default class MediaContainer extends PureComponent {
   render () {
     const { locale, components } = this.props;
 
+    let handleOpenVideo;
+
+    // Don't offer to expand the video in a lightbox if we're in a frame
+    if (window.self === window.top) {
+      handleOpenVideo = this.handleOpenVideo;
+    }
+
     return (
       <IntlProvider locale={locale} messages={messages}>
-        <Fragment>
+        <>
           {[].map.call(components, (component, i) => {
             const componentName = component.getAttribute('data-component');
             const Component = MEDIA_COMPONENTS[componentName];
@@ -89,7 +96,7 @@ export default class MediaContainer extends PureComponent {
 
               ...(componentName === 'Video' ? {
                 componentIndex: i,
-                onOpenVideo: this.handleOpenVideo,
+                onOpenVideo: handleOpenVideo,
               } : {
                 onOpenMedia: this.handleOpenMedia,
               }),
@@ -115,7 +122,7 @@ export default class MediaContainer extends PureComponent {
               />
             )}
           </ModalRoot>
-        </Fragment>
+        </>
       </IntlProvider>
     );
   }

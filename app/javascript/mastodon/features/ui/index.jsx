@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import { PureComponent } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
@@ -114,7 +114,7 @@ const keyMap = {
   openMedia: 'e',
 };
 
-class SwitchingColumnsArea extends React.PureComponent {
+class SwitchingColumnsArea extends PureComponent {
 
   static contextTypes = {
     identity: PropTypes.object,
@@ -235,7 +235,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
 }
 
-class UI extends React.PureComponent {
+class UI extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired,
