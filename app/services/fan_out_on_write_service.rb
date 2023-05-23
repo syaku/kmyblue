@@ -49,10 +49,8 @@ class FanOutOnWriteService < BaseService
     when :public, :unlisted, :public_unlisted, :private
       deliver_to_all_followers!
       deliver_to_lists!
-      if [:public, :public_unlisted].include?(@status.visibility.to_sym)
-        deliver_to_antennas! unless @account.dissubscribable
-        deliver_to_stl_antennas!
-      end
+      deliver_to_antennas! if [:public, :public_unlisted].include?(@status.visibility.to_sym) && !@account.dissubscribable
+      deliver_to_stl_antennas!
     when :limited
       deliver_to_mentioned_followers!
     else
@@ -122,7 +120,8 @@ class FanOutOnWriteService < BaseService
   def deliver_to_stl_antennas!
     antennas = Antenna.available_stls
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
-    antennas = antennas.where(account: @account.followers).where.not(list_id: 0) unless @account.domain.nil?
+
+    antennas = antennas.where(account: @account.followers).where.not(list_id: 0) if !@account.domain.nil? || [:public, :public_unlisted].exclude?(@status.visibility.to_sym)
 
     collection = AntennaCollection.new(@status, @options[:update])
 
