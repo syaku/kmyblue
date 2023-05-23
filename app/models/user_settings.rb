@@ -20,7 +20,7 @@ class UserSettings
   setting :default_sensitive, default: false
   setting :default_privacy, default: nil
   setting :default_reblog_privacy, default: nil
-  setting :default_searchability, default: :private
+  setting :default_searchability, default: :direct
   setting :public_post_to_unlisted, default: false
   setting :reject_public_unlisted_subscription, default: false
   setting :reject_unlisted_subscription, default: false
