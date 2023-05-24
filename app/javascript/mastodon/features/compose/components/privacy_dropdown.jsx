@@ -226,6 +226,7 @@ class PrivacyDropdown extends React.PureComponent {
       { icon: 'key', value: 'login', text: formatMessage(messages.login_short), meta: formatMessage(messages.login_long) },
       { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
       { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
+      { icon: 'at', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },
     ];
     this.selectableOptions = [...this.options];
 
@@ -233,10 +234,8 @@ class PrivacyDropdown extends React.PureComponent {
       this.selectableOptions = this.selectableOptions.filter((opt) => opt.value !== 'login');
     }
 
-    if (!this.props.noDirect) {
-      this.options.push(
-        { icon: 'at', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },
-      );
+    if (this.props.noDirect) {
+      this.selectableOptions = this.selectableOptions.filter((opt) => opt.value !== 'direct');
     }
   }
 
