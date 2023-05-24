@@ -409,7 +409,7 @@ class Status < ApplicationRecord
     end
 
     def selectable_searchabilities
-      searchabilities.keys - %w(public_unlisted limited)
+      searchabilities.keys - %w(public_unlisted)
     end
 
     def favourites_map(status_ids, account_id)

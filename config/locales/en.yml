@@ -1698,14 +1698,14 @@ en:
         other: "%{count} votes"
       vote: Vote
     searchabilities:
-      direct: Self only
-      direct_long: Nobody can find, but you can
-      private: Reactionners
-      private_long: Reacter of this post can find
+      direct: Reactionners
+      direct_long: Reacter of this post can find
+      limited: Self only
+      limited_long: Nobody can find, but you can
+      private: Followers only
+      private_long: Your followers can find
       public: Public
       public_long: Anyone can find
-      unlisted: Followers only
-      unlisted_long: Your followers can find
     show_more: Show more
     show_newer: Show newer
     show_older: Show older
