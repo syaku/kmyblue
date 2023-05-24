@@ -167,9 +167,8 @@
   cursor: pointer;
 
   &.emoji-mart-emoji-custom img {
-    width: 22px !important;
-    overflow: hidden;
-    object-fit: cover !important;
+    width: auto !important;
+    min-width: 22px;
   }
 
   span {
