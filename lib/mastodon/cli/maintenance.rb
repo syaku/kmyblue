@@ -1,18 +1,10 @@
 # frozen_string_literal: true
 
 require 'tty-prompt'
-require_relative '../../config/boot'
-require_relative '../../config/environment'
-require_relative 'cli_helper'
+require_relative 'base'
 
-module Mastodon
-  class MaintenanceCLI < Thor
-    include CLIHelper
-
-    def self.exit_on_failure?
-      true
-    end
-
+module Mastodon::CLI
+  class Maintenance < Base
     MIN_SUPPORTED_VERSION = 2019_10_01_213028
     MAX_SUPPORTED_VERSION = 2022_11_04_133904
 

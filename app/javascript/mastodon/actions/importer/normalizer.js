@@ -1,7 +1,8 @@
 import escapeTextContentForBrowser from 'escape-html';
+
 import emojify from '../../features/emoji/emoji';
-import { unescapeHTML } from '../../utils/html';
 import { expandSpoilers, me } from '../../initial_state';
+import { unescapeHTML } from '../../utils/html';
 
 const domParser = new DOMParser();
 
@@ -91,7 +92,6 @@ export function normalizeStatus(status, normalOldStatus) {
       normalStatus.spoiler_text = '';
     }
 
-    console.dir(normalStatus.emojis);
     if (normalStatus.emojis && normalStatus.emojis.some((emoji) => emoji.is_sensitive) && !normalStatus.spoiler_text) {
       normalStatus.spoiler_text = '[Contains sensitive custom emoji(s)]';
     }

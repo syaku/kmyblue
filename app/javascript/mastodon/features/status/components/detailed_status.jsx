@@ -1,29 +1,35 @@
 import PropTypes from 'prop-types';
+
+import { injectIntl, defineMessages, FormattedDate, FormattedMessage } from 'react-intl';
+
+import classNames from 'classnames';
+import { Link } from 'react-router-dom';
+
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import { AnimatedNumber } from 'mastodon/components/animated_number';
+import EditedTimestamp from 'mastodon/components/edited_timestamp';
+import { Icon }  from 'mastodon/components/icon';
+import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
+
 import { Avatar } from '../../../components/avatar';
 import { DisplayName } from '../../../components/display_name';
+import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
 import StatusEmojiReactionsBar from '../../../components/status_emoji_reactions_bar';
-import MediaGallery from '../../../components/media_gallery';
-import { Link } from 'react-router-dom';
-import { injectIntl, defineMessages, FormattedDate, FormattedMessage } from 'react-intl';
-import Card from './card';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import Video from '../../video';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
-import classNames from 'classnames';
-import { Icon }  from 'mastodon/components/icon';
-import { AnimatedNumber } from 'mastodon/components/animated_number';
-import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
-import EditedTimestamp from 'mastodon/components/edited_timestamp';
+import Video from '../../video';
+
+import Card from './card';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
   unlisted_short: { id: 'privacy.unlisted.short', defaultMessage: 'Unlisted' },
   public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
-  private_short: { id: 'privacy.private.short', defaultMessage: 'Followers-only' },
-  direct_short: { id: 'privacy.direct.short', defaultMessage: 'Direct' },
+  private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
+  direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
   searchability_public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
   searchability_private_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
   searchability_direct_short: { id: 'searchability.private.short', defaultMessage: 'Reactionners' },
@@ -235,7 +241,7 @@ class DetailedStatus extends ImmutablePureComponent {
     } else if (this.context.router) {
       reblogLink = (
         <>
-           · 
+           ·
           <Link to={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}/reblogs`} className='detailed-status__link'>
             <Icon id={reblogIcon} />
             <span className='detailed-status__reblogs'>
@@ -247,7 +253,7 @@ class DetailedStatus extends ImmutablePureComponent {
     } else {
       reblogLink = (
         <>
-           · 
+           ·
           <a href={`/interact/${status.get('id')}?type=reblog`} className='detailed-status__link' onClick={this.handleModalLink}>
             <Icon id={reblogIcon} />
             <span className='detailed-status__reblogs'>
@@ -301,7 +307,7 @@ class DetailedStatus extends ImmutablePureComponent {
     if (status.get('edited_at')) {
       edited = (
         <>
-           · 
+           ·
           <EditedTimestamp statusId={status.get('id')} timestamp={status.get('edited_at')} />
         </>
       );

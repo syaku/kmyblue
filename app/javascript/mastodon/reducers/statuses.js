@@ -1,3 +1,6 @@
+import { Map as ImmutableMap, ImmutableList, fromJS } from 'immutable';
+
+import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,
   REBLOG_FAIL,
@@ -20,8 +23,6 @@ import {
   STATUS_EMOJI_REACTION_UPDATE,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const importStatus = (state, status) => state.set(status.id, fromJS(status));
 
