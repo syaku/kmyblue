@@ -390,11 +390,11 @@ class Status < ApplicationRecord
     return searchability if searchability
     return account.searchability if account.local? && account.searchability
 
-    'private'
+    'direct'
   end
 
   def compute_searchability_activitypub
-    return 'unlisted' if public_unlisted_visibility? && public_searchability?
+    return 'private' if public_unlisted_visibility? && public_searchability?
 
     compute_searchability
   end
