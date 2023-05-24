@@ -220,7 +220,7 @@ class Antenna < ApplicationRecord
   private
 
   def validate_limit
-    errors.add(:base, I18n.t('scheduled_statuses.over_total_limit', limit: LIMIT)) if account.antennas.count >= LIMIT
+    errors.add(:base, I18n.t('antennas.errors.over_limit', limit: LIMIT)) if account.antennas.count >= LIMIT
   end
 
   def validate_stl_limit
@@ -228,6 +228,6 @@ class Antenna < ApplicationRecord
 
     stls = account.antennas.where(stl: true).where.not(id: id)
 
-    errors.add(:base, I18n.t('scheduled_statuses.over_total_limit', limit: LIMIT)) if list_id.zero? ? stls.any? { |tl| tl.list_id.zero? } : stls.any? { |tl| tl.list_id != 0 }
+    errors.add(:base, I18n.t('antennas.errors.over_stl_limit', limit: 1)) if list_id.zero? ? stls.any? { |tl| tl.list_id.zero? } : stls.any? { |tl| tl.list_id != 0 }
   end
 end
