@@ -77,6 +77,8 @@ class ActivityPub::Parser::StatusParser
       :public
     elsif audience_cc.any? { |cc| ActivityPub::TagManager.instance.public_collection?(cc) }
       :unlisted
+    elsif audience_cc.include?('as:LoginOnly')
+      :login
     elsif audience_to.include?(@magic_values[:followers_collection])
       :private
     else
