@@ -152,7 +152,7 @@ class Footer extends ImmutablePureComponent {
   render () {
     const { status, intl, withOpenButton } = this.props;
 
-    const publicStatus  = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility_ex'));
+    const publicStatus  = ['public', 'unlisted', 'public_unlisted', 'login'].includes(status.get('visibility_ex'));
     const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility_ex') === 'private';
 
     let replyIcon, replyTitle;

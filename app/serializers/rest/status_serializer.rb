@@ -57,7 +57,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
     # UX differences
     if object.limited_visibility?
       'private'
-    elsif object.public_unlisted_visibility?
+    elsif object.public_unlisted_visibility? || object.login_visibility?
       'public'
     else
       object.visibility
@@ -159,7 +159,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
     current_user? &&
       current_user.account_id == object.account_id &&
       !object.reblog? &&
-      %w(public unlisted public_unlisted private).include?(object.visibility)
+      %w(public unlisted public_unlisted login private).include?(object.visibility)
   end
 
   def reactions?

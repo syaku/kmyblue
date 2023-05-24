@@ -30,6 +30,7 @@ class AccountStatusesFilter
     scope.merge!(scope.where.not(visibility: :public_unlisted)) if domain_block&.reject_send_public_unlisted || (domain_block&.detect_invalid_subscription && @account.user&.setting_reject_public_unlisted_subscription)
     scope.merge!(scope.where.not(visibility: :unlisted)) if domain_block&.detect_invalid_subscription && @account.user&.setting_reject_unlisted_subscription
     scope.merge!(scope.where(spoiler_text: ['', nil])) if domain_block&.reject_send_sensitive
+    scope.merge!(scope.where.not(visibility: :login)) if current_account.nil?
 
     scope
   end
@@ -51,7 +52,7 @@ class AccountStatusesFilter
   def filtered_scope
     scope = account.statuses.left_outer_joins(:mentions)
 
-    scope.merge!(scope.where(visibility: follower? ? %i(public unlisted public_unlisted private) : %i(public unlisted public_unlisted)).or(scope.where(mentions: { account_id: current_account.id })).group(Status.arel_table[:id]))
+    scope.merge!(scope.where(visibility: follower? ? %i(public unlisted public_unlisted login private) : %i(public unlisted public_unlisted login)).or(scope.where(mentions: { account_id: current_account.id })).group(Status.arel_table[:id]))
     scope.merge!(filtered_reblogs_scope) if reblogs_may_occur?
 
     scope

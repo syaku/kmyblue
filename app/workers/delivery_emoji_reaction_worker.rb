@@ -16,7 +16,7 @@ class DeliveryEmojiReactionWorker
         redis.publish("timeline:#{account.id}", payload_json) if !account.user&.setting_stop_emoji_reaction_streaming && redis.exists?("subscribed:timeline:#{account.id}")
       end
 
-      if [:public, :unlisted, :public_unlisted].exclude?(status.visibility.to_sym) && status.account_id != my_account_id &&
+      if [:public, :unlisted, :public_unlisted, :login].exclude?(status.visibility.to_sym) && status.account_id != my_account_id &&
          redis.exists?("subscribed:timeline:#{status.account_id}") && !status.account.user&.setting_stop_emoji_reaction_streaming
         redis.publish("timeline:#{status.account_id}", payload_json)
       end

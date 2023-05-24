@@ -255,8 +255,9 @@ class StatusActionBar extends ImmutablePureComponent {
     const { signedIn, permissions } = this.context.identity;
 
     const anonymousAccess    = !signedIn;
-    const publicStatus       = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility_ex'));
-    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'private'].includes(status.get('visibility_ex'));
+    const publicStatus       = ['public', 'unlisted', 'public_unlisted', 'login'].includes(status.get('visibility_ex'));
+    const anonymousStatus    = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility_ex'));
+    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'login', 'private'].includes(status.get('visibility_ex'));
     const mutingConversation = status.get('muted');
     const account            = status.get('account');
     const writtenByMe        = status.getIn(['account', 'id']) === me;
@@ -272,7 +273,7 @@ class StatusActionBar extends ImmutablePureComponent {
 
     menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
 
-    if (publicStatus) {
+    if (anonymousStatus) {
       menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
     }
 

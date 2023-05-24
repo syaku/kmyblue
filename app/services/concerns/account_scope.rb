@@ -3,8 +3,7 @@
 module AccountScope
   def scope_status(status)
     case status.visibility.to_sym
-    when :public, :unlisted, :public_unlisted
-      # scope_local.merge(scope_list_following_account(status.account))
+    when :public, :unlisted, :public_unlisted, :login
       scope_local
     when :private
       scope_account_local_followers(status.account)

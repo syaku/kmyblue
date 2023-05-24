@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StatusRelationshipsPresenter
-  PINNABLE_VISIBILITIES = %w(public public_unlisted unlisted private).freeze
+  PINNABLE_VISIBILITIES = %w(public public_unlisted unlisted login private).freeze
 
   attr_reader :reblogs_map, :favourites_map, :mutes_map, :pins_map,
               :bookmarks_map, :filters_map, :emoji_reactions_map

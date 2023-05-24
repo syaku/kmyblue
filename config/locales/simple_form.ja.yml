@@ -227,6 +227,7 @@ ja:
         setting_display_media_expand: 5個目以降のメディアも表示する (最大16)
         setting_display_media_hide_all: 非表示
         setting_display_media_show_all: 表示
+        setting_enable_login_privacy: 公開範囲「ログインユーザーのみ」をWeb UIで選択可能にする
         setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換のスタンプ機能を有効にする
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
         setting_hide_followers_count: フォロワー数を隠す

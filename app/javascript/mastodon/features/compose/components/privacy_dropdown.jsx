@@ -6,6 +6,7 @@ import Overlay from 'react-overlays/Overlay';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import classNames from 'classnames';
 import { Icon }  from 'mastodon/components/icon';
+import { enableLoginPrivacy } from 'mastodon/initial_state';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
@@ -14,6 +15,8 @@ const messages = defineMessages({
   unlisted_long: { id: 'privacy.unlisted.long', defaultMessage: 'Visible for all, but opted-out of discovery features' },
   public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
   public_unlisted_long: { id: 'privacy.public_unlisted.long', defaultMessage: 'Visible for all without GTL' },
+  login_short: { id: 'privacy.login.short', defaultMessage: 'Login only' },
+  login_long: { id: 'privacy.login.long', defaultMessage: 'Login user only' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
   private_long: { id: 'privacy.private.long', defaultMessage: 'Visible for followers only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
@@ -220,9 +223,15 @@ class PrivacyDropdown extends React.PureComponent {
     this.options = [
       { icon: 'globe', value: 'public', text: formatMessage(messages.public_short), meta: formatMessage(messages.public_long) },
       { icon: 'cloud', value: 'public_unlisted', text: formatMessage(messages.public_unlisted_short), meta: formatMessage(messages.public_unlisted_long) },
+      { icon: 'key', value: 'login', text: formatMessage(messages.login_short), meta: formatMessage(messages.login_long) },
       { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
       { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
     ];
+    this.selectableOptions = [...this.options];
+
+    if (!enableLoginPrivacy) {
+      this.selectableOptions = this.selectableOptions.filter((opt) => opt.value !== 'login');
+    }
 
     if (!this.props.noDirect) {
       this.options.push(
@@ -247,7 +256,7 @@ class PrivacyDropdown extends React.PureComponent {
     const { value, container, disabled, intl } = this.props;
     const { open, placement } = this.state;
 
-    const valueOption = this.options.find(item => item.value === value);
+    const valueOption = this.options.find(item => item.value === value) || this.options[0];
 
     return (
       <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={this.handleKeyDown}>
@@ -273,7 +282,7 @@ class PrivacyDropdown extends React.PureComponent {
             <div {...props}>
               <div className={`dropdown-animation privacy-dropdown__dropdown ${placement}`}>
                 <PrivacyDropdownMenu
-                  items={this.options}
+                  items={this.selectableOptions}
                   value={value}
                   onClose={this.handleClose}
                   onChange={this.handleChange}

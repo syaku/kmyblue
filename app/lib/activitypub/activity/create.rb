@@ -514,7 +514,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     if searchability == visibility || searchability == :limited || searchability == :direct
       searchability
-    elsif [:public, :unlisted, :private].include?(searchability) && [:public, :public_unlisted, :unlisted, :private].include?(visibility)
+    elsif [:public, :unlisted, :private].include?(searchability) && [:public, :public_unlisted, :unlisted, :login, :private].include?(visibility)
       :private
     else
       :direct
@@ -526,6 +526,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       :public
     elsif audience_cc.any? { |cc| ActivityPub::TagManager.instance.public_collection?(cc) }
       :unlisted
+    elsif audience_cc.include?('as:LoginOnly')
+      :login
     elsif audience_to.include?(@account.followers_url)
       :private
     else
