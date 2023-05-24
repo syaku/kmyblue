@@ -217,6 +217,8 @@ class ActivityPub::TagManager
         [account_followers_url(status.account)]
       when 'direct'
         status.conversation_id.present? ? [uri_for(status.conversation)] : []
+      when 'limited'
+        ['as:Limited']
       else
         []
       end
@@ -230,6 +232,8 @@ class ActivityPub::TagManager
       [COLLECTIONS[:public]]
     when 'private', 'direct'
       [account_followers_url(account)]
+    when 'limited'
+      ['as:Limited']
     else
       []
     end
