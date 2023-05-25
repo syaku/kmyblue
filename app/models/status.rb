@@ -52,7 +52,7 @@ class Status < ApplicationRecord
 
   update_index('statuses', :proper)
 
-  enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10 }, _suffix: :visibility
+  enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, _suffix: :visibility
   enum searchability: { public: 0, private: 1, direct: 2, limited: 3, public_unlisted: 10 }, _suffix: :searchability
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
@@ -102,8 +102,8 @@ class Status < ApplicationRecord
   scope :with_accounts, ->(ids) { where(id: ids).includes(:account) }
   scope :without_replies, -> { where('statuses.reply = FALSE OR statuses.in_reply_to_account_id = statuses.account_id') }
   scope :without_reblogs, -> { where(statuses: { reblog_of_id: nil }) }
-  scope :with_public_visibility, -> { where(visibility: [:public, :public_unlisted]) }
-  scope :with_global_timeline_visibility, -> { where(visibility: [:public]) }
+  scope :with_public_visibility, -> { where(visibility: [:public, :public_unlisted, :login]) }
+  scope :with_global_timeline_visibility, -> { where(visibility: [:public, :login]) }
   scope :tagged_with, ->(tag_ids) { joins(:statuses_tags).where(statuses_tags: { tag_id: tag_ids }) }
   scope :excluding_silenced_accounts, -> { left_outer_joins(:account).where(accounts: { silenced_at: nil }) }
   scope :including_silenced_accounts, -> { left_outer_joins(:account).where.not(accounts: { silenced_at: nil }) }
@@ -409,7 +409,7 @@ class Status < ApplicationRecord
     end
 
     def selectable_searchabilities
-      searchabilities.keys - %w(public_unlisted limited)
+      searchabilities.keys - %w(public_unlisted)
     end
 
     def favourites_map(status_ids, account_id)
@@ -526,7 +526,7 @@ class Status < ApplicationRecord
   def set_searchability
     return if searchability.nil?
 
-    self.searchability = [Status.searchabilities[searchability], Status.visibilities[visibility == 'public_unlisted' ? 'public' : visibility]].max
+    self.searchability = [Status.searchabilities[searchability], Status.visibilities[visibility == 'public_unlisted' || visibility == 'login' ? 'public' : visibility]].max
   end
 
   def set_conversation

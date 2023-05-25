@@ -58,6 +58,7 @@
  * @property {string} display_media
  * @property {boolean} display_media_expand
  * @property {string} domain
+ * @property {boolean} enable_login_privacy
  * @property {boolean=} expand_spoilers
  * @property {boolean} limited_federation_mode
  * @property {string} locale
@@ -111,6 +112,7 @@ export const disabledAccountId = getMeta('disabled_account_id');
 export const displayMedia = getMeta('display_media');
 export const displayMediaExpand = getMeta('display_media_expand');
 export const domain = getMeta('domain');
+export const enableLoginPrivacy = getMeta('enable_login_privacy');
 export const expandSpoilers = getMeta('expand_spoilers');
 export const forceSingleColumn = !getMeta('advanced_layout');
 export const limitedFederationMode = getMeta('limited_federation_mode');

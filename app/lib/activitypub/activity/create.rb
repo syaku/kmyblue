@@ -480,6 +480,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       nil
     elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
+    elsif audience_searchable_by.include?('as:Limited')
+      :limited
     elsif audience_searchable_by.include?(@account.followers_url)
       :private
     else
@@ -502,17 +504,17 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       searchability = searchability_bio[0]
       return nil if searchability.nil?
 
-      searchability = :public   if searchability == 'public'
-      searchability = :unlisted if searchability == 'followers'
-      searchability = :direct   if searchability == 'private'
-      searchability = :private  if searchability == 'reactors'
+      searchability = :public  if searchability == 'public'
+      searchability = :private if searchability == 'followers'
+      searchability = :limited if searchability == 'private'
+      searchability = :direct  if searchability == 'reactors'
     end
 
     visibility = visibility_from_audience_with_silence
 
-    if searchability == visibility
+    if searchability == visibility || searchability == :limited || searchability == :direct
       searchability
-    elsif [:public, :unlisted, :private].include?(searchability) && [:public, :unlisted, :private].include?(visibility)
+    elsif [:public, :unlisted, :private].include?(searchability) && [:public, :public_unlisted, :unlisted, :login, :private].include?(visibility)
       :private
     else
       :direct
@@ -524,6 +526,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       :public
     elsif audience_cc.any? { |cc| ActivityPub::TagManager.instance.public_collection?(cc) }
       :unlisted
+    elsif audience_cc.include?('as:LoginOnly')
+      :login
     elsif audience_to.include?(@account.followers_url)
       :private
     else

@@ -100,6 +100,8 @@ module StatusesHelper
       fa_icon 'unlock fw'
     when 'public_unlisted'
       fa_icon 'cloud fw'
+    when 'login'
+      fa_icon 'key fw'
     when 'private'
       fa_icon 'lock fw'
     when 'direct'

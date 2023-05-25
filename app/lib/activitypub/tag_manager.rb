@@ -90,7 +90,7 @@ class ActivityPub::TagManager
     case status.visibility
     when 'public'
       [COLLECTIONS[:public]]
-    when 'unlisted', 'public_unlisted', 'private'
+    when 'unlisted', 'public_unlisted', 'login', 'private'
       [account_followers_url(status.account)]
     when 'direct', 'limited'
       if status.account.silenced?
@@ -128,6 +128,8 @@ class ActivityPub::TagManager
       cc << account_followers_url(status.account)
     when 'unlisted', 'public_unlisted'
       cc << COLLECTIONS[:public]
+    when 'login'
+      cc << 'as:LoginOnly'
     end
 
     cc + cc_private_visibility(status)
@@ -221,6 +223,8 @@ class ActivityPub::TagManager
         [account_followers_url(status.account)]
       when 'direct'
         status.conversation_id.present? ? [uri_for(status.conversation)] : []
+      when 'limited'
+        ['as:Limited']
       else
         []
       end
@@ -234,6 +238,8 @@ class ActivityPub::TagManager
       [COLLECTIONS[:public]]
     when 'private', 'direct'
       [account_followers_url(account)]
+    when 'limited'
+      ['as:Limited']
     else
       []
     end

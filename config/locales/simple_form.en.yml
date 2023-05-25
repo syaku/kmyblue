@@ -220,6 +220,7 @@ en:
         setting_display_media_hide_all: Hide all
         setting_display_media_show_all: Show all
         setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
+        setting_enable_login_privacy: Enable login visibility
         setting_expand_spoilers: Always expand posts marked with content warnings
         setting_hide_followers_count: Hide followers count
         setting_hide_following_count: Hide following count

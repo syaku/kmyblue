@@ -200,8 +200,9 @@ class ActionBar extends PureComponent {
     const { status, relationship, intl } = this.props;
     const { signedIn, permissions } = this.context.identity;
 
-    const publicStatus       = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility_ex'));
-    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'private'].includes(status.get('visibility_ex'));
+    const publicStatus       = ['public', 'unlisted', 'public_unlisted', 'login'].includes(status.get('visibility_ex'));
+    const anonymousStatus    = ['public', 'unlisted', 'public_unlisted'].includes(status.get('visibility_ex'));
+    const pinnableStatus     = ['public', 'unlisted', 'public_unlisted', 'login', 'private'].includes(status.get('visibility_ex'));
     const mutingConversation = status.get('muted');
     const account            = status.get('account');
     const writtenByMe        = status.getIn(['account', 'id']) === me;
@@ -220,7 +221,10 @@ class ActionBar extends PureComponent {
         menu.push({ text: intl.formatMessage(messages.share), action: this.handleShare });
       }
 
-      menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      if (anonymousStatus) {
+        menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      }
+      
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.reblog), action: this.handleReblogForceModalClick });
       menu.push(null);

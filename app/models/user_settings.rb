@@ -37,6 +37,7 @@ class UserSettings
     setting :use_system_font, default: false
     setting :disable_swiping, default: false
     setting :delete_modal, default: true
+    setting :enable_login_privacy, default: false
     setting :reblog_modal, default: false
     setting :unfollow_modal, default: true
     setting :reduce_motion, default: false

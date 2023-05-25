@@ -72,7 +72,7 @@ class PostStatusService < BaseService
                      end) || @options[:spoiler_text].present?
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
-    @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted) && @account.silenced?
+    @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted || @visibility&.to_sym == :login) && @account.silenced?
     @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:force_visibility] && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
     @searchability = searchability
     @markdown     = @options[:markdown] || false
@@ -85,9 +85,9 @@ class PostStatusService < BaseService
   def searchability
     case @options[:searchability]&.to_sym
     when :public
-      case @visibility&.to_sym when :public, :public_unlisted then :public when :unlisted, :private then :private else :direct end
+      case @visibility&.to_sym when :public, :public_unlisted, :login then :public when :unlisted, :private then :private else :direct end
     when :private
-      case @visibility&.to_sym when :public, :public_unlisted, :unlisted, :private then :private else :direct end
+      case @visibility&.to_sym when :public, :public_unlisted, :login, :unlisted, :private then :private else :direct end
     when :direct
       :direct
     when nil

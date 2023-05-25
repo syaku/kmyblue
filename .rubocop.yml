@@ -130,6 +130,7 @@ Metrics/ClassLength:
     - 'app/models/status.rb'
     - 'app/models/tag.rb'
     - 'app/models/user.rb'
+    - 'app/policies/status_policy.rb'
     - 'app/serializers/activitypub/actor_serializer.rb'
     - 'app/serializers/activitypub/note_serializer.rb'
     - 'app/serializers/rest/account_serializer.rb'
@@ -155,6 +156,7 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - 'app/policies/status_policy.rb'
     - 'app/services/activitypub/process_account_service.rb'
+    - 'app/services/post_status_service.rb'
     - lib/mastodon/cli/*.rb
     - db/*migrate/**/*
 

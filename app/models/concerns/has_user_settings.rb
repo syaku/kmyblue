@@ -23,6 +23,10 @@ module HasUserSettings
     settings['web.auto_play']
   end
 
+  def setting_enable_login_privacy
+    settings['web.enable_login_privacy']
+  end
+
   def setting_default_sensitive
     settings['default_sensitive']
   end

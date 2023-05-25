@@ -239,7 +239,7 @@ const insertExpiration = (state, position, data) => {
 };
 
 const privacyPreference = (a, b) => {
-  const order = ['public', 'public_unlisted', 'unlisted', 'private', 'direct'];
+  const order = ['public', 'public_unlisted', 'unlisted', 'login', 'private', 'direct'];
   return order[Math.max(order.indexOf(a), order.indexOf(b), 0)];
 };
 

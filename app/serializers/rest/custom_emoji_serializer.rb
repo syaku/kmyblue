@@ -3,13 +3,13 @@
 class REST::CustomEmojiSerializer < ActiveModel::Serializer
   include RoutingHelper
 
-  attributes :shortcode, :url, :static_url, :visible_in_picker, :is_sensitive
+  attributes :shortcode, :url, :static_url, :visible_in_picker
 
   attribute :category, if: :category_loaded?
   attribute :width, if: :width?
   attribute :height, if: :height?
   attribute :aliases, if: :aliases?
-  attribute :is_sensitive, if: :is_sensitive?
+  attribute :sensitive, if: :sensitive?
 
   def url
     full_asset_url(object.image.url)
@@ -47,7 +47,11 @@ class REST::CustomEmojiSerializer < ActiveModel::Serializer
     object.respond_to?(:aliases) && object.aliases.present?
   end
 
-  def is_sensitive? # rubocop:disable Naming/PredicateName
+  def sensitive?
     object.respond_to?(:is_sensitive)
+  end
+
+  def sensitive
+    object.is_sensitive
   end
 end
