@@ -5,7 +5,7 @@ class REST::AccountSerializer < ActiveModel::Serializer
   include FormattingHelper
 
   attributes :id, :username, :acct, :display_name, :locked, :bot, :discoverable, :group, :created_at,
-             :note, :url, :avatar, :avatar_static, :header, :header_static, :searchability, :subscribable,
+             :note, :url, :avatar, :avatar_static, :header, :header_static, :subscribable,
              :followers_count, :following_count, :statuses_count, :last_status_at, :other_settings,
              :noindex
 

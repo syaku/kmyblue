@@ -86,7 +86,7 @@ class Account < ApplicationRecord
 
   enum protocol: { ostatus: 0, activitypub: 1 }
   enum suspension_origin: { local: 0, remote: 1 }, _prefix: true
-  enum searchability: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10 }, _suffix: :searchability
+  enum searchability: { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, _suffix: :searchability
 
   validates :username, presence: true
   validates_with UniqueUsernameValidator, if: -> { will_save_change_to_username? }

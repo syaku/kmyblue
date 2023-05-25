@@ -388,7 +388,7 @@ class Status < ApplicationRecord
     # searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
     # Reactions only (generic: direct)
     return searchability if searchability
-    return account.searchability if account.local? && account.searchability
+    return account.searchability if account.local? && account.searchability && !account.unsupported_searchability?
 
     'direct'
   end
