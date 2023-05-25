@@ -53,7 +53,7 @@ class Status < ApplicationRecord
   update_index('statuses', :proper)
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, _suffix: :visibility
-  enum searchability: { public: 0, private: 1, direct: 2, limited: 3, public_unlisted: 10 }, _suffix: :searchability
+  enum searchability: { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, _suffix: :searchability
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
 
@@ -387,6 +387,7 @@ class Status < ApplicationRecord
     # Fedibird code
     # searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
     # Reactions only (generic: direct)
+    return 'direct' if searchability && unsupported_searchability?
     return searchability if searchability
     return account.searchability if account.local? && account.searchability && !account.unsupported_searchability?
 
