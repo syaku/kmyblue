@@ -527,7 +527,15 @@ class Status < ApplicationRecord
   def set_searchability
     return if searchability.nil?
 
-    self.searchability = [Status.searchabilities[searchability], Status.visibilities[visibility == 'public_unlisted' || visibility == 'login' ? 'public' : visibility]].max
+    if visibility == 'public' || visibility == 'public_unlisted' || visibility == 'login'
+      self.searchability = [Status.searchabilities[searchability], Status.visibilities['public']].max
+    elsif visibility == 'limited'
+      self.searchability = Status.searchabilities['limited']
+    else
+      s = [Status.searchabilities[searchability], Status.visibilities[visibility]].max
+      s = [s, 3].max
+      self.searchability = s
+    end
   end
 
   def set_conversation
