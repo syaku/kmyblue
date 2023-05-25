@@ -246,9 +246,9 @@ class ActivityPub::ProcessAccountService < BaseService
     if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
-      :unlisted    # Followers only in kmyblue (generics: private)
+      :private    # Followers only in kmyblue (generics: private)
     else
-      :private     # Reaction only in kmyblue (generics: direct)
+      :direct     # Reaction only in kmyblue (generics: direct)
     end
   end
 
