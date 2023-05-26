@@ -16,21 +16,24 @@ class Api::V1::ReactionDeckController < Api::BaseController
   end
 
   def create
+    deck = @deck
+
     (deck_params['emojis'] || []).each do |data|
       raise ArgumentError if data['id'].to_i >= 16 || data['id'].to_i.negative?
 
-      exists = @deck.find { |dd| dd['id'] == data['id'] }
+      exists = deck.find { |dd| dd['id'] == data['id'] }
       if exists
         exists['emoji'] = data['emoji'].delete(':')
       else
-        @deck << { id: data['id'], emoji: data['emoji'].delete(':') }
+        deck << { 'id' => data['id'], 'emoji' => data['emoji'].delete(':') }
       end
     end
-    @deck = @deck.sort_by { |a| a['id'].to_i }
-    current_user.settings['reaction_deck'] = @deck.to_json
+
+    deck = deck.sort_by { |a| a['id'].to_i }
+    current_user.settings['reaction_deck'] = deck.to_json
     current_user.save!
 
-    render json: @deck
+    render json: deck
   end
 
   private
