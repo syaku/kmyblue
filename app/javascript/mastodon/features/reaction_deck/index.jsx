@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
 
 import { defineMessages, injectIntl } from 'react-intl';
 
@@ -10,15 +11,36 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+
+import { updateReactionDeck } from 'mastodon/actions/reaction_deck';
+import Button from 'mastodon/components/button';
 import ColumnHeader from 'mastodon/components/column_header';
 import LoadingIndicator from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import Column from 'mastodon/features/ui/components/column';
 
+
 import ReactionEmoji from './components/reaction_emoji';
 
 
-const DECK_SIZE = 16;
+// https://medium.com/@wbern/getting-react-18s-strict-mode-to-work-with-react-beautiful-dnd-47bc909348e4
+/* eslint react/prop-types: 0 */
+const StrictModeDroppable = ({ children, ...props }) => {
+  const [enabled, setEnabled] = useState(false);
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
+  }, []);
+  if (!enabled) {
+    return null;
+  }
+  return <Droppable {...props}>{children}</Droppable>;
+};
+/* eslint react/prop-types: 0 */
 
 const customEmojiMap = createSelector([state => state.get('custom_emojis')], items => items.reduce((map, emoji) => map.set(emoji.get('shortcode'), emoji), ImmutableMap()));
 
@@ -33,6 +55,10 @@ const mapStateToProps = (state, props) => ({
   emojiMap: customEmojiMap(state),
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  onChange: (emojis) => dispatch(updateReactionDeck(emojis)),
+});
+
 class ReactionDeck extends ImmutablePureComponent {
 
   static propTypes = {
@@ -42,7 +68,39 @@ class ReactionDeck extends ImmutablePureComponent {
     emojiMap: ImmutablePropTypes.map,
     multiColumn: PropTypes.bool,
     intl: PropTypes.object.isRequired,
+    onChange: PropTypes.func.isRequired,
   };
+
+  deckToArray = () => {
+    const { deck } = this.props;
+
+    return deck.map((item) => item.get('name')).toArray();
+  };
+
+  handleReorder = (result) => {
+    const newDeck = this.deckToArray();
+    const deleted = newDeck.splice(result.source.index, 1);
+    newDeck.splice(result.destination.index, 0, deleted[0]);
+    this.props.onChange(newDeck);
+  };
+
+  handleChange = (index, emoji) => {
+    const newDeck = this.deckToArray();
+    newDeck[index] = emoji.native || emoji.id.replace(':', '');
+    this.props.onChange(newDeck);
+  };
+
+  handleRemove = (index) => {
+    const newDeck = this.deckToArray();
+    newDeck.splice(index, 1);
+    this.props.onChange(newDeck);
+  };
+
+  handleAdd = () => {
+    const newDeck = this.deckToArray();
+    newDeck.push('👍');
+    this.props.onChange(newDeck);
+  }
 
   render () {
     const { intl, deck, emojiMap, multiColumn } = this.props;
@@ -69,9 +127,32 @@ class ReactionDeck extends ImmutablePureComponent {
             scrollKey='reaction_deck'
             bindToDocument={!multiColumn}
           >
-            {[...Array(DECK_SIZE).keys()].map(emojiId =>
-              <ReactionEmoji key={emojiId} emojiMap={emojiMap} emojiId={emojiId} />
-            )}
+            <DragDropContext onDragEnd={this.handleReorder}>
+              <StrictModeDroppable droppableId='deckitems'>
+                {(provided) => (
+                  <div className='deckitems' {...provided.droppableProps} ref={provided.innerRef}>
+                    {deck.map((emoji, index) => (
+                      <Draggable key={index} draggableId={'' + index} index={index}>
+                        {(provided2) => (
+                          <div ref={provided2.innerRef} {...provided2.draggableProps} {...provided2.dragHandleProps}>
+                            <ReactionEmoji emojiMap={emojiMap}
+                                           emojiId={emoji.get('id')}
+                                           emoji={emoji.get('name')}
+                                           index={index}
+                                           onChange={this.handleChange}
+                                           onRemove={this.handleRemove}
+                                           />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+
+                    <Button text='Add' onClick={this.handleAdd} />
+                  </div>
+                )}
+              </StrictModeDroppable>
+            </DragDropContext>
           </ScrollableList>
 
         <Helmet>
@@ -83,4 +164,4 @@ class ReactionDeck extends ImmutablePureComponent {
 
 }
 
-export default connect(mapStateToProps)(injectIntl(ReactionDeck));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ReactionDeck));

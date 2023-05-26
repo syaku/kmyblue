@@ -92,7 +92,7 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
       },
 
       reaction_deck: {
-        max_emojis: 16,
+        max_emojis: 32_767,
       },
 
       reactions: {

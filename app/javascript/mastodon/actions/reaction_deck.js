@@ -47,11 +47,11 @@ export function fetchReactionDeckFail(error) {
   };
 }
 
-export function updateReactionDeck(id, emoji) {
+export function updateReactionDeck(emojis) {
   return (dispatch, getState) => {
     dispatch(updateReactionDeckRequest());
 
-    api(getState).post('/api/v1/reaction_deck', { emojis: [{ id, emoji: emoji.native || emoji.id }] }).then(response => {
+    api(getState).post('/api/v1/reaction_deck', { emojis }).then(response => {
       dispatch(updateReactionDeckSuccess(response.data));
     }).catch(error => {
       dispatch(updateReactionDeckFail(error));

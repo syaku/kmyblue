@@ -18,6 +18,35 @@ class Api::V1::ReactionDeckController < Api::BaseController
   end
 
   def create
+    deck = []
+
+    (deck_params['emojis'] || []).each do |shortcode|
+      shortcode = shortcode.delete(':')
+      custom_emoji = CustomEmoji.find_by(shortcode: shortcode, domain: nil)
+
+      emoji_data = {}
+
+      if custom_emoji
+        emoji_data['name'] = custom_emoji.shortcode
+        emoji_data['url'] = full_asset_url(custom_emoji.image.url)
+        emoji_data['static_url'] = full_asset_url(custom_emoji.image.url(:static))
+        emoji_data['width'] = custom_emoji.image_width
+        emoji_data['height'] = custom_emoji.image_height
+        emoji_data['custom_emoji_id'] = custom_emoji.id
+      else
+        emoji_data['name'] = shortcode
+      end
+
+      deck << emoji_data
+    end
+
+    current_user.settings['reaction_deck'] = deck.to_json
+    current_user.save!
+
+    render json: remove_metas(deck)
+  end
+
+  def legacy_create
     deck = @deck
 
     (deck_params['emojis'] || []).each do |data|
@@ -86,6 +115,7 @@ class Api::V1::ReactionDeckController < Api::BaseController
     deck.tap do |d|
       d.each do |item|
         item.delete('custom_emoji_id')
+        # item.delete('id') if item.key?('id')
       end
     end
   end
