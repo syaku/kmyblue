@@ -45,7 +45,7 @@ const getFrequentlyUsedEmojis = createSelector([
   const { emojiCounters, reactionDeck } = data;
   let deckEmojis = reactionDeck
     .toArray()
-    .map((e) => e.getIn(['emoji', 'shortcode']))
+    .map((e) => e.get('name'))
     .filter((e) => e)
     .map((e) => shortCodes[e] || e);
   deckEmojis = [...new Set(deckEmojis)];

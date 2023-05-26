@@ -25,28 +25,22 @@ class Api::V1::ReactionDeckController < Api::BaseController
 
       shortcode = data['emoji'].delete(':')
       custom_emoji = CustomEmoji.find_by(shortcode: shortcode, domain: nil)
-      custom_emoji_id = custom_emoji&.id
-      emoji_data = if custom_emoji
-                     {
-                       'shortcode' => custom_emoji.shortcode,
-                       'url' => full_asset_url(custom_emoji.image.url),
-                       'static_url' => full_asset_url(custom_emoji.image.url(:static)),
-                       'width' => custom_emoji.image_width,
-                       'height' => custom_emoji.image_height,
-                     }
-                   else
-                     {
-                       'shortcode' => shortcode,
-                     }
-                   end
 
-      exists = deck.find { |dd| dd['id'] == data['id'] }
-      if exists
-        exists['custom_emoji_id'] = custom_emoji_id
-        exists['emoji'] = emoji_data
+      old = deck.find { |dd| dd['id'] == data['id'] }
+      emoji_data = old || { 'id' => data['id'] }
+
+      if custom_emoji
+        emoji_data['name'] = custom_emoji.shortcode
+        emoji_data['url'] = full_asset_url(custom_emoji.image.url)
+        emoji_data['static_url'] = full_asset_url(custom_emoji.image.url(:static))
+        emoji_data['width'] = custom_emoji.image_width
+        emoji_data['height'] = custom_emoji.image_height
+        emoji_data['custom_emoji_id'] = custom_emoji.id
       else
-        deck << { 'id' => data['id'], 'custom_emoji_id' => custom_emoji_id, 'emoji' => emoji_data }
+        emoji_data['name'] = shortcode
       end
+
+      deck << emoji_data if old.nil?
     end
 
     deck = deck.sort_by { |a| a['id'].to_i }
@@ -66,7 +60,7 @@ class Api::V1::ReactionDeckController < Api::BaseController
   def remove_unused_custom_emojis(deck)
     custom_ids = []
     deck.each do |item|
-      custom_ids << item['custom_emoji_id'].to_i unless item['custom_emoji_id'].nil?
+      custom_ids << item['custom_emoji_id'].to_i if item.key?('custom_emoji_id')
     end
     custom_emojis = CustomEmoji.where(id: custom_ids)
 
