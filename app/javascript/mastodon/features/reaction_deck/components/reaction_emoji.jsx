@@ -81,4 +81,4 @@ class ReactionEmoji extends ImmutablePureComponent {
 
 }
 
-export default connect(injectIntl(ReactionEmoji));
+export default connect()(injectIntl(ReactionEmoji));

@@ -136,7 +136,6 @@ class ReactionDeck extends ImmutablePureComponent {
                         {(provided2) => (
                           <div ref={provided2.innerRef} {...provided2.draggableProps} {...provided2.dragHandleProps}>
                             <ReactionEmoji emojiMap={emojiMap}
-                                           emojiId={emoji.get('id')}
                                            emoji={emoji.get('name')}
                                            index={index}
                                            onChange={this.handleChange}

@@ -8,10 +8,6 @@ export const REACTION_DECK_UPDATE_REQUEST = 'REACTION_DECK_UPDATE_REQUEST';
 export const REACTION_DECK_UPDATE_SUCCESS = 'REACTION_DECK_UPDATE_SUCCESS';
 export const REACTION_DECK_UPDATE_FAIL = 'REACTION_DECK_UPDATE_FAIL';
 
-export const REACTION_DECK_REMOVE_REQUEST = 'REACTION_DECK_REMOVE_REQUEST';
-export const REACTION_DECK_REMOVE_SUCCESS = 'REACTION_DECK_REMOVE_SUCCESS';
-export const REACTION_DECK_REMOVE_FAIL = 'REACTION_DECK_REMOVE_FAIL';
-
 export function fetchReactionDeck() {
   return (dispatch, getState) => {
     dispatch(fetchReactionDeckRequest());
@@ -77,41 +73,6 @@ export function updateReactionDeckSuccess(emojis) {
 export function updateReactionDeckFail(error) {
   return {
     type: REACTION_DECK_UPDATE_FAIL,
-    error,
-    skipLoading: true,
-  };
-}
-
-export function removeReactionDeck(id) {
-  return (dispatch, getState) => {
-    dispatch(removeReactionDeckRequest());
-
-    api(getState).post('/api/v1/remove_reaction_deck', { emojis: [{ id }] }).then(response => {
-      dispatch(removeReactionDeckSuccess(response.data));
-    }).catch(error => {
-      dispatch(removeReactionDeckFail(error));
-    });
-  };
-}
-
-export function removeReactionDeckRequest() {
-  return {
-    type: REACTION_DECK_REMOVE_REQUEST,
-    skipLoading: true,
-  };
-}
-
-export function removeReactionDeckSuccess(emojis) {
-  return {
-    type: REACTION_DECK_REMOVE_SUCCESS,
-    emojis,
-    skipLoading: true,
-  };
-}
-
-export function removeReactionDeckFail(error) {
-  return {
-    type: REACTION_DECK_REMOVE_FAIL,
     error,
     skipLoading: true,
   };
