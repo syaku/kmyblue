@@ -61,7 +61,10 @@ class NavigationPanel extends Component {
         </div>
 
         {signedIn && (
-          <ColumnLink transparent to='/home' icon='home' text={intl.formatMessage(messages.home)} />
+          <>
+            <ColumnLink transparent to='/notifications' icon={<NotificationsCounterIcon className='column-link__icon' />} text={intl.formatMessage(messages.notifications)} />
+            <ColumnLink transparent to='/home' icon='home' text={intl.formatMessage(messages.home)} />
+          </>
         )}
 
         {!signedIn && explorer}
@@ -82,7 +85,6 @@ class NavigationPanel extends Component {
 
         {signedIn && (
           <>
-            <ColumnLink transparent to='/notifications' icon={<NotificationsCounterIcon className='column-link__icon' />} text={intl.formatMessage(messages.notifications)} />
             <FollowRequestsColumnLink />
             <ColumnLink transparent to='/conversations' icon='at' text={intl.formatMessage(messages.direct)} />
           </>
