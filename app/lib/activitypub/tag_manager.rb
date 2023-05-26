@@ -90,8 +90,10 @@ class ActivityPub::TagManager
     case status.visibility
     when 'public'
       [COLLECTIONS[:public]]
-    when 'unlisted', 'public_unlisted', 'login', 'private'
+    when 'unlisted', 'public_unlisted', 'private'
       [account_followers_url(status.account)]
+    when 'login'
+      [account_followers_url(status.account), 'as:LoginOnly', 'LoginUser']
     when 'direct', 'limited'
       if status.account.silenced?
         # Only notify followers if the account is locally silenced
@@ -128,8 +130,6 @@ class ActivityPub::TagManager
       cc << account_followers_url(status.account)
     when 'unlisted', 'public_unlisted'
       cc << COLLECTIONS[:public]
-    when 'login'
-      cc << 'as:LoginOnly'
     end
 
     cc + cc_private_visibility(status)
