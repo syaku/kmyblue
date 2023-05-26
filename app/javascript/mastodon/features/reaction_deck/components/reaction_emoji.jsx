@@ -13,7 +13,7 @@ import emojify from 'mastodon/features/emoji/emoji';
 import { autoPlayGif } from 'mastodon/initial_state';
 
 const MapStateToProps = (state, { emojiId, emojiMap }) => ({
-  emoji: (state.get('reaction_deck', ImmutableList()).toArray().find(em => em.get('id') === emojiId) || ImmutableMap({ emoji: '' })).get('emoji'),
+  emoji: (state.get('reaction_deck', ImmutableList()).toArray().find(em => em.get('id') === emojiId) || ImmutableMap({ emoji: { shortcode: '' } })).getIn(['emoji', 'shortcode']),
   emojiMap,
 });
 
