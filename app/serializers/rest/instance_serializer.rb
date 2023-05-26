@@ -85,6 +85,10 @@ class REST::InstanceSerializer < ActiveModel::Serializer
         max_reactions_per_account: EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT,
       },
 
+      reaction_deck: {
+        max_items: 16,
+      },
+
       reactions: {
         max_reactions: EmojiReaction::EMOJI_REACTION_PER_ACCOUNT_LIMIT,
       },
@@ -96,6 +100,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       enabled: registrations_enabled?,
       approval_required: Setting.registrations_mode == 'approved',
       message: registrations_enabled? ? nil : registrations_message,
+      url: ENV.fetch('SSO_ACCOUNT_SIGN_UP', nil),
     }
   end
 
@@ -109,6 +114,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       :kmyblue_searchability,
       :searchability,
       :kmyblue_markdown,
+      :kmyblue_reaction_deck,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?

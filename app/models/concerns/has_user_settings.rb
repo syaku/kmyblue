@@ -23,8 +23,16 @@ module HasUserSettings
     settings['web.auto_play']
   end
 
+  def setting_reaction_deck
+    settings['reaction_deck']
+  end
+
   def setting_enable_login_privacy
     settings['web.enable_login_privacy']
+  end
+
+  def setting_hide_recent_emojis
+    settings['web.hide_recent_emojis']
   end
 
   def setting_default_sensitive

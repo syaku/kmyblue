@@ -1,18 +1,24 @@
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { HotKeys } from 'react-hotkeys';
 import PropTypes from 'prop-types';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { me } from 'mastodon/initial_state';
-import StatusContainer from 'mastodon/containers/status_container';
-import AccountContainer from 'mastodon/containers/account_container';
-import Report from './report';
-import FollowRequestContainer from '../containers/follow_request_container';
-import { Icon }  from 'mastodon/components/icon';
-import { Link } from 'react-router-dom';
+
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+
 import classNames from 'classnames';
-import EmojiView from '../../../components/emoji_view';
+import { Link } from 'react-router-dom';
+
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import { HotKeys } from 'react-hotkeys';
+
+import EmojiView from 'mastodon/components/emoji_view';
+import { Icon }  from 'mastodon/components/icon';
+import AccountContainer from 'mastodon/containers/account_container';
+import StatusContainer from 'mastodon/containers/status_container';
+import { me } from 'mastodon/initial_state';
+
+import FollowRequestContainer from '../containers/follow_request_container';
+
+import Report from './report';
 
 const messages = defineMessages({
   favourite: { id: 'notification.favourite', defaultMessage: '{name} favourited your status' },
@@ -208,7 +214,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -242,7 +248,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -275,7 +281,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -313,7 +319,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -351,7 +357,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>
@@ -395,7 +401,7 @@ class Notification extends ImmutablePureComponent {
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions={true}
+            withoutEmojiReactions
           />
         </div>
       </HotKeys>

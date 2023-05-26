@@ -34,6 +34,7 @@ import notifications from './notifications';
 import picture_in_picture from './picture_in_picture';
 import polls from './polls';
 import push_notifications from './push_notifications';
+import reaction_deck from './reaction_deck';
 import relationships from './relationships';
 import search from './search';
 import server from './server';
@@ -92,6 +93,7 @@ const reducers = {
   history,
   tags,
   followed_tags,
+  reaction_deck,
 };
 
 const rootReducer = combineReducers(reducers);
