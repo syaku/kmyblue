@@ -7544,6 +7544,26 @@ noscript {
   }
 }
 
+.reaction_deck__emoji {
+  &__wrapper {
+    display: flex;
+
+    margin: 8px 4px;
+    height: 32px;
+
+    .emojione {
+      min-width: 24px;
+      height: 24px;
+    }
+
+    .emoji-button {
+      margin-left: 20px;
+      margin-right: 24px;
+      padding: 0;
+    }
+  }
+}
+
 .focal-point {
   position: relative;
   cursor: move;

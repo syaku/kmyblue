@@ -225,6 +225,7 @@ en:
         setting_hide_followers_count: Hide followers count
         setting_hide_following_count: Hide following count
         setting_hide_network: Hide your social graph
+        setting_hide_recent_emojis: Hide recent emojis
         setting_hide_statuses_count: Hide statuses count
         setting_noai: Set noai meta tags
         setting_noindex: Opt-out of search engine indexing

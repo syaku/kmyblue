@@ -25,6 +25,7 @@ class UserSettings
   setting :reject_public_unlisted_subscription, default: false
   setting :reject_unlisted_subscription, default: false
   setting :send_without_domain_blocks, default: false
+  setting :reaction_deck, default: nil
   setting :stop_emoji_reaction_streaming, default: false
   setting :emoji_reaction_streaming_notify_impl2, default: false
 
@@ -38,6 +39,7 @@ class UserSettings
     setting :disable_swiping, default: false
     setting :delete_modal, default: true
     setting :enable_login_privacy, default: false
+    setting :hide_recent_emojis, default: false
     setting :reblog_modal, default: false
     setting :unfollow_modal, default: true
     setting :reduce_motion, default: false

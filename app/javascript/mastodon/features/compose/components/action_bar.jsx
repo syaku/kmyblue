@@ -11,6 +11,7 @@ const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
   pins: { id: 'navigation_bar.pins', defaultMessage: 'Pinned posts' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
+  reaction_deck: { id: 'navigation_bar.reaction_deck', defaultMessage: 'Reaction deck' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favourites' },
   emoji_reactions: { id: 'navigation_bar.emoji_reactions', defaultMessage: 'Stamps' },
@@ -44,6 +45,7 @@ class ActionBar extends PureComponent {
 
     menu.push({ text: intl.formatMessage(messages.edit_profile), href: '/settings/profile' });
     menu.push({ text: intl.formatMessage(messages.preferences), href: '/settings/preferences' });
+    menu.push({ text: intl.formatMessage(messages.reaction_deck), to: '/reaction_deck' });
     menu.push({ text: intl.formatMessage(messages.pins), to: '/pinned' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });

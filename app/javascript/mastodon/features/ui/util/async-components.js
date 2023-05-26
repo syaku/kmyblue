@@ -166,6 +166,10 @@ export function Onboarding () {
   return import(/* webpackChunkName: "features/onboarding" */'../../onboarding');
 }
 
+export function ReactionDeck () {
+  return import(/* webpackChunkName: "features/reaction_deck" */'../../reaction_deck');
+}
+
 export function CompareHistoryModal () {
   return import(/*webpackChunkName: "modals/compare_history_modal" */'../components/compare_history_modal');
 }

@@ -60,6 +60,7 @@
  * @property {string} domain
  * @property {boolean} enable_login_privacy
  * @property {boolean=} expand_spoilers
+ * @property {boolean} hide_recent_emojis
  * @property {boolean} limited_federation_mode
  * @property {string} locale
  * @property {string | null} mascot
@@ -115,6 +116,7 @@ export const domain = getMeta('domain');
 export const enableLoginPrivacy = getMeta('enable_login_privacy');
 export const expandSpoilers = getMeta('expand_spoilers');
 export const forceSingleColumn = !getMeta('advanced_layout');
+export const hideRecentEmojis = getMeta('hide_recent_emojis');
 export const limitedFederationMode = getMeta('limited_federation_mode');
 export const mascot = getMeta('mascot');
 export const me = getMeta('me');

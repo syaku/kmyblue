@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     /emoji_reactions
     /bookmarks
     /pinned
+    /reaction_deck
     /start
     /directory
     /explore/(*any)
