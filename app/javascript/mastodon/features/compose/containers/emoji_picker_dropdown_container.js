@@ -34,7 +34,6 @@ const DEFAULTS = [
 ];
 
 const RECENT_SIZE = DEFAULTS.length;
-const DECK_SIZE = 16;
 
 const getFrequentlyUsedEmojis = createSelector([
   state => { return {
@@ -68,7 +67,7 @@ const getFrequentlyUsedEmojis = createSelector([
     emojis = [];
   }
 
-  emojis = deckEmojis.slice(0, DECK_SIZE).concat(emojis);
+  emojis = deckEmojis.concat(emojis);
 
   if (emojis.length <= 0) emojis = ['+1'];
 
