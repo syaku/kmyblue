@@ -1,16 +1,21 @@
 import PropTypes from 'prop-types';
 
-import { injectIntl } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import { updateReactionDeck } from 'mastodon/actions/reaction_deck';
+import { updateReactionDeck, removeReactionDeck } from 'mastodon/actions/reaction_deck';
+import Button from 'mastodon/components/button';
 import EmojiPickerDropdownContainer from 'mastodon/features/compose/containers/emoji_picker_dropdown_container';
 import emojify from 'mastodon/features/emoji/emoji';
 import { autoPlayGif } from 'mastodon/initial_state';
+
+const messages = defineMessages({
+  remove: { id: 'reaction_deck.remove', defaultMessage: 'Remove' },
+});
 
 const MapStateToProps = (state, { emojiId, emojiMap }) => ({
   emoji: (state.get('reaction_deck', ImmutableList()).toArray().find(em => em.get('id') === emojiId) || ImmutableMap({ emoji: { shortcode: '' } })).get('name'),
@@ -19,6 +24,7 @@ const MapStateToProps = (state, { emojiId, emojiMap }) => ({
 
 const mapDispatchToProps = (dispatch, { emojiId }) => ({
   onChange: (emoji) => dispatch(updateReactionDeck(emojiId, emoji)),
+  onRemove: () => dispatch(removeReactionDeck(emojiId)),
 });
 
 class ReactionEmoji extends ImmutablePureComponent {
@@ -27,6 +33,7 @@ class ReactionEmoji extends ImmutablePureComponent {
     emoji: PropTypes.string,
     emojiMap: ImmutablePropTypes.map.isRequired,
     onChange: PropTypes.func.isRequired,
+    onRemove: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -34,7 +41,7 @@ class ReactionEmoji extends ImmutablePureComponent {
   };
 
   render () {
-    const { emojiMap, emoji, onChange } = this.props;
+    const { intl, emojiMap, emoji, onChange, onRemove } = this.props;
 
     let content = null;
 
@@ -61,9 +68,14 @@ class ReactionEmoji extends ImmutablePureComponent {
     return (
       <div className='reaction_deck__emoji'>
         <div className='reaction_deck__emoji__wrapper'>
-          <EmojiPickerDropdownContainer onPickEmoji={onChange} />
-          <div>
-            {content}
+          <div className='reaction_deck__emoji__wrapper__content'>
+            <EmojiPickerDropdownContainer onPickEmoji={onChange} />
+            <div>
+              {content}
+            </div>
+          </div>
+          <div className='reaction_deck__emoji__wrapper__options'>
+            <Button secondary text={intl.formatMessage(messages.remove)} onClick={onRemove} />
           </div>
         </div>
       </div>

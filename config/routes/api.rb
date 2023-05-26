@@ -55,6 +55,7 @@ namespace :api, format: false do
 
     resources :custom_emojis, only: [:index]
     resources :reaction_deck, only: [:index, :create]
+    post :remove_reaction_deck, to: 'reaction_deck#remove'
     resources :suggestions, only: [:index, :destroy]
     resources :scheduled_statuses, only: [:index, :show, :update, :destroy]
     resources :preferences, only: [:index]

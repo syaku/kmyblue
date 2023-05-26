@@ -4,10 +4,10 @@ class Api::V1::ReactionDeckController < Api::BaseController
   include RoutingHelper
 
   before_action -> { doorkeeper_authorize! :read, :'read:lists' }, only: [:index]
-  before_action -> { doorkeeper_authorize! :write, :'write:lists' }, only: [:create]
+  before_action -> { doorkeeper_authorize! :write, :'write:lists' }, only: [:create, :remove]
 
   before_action :require_user!
-  before_action :set_deck, only: [:index, :create]
+  before_action :set_deck, only: [:index, :create, :remove]
 
   rescue_from ArgumentError do |e|
     render json: { error: e.to_s }, status: 422
@@ -44,6 +44,14 @@ class Api::V1::ReactionDeckController < Api::BaseController
     end
 
     deck = deck.sort_by { |a| a['id'].to_i }
+    current_user.settings['reaction_deck'] = deck.to_json
+    current_user.save!
+
+    render json: remove_metas(deck)
+  end
+
+  def remove
+    deck = @deck.filter { |item| deck_params['emojis'].none? { |d| d['id'] == item['id'] } }
     current_user.settings['reaction_deck'] = deck.to_json
     current_user.save!
 
