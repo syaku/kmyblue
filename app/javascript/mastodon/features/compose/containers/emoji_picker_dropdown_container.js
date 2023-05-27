@@ -6,7 +6,7 @@ import { hideRecentEmojis } from 'mastodon/initial_state';
 
 import { useEmoji } from '../../../actions/emojis';
 import { changeSetting } from '../../../actions/settings';
-import { shortCodes } from '../../emoji/emoji_mart_data_light';
+import unicodeMapping from '../../emoji/emoji_unicode_mapping_light';
 import EmojiPickerDropdown from '../components/emoji_picker_dropdown';
 
 
@@ -34,7 +34,6 @@ const DEFAULTS = [
 ];
 
 const RECENT_SIZE = DEFAULTS.length;
-const DECK_SIZE = 16;
 
 const getFrequentlyUsedEmojis = createSelector([
   state => { return {
@@ -43,11 +42,12 @@ const getFrequentlyUsedEmojis = createSelector([
   }; },
 ], data => {
   const { emojiCounters, reactionDeck } = data;
+
   let deckEmojis = reactionDeck
     .toArray()
-    .map((e) => e.get('emoji'))
+    .map((e) => e.get('name'))
     .filter((e) => e)
-    .map((e) => shortCodes[e] || e);
+    .map((e) => unicodeMapping[e] ? unicodeMapping[e].shortCode : e);
   deckEmojis = [...new Set(deckEmojis)];
 
   let emojis;
@@ -68,7 +68,9 @@ const getFrequentlyUsedEmojis = createSelector([
     emojis = [];
   }
 
-  emojis = deckEmojis.slice(0, DECK_SIZE).concat(emojis);
+  emojis = deckEmojis.concat(emojis);
+
+  if (emojis.length <= 0) emojis = ['+1'];
 
   return emojis;
 });

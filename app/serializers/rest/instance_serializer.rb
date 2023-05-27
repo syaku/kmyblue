@@ -86,7 +86,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       },
 
       reaction_deck: {
-        max_items: 16,
+        max_emojis: User::REACTION_DECK_MAX,
       },
 
       reactions: {
@@ -115,6 +115,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       :searchability,
       :kmyblue_markdown,
       :kmyblue_reaction_deck,
+      :kmyblue_visibility_login,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?
