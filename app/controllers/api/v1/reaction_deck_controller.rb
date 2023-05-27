@@ -20,9 +20,16 @@ class Api::V1::ReactionDeckController < Api::BaseController
   def create
     deck = []
 
+    shortcodes = []
     (deck_params['emojis'] || []).each do |shortcode|
-      shortcode = shortcode.delete(':')
-      custom_emoji = CustomEmoji.find_by(shortcode: shortcode, domain: nil)
+      shortcodes << shortcode.delete(':')
+      break if shortcodes.length >= User::REACTION_DECK_MAX
+    end
+
+    custom_emojis = CustomEmoji.where(shortcode: shortcodes, domain: nil)
+
+    shortcodes.each do |shortcode|
+      custom_emoji = custom_emojis.find { |em| em.shortcode == shortcode }
 
       emoji_data = {}
 
