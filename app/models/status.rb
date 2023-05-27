@@ -532,8 +532,8 @@ class Status < ApplicationRecord
     elsif visibility == 'limited'
       self.searchability = Status.searchabilities['limited']
     else
-      s = [Status.searchabilities[searchability], Status.visibilities[visibility]].max
-      s = [s, 3].max
+      s = [Status.searchabilities[searchability], Status.visibilities[visibility] - 1].max
+      s = [s, 3].min
       self.searchability = s
     end
   end
