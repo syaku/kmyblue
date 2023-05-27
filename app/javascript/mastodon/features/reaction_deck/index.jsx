@@ -45,7 +45,7 @@ const StrictModeDroppable = ({ children, ...props }) => {
 const customEmojiMap = createSelector([state => state.get('custom_emojis')], items => items.reduce((map, emoji) => map.set(emoji.get('shortcode'), emoji), ImmutableMap()));
 
 const messages = defineMessages({
-  refresh: { id: 'refresh', defaultMessage: 'Refresh' },
+  reaction_deck_add: { id: 'reaction_deck.add', defaultMessage: 'Add' },
   heading: { id: 'column.reaction_deck', defaultMessage: 'Reaction deck' },
 });
 
@@ -63,7 +63,6 @@ class ReactionDeck extends ImmutablePureComponent {
 
   static propTypes = {
     params: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
     deck: ImmutablePropTypes.list,
     emojiMap: ImmutablePropTypes.map,
     multiColumn: PropTypes.bool,
@@ -147,7 +146,7 @@ class ReactionDeck extends ImmutablePureComponent {
                     ))}
                     {provided.placeholder}
 
-                    <Button text='Add' onClick={this.handleAdd} />
+                    <Button text={intl.formatMessage(messages.reaction_deck_add)} onClick={this.handleAdd} />
                   </div>
                 )}
               </StrictModeDroppable>
