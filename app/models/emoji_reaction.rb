@@ -30,6 +30,7 @@ class EmojiReaction < ApplicationRecord
 
   validate :status_same_emoji_reaction
   validate :status_emoji_reactions_count
+  validates_with EmojiReactionValidator
 
   after_create :refresh_cache
   after_destroy :refresh_cache
