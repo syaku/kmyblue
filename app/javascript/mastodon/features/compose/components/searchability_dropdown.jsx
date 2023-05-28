@@ -1,11 +1,16 @@
-import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { PureComponent } from 'react';
+
 import { injectIntl, defineMessages } from 'react-intl';
-import { IconButton } from '../../../components/icon_button';
-import Overlay from 'react-overlays/Overlay';
-import { supportsPassiveEvents } from 'detect-passive-events';
+
 import classNames from 'classnames';
-import { Icon } from 'mastodon/components/icon';
+
+import { supportsPassiveEvents } from 'detect-passive-events';
+import Overlay from 'react-overlays/Overlay';
+
+import { Icon }  from 'mastodon/components/icon';
+
+import { IconButton } from '../../../components/icon_button';
 
 const messages = defineMessages({
   public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
@@ -19,7 +24,7 @@ const messages = defineMessages({
   change_searchability: { id: 'searchability.change', defaultMessage: 'Set status searchability' },
 });
 
-const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true, capture: true } : true;
 
 class SearchabilityDropdownMenu extends PureComponent {
 
@@ -34,6 +39,7 @@ class SearchabilityDropdownMenu extends PureComponent {
   handleDocumentClick = e => {
     if (this.node && !this.node.contains(e.target)) {
       this.props.onClose();
+      e.stopPropagation();
     }
   };
 
@@ -91,13 +97,13 @@ class SearchabilityDropdownMenu extends PureComponent {
   };
 
   componentDidMount () {
-    document.addEventListener('click', this.handleDocumentClick, false);
+    document.addEventListener('click', this.handleDocumentClick, { capture: true });
     document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
     if (this.focusedItem) this.focusedItem.focus({ preventScroll: true });
   }
 
   componentWillUnmount () {
-    document.removeEventListener('click', this.handleDocumentClick, false);
+    document.removeEventListener('click', this.handleDocumentClick, { capture: true });
     document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
 
