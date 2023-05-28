@@ -84,10 +84,12 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
       let state = getState();
 
       if (state.getIn(['compose', 'text']).trim().length !== 0) {
-        dispatch(openModal('CONFIRM', {
-          message: intl.formatMessage(messages.replyMessage),
-          confirm: intl.formatMessage(messages.replyConfirm),
-          onConfirm: () => dispatch(replyCompose(status, router)),
+        dispatch(openModal({
+          modalType: 'CONFIRM',
+          modalProps: {
+            message: intl.formatMessage(messages.replyMessage),
+            confirm: intl.formatMessage(messages.replyConfirm),
+            onConfirm: () => dispatch(replyCompose(status, router)) },
         }));
       } else {
         dispatch(replyCompose(status, router));
@@ -148,9 +150,12 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
   },
 
   onEmbed (status) {
-    dispatch(openModal('EMBED', {
-      url: status.get('url'),
-      onError: error => dispatch(showAlertForError(error)),
+    dispatch(openModal({
+      modalType: 'EMBED',
+      modalProps: {
+        url: status.get('url'),
+        onError: error => dispatch(showAlertForError(error)),
+      },
     }));
   },
 
@@ -158,10 +163,13 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
     if (!deleteModal) {
       dispatch(deleteStatus(status.get('id'), history, withRedraft));
     } else {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
-        confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-        onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+      dispatch(openModal({
+        modalType: 'CONFIRM',
+        modalProps: {
+          message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
+          confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
+          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+        },
       }));
     }
   },
@@ -170,10 +178,13 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
     dispatch((_, getState) => {
       let state = getState();
       if (state.getIn(['compose', 'text']).trim().length !== 0) {
-        dispatch(openModal('CONFIRM', {
-          message: intl.formatMessage(messages.editMessage),
-          confirm: intl.formatMessage(messages.editConfirm),
-          onConfirm: () => dispatch(editStatus(status.get('id'), history)),
+        dispatch(openModal({
+          modalType: 'CONFIRM',
+          modalProps: {
+            message: intl.formatMessage(messages.editMessage),
+            confirm: intl.formatMessage(messages.editConfirm),
+            onConfirm: () => dispatch(editStatus(status.get('id'), history)),
+          },
         }));
       } else {
         dispatch(editStatus(status.get('id'), history));
@@ -198,11 +209,17 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
   },
 
   onOpenMedia (statusId, media, index, lang) {
-    dispatch(openModal('MEDIA', { statusId, media, index, lang }));
+    dispatch(openModal({
+      modalType: 'MEDIA',
+      modalProps: { statusId, media, index, lang },
+    }));
   },
 
   onOpenVideo (statusId, media, lang, options) {
-    dispatch(openModal('VIDEO', { statusId, media, lang, options }));
+    dispatch(openModal({
+      modalType: 'VIDEO',
+      modalProps: { statusId, media, lang, options },
+    }));
   },
 
   onBlock (status) {
@@ -251,10 +268,13 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
   },
 
   onBlockDomain (domain) {
-    dispatch(openModal('CONFIRM', {
-      message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications. Your followers from that domain will be removed.' values={{ domain: <strong>{domain}</strong> }} />,
-      confirm: intl.formatMessage(messages.blockDomainConfirm),
-      onConfirm: () => dispatch(blockDomain(domain)),
+    dispatch(openModal({
+      modalType: 'CONFIRM',
+      modalProps: {
+        message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications. Your followers from that domain will be removed.' values={{ domain: <strong>{domain}</strong> }} />,
+        confirm: intl.formatMessage(messages.blockDomainConfirm),
+        onConfirm: () => dispatch(blockDomain(domain)),
+      },
     }));
   },
 
@@ -267,10 +287,13 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
   },
 
   onInteractionModal (type, status) {
-    dispatch(openModal('INTERACTION', {
-      type,
-      accountId: status.getIn(['account', 'id']),
-      url: status.get('url'),
+    dispatch(openModal({
+      modalType: 'INTERACTION',
+      modalProps: {
+        type,
+        accountId: status.getIn(['account', 'id']),
+        url: status.get('url'),
+      },
     }));
   },
 
