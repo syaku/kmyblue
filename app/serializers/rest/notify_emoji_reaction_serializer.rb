@@ -11,6 +11,7 @@ class REST::NotifyEmojiReactionSerializer < ActiveModel::Serializer
   attribute :domain, if: :custom_emoji?
   attribute :width, if: :width?
   attribute :height, if: :height?
+  attribute :me
 
   def count?
     object.respond_to?(:count)
@@ -54,5 +55,9 @@ class REST::NotifyEmojiReactionSerializer < ActiveModel::Serializer
 
   def height
     object.custom_emoji.respond_to?(:image_height) ? object.custom_emoji.image_height : object.custom_emoji.height
+  end
+
+  def me
+    false
   end
 end
