@@ -17,7 +17,7 @@ module AccountScope
   end
 
   def scope_account_local_followers(account)
-    account.followers_for_local_distribution.select(:id).reorder(nil)
+    account.followers_for_local_distribution.or(Account.where(id: account.id)).select(:id).reorder(nil)
   end
 
   def scope_status_mentioned(status)

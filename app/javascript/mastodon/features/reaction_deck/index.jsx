@@ -16,6 +16,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { updateReactionDeck } from 'mastodon/actions/reaction_deck';
 import Button from 'mastodon/components/button';
 import ColumnHeader from 'mastodon/components/column_header';
+import { Icon } from 'mastodon/components/icon';
 import LoadingIndicator from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import Column from 'mastodon/features/ui/components/column';
@@ -129,16 +130,18 @@ class ReactionDeck extends ImmutablePureComponent {
             <DragDropContext onDragEnd={this.handleReorder}>
               <StrictModeDroppable droppableId='deckitems'>
                 {(provided) => (
-                  <div className='deckitems' {...provided.droppableProps} ref={provided.innerRef}>
+                  <div className='deckitems reaction_deck_container' {...provided.droppableProps} ref={provided.innerRef}>
                     {deck.map((emoji, index) => (
                       <Draggable key={index} draggableId={'' + index} index={index}>
                         {(provided2) => (
-                          <div ref={provided2.innerRef} {...provided2.draggableProps} {...provided2.dragHandleProps}>
+                          <div className='reaction_deck_container__row' ref={provided2.innerRef} {...provided2.draggableProps}>
+                            <Icon id='bars' className='handle' {...provided2.dragHandleProps} />
                             <ReactionEmoji emojiMap={emojiMap}
                                            emoji={emoji.get('name')}
                                            index={index}
                                            onChange={this.handleChange}
                                            onRemove={this.handleRemove}
+                                           className='reaction_emoji'
                                            />
                           </div>
                         )}

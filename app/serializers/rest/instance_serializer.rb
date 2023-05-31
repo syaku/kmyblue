@@ -74,6 +74,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
         max_characters_per_option: PollValidator::MAX_OPTION_CHARS,
         min_expiration: PollValidator::MIN_EXPIRATION,
         max_expiration: PollValidator::MAX_EXPIRATION,
+        allow_image: true,
       },
 
       translation: {
