@@ -233,7 +233,7 @@ class ActivityPub::TagManager
   end
 
   def account_searchable_by(account)
-    case account.searchability
+    case account.compute_searchability_activitypub
     when 'public'
       [COLLECTIONS[:public]]
     when 'private', 'direct'

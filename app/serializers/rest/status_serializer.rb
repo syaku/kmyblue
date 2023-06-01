@@ -26,7 +26,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   has_many :ordered_media_attachments, key: :media_attachments, serializer: REST::MediaAttachmentSerializer
   has_many :ordered_mentions, key: :mentions
   has_many :tags
-  has_many :emojis, serializer: REST::CustomEmojiSerializer
+  has_many :emojis, serializer: REST::CustomEmojiSlimSerializer
 
   has_one :preview_card, key: :card, serializer: REST::PreviewCardSerializer
   has_one :preloadable_poll, key: :poll, serializer: REST::PollSerializer
