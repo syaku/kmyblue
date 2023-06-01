@@ -530,6 +530,10 @@ class Account < ApplicationRecord
     save!
   end
 
+  def compute_searchability_activitypub
+    local? ? 'public' : searchability
+  end
+
   private
 
   def prepare_contents
