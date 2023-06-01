@@ -11,7 +11,7 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   has_one :moved_to_account, key: :moved, serializer: REST::AccountSerializer, if: :moved_and_not_nested?
 
-  has_many :emojis, serializer: REST::CustomEmojiSerializer
+  has_many :emojis, serializer: REST::CustomEmojiSlimSerializer
 
   attribute :suspended, if: :suspended?
   attribute :silenced, key: :limited, if: :silenced?
