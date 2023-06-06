@@ -8,6 +8,8 @@ import { Helmet } from 'react-helmet';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
+import Toggle from 'react-toggle';
+
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { fetchList, deleteList, updateList } from 'mastodon/actions/lists';
 import { openModal } from 'mastodon/actions/modal';
@@ -142,10 +144,21 @@ class ListTimeline extends PureComponent {
     }));
   };
 
+  handleEditAntennaClick = (e) => {
+    const id = e.currentTarget.getAttribute('data-id');
+    window.open(`/antennas/${id}/edit`, '_blank');
+  }
+
   handleRepliesPolicyChange = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateList(id, undefined, false, target.value));
+    dispatch(updateList(id, undefined, false, undefined, target.value));
+  };
+
+  onExclusiveToggle = ({ target }) => {
+    const { dispatch } = this.props;
+    const { id } = this.props.params;
+    dispatch(updateList(id, undefined, false, target.checked, undefined));
   };
 
   render () {
@@ -154,6 +167,8 @@ class ListTimeline extends PureComponent {
     const pinned = !!columnId;
     const title  = list ? list.get('title') : id;
     const replies_policy = list ? list.get('replies_policy') : undefined;
+    const isExclusive = list ? list.get('exclusive') : undefined;
+    const antennas = list ? (list.get('antennas')?.toArray() || []) : [];
 
     if (typeof list === 'undefined') {
       return (
@@ -191,6 +206,13 @@ class ListTimeline extends PureComponent {
             </button>
           </div>
 
+          <div className='setting-toggle'>
+            <Toggle id={`list-${id}-exclusive`} defaultChecked={isExclusive} onChange={this.onExclusiveToggle} />
+            <label htmlFor={`list-${id}-exclusive`} className='setting-toggle__label'>
+              <FormattedMessage id='lists.exclusive' defaultMessage='Hide these posts from home' />
+            </label>
+          </div>
+
           { replies_policy !== undefined && (
             <div role='group' aria-labelledby={`list-${id}-replies-policy`}>
               <span id={`list-${id}-replies-policy`} className='column-settings__section'>
@@ -201,6 +223,23 @@ class ListTimeline extends PureComponent {
                   <RadioButton name='order' key={policy} value={policy} label={intl.formatMessage(messages[policy])} checked={replies_policy === policy} onChange={this.handleRepliesPolicyChange} />
                 ))}
               </div>
+            </div>
+          )}
+
+          { antennas.length > 0 && (
+            <div>
+              <span className='column-settings__section column-settings__section--with-margin'>
+                <FormattedMessage id='lists.antennas' defaultMessage='Related antennas:' />
+              </span>
+              <ul className='column-settings__row'>
+                { antennas.map(antenna => (
+                  <li key={antenna.get('id')} className='column-settings__row__antenna'>
+                    <button type='button' className='text-btn column-header__setting-btn' data-id={antenna.get('id')} onClick={this.handleEditAntennaClick}>
+                      {antenna.get('title')}{antenna.get('stl') && ' [STL]'}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </ColumnHeader>

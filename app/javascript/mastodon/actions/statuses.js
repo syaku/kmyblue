@@ -345,9 +345,10 @@ export const translateStatusFail = (id, error) => ({
   error,
 });
 
-export const undoStatusTranslation = id => ({
+export const undoStatusTranslation = (id, pollId) => ({
   type: STATUS_TRANSLATE_UNDO,
   id,
+  pollId,
 });
 
 export const updateEmojiReaction = (emoji_reaction) => ({

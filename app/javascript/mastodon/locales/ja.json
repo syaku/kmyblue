@@ -357,6 +357,7 @@
   "limited_account_hint.title": "このプロフィールは{domain}のモデレーターによって非表示にされています。",
   "lists.account.add": "リストに追加",
   "lists.account.remove": "リストから外す",
+  "lists.antennas": "関連付けられたアンテナ",
   "lists.delete": "リストを削除",
   "lists.edit": "リストを編集",
   "lists.edit.submit": "タイトルを変更",
