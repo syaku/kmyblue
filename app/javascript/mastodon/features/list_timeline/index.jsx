@@ -235,7 +235,7 @@ class ListTimeline extends PureComponent {
                 { antennas.map(antenna => (
                   <li key={antenna.get('id')} className='column-settings__row__antenna'>
                     <button type='button' className='text-btn column-header__setting-btn' data-id={antenna.get('id')} onClick={this.handleEditAntennaClick}>
-                      {antenna.get('title')}{antenna.get('stl') && ' [STL]'}
+                    <Icon id='pencil' /> {antenna.get('title')}{antenna.get('stl') && ' [STL]'}
                     </button>
                   </li>
                 ))}
