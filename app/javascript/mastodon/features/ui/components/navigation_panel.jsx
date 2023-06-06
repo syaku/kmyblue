@@ -73,6 +73,7 @@ class NavigationPanel extends Component {
           <>
             <ColumnLink transparent to='/public/local' icon='users' text={intl.formatMessage(messages.local)} />
             <ColumnLink transparent exact to='/public' icon='globe' text={intl.formatMessage(messages.federated)} />
+            <ColumnLink transparent to='/lists' icon='list-ul' text={intl.formatMessage(messages.lists)} />
           </>
         )}
 
@@ -96,7 +97,6 @@ class NavigationPanel extends Component {
           <>
             <ColumnLink transparent to='/bookmarks' icon='bookmark' text={intl.formatMessage(messages.bookmarks)} />
             <ColumnLink transparent to='/favourites' icon='star' text={intl.formatMessage(messages.favourites)} />
-            <ColumnLink transparent to='/lists' icon='list-ul' text={intl.formatMessage(messages.lists)} />
             <hr />
 
             <ColumnLink transparent href='/settings/preferences' icon='cog' text={intl.formatMessage(messages.preferences)} />
