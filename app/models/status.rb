@@ -384,14 +384,11 @@ class Status < ApplicationRecord
   end
 
   def compute_searchability
-    # Fedibird code
-    # searchability || Status.searchabilities.invert.fetch([Account.searchabilities[account.searchability], Status.visibilities[visibility] || 0].max, nil) || 'direct'
-    # Reactions only (generic: direct)
     return 'direct' if searchability && unsupported_searchability?
-    return searchability if searchability
-    return account.searchability if account.local? && account.searchability && !account.unsupported_searchability?
+    return searchability if account.local? && !searchability.nil?
+    return 'direct' if account.local? || [:public, :private, :direct, :limited].exclude?(account.searchability.to_sym)
 
-    'direct'
+    Status.searchabilities[[Account.searchabilities[account.searchability] || 0, Status.searchabilities[searchability || 'direct'] || 0].max] || 'direct'
   end
 
   def compute_searchability_activitypub
