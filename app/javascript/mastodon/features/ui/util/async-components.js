@@ -79,7 +79,7 @@ export function Favourites () {
 }
 
 export function EmojiReactions () {
-  return import(/* webpackChunkName: "features/favourites" */'../../emoji_reactions');
+  return import(/* webpackChunkName: "features/emoji_reactions" */'../../emoji_reactions');
 }
 
 export function FollowRequests () {
