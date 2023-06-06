@@ -44,6 +44,7 @@ class Account extends ImmutablePureComponent {
     onMuteNotifications: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     hidden: PropTypes.bool,
+    hideButtons: PropTypes.bool,
     minimal: PropTypes.bool,
     actionIcon: PropTypes.string,
     actionTitle: PropTypes.string,
@@ -81,7 +82,7 @@ class Account extends ImmutablePureComponent {
   };
 
   render () {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, defaultAction, size, minimal, children } = this.props;
+    const { account, intl, hidden, hideButtons, onActionClick, actionIcon, actionTitle, defaultAction, size, minimal, children } = this.props;
 
     if (!account) {
       return <EmptyAccount size={size} minimal={minimal} />;
@@ -100,7 +101,7 @@ class Account extends ImmutablePureComponent {
 
     if (actionIcon && onActionClick) {
       buttons = <IconButton icon={actionIcon} title={actionTitle} onClick={this.handleAction} />;
-    } else if (!actionIcon && account.get('id') !== me && account.get('relationship', null) !== null) {
+    } else if (!hideButtons && !actionIcon && account.get('id') !== me && account.get('relationship', null) !== null) {
       const following = account.getIn(['relationship', 'following']);
       const requested = account.getIn(['relationship', 'requested']);
       const blocking  = account.getIn(['relationship', 'blocking']);
