@@ -361,6 +361,7 @@
   "limited_account_hint.title": "This profile has been hidden by the moderators of {domain}.",
   "lists.account.add": "Add to list",
   "lists.account.remove": "Remove from list",
+  "lists.antennas": "Related antennas",
   "lists.delete": "Delete list",
   "lists.edit": "Edit list",
   "lists.edit.submit": "Change title",

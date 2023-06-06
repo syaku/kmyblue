@@ -4534,6 +4534,10 @@ a.status-card.compact:hover {
   margin-bottom: 10px;
 }
 
+.column-settings__section--with-margin {
+  margin-top: 10px;
+}
+
 .column-settings__row--with-margin {
   margin-bottom: 15px;
 }
@@ -4645,6 +4649,10 @@ a.status-card.compact:hover {
 .column-settings__row {
   .text-btn:not(.column-header__permission-btn) {
     margin-bottom: 15px;
+  }
+
+  &__antenna {
+    margin-left: 12px;
   }
 }
 

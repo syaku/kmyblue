@@ -6,4 +6,14 @@ class REST::ListSerializer < ActiveModel::Serializer
   def id
     object.id.to_s
   end
+
+  class AntennaSerializer < ActiveModel::Serializer
+    attributes :id, :title, :stl
+
+    def id
+      object.id.to_s
+    end
+  end
+
+  has_many :antennas, serializer: AntennaSerializer
 end
