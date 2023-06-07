@@ -39,7 +39,7 @@ class FeedInsertWorker
     when :tags
       FeedManager.instance.filter?(:tags, @status, @follower)
     when :list
-      FeedManager.instance.filter?(:list, @status, @list)
+      FeedManager.instance.filter?(:list, @status, @list, stl_home?)
     end
   end
 
@@ -73,5 +73,9 @@ class FeedInsertWorker
 
   def update?
     @options[:update]
+  end
+
+  def stl_home?
+    @options[:stl_home]
   end
 end
