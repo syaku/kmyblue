@@ -94,6 +94,7 @@ Metrics/BlockNesting:
 # https://docs.rubocop.org/rubocop/cops_metrics.html#metricscyclomaticcomplexity
 Metrics/CyclomaticComplexity:
   Exclude:
+    - 'app/lib/feed_manager.rb'
     - 'app/policies/status_policy.rb'
     - 'app/services/activitypub/process_account_service.rb'
     - 'app/services/post_status_service.rb'

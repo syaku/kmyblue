@@ -121,9 +121,10 @@ class FanOutOnWriteService < BaseService
     antennas = Antenna.available_stls
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
 
-    antennas = antennas.where(account: @account.followers).or(antennas.where(account: @account)).where.not(list_id: 0) if !@account.domain.nil? || @status.reblog? || [:public, :public_unlisted, :login].exclude?(@status.visibility.to_sym)
+    home_post = !@account.domain.nil? || @status.reblog? || [:public, :public_unlisted, :login].exclude?(@status.visibility.to_sym)
+    antennas = antennas.where(account: @account.followers).or(antennas.where(account: @account)).where.not(list_id: 0) if home_post
 
-    collection = AntennaCollection.new(@status, @options[:update])
+    collection = AntennaCollection.new(@status, @options[:update], home_post)
 
     antennas.in_batches do |ans|
       ans.each do |antenna|
@@ -155,7 +156,7 @@ class FanOutOnWriteService < BaseService
 
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
 
-    collection = AntennaCollection.new(@status, @options[:update])
+    collection = AntennaCollection.new(@status, @options[:update], false)
 
     antennas.in_batches do |ans|
       ans.each do |antenna|
@@ -242,9 +243,10 @@ class FanOutOnWriteService < BaseService
   end
 
   class AntennaCollection
-    def initialize(status, update)
+    def initialize(status, update, stl_home = false) # rubocop:disable Style/OptionalBooleanParameter
       @status = status
       @update = update
+      @stl_home = stl_home
       @home_account_ids = []
       @list_ids = []
     end
@@ -263,7 +265,7 @@ class FanOutOnWriteService < BaseService
 
       if lists.any?
         FeedInsertWorker.push_bulk(lists) do |list|
-          [@status.id, list, 'list', { 'update' => @update }]
+          [@status.id, list, 'list', { 'update' => @update, 'stl_home' => @stl_home || false }]
         end
       end
 

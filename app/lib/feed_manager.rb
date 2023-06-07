@@ -37,12 +37,12 @@ class FeedManager
   # @param [Status] status
   # @param [Account|List] receiver
   # @return [Boolean]
-  def filter?(timeline_type, status, receiver)
+  def filter?(timeline_type, status, receiver, stl_home = false) # rubocop:disable Style/OptionalBooleanParameter
     case timeline_type
     when :home
       filter_from_home?(status, receiver.id, build_crutches(receiver.id, [status]), :home)
     when :list
-      filter_from_list?(status, receiver) || filter_from_home?(status, receiver.account_id, build_crutches(receiver.account_id, [status]), :list)
+      filter_from_list?(status, receiver) || filter_from_home?(status, receiver.account_id, build_crutches(receiver.account_id, [status]), :list, stl_home)
     when :mentions
       filter_from_mentions?(status, receiver.id)
     when :tags
@@ -351,10 +351,10 @@ class FeedManager
   # @param [Integer] receiver_id
   # @param [Hash] crutches
   # @return [Boolean]
-  def filter_from_home?(status, receiver_id, crutches, timeline_type = :home)
+  def filter_from_home?(status, receiver_id, crutches, timeline_type = :home, stl_home = false) # rubocop:disable Style/OptionalBooleanParameter
     return false if receiver_id == status.account_id
     return true  if status.reply? && (status.in_reply_to_id.nil? || status.in_reply_to_account_id.nil?)
-    return true if timeline_type != :list && crutches[:exclusive_list_users][status.account_id].present?
+    return true if (timeline_type != :list || stl_home) && crutches[:exclusive_list_users][status.account_id].present?
     return true if crutches[:languages][status.account_id].present? && status.language.present? && !crutches[:languages][status.account_id].include?(status.language)
 
     check_for_blocks = crutches[:active_mentions][status.id] || []
