@@ -11,6 +11,7 @@ class EmojiReactService < BaseService
   # @param [string] name
   # @return [Favourite]
   def call(account, status, name)
+    status = status.reblog if status.reblog? && !status.reblog.nil?
     authorize_with account, status, :emoji_reaction?
 
     emoji_reaction = EmojiReaction.find_by(account: account, status: status, name: name)
