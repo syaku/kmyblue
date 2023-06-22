@@ -2,6 +2,10 @@
 en:
   simple_form:
     hints:
+      account:
+        display_name: Your full name or your fun name.
+        fields: Your homepage, pronouns, age, anything you want.
+        note: 'You can @mention other people or #hashtags.'
       account_alias:
         acct: Specify the username@domain of the account you want to move from
       account_migration:
@@ -40,7 +44,6 @@ en:
         discoverable: Allow your account to be discovered by strangers through recommendations, trends and other features
         dissubscribable: Your post is not picked by antenna
         email: You will be sent a confirmation e-mail
-        fields: You can have up to 4 items displayed as a table on your profile
         group: Reps sent to this account will be automatically BT'd and distributed to all accounts you follow!
         group_allow_private_message: Posts are duplicated and cannot be edited or deleted by the post
         header: PNG, GIF or JPG. At most %{size}. Will be downscaled to %{dimensions}px
@@ -172,7 +175,7 @@ en:
         text: Explain why this decision should be reversed
       defaults:
         autofollow: Invite to follow your account
-        avatar: Avatar
+        avatar: Profile picture
         bot: This is an automated account
         chosen_languages: Filter languages
         confirm_new_password: Confirm new password
@@ -185,10 +188,10 @@ en:
         dissubscribable: Reject any subscriptions
         email: E-mail address
         expires_in: Expire after
-        fields: Profile metadata
+        fields: Extra fields
         group: This is a group account
         group_allow_private_message: For group accounts, duplicate private or direct message
-        header: Header
+        header: Header picture
         honeypot: "%{label} (do not fill in)"
         inbox_url: URL of the relay inbox
         irreversible: Drop instead of hide
