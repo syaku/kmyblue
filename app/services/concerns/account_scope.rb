@@ -21,7 +21,7 @@ module AccountScope
   end
 
   def scope_status_mentioned(status)
-    status.active_mentions.joins(:account).merge(Account.local).select('account_id AS id').reorder(nil)
+    Account.local.where(id: status.active_mentions.select(:account_id)).reorder(nil)
   end
 
   # TODO: not work
