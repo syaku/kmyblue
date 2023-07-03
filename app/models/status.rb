@@ -384,15 +384,15 @@ class Status < ApplicationRecord
   end
 
   def compute_searchability
-    return 'direct' if unsupported_searchability?
-    return searchability if account.local? && !searchability.nil?
-    return 'direct' if account.local? || [:public, :private, :direct, :limited].exclude?(account.searchability.to_sym)
+    local = account.local?
 
-    account_searchability = Account.searchabilities[account.searchability]
-    account_searchability = 3 if account.searchability != 'public' && !account_searchability
+    return 'direct' if unsupported_searchability?
+    return searchability if local && !searchability.nil?
+    return 'direct' if local || [:public, :private, :direct, :limited].exclude?(account.searchability.to_sym)
+
+    account_searchability = Status.searchabilities[account.searchability]
     status_searchability = Status.searchabilities[searchability.nil? ? 'direct' : searchability]
-    status_searchability = 3 if searchability.nil? || (searchability != 'public' && !status_searchability)
-    Status.searchabilities[[account_searchability, status_searchability].max] || 'direct'
+    Status.searchabilities.invert.fetch([account_searchability, status_searchability].max) || 'direct'
   end
 
   def compute_searchability_activitypub
