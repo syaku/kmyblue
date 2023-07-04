@@ -528,7 +528,7 @@ class Status < ApplicationRecord
   def set_searchability
     return if searchability.nil?
 
-    if visibility == 'public' || visibility == 'public_unlisted' || visibility == 'login'
+    if visibility == 'public' || visibility == 'public_unlisted' || visibility == 'login' || (visibility == 'unlisted' && account.local?)
       self.searchability = [Status.searchabilities[searchability], Status.visibilities['public']].max
     elsif visibility == 'limited'
       self.searchability = Status.searchabilities['limited']
