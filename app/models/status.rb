@@ -103,6 +103,7 @@ class Status < ApplicationRecord
   scope :without_replies, -> { where('statuses.reply = FALSE OR statuses.in_reply_to_account_id = statuses.account_id') }
   scope :without_reblogs, -> { where(statuses: { reblog_of_id: nil }) }
   scope :with_public_visibility, -> { where(visibility: [:public, :public_unlisted, :login]) }
+  scope :with_public_search_visibility, -> { merge(where(visibility: [:public, :public_unlisted, :login]).or(Status.where(searchability: :public))) }
   scope :with_global_timeline_visibility, -> { where(visibility: [:public, :login]) }
   scope :tagged_with, ->(tag_ids) { joins(:statuses_tags).where(statuses_tags: { tag_id: tag_ids }) }
   scope :excluding_silenced_accounts, -> { left_outer_joins(:account).where(accounts: { silenced_at: nil }) }
@@ -384,11 +385,15 @@ class Status < ApplicationRecord
   end
 
   def compute_searchability
-    return 'direct' if searchability && unsupported_searchability?
-    return searchability if account.local? && !searchability.nil?
-    return 'direct' if account.local? || [:public, :private, :direct, :limited].exclude?(account.searchability.to_sym)
+    local = account.local?
 
-    Status.searchabilities[[Account.searchabilities[account.searchability] || 3, Status.searchabilities[searchability.nil? ? 'direct' : searchability] || 3].max] || 'direct'
+    return 'direct' if unsupported_searchability?
+    return searchability if local && !searchability.nil?
+    return 'direct' if local || [:public, :private, :direct, :limited].exclude?(account.searchability.to_sym)
+
+    account_searchability = Status.searchabilities[account.searchability]
+    status_searchability = Status.searchabilities[searchability.nil? ? 'direct' : searchability]
+    Status.searchabilities.invert.fetch([account_searchability, status_searchability].max) || 'direct'
   end
 
   def compute_searchability_activitypub
@@ -407,7 +412,7 @@ class Status < ApplicationRecord
     end
 
     def selectable_searchabilities
-      searchabilities.keys - %w(public_unlisted)
+      searchabilities.keys - %w(public_unlisted unsupported)
     end
 
     def favourites_map(status_ids, account_id)
@@ -524,7 +529,7 @@ class Status < ApplicationRecord
   def set_searchability
     return if searchability.nil?
 
-    if visibility == 'public' || visibility == 'public_unlisted' || visibility == 'login'
+    if visibility == 'public' || visibility == 'public_unlisted' || visibility == 'login' || (visibility == 'unlisted' && account.local?)
       self.searchability = [Status.searchabilities[searchability], Status.visibilities['public']].max
     elsif visibility == 'limited'
       self.searchability = Status.searchabilities['limited']

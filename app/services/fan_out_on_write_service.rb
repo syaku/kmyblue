@@ -23,6 +23,8 @@ class FanOutOnWriteService < BaseService
     elsif broadcastable_unlisted?
       fan_out_to_public_recipients!
       fan_out_to_public_unlisted_streams!
+    elsif broadcastable_unlisted2?
+      fan_out_to_unlisted_streams!
     end
   end
 
@@ -71,6 +73,10 @@ class FanOutOnWriteService < BaseService
   def fan_out_to_public_unlisted_streams!
     broadcast_to_hashtag_streams!
     broadcast_to_public_unlisted_streams!
+  end
+
+  def fan_out_to_unlisted_streams!
+    broadcast_to_hashtag_streams!
   end
 
   def deliver_to_self!
@@ -240,6 +246,10 @@ class FanOutOnWriteService < BaseService
 
   def broadcastable_unlisted?
     @status.public_unlisted_visibility? && !@status.reblog? && !@account.silenced?
+  end
+
+  def broadcastable_unlisted2?
+    @status.unlisted_visibility? && @status.public_searchability? && !@status.reblog? && !@account.silenced?
   end
 
   class AntennaCollection

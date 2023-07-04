@@ -56,6 +56,7 @@ ja:
         setting_always_send_emails: 通常、Mastodon からメール通知は行われません。
         setting_boost_modal: ブーストの公開範囲が指定できるようになります
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
+        setting_disallow_unlisted_public_searchability: この設定を有効にすると、未収載投稿と検索範囲「全て」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
         setting_display_media_hide_all: メディアを常に隠す
         setting_display_media_show_all: メディアを常に表示する
@@ -221,6 +222,7 @@ ja:
         setting_default_sensitive: メディアを常に閲覧注意としてマークする
         setting_delete_modal: 投稿を削除する前に確認ダイアログを表示する
         setting_disable_swiping: スワイプでの切り替えを無効にする
+        setting_disallow_unlisted_public_searchability: 未収載投稿の検索許可が「全て」だった場合、「フォロワーのみ」に変更する
         setting_display_media: メディアの表示
         setting_display_media_default: 標準
         setting_display_media_expand: 5個目以降のメディアも表示する (最大16)

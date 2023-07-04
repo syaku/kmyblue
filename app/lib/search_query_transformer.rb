@@ -107,7 +107,7 @@ class SearchQueryTransformer < Parslet::Transform
     if clause[:prefix]
       PrefixClause.new(prefix, clause[:term].to_s)
     elsif clause[:term]
-      TermClause.new(prefix, operator, clause[:term].to_s)
+      PhraseClause.new(prefix, operator, clause[:term].to_s)
     elsif clause[:shortcode]
       TermClause.new(prefix, operator, ":#{clause[:term]}:")
     elsif clause[:phrase]

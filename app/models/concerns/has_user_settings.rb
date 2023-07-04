@@ -171,6 +171,10 @@ module HasUserSettings
     settings['default_searchability'] || 'private'
   end
 
+  def setting_disallow_unlisted_public_searchability
+    settings['disallow_unlisted_public_searchability']
+  end
+
   def allows_report_emails?
     settings['notification_emails.report']
   end

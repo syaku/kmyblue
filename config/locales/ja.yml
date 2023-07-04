@@ -1645,7 +1645,7 @@ ja:
       limited_long: この投稿はあなたしか検索できません
       private: フォロワーのみ
       private_long: この投稿はフォロワーのみが検索できます
-      public: 公開
+      public: 全て
       public_long: この投稿は誰でも検索できます
     show_more: もっと見る
     show_newer: 新しいものを表示

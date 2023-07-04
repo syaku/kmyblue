@@ -109,6 +109,7 @@ Metrics/ParameterLists:
 Metrics/PerceivedComplexity:
   Exclude:
     - 'app/policies/status_policy.rb'
+    - 'app/services/post_status_service.rb'
 
 # Reason: Prevailing style is argument file paths
 # https://docs.rubocop.org/rubocop-rails/cops_rails.html#railsfilepath
