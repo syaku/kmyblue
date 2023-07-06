@@ -33,6 +33,8 @@ class Admin::StatusBatchAction
       handle_delete!
     when 'mark_as_sensitive'
       handle_mark_as_sensitive!
+    when 'force_cw'
+      handle_force_cw!
     when 'report'
       handle_report!
     when 'remove_from_report'
@@ -95,6 +97,42 @@ class Admin::StatusBatchAction
 
     @warning = target_account.strikes.create!(
       action: :mark_statuses_as_sensitive,
+      account: current_account,
+      report: report,
+      status_ids: status_ids,
+      text: text
+    )
+
+    UserMailer.warning(target_account.user, @warning).deliver_later! if warnable?
+  end
+
+  def handle_force_cw!
+    representative_account = Account.representative
+
+    # Can't use a transaction here because UpdateStatusService queues
+    # Sidekiq jobs
+    statuses.find_each do |status|
+      authorize([:admin, status], :update?)
+
+      status_text = status.text
+      status_text = "#{status.spoiler_text}\n\n#{status_text}" if status.spoiler_text
+
+      if target_account.local?
+        UpdateStatusService.new.call(status, representative_account.id, spoiler_text: 'CW', text: status_text)
+      else
+        status.update(spoiler_text: 'CW', text: status_text)
+      end
+
+      log_action(:update, status)
+
+      if with_report?
+        report.resolve!(current_account)
+        log_action(:resolve, report)
+      end
+    end
+
+    @warning = target_account.strikes.create!(
+      action: :force_cw,
       account: current_account,
       report: report,
       status_ids: status_ids,

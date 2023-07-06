@@ -473,8 +473,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def process_references!
-    ActivityPub::FetchReferencesService(@json['references']) unless @json['references'].nil?
-    ProcessReferencesWorker.perform_async(@status.id, [], [])
+    references = @json['references'].nil? ? [] : ActivityPub::FetchReferencesService(@json['references'])
+    ProcessReferencesWorker.perform_async(@status.id, [], references)
   end
 
   def join_group!
