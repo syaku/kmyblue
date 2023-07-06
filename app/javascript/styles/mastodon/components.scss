@@ -1346,7 +1346,7 @@ body > [data-popper-placement] {
   margin: 12px 0 2px 4px;
 
   .emoji-reactions-bar__button {
-    background: lighten($ui-base-color, 12%);
+    background: $emoji-reaction-color;
     border: 0;
     cursor: pointer;
     display: flex;
@@ -1355,7 +1355,7 @@ body > [data-popper-placement] {
     height: 24px;
 
     &.toggled {
-      background: darken($ui-primary-color, 16%);
+      background: $emoji-reaction-selected-color;
     }
 
     > .emoji {
