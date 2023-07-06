@@ -49,6 +49,7 @@ const messages = defineMessages({
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
   admin_domain: { id: 'status.admin_domain', defaultMessage: 'Open moderation interface for {domain}' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
+  reference: { id: 'status.reference', defaultMessage: 'Add reference' },
   hide: { id: 'status.hide', defaultMessage: 'Hide post' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Block domain {domain}' },
   unblockDomain: { id: 'account.unblock_domain', defaultMessage: 'Unblock domain {domain}' },
@@ -251,6 +252,10 @@ class StatusActionBar extends ImmutablePureComponent {
     navigator.clipboard.writeText(url);
   };
 
+  handleReference = () => {
+    this.props.onReference(this.props.status);
+  };
+
   handleHideClick = () => {
     this.props.onFilter();
   };
@@ -289,6 +294,11 @@ class StatusActionBar extends ImmutablePureComponent {
     menu.push(null);
 
     menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancelReblog : messages.reblog), action: this.handleReblogForceModalClick });
+
+    if (publicStatus) {
+      menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
+    }
+    
     menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark), action: this.handleBookmarkClick });
 
     if (writtenByMe && pinnableStatus) {

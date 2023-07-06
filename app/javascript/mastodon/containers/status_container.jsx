@@ -13,6 +13,7 @@ import {
   replyCompose,
   mentionCompose,
   directCompose,
+  insertReferenceCompose,
 } from '../actions/compose';
 import {
   blockDomain,
@@ -190,6 +191,10 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
         dispatch(editStatus(status.get('id'), history));
       }
     });
+  },
+
+  onReference (status) {
+    dispatch(insertReferenceCompose(0, status.get('url')));
   },
 
   onTranslate (status) {

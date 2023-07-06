@@ -4,7 +4,7 @@ class ProcessReferencesService < BaseService
   include Payloadable
 
   DOMAIN = ENV['WEB_DOMAIN'] || ENV.fetch('LOCAL_DOMAIN', nil)
-  REFURL_EXP = /(RT|QT|BT|RN)((:)? +|:)(#{URI::DEFAULT_PARSER.make_regexp(%w(http https))})/
+  REFURL_EXP = /(RT|QT|BT|RN|RE)((:)? +|:)(#{URI::DEFAULT_PARSER.make_regexp(%w(http https))})/
   STATUSID_EXP = %r{(http|https)://#{DOMAIN}/@[a-zA-Z0-9]+/([0-9]{16,})}
 
   def call(status, reference_parameters, save_records: true, urls: nil)
@@ -69,9 +69,10 @@ class ProcessReferencesService < BaseService
   end
 
   def create_notifications!
-    return if @added_objects.empty?
+    local_reference_objects = @added_objects.filter { |ref| ref.target_status.account.local? }
+    return if local_reference_objects.empty?
 
-    LocalNotificationWorker.push_bulk(@added_objects) do |ref|
+    LocalNotificationWorker.push_bulk(local_reference_objects) do |ref|
       [ref.target_status.account_id, ref.id, 'StatusReference', 'status_reference']
     end
   end

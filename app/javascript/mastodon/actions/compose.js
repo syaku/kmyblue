@@ -62,6 +62,7 @@ export const COMPOSE_LANGUAGE_CHANGE     = 'COMPOSE_LANGUAGE_CHANGE';
 
 export const COMPOSE_EMOJI_INSERT = 'COMPOSE_EMOJI_INSERT';
 export const COMPOSE_EXPIRATION_INSERT = 'COMPOSE_EXPIRATION_INSERT';
+export const COMPOSE_REFERENCE_INSERT = 'COMPOSE_REFERENCE_INSERT';
 
 export const COMPOSE_UPLOAD_CHANGE_REQUEST     = 'COMPOSE_UPLOAD_UPDATE_REQUEST';
 export const COMPOSE_UPLOAD_CHANGE_SUCCESS     = 'COMPOSE_UPLOAD_UPDATE_SUCCESS';
@@ -767,6 +768,14 @@ export function insertExpirationCompose(position, data) {
     type: COMPOSE_EXPIRATION_INSERT,
     position,
     data,
+  };
+}
+
+export function insertReferenceCompose(position, url) {
+  return {
+    type: COMPOSE_REFERENCE_INSERT,
+    position,
+    url,
   };
 }
 

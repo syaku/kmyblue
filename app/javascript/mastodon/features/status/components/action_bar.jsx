@@ -42,6 +42,7 @@ const messages = defineMessages({
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
   admin_domain: { id: 'status.admin_domain', defaultMessage: 'Open moderation interface for {domain}' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
+  reference: { id: 'status.reference', defaultMessage: 'Add reference' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Block domain {domain}' },
   unblockDomain: { id: 'account.unblock_domain', defaultMessage: 'Unblock domain {domain}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
@@ -69,6 +70,7 @@ class ActionBar extends PureComponent {
     onReblogForceModal: PropTypes.func.isRequired,
     onFavourite: PropTypes.func.isRequired,
     onEmojiReact: PropTypes.func.isRequired,
+    onReference: PropTypes.func.isRequired,
     onBookmark: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
@@ -190,6 +192,10 @@ class ActionBar extends PureComponent {
     navigator.clipboard.writeText(url);
   };
 
+  handleReference = () => {
+    this.props.onReference(this.props.status);
+  };
+
   handleEmojiPick = (data) => {
     this.props.onEmojiReact(this.props.status, data);
   };
@@ -227,6 +233,11 @@ class ActionBar extends PureComponent {
       
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.reblog), action: this.handleReblogForceModalClick });
+
+      if (publicStatus) {
+        menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
+      }
+
       menu.push(null);
     }
 

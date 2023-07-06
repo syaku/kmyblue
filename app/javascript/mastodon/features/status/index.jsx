@@ -28,6 +28,7 @@ import {
   replyCompose,
   mentionCompose,
   directCompose,
+  insertReferenceCompose,
 } from '../../actions/compose';
 import {
   blockDomain,
@@ -354,6 +355,10 @@ class Status extends ImmutablePureComponent {
 
   handleReblogForceModalClick = (status, e) => {
     this.handleReblogClick(status, e, true);
+  };
+
+  handleReference = (status) => {
+    this.props.dispatch(insertReferenceCompose(0, status.get('url')));
   };
 
   handleBookmarkClick = (status) => {
@@ -717,6 +722,7 @@ class Status extends ImmutablePureComponent {
                   onEmojiReact={this.handleEmojiReact}
                   onReblog={this.handleReblogClick}
                   onReblogForceModal={this.handleReblogForceModalClick}
+                  onReference={this.handleReference}
                   onBookmark={this.handleBookmarkClick}
                   onDelete={this.handleDeleteClick}
                   onEdit={this.handleEditClick}

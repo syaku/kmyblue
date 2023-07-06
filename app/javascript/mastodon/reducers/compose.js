@@ -36,6 +36,7 @@ import {
   COMPOSE_COMPOSING_CHANGE,
   COMPOSE_EMOJI_INSERT,
   COMPOSE_EXPIRATION_INSERT,
+  COMPOSE_REFERENCE_INSERT,
   COMPOSE_UPLOAD_CHANGE_REQUEST,
   COMPOSE_UPLOAD_CHANGE_SUCCESS,
   COMPOSE_UPLOAD_CHANGE_FAIL,
@@ -234,6 +235,41 @@ const insertExpiration = (state, position, data) => {
     text: `${oldText.slice(0, position)} ${data} ${oldText.slice(position)}`,
     focusDate: new Date(),
     caretPosition: position + data.length + 1,
+    idempotencyKey: uuid(),
+  });
+};
+
+const insertReference = (state, url) => {
+  const oldText = state.get('text');
+
+  if (oldText.indexOf(`BT ${url}`) >= 0) {
+    return state;
+  }
+
+  let newLine = '\n\n';
+  if (oldText.length === 0) newLine = '';
+  else if (oldText[oldText.length - 1] === '\n') {
+    if (oldText.length === 1 || oldText[oldText.length - 2] === '\n') {
+      newLine = '';
+    } else {
+      newLine = '\n';
+    }
+  }
+
+  if (oldText.length > 0) {
+    const lastLine = oldText.slice(oldText.lastIndexOf('\n') + 1, oldText.length - 1);
+    if (lastLine.startsWith('BT ')) {
+      newLine = '\n';
+    }
+  }
+
+  const referenceText = `${newLine}BT ${url}`;
+  const text = `${oldText}${referenceText}`;
+
+  return state.merge({
+    text,
+    focusDate: new Date(),
+    caretPosition: text.length - referenceText.length,
     idempotencyKey: uuid(),
   });
 };
@@ -476,6 +512,8 @@ export default function compose(state = initialState, action) {
     return insertEmoji(state, action.position, action.emoji, action.needsSpace);
   case COMPOSE_EXPIRATION_INSERT:
     return insertExpiration(state, action.position, action.data);
+  case COMPOSE_REFERENCE_INSERT:
+    return insertReference(state, action.url);
   case COMPOSE_UPLOAD_CHANGE_SUCCESS:
     return state
       .set('is_changing_upload', false)
