@@ -307,15 +307,16 @@ class Notification extends ImmutablePureComponent {
 
           <StatusContainer
             id={notification.get('status')}
-            account={notification.get('account')}
-            muted
             withDismiss
             hidden={this.props.hidden}
+            onMoveDown={this.handleMoveDown}
+            onMoveUp={this.handleMoveUp}
+            contextType='notifications'
             getScrollPosition={this.props.getScrollPosition}
             updateScrollBottom={this.props.updateScrollBottom}
             cachedMediaWidth={this.props.cachedMediaWidth}
             cacheMediaWidth={this.props.cacheMediaWidth}
-            withoutEmojiReactions
+            unread={this.props.unread}
           />
         </div>
       </HotKeys>
