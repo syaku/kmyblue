@@ -75,6 +75,10 @@ class Status < ApplicationRecord
   has_many :mentioned_accounts, through: :mentions, source: :account, class_name: 'Account'
   has_many :active_mentions, -> { active }, class_name: 'Mention', inverse_of: :status
   has_many :media_attachments, dependent: :nullify
+  has_many :reference_objects, class_name: 'StatusReference', inverse_of: :status, dependent: :destroy
+  has_many :references, through: :reference_objects, class_name: 'Status', source: :target_status
+  has_many :referenced_by_status_objects, foreign_key: 'target_status_id', class_name: 'StatusReference', inverse_of: :target_status, dependent: :destroy
+  has_many :referenced_by_statuses, through: :referenced_by_status_objects, class_name: 'Status', source: :status
 
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :preview_cards
@@ -332,12 +336,20 @@ class Status < ApplicationRecord
     status_stat&.emoji_reaction_accounts_count || 0
   end
 
+  def status_referred_by_count
+    status_stat&.status_referred_by_count || 0
+  end
+
   def increment_count!(key)
     update_status_stat!(key => public_send(key) + 1)
   end
 
   def decrement_count!(key)
     update_status_stat!(key => [public_send(key) - 1, 0].max)
+  end
+
+  def add_status_referred_by_count!(diff)
+    update_status_stat!(status_referred_by_count: [public_send(:status_referred_by_count) + diff, 0].max)
   end
 
   def emoji_reactions_grouped_by_name(account = nil)

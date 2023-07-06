@@ -137,6 +137,7 @@ class DetailedStatus extends ImmutablePureComponent {
     let reblogIcon = 'retweet';
     let favouriteLink = '';
     let emojiReactionsLink = '';
+    let statusReferencesLink = '';
     let edited = '';
 
     if (this.props.measureHeight) {
@@ -310,6 +311,26 @@ class DetailedStatus extends ImmutablePureComponent {
       );
     }
 
+    if (this.context.router) {
+      statusReferencesLink = (
+        <Link to={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}/references`} className='detailed-status__link'>
+          <Icon id='link' />
+          <span className='detailed-status__favorites'>
+            <AnimatedNumber value={status.get('status_referred_by_count')} />
+          </span>
+        </Link>
+      );
+    } else {
+      statusReferencesLink = (
+        <a href={`/interact/${status.get('id')}?type=references`} className='detailed-status__link' onClick={this.handleModalLink}>
+          <Icon id='link' />
+          <span className='detailed-status__favorites'>
+            <AnimatedNumber value={status.get('status_referred_by_count')} />
+          </span>
+        </a>
+      );
+    }
+
     if (status.get('edited_at')) {
       edited = (
         <>
@@ -347,7 +368,7 @@ class DetailedStatus extends ImmutablePureComponent {
           <div className='detailed-status__meta'>
             <a className='detailed-status__datetime' href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} target='_blank' rel='noopener noreferrer'>
               <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
-            </a>{edited}{visibilityLink}{searchabilityLink}{applicationLink}{reblogLink} · {favouriteLink} · {emojiReactionsLink}
+            </a>{edited}{visibilityLink}{searchabilityLink}{applicationLink}{reblogLink} · {favouriteLink} · {emojiReactionsLink} - {statusReferencesLink}
           </div>
         </div>
       </div>

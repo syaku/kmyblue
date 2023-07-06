@@ -142,6 +142,7 @@ class UpdateStatusService < BaseService
   def update_metadata!
     ProcessHashtagsService.new.call(@status)
     ProcessMentionsService.new.call(@status)
+    ProcessReferencesWorker.perform_async(@status.id, (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?), [])
   end
 
   def broadcast_updates!

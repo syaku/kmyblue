@@ -126,6 +126,7 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
       :kmyblue_markdown,
       :kmyblue_reaction_deck,
       :kmyblue_visibility_login,
+      :status_reference,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?

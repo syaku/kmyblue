@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_02_131023) do
+ActiveRecord::Schema.define(version: 2023_07_06_031715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1043,6 +1043,15 @@ ActiveRecord::Schema.define(version: 2023_07_02_131023) do
     t.index ["status_id"], name: "index_status_pins_on_status_id"
   end
 
+  create_table "status_references", force: :cascade do |t|
+    t.bigint "status_id", null: false
+    t.bigint "target_status_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_status_references_on_status_id"
+    t.index ["target_status_id"], name: "index_status_references_on_target_status_id"
+  end
+
   create_table "status_stats", force: :cascade do |t|
     t.bigint "status_id", null: false
     t.bigint "replies_count", default: 0, null: false
@@ -1054,6 +1063,7 @@ ActiveRecord::Schema.define(version: 2023_07_02_131023) do
     t.integer "emoji_reactions_count", default: 0, null: false
     t.integer "test", default: 0, null: false
     t.integer "emoji_reaction_accounts_count", default: 0, null: false
+    t.integer "status_referred_by_count", default: 0, null: false
     t.index ["status_id"], name: "index_status_stats_on_status_id", unique: true
   end
 
@@ -1377,6 +1387,8 @@ ActiveRecord::Schema.define(version: 2023_07_02_131023) do
   add_foreign_key "status_edits", "statuses", on_delete: :cascade
   add_foreign_key "status_pins", "accounts", name: "fk_d4cb435b62", on_delete: :cascade
   add_foreign_key "status_pins", "statuses", on_delete: :cascade
+  add_foreign_key "status_references", "statuses", column: "target_status_id", on_delete: :cascade
+  add_foreign_key "status_references", "statuses", on_delete: :cascade
   add_foreign_key "status_stats", "statuses", on_delete: :cascade
   add_foreign_key "status_trends", "accounts", on_delete: :cascade
   add_foreign_key "status_trends", "statuses", on_delete: :cascade

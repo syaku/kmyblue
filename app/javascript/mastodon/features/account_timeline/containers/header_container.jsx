@@ -165,8 +165,11 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onAddToAntenna (account) {
-    dispatch(openModal('ANTENNA_ADDER', {
-      accountId: account.get('id'),
+    dispatch(openModal({
+      modalType: 'ANTENNA_ADDER',
+      modalProps: {
+        accountId: account.get('id'),
+      },
     }));
   },
 

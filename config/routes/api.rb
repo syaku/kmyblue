@@ -12,6 +12,7 @@ namespace :api, format: false do
         resources :favourited_by, controller: :favourited_by_accounts, only: :index
         resources :emoji_reactioned_by, controller: :emoji_reactioned_by_accounts, only: :index
         resources :emoji_reactioned_by_slim, controller: :emoji_reactioned_by_accounts_slim, only: :index
+        resources :referred_by, controller: :referred_by_statuses, only: :index
         resource :reblog, only: :create
         post :unreblog, to: 'reblogs#destroy'
 

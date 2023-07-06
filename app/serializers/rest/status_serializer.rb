@@ -6,6 +6,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   attributes :id, :created_at, :in_reply_to_id, :in_reply_to_account_id,
              :sensitive, :spoiler_text, :visibility, :visibility_ex, :language,
              :uri, :url, :replies_count, :reblogs_count, :searchability, :markdown,
+             :status_reference_ids, :status_references_count, :status_referred_by_count,
              :favourites_count, :emoji_reactions, :emoji_reactions_count, :reactions, :edited_at
 
   attribute :favourited, if: :current_user?
@@ -90,6 +91,14 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   def url
     ActivityPub::TagManager.instance.url_for(object)
+  end
+
+  def status_reference_ids
+    @status_reference_ids = object.reference_objects.pluck(:target_status_id)
+  end
+
+  def status_references_count
+    status_reference_ids.size
   end
 
   def favourited
