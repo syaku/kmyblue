@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     /home
     /public
     /public/local
+    /public/local/fixed
     /public/remote
     /conversations
     /lists/(*any)

@@ -113,6 +113,7 @@
   "column.follow_requests": "フォローリクエスト",
   "column.home": "ホーム",
   "column.lists": "リスト",
+  "column.local": "ローカル",
   "column.mutes": "ミュートしたユーザー",
   "column.notifications": "通知",
   "column.pins": "固定された投稿",

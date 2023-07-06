@@ -20,6 +20,7 @@ const messages = defineMessages({
   home: { id: 'tabs_bar.home', defaultMessage: 'Home' },
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   explore: { id: 'explore.title', defaultMessage: 'Explore' },
+  local: { id: 'column.local', defaultMessage: 'Local' },
   firehose: { id: 'column.firehose', defaultMessage: 'Live feeds' },
   direct: { id: 'navigation_bar.direct', defaultMessage: 'Private mentions' },
   favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favourites' },
@@ -43,7 +44,7 @@ class NavigationPanel extends Component {
   };
 
   isFirehoseActive = (match, location) => {
-    return match || location.pathname.startsWith('/public');
+    return (match || location.pathname.startsWith('/public')) && !location.pathname.endsWith('/fixed');
   };
 
   render () {
@@ -67,6 +68,7 @@ class NavigationPanel extends Component {
           <>
             <ColumnLink transparent to='/notifications' icon={<NotificationsCounterIcon className='column-link__icon' />} text={intl.formatMessage(messages.notifications)} />
             <ColumnLink transparent to='/home' icon='home' text={intl.formatMessage(messages.home)} />
+            <ColumnLink transparent to='/public/local/fixed' icon='users' text={intl.formatMessage(messages.local)} />
           </>
         )}
 

@@ -120,6 +120,7 @@
   "column.follow_requests": "Follow requests",
   "column.home": "Home",
   "column.lists": "Lists",
+  "column.local": "Local",
   "column.mutes": "Muted users",
   "column.notifications": "Notifications",
   "column.pins": "Pinned posts",

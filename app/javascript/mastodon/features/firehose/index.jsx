@@ -21,6 +21,7 @@ import StatusListContainer from '../ui/containers/status_list_container';
 
 const messages = defineMessages({
   title: { id: 'column.firehose', defaultMessage: 'Live feeds' },
+  titleDefault: { id: 'column.community', defaultMessage: 'Local timeline' },
 });
 
 // TODO: use a proper React context later on
@@ -54,7 +55,7 @@ const ColumnSettings = () => {
   );
 };
 
-const Firehose = ({ feedType, multiColumn }) => {
+const Firehose = ({ feedType, defaultColumn, multiColumn }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const { signedIn } = useIdentity();
@@ -156,12 +157,31 @@ const Firehose = ({ feedType, multiColumn }) => {
     />
   );
 
+  const headerIcon = defaultColumn ? 'users' : 'globe';
+  const headerTitle = defaultColumn ? messages.titleDefault : messages.title;
+
+  const sectionHeadline = defaultColumn || (
+    <div className='account__section-headline'>
+      <NavLink exact to='/public/local'>
+        <FormattedMessage tagName='div' id='firehose.local' defaultMessage='This server' />
+      </NavLink>
+
+      <NavLink exact to='/public/remote'>
+        <FormattedMessage tagName='div' id='firehose.remote' defaultMessage='Other servers' />
+      </NavLink>
+
+      <NavLink exact to='/public'>
+        <FormattedMessage tagName='div' id='firehose.all' defaultMessage='All' />
+      </NavLink>
+    </div>
+  );
+
   return (
     <Column bindToDocument={!multiColumn} ref={columnRef} label={intl.formatMessage(messages.title)}>
       <ColumnHeader
-        icon='globe'
+        icon={headerIcon}
         active={hasUnread}
-        title={intl.formatMessage(messages.title)}
+        title={intl.formatMessage(headerTitle)}
         onPin={handlePin}
         onClick={handleHeaderClick}
         multiColumn={multiColumn}
@@ -170,19 +190,7 @@ const Firehose = ({ feedType, multiColumn }) => {
       </ColumnHeader>
 
       <div className='scrollable scrollable--flex'>
-        <div className='account__section-headline'>
-          <NavLink exact to='/public/local'>
-            <FormattedMessage tagName='div' id='firehose.local' defaultMessage='This server' />
-          </NavLink>
-
-          <NavLink exact to='/public/remote'>
-            <FormattedMessage tagName='div' id='firehose.remote' defaultMessage='Other servers' />
-          </NavLink>
-
-          <NavLink exact to='/public'>
-            <FormattedMessage tagName='div' id='firehose.all' defaultMessage='All' />
-          </NavLink>
-        </div>
+        {sectionHeadline}
 
         <StatusListContainer
           prepend={prependBanner}
@@ -204,6 +212,7 @@ const Firehose = ({ feedType, multiColumn }) => {
 }
 
 Firehose.propTypes = {
+  defaultColumn: PropTypes.bool,
   multiColumn: PropTypes.bool,
   feedType: PropTypes.string,
 };
