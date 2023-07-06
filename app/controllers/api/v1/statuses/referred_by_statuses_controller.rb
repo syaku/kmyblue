@@ -23,7 +23,7 @@ class Api::V1::Statuses::ReferredByStatusesController < Api::BaseController
   end
 
   def results
-    @results ||= Status.where(id: @status.referenced_by_status_objects.select(:status_id)).paginate_by_max_id(
+    @results ||= Status.where(id: @status.referenced_by_status_objects.select(:status_id), visibility: [:public, :public_unlisted, :unlisted, :login]).paginate_by_max_id(
       limit_param(DEFAULT_STATUSES_LIMIT),
       params[:max_id],
       params[:since_id]
