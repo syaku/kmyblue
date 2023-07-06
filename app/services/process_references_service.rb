@@ -15,14 +15,16 @@ class ProcessReferencesService < BaseService
 
     old_references
 
+    return unless added_references.size.positive? || removed_references.size.positive?
+
     StatusReference.transaction do
       remove_old_references
       add_references
 
       @status.save! if @save_records
-    end
 
-    create_notifications!
+      create_notifications!
+    end
   end
 
   private
