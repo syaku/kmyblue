@@ -96,7 +96,7 @@ class FilterBar extends PureComponent {
           onClick={this.onClick('status_reference')}
           title={intl.formatMessage(tooltips.status_references)}
         >
-          <Icon id='retweet' fixedWidth />
+          <Icon id='link' fixedWidth />
         </button>
         <button
           className={selectedFilter === 'poll' ? 'active' : ''}

@@ -1,6 +1,6 @@
 import api from '../api';
 
-import { importFetchedAccounts, importFetchedStatus } from './importer';
+import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
 
 export const REBLOG_REQUEST = 'REBLOG_REQUEST';
 export const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -33,6 +33,10 @@ export const REBLOGS_FETCH_FAIL    = 'REBLOGS_FETCH_FAIL';
 export const FAVOURITES_FETCH_REQUEST = 'FAVOURITES_FETCH_REQUEST';
 export const FAVOURITES_FETCH_SUCCESS = 'FAVOURITES_FETCH_SUCCESS';
 export const FAVOURITES_FETCH_FAIL    = 'FAVOURITES_FETCH_FAIL';
+
+export const STATUS_REFERENCES_FETCH_REQUEST = 'STATUS_REFERENCES_FETCH_REQUEST';
+export const STATUS_REFERENCES_FETCH_SUCCESS = 'STATUS_REFERENCES_FETCH_SUCCESS';
+export const STATUS_REFERENCES_FETCH_FAIL    = 'STATUS_REFERENCES_FETCH_FAIL';
 
 export const EMOJI_REACTIONS_FETCH_REQUEST = 'EMOJI_REACTIONS_FETCH_REQUEST';
 export const EMOJI_REACTIONS_FETCH_SUCCESS = 'EMOJI_REACTIONS_FETCH_SUCCESS';
@@ -466,6 +470,41 @@ export function fetchEmojiReactionsSuccess(id, accounts) {
 export function fetchEmojiReactionsFail(id, error) {
   return {
     type: EMOJI_REACTIONS_FETCH_FAIL,
+    error,
+  };
+}
+
+export function fetchStatusReferences(id) {
+  return (dispatch, getState) => {
+    dispatch(fetchStatusReferencesRequest(id));
+
+    api(getState).get(`/api/v1/statuses/${id}/referred_by`).then(response => {
+      dispatch(importFetchedStatuses(response.data));
+      dispatch(fetchStatusReferencesSuccess(id, response.data));
+    }).catch(error => {
+      dispatch(fetchStatusReferencesFail(id, error));
+    });
+  };
+}
+
+export function fetchStatusReferencesRequest(id) {
+  return {
+    type: STATUS_REFERENCES_FETCH_REQUEST,
+    id,
+  };
+}
+
+export function fetchStatusReferencesSuccess(id, statuses) {
+  return {
+    type: STATUS_REFERENCES_FETCH_SUCCESS,
+    id,
+    statuses,
+  };
+}
+
+export function fetchStatusReferencesFail(id, error) {
+  return {
+    type: STATUS_REFERENCES_FETCH_FAIL,
     error,
   };
 }

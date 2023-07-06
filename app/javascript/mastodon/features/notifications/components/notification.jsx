@@ -294,10 +294,10 @@ class Notification extends ImmutablePureComponent {
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className={classNames('notification notification-reblog focusable', { unread })} tabIndex={0} aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.reblog, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+        <div className={classNames('notification notification-status_reference focusable', { unread })} tabIndex={0} aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.statusReference, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
-              <Icon id='retweet' fixedWidth />
+              <Icon id='link' fixedWidth />
             </div>
 
             <span title={notification.get('created_at')}>

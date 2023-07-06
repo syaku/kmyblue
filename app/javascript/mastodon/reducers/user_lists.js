@@ -48,6 +48,7 @@ import {
   REBLOGS_FETCH_SUCCESS,
   FAVOURITES_FETCH_SUCCESS,
   EMOJI_REACTIONS_FETCH_SUCCESS,
+  STATUS_REFERENCES_FETCH_SUCCESS,
 } from '../actions/interactions';
 import {
   MUTES_FETCH_REQUEST,
@@ -75,6 +76,7 @@ const initialState = ImmutableMap({
   reblogged_by: initialListState,
   favourited_by: initialListState,
   emoji_reactioned_by: initialListState,
+  referred_by: initialListState,
   follow_requests: initialListState,
   blocks: initialListState,
   mutes: initialListState,
@@ -141,6 +143,8 @@ export default function userLists(state = initialState, action) {
     return state.setIn(['favourited_by', action.id], ImmutableList(action.accounts.map(item => item.id)));
   case EMOJI_REACTIONS_FETCH_SUCCESS:
     return state.setIn(['emoji_reactioned_by', action.id], ImmutableList(action.accounts));
+  case STATUS_REFERENCES_FETCH_SUCCESS:
+    return state.setIn(['referred_by', action.id], ImmutableList(action.statuses.map(item => item.id)));
   case NOTIFICATIONS_UPDATE:
     return action.notification.type === 'follow_request' ? normalizeFollowRequest(state, action.notification) : state;
   case FOLLOW_REQUESTS_FETCH_SUCCESS:

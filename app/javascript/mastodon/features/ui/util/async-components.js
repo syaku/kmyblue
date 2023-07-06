@@ -82,6 +82,10 @@ export function EmojiReactions () {
   return import(/* webpackChunkName: "features/emoji_reactions" */'../../emoji_reactions');
 }
 
+export function StatusReferences () {
+  return import(/* webpackChunkName: "features/status_references" */'../../status_references');
+}
+
 export function FollowRequests () {
   return import(/* webpackChunkName: "features/follow_requests" */'../../follow_requests');
 }
