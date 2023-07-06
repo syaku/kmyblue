@@ -54,7 +54,7 @@ module FormattingHelper
   end
 
   def account_bio_format(account)
-    html_aware_format(account.note, account.local?, markdown: true)
+    html_aware_format(account.note, account.local?, markdown: account.user&.setting_bio_markdown)
   end
 
   def account_field_value_format(field, with_rel_me: true)

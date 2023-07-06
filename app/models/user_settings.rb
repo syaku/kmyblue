@@ -12,6 +12,7 @@ class UserSettings
   setting :theme, default: -> { ::Setting.theme }
   setting :noindex, default: -> { ::Setting.noindex }
   setting :noai, default: true
+  setting :bio_markdown, default: false
   setting :hide_statuses_count, default: false
   setting :hide_following_count, default: false
   setting :hide_followers_count, default: false
