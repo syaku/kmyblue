@@ -89,6 +89,12 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
   const getPictureInPicture = makeGetPictureInPicture();
 
+  const getReferenceIds = createSelector([
+    (state, { id }) => state.getIn(['contexts', 'references', id]),
+  ], (references) => {
+    return references;
+  });
+
   const getAncestorsIds = createSelector([
     (_, { id }) => id,
     state => state.getIn(['contexts', 'inReplyTos']),
@@ -148,10 +154,12 @@ const makeMapStateToProps = () => {
 
     let ancestorsIds   = Immutable.List();
     let descendantsIds = Immutable.List();
+    let referenceIds   = Immutable.List();
 
     if (status) {
       ancestorsIds   = getAncestorsIds(state, { id: status.get('in_reply_to_id') });
       descendantsIds = getDescendantsIds(state, { id: status.get('id') });
+      referenceIds   = getReferenceIds(state, { id: status.get('id') });
     }
 
     return {
@@ -159,6 +167,7 @@ const makeMapStateToProps = () => {
       status,
       ancestorsIds,
       descendantsIds,
+      referenceIds,
       askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
       domain: state.getIn(['meta', 'domain']),
       pictureInPicture: getPictureInPicture(state, { id: props.params.statusId }),
@@ -201,6 +210,7 @@ class Status extends ImmutablePureComponent {
     isLoading: PropTypes.bool,
     ancestorsIds: ImmutablePropTypes.list,
     descendantsIds: ImmutablePropTypes.list,
+    referenceIds: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     askReplyConfirmation: PropTypes.bool,
     multiColumn: PropTypes.bool,
@@ -447,8 +457,8 @@ class Status extends ImmutablePureComponent {
   };
 
   handleToggleAll = () => {
-    const { status, ancestorsIds, descendantsIds } = this.props;
-    const statusIds = [status.get('id')].concat(ancestorsIds.toJS(), descendantsIds.toJS());
+    const { status, ancestorsIds, descendantsIds, referenceIds } = this.props;
+    const statusIds = [status.get('id')].concat(ancestorsIds.toJS(), descendantsIds.toJS(), referenceIds.toJS());
 
     if (status.get('hidden')) {
       this.props.dispatch(revealStatus(statusIds));
@@ -641,8 +651,8 @@ class Status extends ImmutablePureComponent {
   };
 
   render () {
-    let ancestors, descendants;
-    const { isLoading, status, ancestorsIds, descendantsIds, intl, domain, multiColumn, pictureInPicture } = this.props;
+    let ancestors, descendants, references;
+    const { isLoading, status, ancestorsIds, descendantsIds, referenceIds, intl, domain, multiColumn, pictureInPicture } = this.props;
     const { fullscreen } = this.state;
 
     if (isLoading) {
@@ -657,6 +667,10 @@ class Status extends ImmutablePureComponent {
       return (
         <BundleColumnError multiColumn={multiColumn} errorType='routing' />
       );
+    }
+
+    if (referenceIds && referenceIds.size > 0) {
+      references = <>{this.renderChildren(referenceIds, true)}</>;
     }
 
     if (ancestorsIds && ancestorsIds.size > 0) {
@@ -695,6 +709,7 @@ class Status extends ImmutablePureComponent {
 
         <ScrollContainer scrollKey='thread'>
           <div className={classNames('scrollable', { fullscreen })} ref={this.setRef}>
+            {references}
             {ancestors}
 
             <HotKeys handlers={handlers}>

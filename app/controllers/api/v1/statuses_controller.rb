@@ -44,11 +44,13 @@ class Api::V1::StatusesController < Api::BaseController
 
     ancestors_results   = @status.in_reply_to_id.nil? ? [] : @status.ancestors(ancestors_limit, current_account)
     descendants_results = @status.descendants(descendants_limit, current_account, descendants_depth_limit)
+    references_results  = @status.references
     loaded_ancestors    = cache_collection(ancestors_results, Status)
     loaded_descendants  = cache_collection(descendants_results, Status)
+    loaded_references   = cache_collection(references_results, Status)
 
-    @context = Context.new(ancestors: loaded_ancestors, descendants: loaded_descendants)
-    statuses = [@status] + @context.ancestors + @context.descendants
+    @context = Context.new(ancestors: loaded_ancestors, descendants: loaded_descendants, references: loaded_references)
+    statuses = [@status] + @context.ancestors + @context.descendants + @context.references
 
     render json: @context, serializer: REST::ContextSerializer, relationships: StatusRelationshipsPresenter.new(statuses, current_user&.account_id)
   end
