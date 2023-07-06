@@ -107,6 +107,10 @@ module HasUserSettings
     settings['theme']
   end
 
+  def setting_bio_markdown
+    settings['bio_markdown']
+  end
+
   def setting_display_media
     settings['web.display_media']
   end
