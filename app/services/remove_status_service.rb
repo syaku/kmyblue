@@ -45,6 +45,7 @@ class RemoveStatusService < BaseService
         remove_from_public
         remove_from_media if @status.with_media?
         remove_media
+        decrement_references
       end
 
       @status.destroy! if permanently?
@@ -114,6 +115,12 @@ class RemoveStatusService < BaseService
 
     @status.reblogs.rewhere(deleted_at: [nil, @status.deleted_at]).includes(:account).reorder(nil).find_each do |reblog|
       RemoveStatusService.new.call(reblog, original_removed: true)
+    end
+  end
+
+  def decrement_references
+    @status.references.each do |ref|
+      ref.decrement_count!(:status_referred_by_count)
     end
   end
 
