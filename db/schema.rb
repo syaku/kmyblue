@@ -1,5 +1,3 @@
-# rubocop:disable all
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_05_085710) do
+ActiveRecord::Schema.define(version: 2023_07_06_031715) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -346,6 +344,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_085710) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "dump_file_size"
+    t.index ["user_id"], name: "index_backups_on_user_id"
   end
 
   create_table "blocks", force: :cascade do |t|
@@ -804,6 +803,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_085710) do
     t.bigint "owner_id"
     t.boolean "confidential", default: true, null: false
     t.index ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type"
+    t.index ["superapp"], name: "index_oauth_applications_on_superapp", where: "(superapp = true)"
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
@@ -1041,6 +1041,15 @@ ActiveRecord::Schema.define(version: 2023_06_05_085710) do
     t.index ["status_id"], name: "index_status_pins_on_status_id"
   end
 
+  create_table "status_references", force: :cascade do |t|
+    t.bigint "status_id", null: false
+    t.bigint "target_status_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_status_references_on_status_id"
+    t.index ["target_status_id"], name: "index_status_references_on_target_status_id"
+  end
+
   create_table "status_stats", force: :cascade do |t|
     t.bigint "status_id", null: false
     t.bigint "replies_count", default: 0, null: false
@@ -1052,6 +1061,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_085710) do
     t.integer "emoji_reactions_count", default: 0, null: false
     t.integer "test", default: 0, null: false
     t.integer "emoji_reaction_accounts_count", default: 0, null: false
+    t.integer "status_referred_by_count", default: 0, null: false
     t.index ["status_id"], name: "index_status_stats_on_status_id", unique: true
   end
 
@@ -1211,6 +1221,7 @@ ActiveRecord::Schema.define(version: 2023_06_05_085710) do
     t.boolean "skip_sign_in_token"
     t.bigint "role_id"
     t.text "settings"
+    t.string "time_zone"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["created_by_application_id"], name: "index_users_on_created_by_application_id", where: "(created_by_application_id IS NOT NULL)"
@@ -1374,6 +1385,8 @@ ActiveRecord::Schema.define(version: 2023_06_05_085710) do
   add_foreign_key "status_edits", "statuses", on_delete: :cascade
   add_foreign_key "status_pins", "accounts", name: "fk_d4cb435b62", on_delete: :cascade
   add_foreign_key "status_pins", "statuses", on_delete: :cascade
+  add_foreign_key "status_references", "statuses", column: "target_status_id", on_delete: :cascade
+  add_foreign_key "status_references", "statuses", on_delete: :cascade
   add_foreign_key "status_stats", "statuses", on_delete: :cascade
   add_foreign_key "status_trends", "accounts", on_delete: :cascade
   add_foreign_key "status_trends", "statuses", on_delete: :cascade
@@ -1491,5 +1504,3 @@ ActiveRecord::Schema.define(version: 2023_06_05_085710) do
   add_index "follow_recommendations", ["account_id"], name: "index_follow_recommendations_on_account_id", unique: true
 
 end
-
-# rubocop:enable all

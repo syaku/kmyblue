@@ -40,6 +40,7 @@
 #  sign_up_ip                :inet
 #  role_id                   :bigint(8)
 #  settings                  :text
+#  time_zone                 :string
 #
 
 class User < ApplicationRecord

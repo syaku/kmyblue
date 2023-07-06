@@ -143,6 +143,7 @@ const excludeTypesFromFilter = filter => {
     'favourite',
     'emoji_reaction',
     'reblog',
+    'status_reference',
     'mention',
     'poll',
     'status',

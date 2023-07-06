@@ -26,6 +26,7 @@ class Notification < ApplicationRecord
     'FollowRequest' => :follow_request,
     'Favourite' => :favourite,
     'EmojiReaction' => :emoji_reaction,
+    'StatusReference' => :status_reference,
     'Poll' => :poll,
   }.freeze
 
@@ -33,6 +34,7 @@ class Notification < ApplicationRecord
     mention
     status
     reblog
+    status_reference
     follow
     follow_request
     favourite
@@ -47,6 +49,7 @@ class Notification < ApplicationRecord
   TARGET_STATUS_INCLUDES_BY_TYPE = {
     status: :status,
     reblog: [status: :reblog],
+    status_reference: [status_reference: :status],
     mention: [mention: :status],
     favourite: [favourite: :status],
     emoji_reaction: [emoji_reaction: :status],
@@ -67,6 +70,7 @@ class Notification < ApplicationRecord
     belongs_to :follow_request, inverse_of: :notification
     belongs_to :favourite, inverse_of: :notification
     belongs_to :emoji_reaction, inverse_of: :notification
+    belongs_to :status_reference, inverse_of: :notification
     belongs_to :poll, inverse_of: false
     belongs_to :report, inverse_of: false
   end
@@ -85,6 +89,8 @@ class Notification < ApplicationRecord
       status
     when :reblog
       status&.reblog
+    when :status_reference
+      status_reference&.status
     when :favourite
       favourite&.status
     when :emoji_reaction, :reaction
@@ -136,6 +142,8 @@ class Notification < ApplicationRecord
           notification.status = cached_status
         when :reblog
           notification.status.reblog = cached_status
+        when :status_reference
+          notification.status_reference.status = cached_status
         when :favourite
           notification.favourite.status = cached_status
         when :emoji_reaction, :reaction
@@ -162,7 +170,7 @@ class Notification < ApplicationRecord
     case activity_type
     when 'Status', 'Follow', 'Favourite', 'EmojiReaction', 'EmojiReact', 'FollowRequest', 'Poll', 'Report'
       self.from_account_id = activity&.account_id
-    when 'Mention'
+    when 'Mention', 'StatusReference'
       self.from_account_id = activity&.status&.account_id
     when 'Account'
       self.from_account_id = activity&.id

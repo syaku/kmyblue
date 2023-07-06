@@ -97,6 +97,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     fetch_replies(@status)
     distribute
     forward_for_reply
+    process_references!
     join_group!
   end
 
@@ -469,6 +470,12 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   rescue ActiveRecord::StaleObjectError
     poll.reload
     retry
+  end
+
+  def process_references!
+    references = []
+    references = ActivityPub::FetchReferencesService(@json['references']) unless @json['references'].nil?
+    ProcessReferencesWorker.perform_async(@status.id, [], urls: references)
   end
 
   def join_group!

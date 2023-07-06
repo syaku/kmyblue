@@ -34,6 +34,7 @@ class PostStatusService < BaseService
   # @option [String] :idempotency Optional idempotency key
   # @option [Boolean] :with_rate_limit
   # @option [Enumerable] :allowed_mentions Optional array of expected mentioned account IDs, raises `UnexpectedMentionsError` if unexpected accounts end up in mentions
+  # @option [Enumerable] :status_reference_ids Optional array
   # @return [Status]
   def call(account, options = {})
     @account     = account
@@ -78,6 +79,7 @@ class PostStatusService < BaseService
     @markdown     = @options[:markdown] || false
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
+    @reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
   end
@@ -146,6 +148,7 @@ class PostStatusService < BaseService
 
   def postprocess_status!
     process_hashtags_service.call(@status)
+    ProcessReferencesWorker.perform_async(@status.id, @reference_ids)
     Trends.tags.register(@status)
     LinkCrawlWorker.perform_async(@status.id)
     DistributionWorker.perform_async(@status.id)
@@ -221,6 +224,7 @@ class PostStatusService < BaseService
       media_attachments: @media || [],
       ordered_media_attachment_ids: (@options[:media_ids] || []).map(&:to_i) & @media.map(&:id),
       thread: @in_reply_to,
+      status_reference_ids: @status_reference_ids,
       poll_attributes: poll_attributes,
       sensitive: @sensitive,
       spoiler_text: @options[:spoiler_text] || '',

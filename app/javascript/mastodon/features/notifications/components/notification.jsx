@@ -28,6 +28,7 @@ const messages = defineMessages({
   poll: { id: 'notification.poll', defaultMessage: 'A poll you have voted in has ended' },
   reblog: { id: 'notification.reblog', defaultMessage: '{name} boosted your status' },
   status: { id: 'notification.status', defaultMessage: '{name} just posted' },
+  statusReference: { id: 'notification.status_reference', defaultMessage: '{name} refered' },
   update: { id: 'notification.update', defaultMessage: '{name} edited a post' },
   adminSignUp: { id: 'notification.admin.sign_up', defaultMessage: '{name} signed up' },
   adminReport: { id: 'notification.admin.report', defaultMessage: '{name} reported {target}' },
@@ -288,6 +289,39 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderStatusReference (notification, link) {
+    const { intl, unread } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-reblog focusable', { unread })} tabIndex={0} aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.reblog, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='retweet' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.status_reference' defaultMessage='{name} referenced your status' values={{ name: link }} />
+            </span>
+          </div>
+
+          <StatusContainer
+            id={notification.get('status')}
+            account={notification.get('account')}
+            muted
+            withDismiss
+            hidden={this.props.hidden}
+            getScrollPosition={this.props.getScrollPosition}
+            updateScrollBottom={this.props.updateScrollBottom}
+            cachedMediaWidth={this.props.cachedMediaWidth}
+            cacheMediaWidth={this.props.cacheMediaWidth}
+            withoutEmojiReactions
+          />
+        </div>
+      </HotKeys>
+    );
+  }
+
   renderStatus (notification, link) {
     const { intl, unread, status } = this.props;
 
@@ -479,6 +513,8 @@ class Notification extends ImmutablePureComponent {
       return this.renderEmojiReaction(notification, link);
     case 'reblog':
       return this.renderReblog(notification, link);
+    case 'status_reference':
+      return this.renderStatusReference(notification, link);
     case 'status':
       return this.renderStatus(notification, link);
     case 'update':

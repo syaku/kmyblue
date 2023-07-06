@@ -10,6 +10,7 @@ const tooltips = defineMessages({
   favourites: { id: 'notifications.filter.favourites', defaultMessage: 'Favourites' },
   emojiReactions: { id: 'notifications.filter.emoji_reactions', defaultMessage: 'Stamps' },
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Boosts' },
+  status_references: { id: 'notifications.filter.status_references', defaultMessage: 'Status references' },
   polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
   statuses: { id: 'notifications.filter.statuses', defaultMessage: 'Updates from people you follow' },
@@ -87,6 +88,13 @@ class FilterBar extends PureComponent {
           className={selectedFilter === 'reblog' ? 'active' : ''}
           onClick={this.onClick('reblog')}
           title={intl.formatMessage(tooltips.boosts)}
+        >
+          <Icon id='retweet' fixedWidth />
+        </button>
+        <button
+          className={selectedFilter === 'status_reference' ? 'active' : ''}
+          onClick={this.onClick('status_reference')}
+          title={intl.formatMessage(tooltips.status_references)}
         >
           <Icon id='retweet' fixedWidth />
         </button>
