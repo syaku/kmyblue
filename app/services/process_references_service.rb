@@ -4,8 +4,7 @@ class ProcessReferencesService < BaseService
   include Payloadable
 
   DOMAIN = ENV['WEB_DOMAIN'] || ENV.fetch('LOCAL_DOMAIN', nil)
-  REFURL_EXP = /(RT|QT|BT|RN|RE)((:)? +|:)(#{URI::DEFAULT_PARSER.make_regexp(%w(http https))})/
-  STATUSID_EXP = %r{(http|https)://#{DOMAIN}/@[a-zA-Z0-9]+/([0-9]{16,})}
+  REFURL_EXP = /(RT|QT|BT|RN|RE)((:|;)? +|:|;)(#{URI::DEFAULT_PARSER.make_regexp(%w(http https))})/
 
   def call(status, reference_parameters, save_records: true, urls: nil)
     @status = status
@@ -46,7 +45,7 @@ class ProcessReferencesService < BaseService
   end
 
   def scan_text!
-    text = @status.account.local? ? @status.text : @status.text.gsub('\\u003c', '<').gsub('\\u003e', '>').gsub(%r{</?[^>]*>}, '')
+    text = @status.account.local? ? @status.text : @status.text.gsub(%r{</?[^>]*>}, '')
     @scan_text = fetch_statuses!(text.scan(REFURL_EXP).pluck(3).uniq).map(&:id).uniq.filter { |status_id| !status_id.zero? }
   end
 
