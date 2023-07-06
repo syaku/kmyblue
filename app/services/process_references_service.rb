@@ -44,7 +44,7 @@ class ProcessReferencesService < BaseService
   end
 
   def scan_text!
-    text = @status.text.gsub(%r{</?[^>]*>}, '')
+    text = @status.text.gsub('\u003c', '<').gsub('\u003e', '>').gsub(%r{</?[^>]*>}, '')
     @scan_text = fetch_statuses!(text.scan(REFURL_EXP).pluck(3).uniq).map(&:id).uniq.filter { |status_id| !status_id.zero? }
   end
 

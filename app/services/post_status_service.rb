@@ -148,7 +148,7 @@ class PostStatusService < BaseService
 
   def postprocess_status!
     process_hashtags_service.call(@status)
-    ProcessReferencesWorker.perform_async(@status.id, @reference_ids)
+    ProcessReferencesWorker.perform_async(@status.id, @reference_ids, [])
     Trends.tags.register(@status)
     LinkCrawlWorker.perform_async(@status.id)
     DistributionWorker.perform_async(@status.id)

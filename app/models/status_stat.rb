@@ -48,7 +48,7 @@ class StatusStat < ApplicationRecord
   end
 
   def status_referred_by_count
-    [attributes['status_referred_by_count'], 0].max
+    [attributes['status_referred_by_count'] || 0, 0].max
   end
 
   private
