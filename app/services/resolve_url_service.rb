@@ -5,6 +5,7 @@ class ResolveURLService < BaseService
   include Authorization
 
   USERNAME_STATUS_RE = %r{/@(?<username>#{Account::USERNAME_RE})/(?<status_id>[0-9]+)\Z}
+  REMOTE_USERNAME_STATUS_RE = %r{/@(?<username>#{Account::USERNAME_RE}@#{Account::USERNAME_RE})/(?<status_id>[0-9]+)\Z}
 
   def call(url, on_behalf_of: nil)
     @url          = url
@@ -89,13 +90,17 @@ class ResolveURLService < BaseService
   def process_local_url
     recognized_params = Rails.application.routes.recognize_path(@url)
 
-    return unless recognized_params[:action] == 'show'
-
     if recognized_params[:controller] == 'statuses'
       status = Status.find_by(id: recognized_params[:id])
       check_local_status(status)
     elsif recognized_params[:controller] == 'accounts'
       Account.find_local(recognized_params[:username])
+    elsif recognized_params[:controller] == 'home' && recognized_params[:action] == 'index'
+      parsed_url = Addressable::URI.parse(@url)
+      parsed_url.path.match(REMOTE_USERNAME_STATUS_RE) do |matched|
+        status = Status.find_by(id: matched[:status_id])
+        check_local_status(status)
+      end
     end
   end
 
