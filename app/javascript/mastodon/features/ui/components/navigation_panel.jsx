@@ -74,7 +74,11 @@ class NavigationPanel extends Component {
 
         {!signedIn && explorer}
 
-        {(signedIn || timelinePreview) && (
+        {signedIn && (
+          <ColumnLink transparent to='/public' isActive={this.isFirehoseActive} icon='globe' text={intl.formatMessage(messages.firehose)} />
+        )}
+
+        {(!signedIn && timelinePreview) && (
           <ColumnLink transparent to='/public/local' isActive={this.isFirehoseActive} icon='globe' text={intl.formatMessage(messages.firehose)} />
         )}
 
