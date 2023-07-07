@@ -66,6 +66,7 @@ import {
   Onboarding,
   About,
   PrivacyPolicy,
+  CommunityTimeline,
 } from './util/async-components';
 import { WrappedSwitch, WrappedRoute } from './util/react_router_helpers';
 
@@ -197,7 +198,7 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedRoute path='/public' exact component={Firehose} componentParams={{ feedType: 'public' }} content={children} />
           <WrappedRoute path='/public/local' exact component={Firehose} componentParams={{ feedType: 'community' }} content={children} />
           <WrappedRoute path='/public/remote' exact component={Firehose} componentParams={{ feedType: 'public:remote' }} content={children} />
-          <WrappedRoute path='/public/local/fixed' exact component={Firehose} componentParams={{ feedType: 'community', defaultColumn: true }} content={children} />
+          <WrappedRoute path='/public/local/fixed' exact component={CommunityTimeline} content={children} />
           <WrappedRoute path={['/conversations', '/timelines/direct']} component={DirectTimeline} content={children} />
           <WrappedRoute path='/tags/:id' component={HashtagTimeline} content={children} />
           <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
