@@ -1639,12 +1639,12 @@ ja:
         other: "%{count}票"
       vote: 投票
     searchabilities:
-      direct: リアクションした人
-      direct_long: この投稿にリアクションした人しか検索できません
+      direct: 反応者
+      direct_long: この投稿に反応した人しか検索できません
       limited: 自分のみ
       limited_long: この投稿はあなたしか検索できません
-      private: フォロワーのみ
-      private_long: この投稿はフォロワーのみが検索できます
+      private: フォロワーと反応者
+      private_long: この投稿はフォロワーと反応者のみが検索できます
       public: 全て
       public_long: この投稿は誰でも検索できます
     show_more: もっと見る

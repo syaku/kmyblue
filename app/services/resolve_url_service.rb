@@ -5,6 +5,7 @@ class ResolveURLService < BaseService
   include Authorization
 
   USERNAME_STATUS_RE = %r{/@(?<username>#{Account::USERNAME_RE})/(?<status_id>[0-9]+)\Z}
+  REMOTE_USERNAME_STATUS_RE = %r{/@(?<username>#{Account::USERNAME_RE}@#{Account::USERNAME_RE})/(?<status_id>[0-9]+)\Z}
 
   def call(url, on_behalf_of: nil)
     @url          = url

@@ -1737,8 +1737,8 @@ en:
       direct_long: Reacter of this post can find
       limited: Self only
       limited_long: Nobody can find, but you can
-      private: Followers only
-      private_long: Your followers can find
+      private: Followers and reactionners
+      private_long: Your followers and reactionners can find
       public: Public
       public_long: Anyone can find
     show_more: Show more
