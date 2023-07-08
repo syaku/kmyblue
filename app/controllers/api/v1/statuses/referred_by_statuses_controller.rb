@@ -19,15 +19,26 @@ class Api::V1::Statuses::ReferredByStatusesController < Api::BaseController
   end
 
   def cached_references
-    cache_collection(results, Status)
+    results
   end
 
   def results
-    @results ||= Status.where(id: @status.referenced_by_status_objects.select(:status_id), visibility: [:public, :public_unlisted, :unlisted, :login]).paginate_by_max_id(
+    return @results if @results
+
+    account     = current_user&.account
+    statuses    = Status.where(id: @status.referenced_by_status_objects.select(:status_id))
+    account_ids = statuses.map(&:account_id).uniq
+    domains     = statuses.filter_map(&:account_domain).uniq
+    relations   = account&.relations_map(account_ids, domains) || {}
+
+    statuses = cache_collection_paginated_by_id(
+      statuses,
+      Status,
       limit_param(DEFAULT_STATUSES_LIMIT),
-      params[:max_id],
-      params[:since_id]
+      params_slice(:max_id, :since_id, :min_id)
     )
+
+    @results = statuses.filter { |status| !StatusFilter.new(status, account, relations).filtered? }
   end
 
   def insert_pagination_headers
