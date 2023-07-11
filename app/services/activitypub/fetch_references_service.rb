@@ -13,31 +13,17 @@ class ActivityPub::FetchReferencesService < BaseService
 
   def collection_items(collection_or_uri)
     collection = fetch_collection(collection_or_uri)
-    return unless collection.is_a?(Hash) && collection['first'].present?
+    return unless collection.is_a?(Hash)
 
-    all_items = []
-    collection = fetch_collection(collection['first'])
+    collection = fetch_collection(collection['first']) if collection['first'].present?
+    return unless collection.is_a?(Hash)
 
-    while collection.is_a?(Hash)
-      items = begin
-        case collection['type']
-        when 'Collection', 'CollectionPage'
-          collection['items']
-        when 'OrderedCollection', 'OrderedCollectionPage'
-          collection['orderedItems']
-        end
-      end
-
-      break if items.blank?
-
-      all_items.concat(items)
-
-      break if all_items.size >= 5
-
-      collection = collection['next'].present? ? fetch_collection(collection['next']) : nil
+    case collection['type']
+    when 'Collection', 'CollectionPage'
+      collection['items']
+    when 'OrderedCollection', 'OrderedCollectionPage'
+      collection['orderedItems']
     end
-
-    all_items
   end
 
   def fetch_collection(collection_or_uri)
