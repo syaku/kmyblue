@@ -45,6 +45,7 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
         create_edits!
       end
 
+      update_references!
       download_media_files!
       queue_poll_notifications!
 
@@ -238,6 +239,13 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
         Rails.logger.warn "Error storing emoji: #{e}"
       end
     end
+  end
+
+  def update_references!
+    references = @json['references'].nil? ? [] : ActivityPub::FetchReferencesService.new.call(@json['references'])
+    quote = @json['quote'] || @json['quoteUrl'] || @json['quoteURL'] || @json['_misskey_quote']
+    references << quote if quote
+    ProcessReferencesWorker.perform_async(@status.id, [], references)
   end
 
   def expected_type?

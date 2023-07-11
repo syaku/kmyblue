@@ -473,7 +473,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def process_references!
-    references = @json['references'].nil? ? [] : ActivityPub::FetchReferencesService(@json['references'])
+    references = @json['references'].nil? ? [] : ActivityPub::FetchReferencesService.new.call(@json['references'])
+    quote = @json['quote'] || @json['quoteUrl'] || @json['quoteURL'] || @json['_misskey_quote']
+    references << quote if quote
     ProcessReferencesWorker.perform_async(@status.id, [], references)
   end
 

@@ -32,7 +32,7 @@ class ActivityPub::FetchReferencesService < BaseService
 
       all_items.concat(items)
 
-      break if all_items.size >= StatusReferenceValidator::LIMIT
+      break if all_items.size >= 5
 
       collection = collection['next'].present? ? fetch_collection(collection['next']) : nil
     end
@@ -42,7 +42,8 @@ class ActivityPub::FetchReferencesService < BaseService
 
   def fetch_collection(collection_or_uri)
     return collection_or_uri if collection_or_uri.is_a?(Hash)
-    return if invalid_origin?(collection_or_uri)
+    return if unsupported_uri_scheme?(collection_or_uri)
+    return if ActivityPub::TagManager.instance.local_uri?(collection_or_uri)
 
     fetch_resource_without_id_validation(collection_or_uri, nil, true)
   end
