@@ -68,6 +68,8 @@ class ProcessReferencesService < BaseService
   end
 
   def create_notifications!
+    return if @added_objects.blank?
+
     local_reference_objects = @added_objects.filter { |ref| ref.target_status.account.local? }
     return if local_reference_objects.empty?
 
@@ -80,6 +82,7 @@ class ProcessReferencesService < BaseService
     return if removed_references.empty?
 
     statuses = Status.where(id: removed_references)
+
     @status.reference_objects.where(target_status: statuses).destroy_all
     statuses.each do |status|
       status.decrement_count!(:status_referred_by_count)
