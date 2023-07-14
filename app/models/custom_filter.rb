@@ -96,7 +96,7 @@ class CustomFilter < ApplicationRecord
     active_filters.select { |custom_filter, _| !custom_filter.expired? }
   end
 
-  def self.apply_cached_filters(cached_filters, status, following)
+  def self.apply_cached_filters(cached_filters, status, following = false) # rubocop:disable Style/OptionalBooleanParameter
     cached_filters.filter_map do |filter, rules|
       next if filter.exclude_follows && following
       next if filter.exclude_localusers && status.account.local?
