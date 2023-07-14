@@ -7,6 +7,8 @@ class StatusRelationshipsPresenter
               :bookmarks_map, :filters_map, :emoji_reactions_map
 
   def initialize(statuses, current_account_id = nil, **options)
+    @current_account_id = current_account_id
+
     if current_account_id.nil?
       @reblogs_map         = {}
       @favourites_map      = {}
@@ -37,12 +39,22 @@ class StatusRelationshipsPresenter
     active_filters = CustomFilter.cached_filters_for(current_account_id)
 
     @filters_map = statuses.each_with_object({}) do |status, h|
-      filter_matches = CustomFilter.apply_cached_filters(active_filters, status)
+      filter_matches = CustomFilter.apply_cached_filters(active_filters, status, following?(status.account_id))
 
       unless filter_matches.empty?
         h[status.id] = filter_matches
         h[status.reblog_of_id] = filter_matches if status.reblog?
       end
     end
+  end
+
+  def following?(other_account_id)
+    return false if @current_account_id.nil?
+
+    @account ||= Account.find(@current_account_id)
+    return false unless @account
+
+    @following_map ||= @account.following.pluck(:id)
+    @following_map.include?(other_account_id)
   end
 end

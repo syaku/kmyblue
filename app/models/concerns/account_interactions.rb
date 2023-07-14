@@ -265,7 +265,7 @@ module AccountInteractions
 
   def status_matches_filters(status)
     active_filters = CustomFilter.cached_filters_for(id)
-    CustomFilter.apply_cached_filters(active_filters, status)
+    CustomFilter.apply_cached_filters(active_filters, status, following?(status.account))
   end
 
   def followers_for_local_distribution
