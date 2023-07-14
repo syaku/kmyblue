@@ -8,15 +8,15 @@ import { Link } from 'react-router-dom';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
-import { counterRenderer } from 'mastodon/components/common_counter';
 import { EmptyAccount } from 'mastodon/components/empty_account';
-import ShortNumber from 'mastodon/components/short_number';
+import { ShortNumber } from 'mastodon/components/short_number';
 import { VerifiedBadge } from 'mastodon/components/verified_badge';
 
 import { me } from '../initial_state';
 
 import { Avatar } from './avatar';
 import Button from './button';
+import { FollowersCounter } from './counters';
 import { DisplayName } from './display_name';
 import { IconButton } from './icon_button';
 import { RelativeTimestamp } from './relative_timestamp';
@@ -162,7 +162,7 @@ class Account extends ImmutablePureComponent {
               <DisplayName account={account} />
               {!minimal && (
                 <div className='account__details'>
-                  <ShortNumber value={account.get('followers_count')} isHide={account.getIn(['other_settings', 'hide_followers_count']) || false} renderer={counterRenderer('followers')} /> {verification} {muteTimeRemaining}
+                  <ShortNumber value={account.get('followers_count')} isHide={account.getIn(['other_settings', 'hide_followers_count']) || false} renderer={FollowersCounter} /> {verification} {muteTimeRemaining}
                 </div>
               )}
             </div>

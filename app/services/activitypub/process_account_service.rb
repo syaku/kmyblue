@@ -79,6 +79,9 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.silenced_at       = domain_block.created_at if auto_silence?
     @account.searchability     = :private  # not null
     @account.dissubscribable   = false     # not null
+
+    set_immediate_protocol_attributes!
+
     @account.save
   end
 
