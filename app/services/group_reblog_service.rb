@@ -49,7 +49,7 @@ class GroupReblogService < BaseService
         end
       end
 
-      text = status.account.local? ? status.text : strip_tags(status.text.gsub(/<br>/, "\n").gsub(%r{<br />}, "\n").gsub(%r{</p>}, "\n\n").strip)
+      text = status.account.local? ? status.text : strip_tags(status.text.gsub('<br>', "\n").gsub(%r{<br />}, "\n").gsub(%r{</p>}, "\n\n").strip)
 
       PostStatusService.new.call(
         account,

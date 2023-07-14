@@ -1,4 +1,3 @@
----
 io:
   simple_form:
     hints:
@@ -37,7 +36,6 @@ io:
         digest: Nur sendesas pos longa neaktiveso e nur se vu ganis irga mesaji dum ke vu esas neprezenta
         discoverable: Permisez vua konto deskovresar da nekonociti tra rekomendi, tendenci e altra traiti
         email: Vu sendesos konfirmretposto
-        fields: On povas havar maxime 4 kozi quo montresas quale tabelo che ona profilo
         header: En la formato PNG, GIF o JPG. Til %{size}. Esos mikrigita a %{dimensions}px
         inbox_url: Kopiez URL de frontpagino de relayo quon vu volas uzar
         irreversible: Filtrita posti neinversigeble desaparos, mem se filtro efacesas pose
@@ -107,7 +105,7 @@ io:
       rule:
         text: Deskriptez regulo o bezonaj por uzanti en ca servilo. Vu debas lasar lu esar korta e simpla
       sessions:
-        otp: Enter the Two-factor code from your phone or use one of your recovery codes.
+        otp: 'Enter the Two-factor code from your phone or use one of your recovery codes.'
         webauthn: Se ol esas klefo di USB, certigar ke vu insertas e se bezonesas, tushetez.
       tag:
         name: Vu povas nur chanjar literkaso, por exemplo, por kauzigar lu divenar plu lektebla
@@ -292,7 +290,7 @@ io:
       webhook:
         events: Aktivigita eventi
         url: URL di finpunto
-    'no': Ne
+    'no': 'Ne'
     not_recommended: Ne rekomendesas
     recommended: Rekomendito
     required:

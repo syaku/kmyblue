@@ -17,7 +17,7 @@ import { updateReactionDeck } from 'mastodon/actions/reaction_deck';
 import Button from 'mastodon/components/button';
 import ColumnHeader from 'mastodon/components/column_header';
 import { Icon } from 'mastodon/components/icon';
-import LoadingIndicator from 'mastodon/components/loading_indicator';
+import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import Column from 'mastodon/features/ui/components/column';
 

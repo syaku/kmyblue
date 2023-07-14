@@ -1,4 +1,3 @@
----
 id:
   simple_form:
     hints:
@@ -37,7 +36,6 @@ id:
         digest: Hanya kirim setelah lama tidak aktif dan hanya jika Anda menerima pesan personal atas absensi Anda
         discoverable: Izinkan akun Anda ditemukan orang lain lewat rekomendasi, tren, dan fitur lain
         email: Anda akan dikirimi email konfirmasi
-        fields: Anda bisa memiliki hingga 4 item utk ditampilkan sebagai tabel di profil Anda
         header: PNG, GIF atau JPG. Maksimal %{size}. Ukuran dikecilkan menjadi %{dimensions}px
         inbox_url: Salin URL dari halaman depan relai yang ingin Anda pakai
         irreversible: Toot tersaring akan hilang permanen bahkan jika saringan dihapus kemudian
@@ -294,7 +292,7 @@ id:
       webhook:
         events: Acara yang diaktifkan
         url: URL Titik Akhir
-    'no': Tidak
+    'no': 'Tidak'
     not_recommended: Tidak disarankan
     recommended: Direkomendasikan
     required:
@@ -303,4 +301,4 @@ id:
     title:
       sessions:
         webauthn: Gunakan salah satu kunci keamanan untuk masuk
-    'yes': Ya
+    'yes': 'Ya'

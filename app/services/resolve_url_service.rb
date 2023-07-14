@@ -5,7 +5,6 @@ class ResolveURLService < BaseService
   include Authorization
 
   USERNAME_STATUS_RE = %r{/@(?<username>#{Account::USERNAME_RE})/(?<status_id>[0-9]+)\Z}
-  REMOTE_USERNAME_STATUS_RE = %r{/@(?<username>#{Account::USERNAME_RE}@#{Account::USERNAME_RE})/(?<status_id>[0-9]+)\Z}
 
   def call(url, on_behalf_of: nil)
     @url          = url
@@ -64,7 +63,7 @@ class ResolveURLService < BaseService
   end
 
   def fetch_resource_service
-    @_fetch_resource_service ||= FetchResourceService.new
+    @fetch_resource_service ||= FetchResourceService.new
   end
 
   def resource_url
@@ -90,16 +89,27 @@ class ResolveURLService < BaseService
   def process_local_url
     recognized_params = Rails.application.routes.recognize_path(@url)
 
-    if recognized_params[:controller] == 'statuses'
+    case recognized_params[:controller]
+    when 'statuses'
+      return unless recognized_params[:action] == 'show'
+
       status = Status.find_by(id: recognized_params[:id])
       check_local_status(status)
-    elsif recognized_params[:controller] == 'accounts'
+    when 'accounts'
+      return unless recognized_params[:action] == 'show'
+
       Account.find_local(recognized_params[:username])
-    elsif recognized_params[:controller] == 'home' && recognized_params[:action] == 'index'
-      parsed_url = Addressable::URI.parse(@url)
-      parsed_url.path.match(REMOTE_USERNAME_STATUS_RE) do |matched|
-        status = Status.find_by(id: matched[:status_id])
+    when 'home'
+      return unless recognized_params[:action] == 'index' && recognized_params[:username_with_domain].present?
+
+      if recognized_params[:any]&.match?(/\A[0-9]+\Z/)
+        status = Status.find_by(id: recognized_params[:any])
         check_local_status(status)
+      elsif recognized_params[:any].blank?
+        username, domain = recognized_params[:username_with_domain].gsub(/\A@/, '').split('@')
+        return unless username.present? && domain.present?
+
+        Account.find_remote(username, domain)
       end
     end
   end

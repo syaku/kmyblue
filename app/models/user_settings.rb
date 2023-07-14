@@ -19,9 +19,9 @@ class UserSettings
   setting :show_application, default: true
   setting :default_language, default: nil
   setting :default_sensitive, default: false
-  setting :default_privacy, default: nil
+  setting :default_privacy, default: nil, in: %w(public public_unlisted login unlisted private)
   setting :default_reblog_privacy, default: nil
-  setting :default_searchability, default: :direct
+  setting :default_searchability, default: :direct, in: %w(public private direct limited)
   setting :disallow_unlisted_public_searchability, default: false
   setting :public_post_to_unlisted, default: false
   setting :reject_public_unlisted_subscription, default: false
@@ -90,7 +90,10 @@ class UserSettings
 
     raise KeyError, "Undefined setting: #{key}" unless self.class.definition_for?(key)
 
-    typecast_value = self.class.definition_for(key).type_cast(value)
+    setting_definition = self.class.definition_for(key)
+    typecast_value = setting_definition.type_cast(value)
+
+    raise ArgumentError, "Invalid value for setting #{key}: #{typecast_value}" if setting_definition.in.present? && setting_definition.in.exclude?(typecast_value)
 
     if typecast_value.nil?
       @original_hash.delete(key)

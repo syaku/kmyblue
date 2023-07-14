@@ -1,4 +1,3 @@
----
 pl:
   simple_form:
     hints:
@@ -39,7 +38,6 @@ pl:
         digest: Wysyłane tylko po długiej nieaktywności, jeżeli w tym czasie otrzymaleś jakąś wiadomość bezpośrednią
         discoverable: Pozwala na odkrywanie twojego konta przez nieznajomych poprzez rekomendacje, popularne wpisy i inne funkcje
         email: Otrzymasz e-mail potwierdzający
-        fields: Możesz ustawić maksymalnie 4 niestandardowe pola wyświetlane jako tabela na Twoim profilu
         header: PNG, GIF lub JPG. Maksymalnie %{size}. Zostanie zmniejszony do %{dimensions}px
         inbox_url: Skopiuj adres ze strony głównej przekaźnika, którego chcesz użyć
         irreversible: Filtrowane wpisy znikną bezpowrotnie, nawet gdy filtr zostanie usunięty
@@ -296,6 +294,7 @@ pl:
         usable: Pozwól na umieszczanie tego hashtagu we wpisach
       user:
         role: Rola
+        time_zone: Strefa czasowa
       user_role:
         color: Kolor odznaki
         highlighted: Wyświetl rolę jako odznakę na profilach użytkowników
@@ -305,7 +304,7 @@ pl:
       webhook:
         events: Włączone zdarzenia
         url: Endpoint URL
-    'no': Nie
+    'no': 'Nie'
     not_recommended: Niezalecane
     recommended: Polecane
     required:
@@ -314,4 +313,4 @@ pl:
     title:
       sessions:
         webauthn: Użyj jednego ze swoich kluczy bezpieczeństwa, aby się zalogować
-    'yes': Tak
+    'yes': 'Tak'

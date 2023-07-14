@@ -1,4 +1,3 @@
----
 an:
   simple_form:
     hints:
@@ -39,7 +38,6 @@ an:
         digest: Solo ninviau dimpués d'un largo periodo d'inactividat y nomás si has recibiu mensaches personals entre la tuya ausencia
         discoverable: Permite que la tuya cuenta sía descubierta per extranyos a traviés de recomendacions, tendencias y atras caracteristicas
         email: Se le ninviará un correu de confirmación
-        fields: Puetz tener dica 4 elementos amostrando-se como una tabla en o tuyo perfil
         header: PNG, GIF u JPG. Maximo %{size}. Será escalau a %{dimensions}px
         inbox_url: Copia la URL d'a pachina prencipal d'o relés que quiers utilizar
         irreversible: Las publicacions filtradas desapareixerán irreversiblement, mesmo si este filtro ye eliminau mas abance
@@ -309,4 +307,4 @@ an:
     title:
       sessions:
         webauthn: Utilice una d'as suyas claus de seguranza pa iniciar sesión
-    'yes': Ell
+    'yes': 'Ell'

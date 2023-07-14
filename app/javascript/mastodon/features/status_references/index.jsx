@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { fetchStatusReferences } from 'mastodon/actions/interactions';
 import ColumnHeader from 'mastodon/components/column_header';
 import { Icon }  from 'mastodon/components/icon';
-import LoadingIndicator from 'mastodon/components/loading_indicator';
+import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import StatusContainer from 'mastodon/containers/status_container';
 import Column from 'mastodon/features/ui/components/column';

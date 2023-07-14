@@ -11,13 +11,13 @@ import { connect } from 'react-redux';
 import { fetchEmojiReactions } from 'mastodon/actions/interactions';
 import ColumnHeader from 'mastodon/components/column_header';
 import { Icon } from 'mastodon/components/icon';
-import LoadingIndicator from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import AccountContainer from 'mastodon/containers/account_container';
 import Column from 'mastodon/features/ui/components/column';
 
 
 import EmojiView from '../../components/emoji_view';
+import { LoadingIndicator } from '../../components/loading_indicator';
 
 const messages = defineMessages({
   refresh: { id: 'refresh', defaultMessage: 'Refresh' },

@@ -1,7 +1,9 @@
----
 sl:
   simple_form:
     hints:
+      account:
+        fields: Vaša domača stran, starost, kar koli.
+        note: 'Druge osebe lahko @omenite ali #ključnite.'
       account_alias:
         acct: Določite uporabniškoime@domena računa, od katerega se želite preseliti
       account_migration:
@@ -39,7 +41,6 @@ sl:
         digest: Pošlje se le po dolgem obdobju nedejavnosti in samo, če ste prejeli osebna sporočila v vaši odsotnosti
         discoverable: Dovolite, da vaš račun odkrijejo neznanci prek priporočil, trendov in drugih funkcij
         email: Poslali vam bomo potrditveno e-pošto
-        fields: Na svojem profilu lahko imate do 4 predmete prikazane kot tabelo.
         header: PNG, GIF ali JPG. Največ %{size}. Zmanjšana bo na %{dimensions}px
         inbox_url: Kopirajte URL naslov s prve strani releja, ki ga želite uporabiti
         irreversible: Filtrirane objave bodo nepovratno izginile, tudi če je filter kasneje odstranjen
@@ -296,6 +297,7 @@ sl:
         usable: Dovoli, da objave uporabljajo ta ključnik
       user:
         role: Vloga
+        time_zone: Časovni pas
       user_role:
         color: Barva značke
         highlighted: Prikaži vlogo kot značko na uporabniškem profilu
@@ -305,7 +307,7 @@ sl:
       webhook:
         events: Omogočeni dogodki
         url: URL končne točke
-    'no': Ne
+    'no': 'Ne'
     not_recommended: Ni priporočeno
     recommended: Priporočeno
     required:
@@ -314,4 +316,4 @@ sl:
     title:
       sessions:
         webauthn: Za prijavo uporabite eno od svojih varnostnih kod
-    'yes': Da
+    'yes': 'Da'

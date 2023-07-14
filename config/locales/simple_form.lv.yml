@@ -1,4 +1,3 @@
----
 lv:
   simple_form:
     hints:
@@ -39,7 +38,6 @@ lv:
         digest: Sūta tikai pēc ilgstošas neaktivitātes un tikai tad, ja savas prombūtnes laikā neesi saņēmis personiskas ziņas
         discoverable: Ļauj svešiniekiem atklāt savu kontu caur ieteikumiem, tendencēm un citām iespējām
         email: Tev tiks nosūtīts apstiprinājuma e-pasts
-        fields: Savā profilā kā tabulu vari parādīt līdz 4 vienumiem
         header: PNG, GIF vai JPG. Ne vairāk kā %{size}. Tiks samazināts līdz %{dimensions}px
         inbox_url: Nokopē URL no tā releja sākumlapas, kuru vēlies izmantot
         irreversible: Filtrētās ziņas neatgriezeniski pazudīs, pat ja filtrs vēlāk tiks noņemts
@@ -305,7 +303,7 @@ lv:
       webhook:
         events: Iespējotie notikumi
         url: Galapunkta URL
-    'no': Nē
+    'no': 'Nē'
     not_recommended: Nav ieteicams
     recommended: Ieteicams
     required:
@@ -314,4 +312,4 @@ lv:
     title:
       sessions:
         webauthn: Lai pierakstītos, izmanto vienu no savām drošības atslēgām
-    'yes': Jā
+    'yes': 'Jā'
