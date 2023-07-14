@@ -267,6 +267,9 @@ ja:
         actions:
           hide: 完全に隠す
           warn: 警告付きで隠す
+        options:
+          exclude_follows: フォロー中のユーザーをフィルターの対象にしない
+          exclude_localusers: ローカルユーザーをフィルターの対象にしない
       form_admin_settings:
         activity_api_enabled: APIでユーザーアクティビティに関する集計統計を公開する
         backups_retention_period: ユーザーアーカイブの保持期間

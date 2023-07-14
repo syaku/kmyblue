@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_06_031715) do
+ActiveRecord::Schema.define(version: 2023_07_14_004824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,7 +448,7 @@ ActiveRecord::Schema.define(version: 2023_07_06_031715) do
   create_table "custom_filter_keywords", force: :cascade do |t|
     t.bigint "custom_filter_id", null: false
     t.text "keyword", default: "", null: false
-    t.boolean "whole_word", default: true, null: false
+    t.boolean "whole_word", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["custom_filter_id"], name: "index_custom_filter_keywords_on_custom_filter_id"
@@ -471,6 +471,8 @@ ActiveRecord::Schema.define(version: 2023_07_06_031715) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "action", default: 0, null: false
+    t.boolean "exclude_follows", default: false, null: false
+    t.boolean "exclude_localusers", default: false, null: false
     t.index ["account_id"], name: "index_custom_filters_on_account_id"
   end
 

@@ -680,7 +680,13 @@ const startServer = async () => {
         }
 
         if (!unpackedPayload.filtered && !req.cachedFilters) {
-          queries.push(client.query('SELECT filter.id AS id, filter.phrase AS title, filter.context AS context, filter.expires_at AS expires_at, filter.action AS filter_action, keyword.keyword AS keyword, keyword.whole_word AS whole_word FROM custom_filter_keywords keyword JOIN custom_filters filter ON keyword.custom_filter_id = filter.id WHERE filter.account_id = $1 AND (filter.expires_at IS NULL OR filter.expires_at > NOW())', [req.accountId]));
+          queries.push(client.query('SELECT filter.id AS id, filter.phrase AS title, filter.context AS context, filter.expires_at AS expires_at, filter.action AS filter_action, keyword.keyword AS keyword, keyword.whole_word AS whole_word, filter.exclude_follows AS exclude_follows, filter.exclude_localusers AS exclude_localusers FROM custom_filter_keywords keyword JOIN custom_filters filter ON keyword.custom_filter_id = filter.id WHERE filter.account_id = $1 AND (filter.expires_at IS NULL OR filter.expires_at > NOW())', [req.accountId]));
+        }
+        if (!unpackedPayload.filtered) {
+          queries.push(client.query(`SELECT accounts.domain AS domain
+                                     FROM follows
+                                     JOIN accounts ON follows.target_account_id = accounts.id
+                                     WHERE (account_id = $1 AND target_account_id = $2)`, [req.accountId, unpackedPayload.account.id]));
         }
 
         Promise.all(queries).then(values => {
@@ -689,6 +695,8 @@ const startServer = async () => {
           if (values[0].rows.length > 0 || (accountDomain && values[1].rows.length > 0)) {
             return;
           }
+
+          const following = !unpackedPayload.filtered && values[values.length - 1].rows.length > 0;
 
           if (!unpackedPayload.filtered && !req.cachedFilters) {
             const filterRows = values[accountDomain ? 2 : 1].rows;
@@ -706,6 +714,8 @@ const startServer = async () => {
                     context: row.context,
                     expires_at: row.expires_at,
                     filter_action: ['warn', 'hide'][row.filter_action],
+                    excludeFollows: row.exclude_follows,
+                    excludeLocalusers: row.exclude_localusers,
                   },
                 };
               }
@@ -741,7 +751,7 @@ const startServer = async () => {
             const now = new Date();
             payload.filtered = [];
             Object.values(req.cachedFilters).forEach((cachedFilter) => {
-              if ((cachedFilter.expires_at === null || cachedFilter.expires_at > now)) {
+              if ((cachedFilter.expires_at === null || cachedFilter.expires_at > now) && (!cachedFilter.repr.excludeFollows || !following) && (!cachedFilter.repr.excludeLocalusers || accountDomain)) {
                 const keyword_matches = searchIndex.match(cachedFilter.regexp);
                 if (keyword_matches) {
                   payload.filtered.push({
