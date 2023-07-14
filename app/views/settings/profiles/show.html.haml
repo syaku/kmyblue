@@ -11,11 +11,6 @@
   %p.lead= t('edit_profile.hint_html')
 
   %h4= t('edit_profile.basic_information')
-
-    = f.simple_fields_for :settings, current_user.settings do |ff|
-      .fields-group
-        = ff.input :bio_markdown, input_html: { name: 'account[bio_markdown]' }, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_bio_markdown')
-
   .fields-row
     .fields-row__column.fields-row__column-6
       .fields-group
