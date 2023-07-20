@@ -257,6 +257,10 @@ en:
         whole_word: Whole word
       email_domain_block:
         with_dns_records: Include MX records and IPs of the domain
+      emoji_reactions:
+        deny_from_all: Block all stamps
+        must_be_follower: Block stamps from non-followers
+        must_be_following: Block stamps from people you don't follow
       featured_tag:
         name: Hashtag
       filters:
