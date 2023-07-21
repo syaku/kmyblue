@@ -4,7 +4,7 @@ es:
       account:
         display_name: Tu nombre completo o tu apodo.
         fields: Tu carta de presentación, pronombres, edad, lo que quieras.
-        note: 'Puedes mencionar a otra gente o etiquetas.'
+        note: Puedes mencionar a otra gente o etiquetas.
       account_alias:
         acct: Especifique su nombre de usuario@dominio de la cuenta de donde se desea migrar
       account_migration:

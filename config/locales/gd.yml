@@ -1061,13 +1061,13 @@ gd:
       cas: CAS
       saml: SAML
     register: Clàraich leinn
-    registration_closed: "Cha ghabh %{instance} ri buill ùra"
+    registration_closed: Cha ghabh %{instance} ri buill ùra
     resend_confirmation: Cuir an ceangal dearbhaidh a-rithist
     reset_password: Ath-shuidhich am facal-faire
     rules:
       accept: Gabh ris
       back: Air ais
-      invited_by: '’S urrainn dhut ballrachd fhaighinn air %{domain} leis a’ chuireadh a fhuair thu o:'
+      invited_by: "’S urrainn dhut ballrachd fhaighinn air %{domain} leis a’ chuireadh a fhuair thu o:"
       preamble: Tha iad ’gan stèidheachadh is a chur an gnìomh leis na maoir aig %{domain}.
       preamble_invited: Mus lean thu air adhart, thoir an aire air na riaghailtean a shuidhich na maoir aig %{domain}.
       title: Riaghailtean bunasach.
@@ -1183,7 +1183,7 @@ gd:
       your_appeal_pending: Chuir thu ath-thagradh a-null
       your_appeal_rejected: Chaidh an t-ath-thagradh agad a dhiùltadh
   domain_validator:
-    invalid_domain: '– chan eil seo ’na ainm àrainne dligheach'
+    invalid_domain: "– chan eil seo ’na ainm àrainne dligheach"
   edit_profile:
     basic_information: Fiosrachadh bunasach
     hint_html: "<strong>Gnàthaich na chithear air a’ phròifil phoblach agad is ri taobh nam postaichean agad.</strong> Bidh càch nas buailtiche do leantainn agus conaltradh leat nuair a bhios tu air a’ phròifil agad a lìonadh agus dealbh rithe."
@@ -1285,8 +1285,6 @@ gd:
     all_matching_items_selected_html:
       one: "Chaidh <strong>%{count}</strong> nì a thaghadh a fhreagras dha na lorg thu."
       two: Chaidh <strong>%{count}</strong> nì a thaghadh a fhreagras dha na lorg thu.
-      few: Chaidh <strong>%{count}</strong> nithean a thaghadh a fhreagras dha na lorg thu.
-      other: Chaidh <strong>%{count}</strong> nì a thaghadh a fhreagras dha na lorg thu.
     cancel: Sguir dheth
     changes_saved_msg: Chaidh na h-atharraichean a shàbhaladh!
     confirm: Dearbh
@@ -1334,7 +1332,7 @@ gd:
       domain_blocking_html: Tha thu an impis suas ri <strong>%{total_items} àrainn(ean)</strong> o <strong>%{filename}</strong> a <strong>bhacadh</strong>.
       following_html: Tha thu an impis suas ri <strong>%{total_items} cunntas(an)</strong> o <strong>%{filename}</strong> a <strong>leantainn</strong>.
       muting_html: Tha thu an impis suas ri <strong>%{total_items} cunntas(an)</strong> o <strong>%{filename}</strong> a <strong>mhùchadh</strong>.
-    preface: '’S urrainn dhut dàta ion-phortadh a dh’às-phortaich thu o fhrithealaiche eile, can liosta nan daoine a leanas tu no a tha thu a’ bacadh.'
+    preface: "’S urrainn dhut dàta ion-phortadh a dh’às-phortaich thu o fhrithealaiche eile, can liosta nan daoine a leanas tu no a tha thu a’ bacadh."
     recent_imports: Ion-phortaidhean o chionn goirid
     states:
       finished: Deiseil
@@ -1528,10 +1526,10 @@ gd:
       duration_too_short: '– tha seo ro aithghearr'
       expired: Tha an cunntas-bheachd air a thighinn gu crìoch
       invalid_choice: Chan eil an roghainn dhan a bhòt thu ann
-      over_character_limit: '– chan fhaod a bhith nas fhaide na %{max} caractar'
+      over_character_limit: "– chan fhaod a bhith nas fhaide na %{max} caractar"
       self_vote: Chan urrainn dhut bhòtadh sna chunntasan-bheachd agad fhèin
-      too_few_options: '– feumaidh iomadh nì a bhith aige'
-      too_many_options: '– chan fhaod còrr is %{max} nì a bhith ’na bhroinn'
+      too_few_options: "– feumaidh iomadh nì a bhith aige"
+      too_many_options: "– chan fhaod còrr is %{max} nì a bhith ’na bhroinn"
   preferences:
     other: Eile
     posting_defaults: Bun-roghainnean a’ phostaidh
@@ -1697,8 +1695,7 @@ gd:
     show_newer: Seall feadhainn as ùire
     show_older: Seall feadhainn as sine
     show_thread: Seall an snàithlean
-    sign_in_to_participate: Clàraich a-steach a ghabhail pàirt sa chòmhradh
-    title: '%{name}: “%{quote}”'
+    title: "%{name}: “%{quote}”"
     visibilities:
       direct: Dìreach
       private: Luchd-leantainn a-mhàin
@@ -1743,8 +1740,6 @@ gd:
     min_reblogs: Cùm na tha ’ga bhrosnachadh le co-dhiù
     min_reblogs_hint: Cha dèid gin dhe na postaichean agad a sguabadh às a tha ’gam brosnachadh an àireamh de thursan seo air a char as lugha. Fàg seo bàn airson postaichean a sguabadh às ge b’ e co mheud turas a tha iad ’gam brosnachadh
   stream_entries:
-    pinned: Post prìnichte
-    reblogged: '’ga bhrosnachadh'
     sensitive_content: Susbaint fhrionasach
   strikes:
     errors:

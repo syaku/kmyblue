@@ -383,10 +383,10 @@ ja:
         cancel: キャンセル
         confirm: ブロック
         permanent_action: 失われたデータやフォロー関係は、ブロックを解除しても元に戻せません。
-        preamble_html: <strong>%{domain}</strong> と、そのサブドメインをブロックします。
+        preamble_html: "<strong>%{domain}</strong> と、そのサブドメインをブロックします。"
         remove_all_data: この操作により、対象のドメインにあるアカウントからのコンテンツやメディア、プロフィール情報はすべて削除されます。
         stop_communication: ブロックしたサーバーとは通信を行わなくなります。
-        title: '%{domain} をブロック'
+        title: "%{domain} をブロック"
         undo_relationships: この操作により、このサーバーと対象サーバーのアカウント間のフォロー関係はすべて解除されます。
       created_msg: ドメインブロック処理を完了しました
       destroyed_msg: ドメインブロックを外しました
@@ -776,6 +776,7 @@ ja:
         preamble: サーバーのブランディングは、ネットワーク上の他のサーバーと区別するためのものです。この情報は、Mastodon の Web インターフェース、ネイティブアプリケーション、他の Web サイトやメッセージングアプリのリンクプレビューなど、様々な所で表示される可能性があります。このため、明確で短く、簡潔に記載することをおすすめします。
         title: ブランディング
       captcha_enabled:
+        desc_html: この機能は hCaptcha による外部スクリプトを使用しますが、hCaptcha にはセキュリティとプライバシーの懸念が考えられます。また、<strong>CAPTCHAにより新規登録のアクセシビリティが大幅に損なわれる可能性があり、身体および精神障害者においては特に顕著です。</strong>以上の理由から、承認制や招待制を基本とするなど、代わりの登録手順を提供することを検討してください。
         title: 新規ユーザーのアカウント確認にCHAPCHAを要求する
       content_retention:
         preamble: ユーザーが生成したコンテンツがどのように Mastodon に保存されるかを管理します。
@@ -910,7 +911,7 @@ ja:
         no_status_selected: 何も選択されていないため、変更されていません
         not_discoverable: 投稿者は発見可能であることに同意していません
         shared_by:
-          other: '%{friendly_count}回の共有、お気に入り'
+          other: "%{friendly_count}回の共有、お気に入り"
         title: トレンド投稿
       tags:
         current_score: 現在のスコア %{score}
@@ -1348,7 +1349,7 @@ ja:
       empty: CSVファイルの内容がありません
       incompatible_type: 選択したインポート項目とファイルの内容が異なります
       invalid_csv_file: '無効なCSVファイルです。エラー: %{error}'
-      over_rows_processing_limit: '%{count}行以上'
+      over_rows_processing_limit: "%{count}行以上"
       too_large: ファイルが大きすぎます
     failures: 失敗
     imported: インポート済み
@@ -1359,17 +1360,17 @@ ja:
       overwrite: 上書き
       overwrite_long: 現在のレコードを新しいもので置き換えます
     overwrite_preambles:
-      blocking_html: <strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>で<strong>ブロックしたアカウントリストを置き換えます</strong>。
-      bookmarks_html: <strong>%{filename}</strong>の<strong>%{total_items}件の投稿</strong>で<strong>ブックマークの一覧を置き換えます</strong>。
-      domain_blocking_html: <strong>%{filename}</strong>の<strong>%{total_items}個のドメイン</strong>で<strong>非表示にしたドメインリストを置き換えます</strong>。
-      following_html: <strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>フォローします</strong>。また、<strong>この中に含まれていないアカウントのフォローを解除します</strong>。
-      muting_html: <strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>で<strong>ミュートしたアカウントリストを置き換えます</strong>。
+      blocking_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>で<strong>ブロックしたアカウントリストを置き換えます</strong>。"
+      bookmarks_html: "<strong>%{filename}</strong>の<strong>%{total_items}件の投稿</strong>で<strong>ブックマークの一覧を置き換えます</strong>。"
+      domain_blocking_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のドメイン</strong>で<strong>非表示にしたドメインリストを置き換えます</strong>。"
+      following_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>フォローします</strong>。また、<strong>この中に含まれていないアカウントのフォローを解除します</strong>。"
+      muting_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>で<strong>ミュートしたアカウントリストを置き換えます</strong>。"
     preambles:
-      blocking_html: <strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>ブロックします</strong>。
-      bookmarks_html: <strong>%{filename}</strong>の<strong>%{total_items}件の投稿</strong>を<strong>ブックマークに追加します</strong>。
-      domain_blocking_html: <strong>%{filename}</strong>の<strong>%{total_items}個のドメイン</strong>を<strong>非表示にします</strong>。
-      following_html: <strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>フォローします</strong>。
-      muting_html: <strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>ミュートします</strong>。
+      blocking_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>ブロックします</strong>。"
+      bookmarks_html: "<strong>%{filename}</strong>の<strong>%{total_items}件の投稿</strong>を<strong>ブックマークに追加します</strong>。"
+      domain_blocking_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のドメイン</strong>を<strong>非表示にします</strong>。"
+      following_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>フォローします</strong>。"
+      muting_html: "<strong>%{filename}</strong>の<strong>%{total_items}個のアカウント</strong>を<strong>ミュートします</strong>。"
     preface: 他のサーバーでエクスポートされたファイルから、フォロー/ブロックした情報をこのサーバー上のアカウントにインポートできます。
     recent_imports: 最近のインポート
     states:
@@ -1434,16 +1435,18 @@ ja:
     title: 認証履歴
   mail_subscriptions:
     unsubscribe:
-      action: はい、購読解除します
-      complete: 購読解除済み
+      action: 購読を解除する
+      complete: 購読を解除しました
+      confirmation_html: '%{domain} の Mastodon による %{email} への%{type}を購読解除しますか？ 再購読が必要になった場合は<a href="%{settings_path}">メール通知の設定</a>からいつでも再開できます。'
       emails:
         notification_emails:
-          favourite: お気に入りの通知メール
-          follow: 通知メールをフォローする
-          follow_request: フォローリクエストのメール送信
-          mention: 返信通知のメール送信
-          reblog: ブースト通知のメール送信
+          favourite: お気に入り登録の通知メール
+          follow: フォロー通知メール
+          follow_request: フォローリクエスト通知メール
+          mention: 返信の通知メール
+          reblog: ブーストの通知メール
       resubscribe_html: 間違って配信を停止した場合は、 <a href="%{settings_path}">メール通知設定</a>から再登録できます。
+      success_html: "%{domain} の Mastodon から %{email} への%{type}の配信が停止されました。"
       title: 購読の解除
   media_attachments:
     validations:
@@ -1727,7 +1730,6 @@ ja:
     show_newer: 新しいものを表示
     show_older: 古いものを表示
     show_thread: スレッドを表示
-    sign_in_to_participate: ログインして会話に参加
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: ダイレクト
@@ -1782,8 +1784,6 @@ ja:
     min_reblogs: ブーストの基準値
     min_reblogs_hint: この数以上、ブーストされた投稿を削除せずに残します。空白にしておくと、ブーストされた数に関わらず投稿を削除します。
   stream_entries:
-    pinned: 固定された投稿
-    reblogged: さんがブースト
     sensitive_content: 閲覧注意
   strikes:
     errors:

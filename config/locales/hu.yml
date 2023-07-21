@@ -388,7 +388,7 @@ hu:
         preamble_html: A <strong>%{domain}</strong> domain és aldomainjeinek felfüggesztésére készülsz.
         remove_all_data: A kiszolgálódról a domainhez tartozó fiókok minden tartalmát, médiáját, profiladatát el fogja távolítani.
         stop_communication: A kiszolgálód nem fog kommunikálni ezekkel a kiszolgálókkal.
-        title: '%{domain} domain letiltásának megerősítése'
+        title: "%{domain} domain letiltásának megerősítése"
         undo_relationships: Minden kapcsolatot megszüntet az ezen kiszolgálókon lévő fiókok és a te kiszolgálód fiókjai között.
       created_msg: A domain-tiltás feldolgozása folyamatban
       destroyed_msg: A domain tiltása feloldva
@@ -870,7 +870,7 @@ hu:
         not_discoverable: A szerző nem járult hozzá, hogy mások rátalálhassanak
         shared_by:
           one: Egy alkalommal megosztva és kedvencek közé helyezve
-          other: '%{friendly_count} alkalommal megosztva és kedvencek közé helyezve'
+          other: "%{friendly_count} alkalommal megosztva és kedvencek közé helyezve"
         title: Felkapott bejegyzések
       tags:
         current_score: 'Jelenlegi pontszám: %{score}'
@@ -1633,8 +1633,7 @@ hu:
     show_newer: Újabbak mutatása
     show_older: Régebbiek mutatása
     show_thread: Szál mutatása
-    sign_in_to_participate: Bejelentkezés a beszélgetésben részvételhez
-    title: '%{name}: „%{quote}”'
+    title: "%{name}: „%{quote}”"
     visibilities:
       direct: Közvetlen
       private: Csak követőknek
@@ -1679,8 +1678,6 @@ hu:
     min_reblogs: Bejegyzések megtartása, melyeket többször toltak meg, mint
     min_reblogs_hint: Egyetlen olyan bejegyzésedet sem törli, melyet ennél többször toltak meg. Hagyd üresen, hogy a megtolások számától függetlenül töröljük a bejegyzéseket
   stream_entries:
-    pinned: Kitűzött bejegyzés
-    reblogged: megtolta
     sensitive_content: Kényes tartalom
   strikes:
     errors:

@@ -1237,8 +1237,6 @@ lv:
       other: Šajā lapā ir atlasīti <strong>%{count}</strong> vienumi.
     all_matching_items_selected_html:
       zero: Atlasīts <strong>%{count}</strong> vienumu, kas atbilst tavam meklēšanas vaicājumam.
-      one: "Atlasīts <strong>%{count}</strong> vienums, kas atbilst tavam meklēšanas vaicājumam."
-      other: Atlasīti visi <strong>%{count}</strong> vienumi, kas atbilst tavam meklēšanas vaicājumam.
     cancel: Atcelt
     changes_saved_msg: Izmaiņas veiksmīgi saglabātas!
     confirm: Apstiprināt
@@ -1624,8 +1622,7 @@ lv:
     show_newer: Nekad nerādīt
     show_older: Rādīt senākus
     show_thread: Rādīt tematu
-    sign_in_to_participate: Lai piedalītos sarunā, pieraksties
-    title: '%{name}: “%{quote}”'
+    title: "%{name}: “%{quote}”"
     visibilities:
       direct: Tiešs
       private: Tikai sekotājiem
@@ -1670,8 +1667,6 @@ lv:
     min_reblogs: Saglabāt ziņas izceltas vismaz
     min_reblogs_hint: Neizdzēš nevienu no tavām ziņām, kas ir izceltas vismaz tik reižu. Atstāj tukšu, lai dzēstu ziņas neatkarīgi no to izcēlumu skaita
   stream_entries:
-    pinned: Piespraustā ziņa
-    reblogged: izceltie
     sensitive_content: Sensitīvs saturs
   strikes:
     errors:

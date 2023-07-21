@@ -726,7 +726,9 @@ zh-TW:
         preamble: 您的伺服器品牌使之從聯邦宇宙網路中其他伺服器間凸顯自己。此資訊可能於各種不同的環境中顯示，例如 Mastodon 網頁介面、原生應用程式、其他網頁上的連結預覽或是其他通訊應用程式等等。因此，請盡可能保持此資訊簡潔明朗。
         title: 品牌化
       captcha_enabled:
-        desc_html: "此功能依賴於來自 hCaptcha 之外部腳本，其可能有安全及隱私顧慮。\n此外，<strong>這將大幅降低註冊流程對某些族群之易用性，特別是無障礙需求人士</strong>。基於此因，請考慮其他替代性方案，例如審核制或是邀請制之註冊流程。"
+        desc_html: |-
+          此功能依賴於來自 hCaptcha 之外部腳本，其可能有安全及隱私顧慮。
+          此外，<strong>這將大幅降低註冊流程對某些族群之易用性，特別是無障礙需求人士</strong>。基於此因，請考慮其他替代性方案，例如審核制或是邀請制之註冊流程。
         title: 要求新使用者完成 CAPTCHA 挑戰以確認帳號
       content_retention:
         preamble: 控制使用者產生內容如何儲存於 Mastodon 上。
@@ -945,7 +947,7 @@ zh-TW:
     remove: 取消連結別名
   appearance:
     advanced_web_interface: 進階網頁介面
-    advanced_web_interface_hint: '進階網頁介面可讓您設定許多不同的欄位來善用螢幕空間，依需要同時查看許多不同的資訊如：首頁、通知、聯邦宇宙時間軸、任意數量的列表和主題標籤。'
+    advanced_web_interface_hint: 進階網頁介面可讓您設定許多不同的欄位來善用螢幕空間，依需要同時查看許多不同的資訊如：首頁、通知、聯邦宇宙時間軸、任意數量的列表和主題標籤。
     animations_and_accessibility: 動畫與無障礙設定
     confirmation_dialogs: 確認對話框
     discovery: 探索
@@ -958,9 +960,9 @@ zh-TW:
   application_mailer:
     notification_preferences: 變更電子郵件設定
     salutation: "%{name}、"
-    settings: '變更電子郵件設定︰%{link}'
+    settings: 變更電子郵件設定︰%{link}
     unsubscribe: 取消訂閱
-    view: '進入瀏覽：'
+    view: 進入瀏覽：
     view_profile: 檢視個人檔案
     view_status: 檢視嘟文
   applications:
@@ -1013,7 +1015,7 @@ zh-TW:
     rules:
       accept: 接受
       back: 上一頁
-      invited_by: '您可以藉由來自此處之邀請而加入 %{domain}'
+      invited_by: 您可以藉由來自此處之邀請而加入 %{domain}
       preamble: 這些被 %{domain} 的管管們制定以及實施。
       preamble_invited: 在您繼續之前，請考慮由 %{domain} 管理員設立的伺服器規則。
       title: 一些基本守則。
@@ -1236,7 +1238,7 @@ zh-TW:
     errors:
       empty: 空的 CSV 檔案
       incompatible_type: 與所選的匯入類型不相容
-      invalid_csv_file: '無效的 CSV 檔案。錯誤訊息：%{error}'
+      invalid_csv_file: 無效的 CSV 檔案。錯誤訊息：%{error}
       over_rows_processing_limit: 含有超過 %{count} 行
       too_large: 檔案大小過大
     failures: 失敗
@@ -1601,8 +1603,7 @@ zh-TW:
     show_newer: 顯示較新嘟文
     show_older: 顯示較舊嘟文
     show_thread: 顯示討論串
-    sign_in_to_participate: 登入以加入討論
-    title: '%{name}：「%{quote}」'
+    title: "%{name}：「%{quote}」"
     visibilities:
       direct: 私訊
       private: 僅限跟隨者
@@ -1647,8 +1648,6 @@ zh-TW:
     min_reblogs: 保留超過嘟文轉嘟門檻
     min_reblogs_hint: 如果您嘟文已收到超過轉嘟門檻則不會刪除。留白表示不論轉嘟數量皆刪除該嘟文。
   stream_entries:
-    pinned: 釘選嘟文
-    reblogged: 轉嘟
     sensitive_content: 敏感內容
   strikes:
     errors:

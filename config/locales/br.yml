@@ -338,9 +338,7 @@ br:
     '404': The page you are looking for isn't here.
     '406': This page is not available in the requested format.
     '410': The page you were looking for doesn't exist here anymore.
-    '422':
     '429': Too many requests
-    '500':
     '503': The page could not be served due to a temporary server failure.
   exports:
     archive_takeout:
@@ -503,9 +501,6 @@ br:
       '604800': 1 sizhunvezh
       '63113904': 2 vloavezh
       '7889238': 3 months
-  stream_entries:
-    pinned: Toud spilhennet
-    reblogged: en·he deus skignet
   themes:
     default: Mastodoñ (Teñval)
     mastodon-light: Mastodoñ (Sklaer)

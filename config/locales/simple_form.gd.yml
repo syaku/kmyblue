@@ -4,7 +4,7 @@ gd:
       account:
         display_name: D’ ainm slàn no spòrsail.
         fields: An duilleag-dhachaigh agad, roimhearan, aois, rud sam bith a thogras tu.
-        note: '’S urrainn dhut @iomradh a thoirt air càch no air #tagaicheanHais.'
+        note: "’S urrainn dhut @iomradh a thoirt air càch no air #tagaicheanHais."
       account_alias:
         acct: Sònraich ainm-cleachdaiche@àrainn dhen chunntas a tha thu airson imrich uaithe
       account_migration:
