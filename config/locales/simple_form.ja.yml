@@ -265,6 +265,10 @@ ja:
         whole_word: 単語全体にマッチ
       email_domain_block:
         with_dns_records: ドメインのMXレコードとIPアドレスを含む
+      emoji_reactions:
+        deny_from_all: 自分以外すべてのスタンプをブロック
+        must_be_follower: フォロワー以外からのスタンプをブロック
+        must_be_following: フォローしていないユーザーからのスタンプをブロック
       featured_tag:
         name: ハッシュタグ
       filters:

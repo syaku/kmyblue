@@ -17,6 +17,7 @@ class UpdateStatusService < BaseService
   # @option options [Boolean] :sensitive
   # @option options [Boolean] :markdown
   # @option options [String] :language
+  # @option [Enumerable] :status_reference_ids Optional array
   def call(status, account_id, options = {})
     @status                    = status
     @options                   = options
@@ -36,6 +37,7 @@ class UpdateStatusService < BaseService
 
     queue_poll_notifications!
     reset_preview_card!
+    update_references!
     update_metadata!
     broadcast_updates!
 
@@ -137,6 +139,11 @@ class UpdateStatusService < BaseService
 
     @status.preview_cards.clear
     LinkCrawlWorker.perform_async(@status.id)
+  end
+
+  def update_references!
+    reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
+    ProcessReferencesWorker.perform_async(@status.id, reference_ids, [])
   end
 
   def update_metadata!

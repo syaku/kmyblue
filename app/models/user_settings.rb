@@ -69,6 +69,12 @@ class UserSettings
     setting :must_be_following_dm, default: false
   end
 
+  namespace :emoji_reactions do
+    setting :must_be_follower, default: false
+    setting :must_be_following, default: false
+    setting :deny_from_all, default: false
+  end
+
   def initialize(original_hash)
     @original_hash = original_hash || {}
   end

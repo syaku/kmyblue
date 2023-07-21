@@ -147,6 +147,7 @@ class Api::V1::StatusesController < Api::BaseController
       :language,
       :markdown,
       :scheduled_at,
+      :status_reference_ids,
       allowed_mentions: [],
       media_ids: [],
       media_attributes: [

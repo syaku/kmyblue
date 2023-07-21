@@ -51,6 +51,18 @@ class NotifyService < BaseService
     @recipient.user.settings['interactions.must_be_following'] && !following_sender?
   end
 
+  def optional_non_follower_emoji_reaction?
+    emoji_reaction? && @recipient.user.settings['emoji_reactions.must_be_follower']  && !@notification.from_account.following?(@recipient)
+  end
+
+  def optional_non_following_emoji_reaction?
+    emoji_reaction? && @recipient.user.settings['emoji_reactions.must_be_following'] && !following_sender?
+  end
+
+  def emoji_reaction?
+    @notification.type == :emoji_reaction
+  end
+
   def message?
     @notification.type == :mention
   end
@@ -120,6 +132,8 @@ class NotifyService < BaseService
     blocked ||= optional_non_follower?
     blocked ||= optional_non_following?
     blocked ||= optional_non_following_and_direct?
+    blocked ||= optional_non_follower_emoji_reaction?
+    blocked ||= optional_non_following_emoji_reaction?
     blocked ||= conversation_muted?
     blocked ||= blocked_mention? if @notification.type == :mention
     blocked

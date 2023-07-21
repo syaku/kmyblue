@@ -335,6 +335,27 @@ class Account < ApplicationRecord
     false
   end
 
+  def emoji_reactions_must_following?
+    return user&.settings&.[]('emoji_reactions.must_be_following') || false if user.present?
+    return settings['emoji_reactions_must_be_following'] || false if settings.present?
+
+    false
+  end
+
+  def emoji_reactions_must_follower?
+    return user&.settings&.[]('emoji_reactions.must_be_follower') || false if user.present?
+    return settings['emoji_reaction_must_be_follower'] || false if settings.present?
+
+    false
+  end
+
+  def emoji_reactions_deny_from_all?
+    return user&.settings&.[]('emoji_reactions.deny_from_all') || false if user.present?
+    return settings['emoji_reaction_deny_from_all'] || false if settings.present?
+
+    false
+  end
+
   def public_settings
     config = {
       'noindex' => noindex?,
@@ -343,6 +364,9 @@ class Account < ApplicationRecord
       'hide_statuses_count' => hide_statuses_count?,
       'hide_following_count' => hide_following_count?,
       'hide_followers_count' => hide_followers_count?,
+      'emoji_reaction_must_following' => emoji_reactions_must_following?,
+      'emoji_reaction_must_follower' => emoji_reactions_must_follower?,
+      'emoji_reaction_deny_from_all' => emoji_reactions_deny_from_all?,
     }
     config = config.merge(settings) if settings.present?
     config
