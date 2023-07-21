@@ -11,6 +11,7 @@ class SearchService < BaseService
     @offset    = options[:type].blank? ? 0 : options[:offset].to_i
     @resolve   = options[:resolve] || false
     @following = options[:following] || false
+    @searchability = options[:searchability] || 'public'
 
     default_results.tap do |results|
       next if @query.blank? || @limit.zero?
