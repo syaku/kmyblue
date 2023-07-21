@@ -9,7 +9,9 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
              :in_reply_to, :published, :url,
              :attributed_to, :to, :cc, :sensitive,
              :atom_uri, :in_reply_to_atom_uri,
-             :conversation, :searchable_by, :references
+             :conversation, :searchable_by
+
+  attribute :references, if: :not_private_post?
 
   attribute :content
   attribute :content_map, if: :language?
@@ -148,6 +150,10 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
 
   def local?
     object.account.local?
+  end
+
+  def not_private_post?
+    !object.private_visibility?
   end
 
   def poll_options
