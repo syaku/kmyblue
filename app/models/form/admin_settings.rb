@@ -35,6 +35,7 @@ class Form::AdminSettings
     status_page_url
     captcha_enabled
     ng_words
+    enable_block_emoji_reaction_settings
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -55,6 +56,7 @@ class Form::AdminSettings
     noindex
     require_invite_text
     captcha_enabled
+    enable_block_emoji_reaction_settings
   ).freeze
 
   UPLOAD_KEYS = %i(

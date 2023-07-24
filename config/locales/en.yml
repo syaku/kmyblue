@@ -596,6 +596,7 @@ en:
     media_attachments:
       title: Media attachments
     ng_words:
+      enable_block_emoji_reaction_settings: Enable block emoji reactions settings for users
       keywords: Reject keywords
       title: NG words and against spams
     relationships:
