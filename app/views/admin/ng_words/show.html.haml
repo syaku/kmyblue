@@ -8,7 +8,7 @@
   = render 'shared/error_messages', object: @admin_settings
 
   .fields-group
-    = f.input :ng_words, wrapper: :with_label, as: :text, input_html: { rows: 12 }, label: t('antennas.edit.keywords_raw')
+    = f.input :ng_words, wrapper: :with_label, as: :text, input_html: { rows: 12 }, label: t('admin.ng_words.keywords')
 
   .actions
     = f.button :button, t('generic.save_changes'), type: :submit

@@ -595,6 +595,9 @@ en:
       title: IP rules
     media_attachments:
       title: Media attachments
+    ng_words:
+      keywords: Reject keywords
+      title: NG words and against spams
     relationships:
       title: "%{acct}'s relationships"
     relays:
@@ -1710,6 +1713,7 @@ en:
         one: "%{count} video"
         other: "%{count} videos"
     boosted_from_html: Boosted from %{acct_link}
+    contains_ng_words: The post contains NG words
     content_warning: 'Content warning: %{warning}'
     default_language: Same as interface language
     disallowed_hashtags:

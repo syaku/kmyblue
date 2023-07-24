@@ -594,6 +594,9 @@ ja:
       title: IPルール
     media_attachments:
       title: 投稿された画像
+    ng_words:
+      keywords: 投稿できないキーワード
+      title: NGワードとスパム
     relationships:
       title: "%{acct} さんのフォロー・フォロワー"
     relays:
@@ -1694,6 +1697,7 @@ ja:
       video:
         other: "%{count}本の動画"
     boosted_from_html: '%{acct_link}からブースト'
+    contains_ng_words: 投稿できない単語が含まれています
     content_warning: '閲覧注意: %{warning}'
     default_language: UIの表示言語
     disallowed_hashtags:
