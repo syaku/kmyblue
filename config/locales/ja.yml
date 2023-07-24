@@ -596,6 +596,7 @@ ja:
       title: 投稿された画像
     ng_words:
       enable_block_emoji_reaction_settings: 各ユーザーにスタンプ機能のブロック設定項目を解放する
+      hide_local_users_for_anonymous: ログインしていない状態でローカルユーザーの投稿をタイムラインから取得できないようにする
       keywords: 投稿できないキーワード
       title: NGワードとスパム
     relationships:

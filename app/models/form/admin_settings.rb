@@ -36,6 +36,7 @@ class Form::AdminSettings
     captcha_enabled
     ng_words
     enable_block_emoji_reaction_settings
+    hide_local_users_for_anonymous
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -57,6 +58,7 @@ class Form::AdminSettings
     require_invite_text
     captcha_enabled
     enable_block_emoji_reaction_settings
+    hide_local_users_for_anonymous
   ).freeze
 
   UPLOAD_KEYS = %i(

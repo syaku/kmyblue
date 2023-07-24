@@ -24,7 +24,7 @@ class PublicFeed
     scope.merge!(without_replies_scope) unless with_replies?
     scope.merge!(without_reblogs_scope) unless with_reblogs?
     scope.merge!(local_only_scope) if local_only?
-    scope.merge!(remote_only_scope) if remote_only?
+    scope.merge!(remote_only_scope) if remote_only? || hide_local_users?
     scope.merge!(global_timeline_only_scope) if global_timeline?
     scope.merge!(account_filters_scope) if account?
     scope.merge!(media_only_scope) if media_only?
@@ -52,6 +52,10 @@ class PublicFeed
 
   def remote_only?
     options[:remote]
+  end
+
+  def hide_local_users?
+    @account.nil? && Setting.hide_local_users_for_anonymous
   end
 
   def global_timeline?
