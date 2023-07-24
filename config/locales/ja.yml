@@ -598,6 +598,7 @@ ja:
       enable_block_emoji_reaction_settings: 各ユーザーにスタンプ機能のブロック設定項目を解放する
       hide_local_users_for_anonymous: ログインしていない状態でローカルユーザーの投稿をタイムラインから取得できないようにする
       keywords: 投稿できないキーワード
+      post_hash_tags_max: 投稿に設定可能なハッシュタグの最大数
       title: NGワードとスパム
     relationships:
       title: "%{acct} さんのフォロー・フォロワー"
@@ -1735,6 +1736,7 @@ ja:
     show_thread: スレッドを表示
     sign_in_to_participate: ログインして会話に参加
     title: '%{name}: "%{quote}"'
+    too_many_hashtags: ハッシュタグが多すぎます
     visibilities:
       direct: ダイレクト
       private: フォロワー限定

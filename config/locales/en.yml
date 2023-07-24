@@ -599,6 +599,7 @@ en:
       enable_block_emoji_reaction_settings: Enable block emoji reactions settings for users
       hide_local_users_for_anonymous: Hide timeline local user posts from anonymous
       keywords: Reject keywords
+      post_hash_tags_max: Hash tags max for posts
       title: NG words and against spams
     relationships:
       title: "%{acct}'s relationships"
@@ -1754,6 +1755,7 @@ en:
     show_thread: Show thread
     sign_in_to_participate: Login to participate in the conversation
     title: '%{name}: "%{quote}"'
+    too_many_hashtags: Too many hashtags
     visibilities:
       direct: Direct
       private: Followers-only

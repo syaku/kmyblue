@@ -37,12 +37,14 @@ class Form::AdminSettings
     ng_words
     enable_block_emoji_reaction_settings
     hide_local_users_for_anonymous
+    post_hash_tags_max
   ).freeze
 
   INTEGER_KEYS = %i(
     media_cache_retention_period
     content_cache_retention_period
     backups_retention_period
+    post_hash_tags_max
   ).freeze
 
   BOOLEAN_KEYS = %i(

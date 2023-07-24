@@ -142,7 +142,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def valid_status?
-    !Admin::NgWord.reject?("#{@params[:spoiler_text]}\n#{@params[:text]}")
+    !Admin::NgWord.reject?("#{@params[:spoiler_text]}\n#{@params[:text]}") && !Admin::NgWord.hashtag_reject?(@tags.size)
   end
 
   def reply_to_local_account?

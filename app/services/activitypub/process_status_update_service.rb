@@ -153,7 +153,7 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
   end
 
   def valid_status?
-    !Admin::NgWord.reject?("#{@status_parser.spoiler_text}\n#{@status_parser.text}")
+    !Admin::NgWord.reject?("#{@status_parser.spoiler_text}\n#{@status_parser.text}") && !Admin::NgWord.hashtag_reject?(@tags.size)
   end
 
   def update_immediate_attributes!
