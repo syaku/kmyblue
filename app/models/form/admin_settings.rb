@@ -34,6 +34,7 @@ class Form::AdminSettings
     backups_retention_period
     status_page_url
     captcha_enabled
+    ng_words
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -61,6 +62,10 @@ class Form::AdminSettings
     mascot
   ).freeze
 
+  STRING_ARRAY_KEYS = %i(
+    ng_words
+  ).freeze
+
   attr_accessor(*KEYS)
 
   validates :registrations_mode, inclusion: { in: %w(open approved none) }, if: -> { defined?(@registrations_mode) }
@@ -80,6 +85,8 @@ class Form::AdminSettings
 
       stored_value = if UPLOAD_KEYS.include?(key)
                        SiteUpload.where(var: key).first_or_initialize(var: key)
+                     elsif STRING_ARRAY_KEYS.include?(key)
+                       Setting.public_send(key)&.join("\n") || ''
                      else
                        Setting.public_send(key)
                      end
@@ -122,6 +129,8 @@ class Form::AdminSettings
       value == '1'
     elsif INTEGER_KEYS.include?(key)
       value.blank? ? value : Integer(value)
+    elsif STRING_ARRAY_KEYS.include?(key)
+      value&.split(/\r\n|\r|\n/)&.filter(&:present?)&.uniq || []
     else
       value
     end

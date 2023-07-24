@@ -44,6 +44,7 @@ class PostStatusService < BaseService
 
     return idempotency_duplicate if idempotency_given? && idempotency_duplicate?
 
+    validate_status!
     validate_media!
     preprocess_attributes!
 
@@ -156,6 +157,10 @@ class PostStatusService < BaseService
     ActivityPub::DistributionWorker.perform_async(@status.id)
     PollExpirationNotifyWorker.perform_at(@status.poll.expires_at, @status.poll.id) if @status.poll
     GroupReblogService.new.call(@status)
+  end
+
+  def validate_status!
+    raise Mastodon::ValidationError, I18n.t('statuses.contains_ng_words') if Admin::NgWord.reject?("#{@options[:spoiler_text]}\n#{@options[:text]}")
   end
 
   def validate_media!
