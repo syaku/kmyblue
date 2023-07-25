@@ -17,7 +17,7 @@ class Admin::NgWord
     private
 
     def ng_words
-      Setting.ng_words
+      Setting.ng_words || []
     end
 
     def post_hash_tags_max
