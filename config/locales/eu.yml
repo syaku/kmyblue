@@ -385,7 +385,7 @@ eu:
         cancel: Utzi
         confirm: Eten
         permanent_action: Etenaldia uzteak ez ditu datuak edo elkarreraginak leheneratuko.
-        preamble_html: <strong>%{domain}</strong> eta bere azpidomeinuak etetzera zoaz.
+        preamble_html: "<strong>%{domain}</strong> eta bere azpidomeinuak etetzera zoaz."
         remove_all_data: Honek domeinuko kontuen eduki, media, eta profiletako datu guztiak kenduko ditu zure zerbitzaritik.
         stop_communication: Zure zerbitzariak zerbitzari hauekin komunikatzeari utziko dio.
         title: Berretsi %{domain} domeinuaren blokeoa
@@ -969,7 +969,6 @@ eu:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: Edonork lagundu dezake.
     sensitive_content: Eduki hunkigarria
-    toot_layout: Bidalketen diseinua
   application_mailer:
     notification_preferences: Aldatu e-mail hobespenak
     salutation: "%{name},"
@@ -1246,7 +1245,7 @@ eu:
       empty: CSV fitxategi hutsa
       incompatible_type: Ez da bateragarria aukeratutako inportatze-motarekin
       invalid_csv_file: 'CSV fitxategi baliogabea. Errorea: %{error}'
-      over_rows_processing_limit: '%{count} lerro baina gehiago ditu'
+      over_rows_processing_limit: "%{count} lerro baina gehiago ditu"
       too_large: Fitxategia handiegia da
     failures: Akatsak
     imported: Inportatuta
@@ -1589,7 +1588,6 @@ eu:
     show_newer: Erakutsi berriagoak
     show_older: Erakutsi zaharragoak
     show_thread: Erakutsi haria
-    sign_in_to_participate: Eman izena elkarrizketan parte hartzeko
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: Zuzena
@@ -1635,8 +1633,6 @@ eu:
     min_reblogs: Mantendu bultzada kopuru hau duten bidalketak
     min_reblogs_hint: Gutxienez bultzada kopuru hau jaso duten zure bidalketak ez dira ezabatuko. Hutsik utziz gero bultzada kopurua ez da kontuan hartuko bidalketak ezabatzean
   stream_entries:
-    pinned: Finkatutako bidalketa
-    reblogged: (r)en bultzada
     sensitive_content: 'Kontuz: Eduki hunkigarria'
   strikes:
     errors:

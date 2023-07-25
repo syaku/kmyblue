@@ -954,13 +954,12 @@ zh-CN:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: 每个人都可以参与翻译。
     sensitive_content: 敏感内容
-    toot_layout: 嘟文布局
   application_mailer:
     notification_preferences: 更改电子邮件首选项
     salutation: "%{name}："
-    settings: '使用此链接更改你的电子邮件首选项：%{link}'
+    settings: 使用此链接更改你的电子邮件首选项：%{link}
     unsubscribe: 取消订阅
-    view: '点此链接查看详情：'
+    view: 点此链接查看详情：
     view_profile: 查看个人资料页
     view_status: 查看嘟文
   applications:
@@ -1013,7 +1012,7 @@ zh-CN:
     rules:
       accept: 接受
       back: 返回
-      invited_by: '你可以加入%{domain}，这是由于你收到了他人的邀请，邀请来自：'
+      invited_by: 你可以加入%{domain}，这是由于你收到了他人的邀请，邀请来自：
       preamble: 这些由 %{domain} 监察员设置和执行。
       preamble_invited: 在您继续之前，请考虑 %{domain} 的管理员设定的基本规则。
       title: 一些基本规则。
@@ -1377,7 +1376,7 @@ zh-CN:
   move_handler:
     carry_blocks_over_text: 这个用户迁移自你屏蔽过的 %{acct}
     carry_mutes_over_text: 这个用户由你隐藏过的 %{acct} 迁移而来
-    copy_account_note_text: '这个用户迁移自 %{acct}，你曾为其添加备注：'
+    copy_account_note_text: 这个用户迁移自 %{acct}，你曾为其添加备注：
   navigation:
     toggle_menu: 隐藏/显示菜单
   notification_mailer:
@@ -1601,8 +1600,7 @@ zh-CN:
     show_newer: 显示更新内容
     show_older: 显示更早内容
     show_thread: 显示全部对话
-    sign_in_to_participate: 登录以加入对话
-    title: '%{name}：“%{quote}”'
+    title: "%{name}：“%{quote}”"
     visibilities:
       direct: 私信
       private: 仅关注者
@@ -1647,8 +1645,6 @@ zh-CN:
     min_reblogs: 保留如下嘟文：转嘟数超过
     min_reblogs_hint: 转嘟数超过该阈值的的嘟文不会被删除。如果留空，则无论嘟文获得多少转嘟，都将被删除。
   stream_entries:
-    pinned: 置顶嘟文
-    reblogged: 转嘟
     sensitive_content: 敏感内容
   strikes:
     errors:

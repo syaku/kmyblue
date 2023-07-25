@@ -873,12 +873,12 @@ ar:
         no_status_selected: لم يتم تغيير أي منشورات متداوله حيث لم يتم اختيار أي منهم
         not_discoverable: الكاتب لم يختار أن يكون قابلا للاكتشاف
         shared_by:
-          zero: لم يتم مشاركته أو تفضيله مطلقًا
-          one: تمت مشاركته وتفضيله مرة واحدة
-          two: تمت مشاركته وتفضيله مرتين
           few: تمت مشاركته وتفضيله %{friendly_count} مرات
           many: تمت مشاركته وتفضيله %{friendly_count} مرات
+          one: تمت مشاركته وتفضيله مرة واحدة
           other: تمت مشاركته وتفضيله %{friendly_count} مرات
+          two: تمت مشاركته وتفضيله مرتين
+          zero: لم يتم مشاركته أو تفضيله مطلقًا
         title: المنشورات المتداولة
       tags:
         current_score: التقييم الحالي %{score}
@@ -981,7 +981,6 @@ ar:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: يمكن للجميع المساهمة.
     sensitive_content: المحتوى الحساس
-    toot_layout: شكل المنشور
   application_mailer:
     notification_preferences: تعديل تفضيلات البريد الإلكتروني
     salutation: "%{name}،"
@@ -1325,6 +1324,9 @@ ar:
     failed_sign_in_html: فشل محاولة تسجيل الدخول مع %{method} من %{ip} (%{browser})
     successful_sign_in_html: تم تسجيل الدخول بنجاح مع %{method} من %{ip} (%{browser})
     title: تاريخ المصادقة
+  mail_subscriptions:
+    unsubscribe:
+      complete: إلغاء الاشتراك
   media_attachments:
     validations:
       images_and_video: ليس بالإمكان إرفاق فيديو في منشور يحتوي مسبقا على صور
@@ -1619,7 +1621,6 @@ ar:
     show_newer: إظهار أحدث
     show_older: إظهار أقدم
     show_thread: اعرض خيط المحادثة
-    sign_in_to_participate: قم بتسجيل الدخول للمشاركة في هذه المحادثة
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: مباشرة
@@ -1665,8 +1666,6 @@ ar:
     min_reblogs: إبقاء المشاركات المعززة أكثر من
     min_reblogs_hint: لن تُحذف أي من منشوراتك التي أعيد مشاركتها أكثر من هذا العدد من المرات. اتركه فارغاً لحذف المنشورات بغض النظر عن عدد إعادات المشاركة
   stream_entries:
-    pinned: منشور مثبّت
-    reblogged: شارَكَه
     sensitive_content: محتوى حساس
   strikes:
     errors:

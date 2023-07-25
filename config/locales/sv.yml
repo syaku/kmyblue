@@ -214,7 +214,7 @@ sv:
         reset_password_user: Återställ lösenord
         resolve_report: Lös rapport
         sensitive_account: Markera mediet i ditt konto som känsligt
-        silence_account: Tysta konto
+        silence_account: Begränsa konto
         suspend_account: Stäng av konto
         unassigned_report: Återkalla rapport
         unblock_email_account: Avblockera e-postadress
@@ -962,7 +962,6 @@ sv:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: Alla kan bidra.
     sensitive_content: Känsligt innehåll
-    toot_layout: Inläggslayout
   application_mailer:
     notification_preferences: Ändra e-postinställningar
     salutation: "%{name},"
@@ -1216,7 +1215,7 @@ sv:
       other: <strong>%{count}</strong> objekt på denna sida valda.
     all_matching_items_selected_html:
       one: "<strong>%{count}</strong> objekt som matchar din sökning är valt."
-      other: <strong>%{count}</strong> objekt som matchar din sökning är valda.
+      other: "<strong>%{count}</strong> objekt som matchar din sökning är valda."
     cancel: Avbryt
     changes_saved_msg: Ändringar sparade!
     confirm: Bekräfta
@@ -1569,7 +1568,6 @@ sv:
     show_newer: Visa nyare
     show_older: Visa äldre
     show_thread: Visa tråd
-    sign_in_to_participate: Logga in för att delta i konversationen
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: Direkt
@@ -1615,8 +1613,6 @@ sv:
     min_reblogs: Behåll boostade inlägg i minst
     min_reblogs_hint: Raderar inte något av dina inlägg som har blivit boostat minst detta antal gånger. Lämna tomt för att radera inlägg oavsett antal boostar
   stream_entries:
-    pinned: Fäst inlägg
-    reblogged: boostad
     sensitive_content: Känsligt innehåll
   strikes:
     errors:

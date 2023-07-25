@@ -385,10 +385,10 @@ tr:
         cancel: İptal et
         confirm: Askıya al
         permanent_action: Askıyı kaldırmak herhangi bir veriyi veya ilişkiyi geri getirmez.
-        preamble_html: <strong>%{domain}</strong> ve alt alan adlarını askıya almak üzeresiniz.
+        preamble_html: "<strong>%{domain}</strong> ve alt alan adlarını askıya almak üzeresiniz."
         remove_all_data: Bu sunucunuzdaki bu alan adının hesaplarından tüm veriyi, içeriği, ve profil verisini kaldıracaktır.
         stop_communication: Sunucunuzun bu sunucularla iletişimi durduracaktır.
-        title: '%{domain} için alan adı engelini doğrulayın'
+        title: "%{domain} için alan adı engelini doğrulayın"
         undo_relationships: Bu kendi sunucularınız ve diğerlerindeki hesaplar arasındaki herhangi bir takip ilişkisini geri alacaktır.
       created_msg: Domain bloğu şu an işleniyor
       destroyed_msg: Domain bloğu silindi
@@ -870,7 +870,7 @@ tr:
         not_discoverable: Yazar keşfedilebilir olmamayı seçiyor
         shared_by:
           one: Bir defa paylaşıldı veya favorilendi
-          other: '%{friendly_count} defa paylaşıldı veya beğenildi'
+          other: "%{friendly_count} defa paylaşıldı veya beğenildi"
         title: Öne çıkan gönderiler
       tags:
         current_score: Mevcut puan %{score}
@@ -972,7 +972,6 @@ tr:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: Herkes katkıda bulunabilir.
     sensitive_content: Hassas içerik
-    toot_layout: Gönderi düzeni
   application_mailer:
     notification_preferences: E-posta tercihlerini değiştir
     salutation: "%{name},"
@@ -1262,7 +1261,7 @@ tr:
       empty: Boş CSV Dosyası
       incompatible_type: Seçilen içe aktarma türüyle uyumsuz
       invalid_csv_file: 'Geçersiz CSV dosyası. Hata: %{error}'
-      over_rows_processing_limit: '%{count} satırdan fazlasını içeriyor'
+      over_rows_processing_limit: "%{count} satırdan fazlasını içeriyor"
       too_large: Dosya çok büyük
     failures: Başarısızlıklar
     imported: İçe aktarılan
@@ -1273,17 +1272,17 @@ tr:
       overwrite: Üzerine yaz
       overwrite_long: Mevcut kayıtları yenileriyle değiştir
     overwrite_preambles:
-      blocking_html: <strong>Engel listenizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} hesapla</strong> değiştirmek üzeresiniz.
-      bookmarks_html: <strong>Yerimlerinizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} gönderiyle</strong> değiştirmek üzeresiniz.
-      domain_blocking_html: <strong>Alan adı engel listenizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} alan adıyla</strong> değiştirmek üzeresiniz.
-      following_html: <strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>takip etmeye</strong> başlamak ve <strong>diğer herkesi takipten çıkmak</strong> üzeresiniz.
-      muting_html: <strong>Sessize alınmış hesaplar listenizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} hesapla</strong> değiştirmek üzeresiniz.
+      blocking_html: "<strong>Engel listenizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} hesapla</strong> değiştirmek üzeresiniz."
+      bookmarks_html: "<strong>Yerimlerinizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} gönderiyle</strong> değiştirmek üzeresiniz."
+      domain_blocking_html: "<strong>Alan adı engel listenizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} alan adıyla</strong> değiştirmek üzeresiniz."
+      following_html: "<strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>takip etmeye</strong> başlamak ve <strong>diğer herkesi takipten çıkmak</strong> üzeresiniz."
+      muting_html: "<strong>Sessize alınmış hesaplar listenizi</strong>, <strong>%{filename}</strong> dosyasından, <strong>%{total_items} hesapla</strong> değiştirmek üzeresiniz."
     preambles:
-      blocking_html: <strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>engellemek</strong> üzeresiniz.
-      bookmarks_html: <strong>%{filename}</strong> dosyasından <strong>%{total_items} gönderiyi</strong> <strong>yerimlerinize</strong> eklemek üzeresiniz.
-      domain_blocking_html: <strong>%{filename}</strong> dosyasından <strong>%{total_items} alan adını</strong> <strong>engellemek</strong> üzeresiniz.
-      following_html: <strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>takip etmek</strong> üzeresiniz.
-      muting_html: <strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>sessize almak</strong> üzeresiniz.
+      blocking_html: "<strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>engellemek</strong> üzeresiniz."
+      bookmarks_html: "<strong>%{filename}</strong> dosyasından <strong>%{total_items} gönderiyi</strong> <strong>yerimlerinize</strong> eklemek üzeresiniz."
+      domain_blocking_html: "<strong>%{filename}</strong> dosyasından <strong>%{total_items} alan adını</strong> <strong>engellemek</strong> üzeresiniz."
+      following_html: "<strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>takip etmek</strong> üzeresiniz."
+      muting_html: "<strong>%{filename}</strong> dosyasından <strong>%{total_items} hesabı</strong> <strong>sessize almak</strong> üzeresiniz."
     preface: Diğer sunucudan alarak oluşturduğunuz dosyalar sayesinde, bu sunucudaki hesabınıza takipçilerinizi aktarabilir veya istemediğiniz kişileri otomatik olarak engelleyebilirsiniz.
     recent_imports: Son içe aktarmalar
     states:
@@ -1633,7 +1632,6 @@ tr:
     show_newer: Yenileri göster
     show_older: Eskileri göster
     show_thread: Konuyu göster
-    sign_in_to_participate: Sohbete katılmak için oturum açın
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: Doğrudan
@@ -1679,8 +1677,6 @@ tr:
     min_reblogs: Şundan daha fazla teşvik edilen gönderileri sakla
     min_reblogs_hint: Bu belirtilenden daha fazla teşvik edilen gönderilerinizin herhangi birini silmez. Teşvik sayısından bağımsız olarak gönderilerin silinmesi için burayı boş bırakın
   stream_entries:
-    pinned: Sabitlenmiş gönderi
-    reblogged: boostladı
     sensitive_content: Hassas içerik
   strikes:
     errors:

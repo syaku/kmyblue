@@ -972,7 +972,6 @@ bg:
       guide_link: https://ru.crowdin.com/project/mastodon
       guide_link_text: Всеки може да участва.
     sensitive_content: Деликатно съдържание
-    toot_layout: Оформление на публикацията
   application_mailer:
     notification_preferences: Промяна на предпочитанията за имейл
     salutation: "%{name},"
@@ -1633,8 +1632,7 @@ bg:
     show_newer: Показване на по-нови
     show_older: Показване на по-стари
     show_thread: Показване на нишката
-    sign_in_to_participate: Влезте, за да участвате в разговора
-    title: '%{name}: „%{quote}“'
+    title: "%{name}: „%{quote}“"
     visibilities:
       direct: Директно
       private: Покажи само на последователите си
@@ -1679,8 +1677,6 @@ bg:
     min_reblogs: Запазване на публикации с поне толкова споделяния
     min_reblogs_hint: Не се изтриват ваши публикации, споделени поне толкова пъти. Оставете празно, за да изтриете публикациите независимо от техния брой споделяния
   stream_entries:
-    pinned: Закачена публикация
-    reblogged: подсилено
     sensitive_content: Деликатно съдържание
   strikes:
     errors:

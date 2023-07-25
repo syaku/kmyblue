@@ -1008,7 +1008,6 @@ he:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: כולם יכולים לתרום.
     sensitive_content: תוכן רגיש
-    toot_layout: פריסת הודעה
   application_mailer:
     notification_preferences: שינוי העדפות דוא"ל
     salutation: "%{name},"
@@ -1285,8 +1284,6 @@ he:
     all_matching_items_selected_html:
       one: "נבחר פריט <strong>%{count}</strong> שתאם לחיפוש בעמוד זה."
       two: נבחרו <strong>%{count}</strong> פריטים שתאמו לחיפוש בעמוד זה.
-      many: נבחרו <strong>%{count}</strong> פריטים שתאמו לחיפוש בעמוד זה.
-      other: נבחרו <strong>%{count}</strong> פריטים שתאמו לחיפוש בעמוד זה.
     cancel: ביטול
     changes_saved_msg: השינויים נשמרו בהצלחה!
     confirm: אישור
@@ -1697,7 +1694,6 @@ he:
     show_newer: הצג חדשים יותר
     show_older: הצג ישנים יותר
     show_thread: הצג שרשור
-    sign_in_to_participate: הכנס כדי להשתתף בשיחה
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: ישיר
@@ -1743,8 +1739,6 @@ he:
     min_reblogs: שמור הודעות מהודהדות לפחות
     min_reblogs_hint: לא מוחק מי מהודעותיך שקיבלו לפחות את המספר הזה של הדהודים. להשאיר ריק כדי למחוק הודעות ללא קשר למספר ההדהודים שקיבלו
   stream_entries:
-    pinned: הודעה נעוצה
-    reblogged: הודהד
     sensitive_content: תוכן רגיש
   strikes:
     errors:

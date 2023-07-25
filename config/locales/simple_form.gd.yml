@@ -4,7 +4,7 @@ gd:
       account:
         display_name: D’ ainm slàn no spòrsail.
         fields: An duilleag-dhachaigh agad, roimhearan, aois, rud sam bith a thogras tu.
-        note: '’S urrainn dhut @iomradh a thoirt air càch no air #tagaicheanHais.'
+        note: "’S urrainn dhut @iomradh a thoirt air càch no air #tagaicheanHais."
       account_alias:
         acct: Sònraich ainm-cleachdaiche@àrainn dhen chunntas a tha thu airson imrich uaithe
       account_migration:
@@ -199,7 +199,6 @@ gd:
         setting_always_send_emails: Cuir brathan puist-d an-còmhnaidh
         setting_auto_play_gif: Cluich GIFs beòthaichte gu fèin-obrachail
         setting_boost_modal: Seall còmhradh dearbhaidh mus dèan thu brosnachadh
-        setting_crop_images: Beàrr na dealbhan sna postaichean gun leudachadh air 16x9
         setting_default_language: Cànan postaidh
         setting_default_privacy: Prìobhaideachd postaidh
         setting_default_sensitive: Cuir comharra ri meadhanan an-còmhnaidh gu bheil iad frionasach

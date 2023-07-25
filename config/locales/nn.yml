@@ -964,7 +964,6 @@ nn:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: Alle kan bidra.
     sensitive_content: Ømtolig innhald
-    toot_layout: Tutoppsett
   application_mailer:
     notification_preferences: Endr e-post-innstillingane
     salutation: "Hei %{name},"
@@ -1608,8 +1607,7 @@ nn:
     show_newer: Vis nyere
     show_older: Vis eldre
     show_thread: Vis tråden
-    sign_in_to_participate: Logg inn for å verta med i samtalen
-    title: '%{name}: «%{quote}»'
+    title: "%{name}: «%{quote}»"
     visibilities:
       direct: Direkte
       private: Berre fylgjarar
@@ -1654,8 +1652,6 @@ nn:
     min_reblogs: Behold innlegg fremhevet av minst
     min_reblogs_hint: Sletter ikke noen av dine innlegg som har blitt fremhevet minst dette antall ganger. La stå tom for å slette innlegg uavhengig av antall fremhevinger
   stream_entries:
-    pinned: Festa tut
-    reblogged: framheva
     sensitive_content: Ømtolig innhald
   strikes:
     errors:

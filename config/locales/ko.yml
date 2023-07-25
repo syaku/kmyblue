@@ -40,7 +40,7 @@ ko:
         label: 이메일 바꾸기
         new_email: 새 이메일
         submit: 이메일 바꾸기
-        title: '%{username}의 이메일 바꾸기'
+        title: "%{username}의 이메일 바꾸기"
       change_role:
         changed_msg: 역할이 성공적으로 변경되었습니다!
         label: 역할 변경
@@ -60,7 +60,7 @@ ko:
       disabled: 비활성화됨
       display_name: 표시되는 이름
       domain: 도메인
-      edit: 편집
+      edit: 수정
       email: 이메일
       email_status: 이메일 상태
       enable: 활성화
@@ -151,7 +151,7 @@ ko:
       suspension_reversible_hint_html: 계정이 정지되었습니다, 그리고 %{date}에 데이터가 완전히 삭제될 것입니다. 그 때까지는 어떤 안 좋은 효과 없이 계정이 복구 될 수 있습니다. 만약 지금 당장 계정의 모든 데이터를 삭제하고 싶다면, 아래에서 행할 수 있습니다.
       title: 계정
       unblock_email: 이메일 차단 해제하기
-      unblocked_email_msg: '%{username}의 이메일 주소를 성공적으로 차단 해제했습니다'
+      unblocked_email_msg: "%{username}의 이메일 주소를 성공적으로 차단 해제했습니다"
       unconfirmed_email: 확인되지 않은 이메일 주소
       undo_sensitized: 민감함으로 설정 취소
       undo_silenced: 제한 해제
@@ -378,10 +378,10 @@ ko:
         cancel: 취소
         confirm: 정지
         permanent_action: 정지를 취소한다고 해서 데이터나 관계가 돌아오진 않습니다.
-        preamble_html: <strong>%{domain}</strong>과 서브도메인들을 차단하려고 합니다.
+        preamble_html: "<strong>%{domain}</strong>과 서브도메인들을 차단하려고 합니다."
         remove_all_data: 이 동작은 이 도메인의 모든 콘텐츠, 미디어, 프로필 데이터를 서버에서 지울 것입니다.
         stop_communication: 이 서버들과의 교신이 중지될 것입니다.
-        title: '%{domain} 도메인 차단 확인'
+        title: "%{domain} 도메인 차단 확인"
         undo_relationships: 이 동작은 이 서버 계정들과 저 서버 계정들 사이의 팔로우 관계들을 취소할 것입니다.
       created_msg: 도메인 차단 처리를 완료했습니다
       destroyed_msg: 도메인 차단이 해제되었습니다
@@ -611,7 +611,7 @@ ko:
       notes_description_html: 확인하고 다른 중재자나 미래의 자신을 위해 기록을 작성합니다
       processed_msg: '신고 #%{id}가 정상적으로 처리되었습니다'
       quick_actions_description_html: '빠른 조치를 취하거나 아래로 스크롤해서 신고된 콘텐츠를 확인하세요:'
-      remote_user_placeholder: '%{instance}의 리모트 이용자'
+      remote_user_placeholder: "%{instance}의 리모트 이용자"
       reopen: 신고 재검토
       report: '신고 #%{id}'
       reported_account: 신고 대상 계정
@@ -954,7 +954,6 @@ ko:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: 누구나 기여할 수 있습니다.
     sensitive_content: 민감한 내용
-    toot_layout: 게시물 레이아웃
   application_mailer:
     notification_preferences: 메일 설정 변경
     salutation: "%{name} 님,"
@@ -1022,7 +1021,7 @@ ko:
     set_new_password: 새 암호 설정
     setup:
       email_below_hint_html: 스팸 폴더를 체크해보거나, 이메일 주소를 틀렸을 수 있으니 새 확인 링크를 요청해보세요.
-      email_settings_hint_html: '%{email}을 인증하기 위해 우리가 보낸 링크를 누르세요. 여기서 기다리겠습니다.'
+      email_settings_hint_html: "%{email}을 인증하기 위해 우리가 보낸 링크를 누르세요. 여기서 기다리겠습니다."
       link_not_received: 링크를 못 받으셨나요?
       new_confirmation_instructions_sent: 확인 링크가 담긴 이메일이 몇 분 안에 도착할것입니다!
       title: 수신함 확인하기
@@ -1185,7 +1184,7 @@ ko:
       keywords: 키워드
       statuses: 개별 게시물
       statuses_hint_html: 이 필터는 아래의 키워드에 매칭되는지 여부와 관계 없이 몇몇개의 게시물들에 별개로 적용되었습니다. <a href="%{path}">검토하거나 필터에서 삭제하세요</a>
-      title: 필터 편집
+      title: 필터 수정
     errors:
       deprecated_api_multiple_keywords: 이 파라미터들은 하나를 초과하는 필터 키워드에 적용되기 때문에 이 응용프로그램에서 수정될 수 없습니다. 더 최신의 응용프로그램이나 웹 인터페이스를 사용하세요.
       invalid_context: 컨텍스트가 없거나 올바르지 않습니다
@@ -1237,7 +1236,7 @@ ko:
       empty: 빈 CSV 파일
       incompatible_type: 호환되지 않는 가져오기 유형을 선택함
       invalid_csv_file: '올바르지 않은 CSV 파일입니다. 오류: %{error}'
-      over_rows_processing_limit: '%{count}개 이상의 열을 포함합니다'
+      over_rows_processing_limit: "%{count}개 이상의 열을 포함합니다"
       too_large: 파일이 너무 큼
     failures: 실패함
     imported: 가져옴
@@ -1251,14 +1250,14 @@ ko:
       blocking_html: 나의 <strong>차단 목록</strong>을 <strong>%{filename}</strong>에서 가져온 <strong>%{total_items} 개의 계정</strong>으로 덮어 씌우려고 합니다.
       bookmarks_html: 나의 <strong>북마크</strong>를 <strong>%{filename}</strong>에서 가져온 <strong>%{total_items} 개의 게시물</strong>로 덮어 씌우려고 합니다.
       domain_blocking_html: 나의 <strong>도메인 차단 목록</strong>을 <strong>%{filename}</strong>에서 가져온 <strong>%{total_items} 개의 도메인</strong>으로 덮어 씌우려고 합니다.
-      following_html: <strong>%{filename}</strong>에서 가져온 <strong>%{total_items} 개의 계정</strong>을 <strong>팔로우</strong>하고 <strong>나머지 계정을 팔로우 해제</strong>하려고 합니다.
+      following_html: "<strong>%{filename}</strong>에서 가져온 <strong>%{total_items} 개의 계정</strong>을 <strong>팔로우</strong>하고 <strong>나머지 계정을 팔로우 해제</strong>하려고 합니다."
       muting_html: 나의 <strong>뮤트한 계정 목록</strong>을 <strong>%{filename}</strong>에서 가져온 <strong>%{total_items} 개의 계정</strong>으로 덮어 씌우려고 합니다.
     preambles:
-      blocking_html: <strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 계정</strong>을 차단하려고 합니다.
-      bookmarks_html: <strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 게시물</strong>을 북마크에 추가하려고 합니다.
-      domain_blocking_html: <strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 도메인</strong>을 차단하려고 합니다.
-      following_html: <strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 계정</strong>을 팔로우하려고 합니다.
-      muting_html: <strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 계정</strong>을 뮤트하려고 합니다.
+      blocking_html: "<strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 계정</strong>을 차단하려고 합니다."
+      bookmarks_html: "<strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 게시물</strong>을 북마크에 추가하려고 합니다."
+      domain_blocking_html: "<strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 도메인</strong>을 차단하려고 합니다."
+      following_html: "<strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 계정</strong>을 팔로우하려고 합니다."
+      muting_html: "<strong>%{filename}</strong>에서 가져온 <strong>%{total_items}개의 계정</strong>을 뮤트하려고 합니다."
     preface: 다른 서버에서 내보내기 한 파일에서 팔로우 / 차단 정보를 이 계정으로 불러올 수 있습니다.
     recent_imports: 최근의 가져오기
     states:
@@ -1541,7 +1540,7 @@ ko:
       windows_mobile: 윈도우 모바일
       windows_phone: 윈도우 폰
     revoke: 삭제
-    revoke_success: 세션을 성공적으로 삭제하였습니다
+    revoke_success: 세션을 성공적으로 취소하였습니다
     title: 세션
     view_authentication_history: 내 계정에 대한 인증 이력 보기
   settings:
@@ -1553,7 +1552,7 @@ ko:
     back: 마스토돈으로 돌아가기
     delete: 계정 삭제
     development: 개발
-    edit_profile: 프로필 편집
+    edit_profile: 프로필 수정
     export: 데이터 내보내기
     featured_tags: 추천 해시태그
     import: 데이터 가져오기
@@ -1601,7 +1600,6 @@ ko:
     show_newer: 새로운 것 표시
     show_older: 오래된 것 표시
     show_thread: 글타래 보기
-    sign_in_to_participate: 대화에 참여 위해 로그인 하기
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: 다이렉트
@@ -1647,8 +1645,6 @@ ko:
     min_reblogs: 해당 횟수 이상 부스트된 게시물 유지
     min_reblogs_hint: 이 횟수 이상의 부스트가 된 게시물은 삭제하지 않습니다. 부스트 수와 관계없이 게시물을 지우고 싶다면 공백으로 두세요
   stream_entries:
-    pinned: 고정된 게시물
-    reblogged: 님이 부스트 했습니다
     sensitive_content: 민감한 내용
   strikes:
     errors:
@@ -1668,7 +1664,7 @@ ko:
     add: 추가
     disable: 비활성화
     disabled_success: 2단계 인증이 비활성화 되었습니다.
-    edit: 편집
+    edit: 수정
     enabled: 2단계 인증이 활성화 되어 있습니다
     enabled_success: 2단계 인증이 활성화 되었습니다
     generate_recovery_codes: 복구 코드 생성
@@ -1682,12 +1678,12 @@ ko:
   user_mailer:
     appeal_approved:
       action: 내 계정으로 가기
-      explanation: '%{strike_date}에 일어난 중재결정에 대한 소명을 %{appeal_date}에 작성했으며 승낙되었습니다. 당신의 계정은 정상적인 상태로 돌아왔습니다.'
+      explanation: "%{strike_date}에 일어난 중재결정에 대한 소명을 %{appeal_date}에 작성했으며 승낙되었습니다. 당신의 계정은 정상적인 상태로 돌아왔습니다."
       subject: 귀하가 %{date}에 작성한 소명이 승낙되었습니다
       title: 소명이 받아들여짐
     appeal_rejected:
-      explanation: '%{strike_date}에 일어난 중재결정에 대한 소명을 %{appeal_date}에 작성했지만 반려되었습니다.'
-      subject: '%{date}에 작성한 소명이 반려되었습니다.'
+      explanation: "%{strike_date}에 일어난 중재결정에 대한 소명을 %{appeal_date}에 작성했지만 반려되었습니다."
+      subject: "%{date}에 작성한 소명이 반려되었습니다."
       title: 이의 제기가 거절되었습니다
     backup_ready:
       explanation: 마스토돈 계정의 전체 백업을 요청하셨지요. 이제 다운로드할 수 있습니다!
@@ -1733,7 +1729,7 @@ ko:
         suspend: 계정 정지 됨
     welcome:
       edit_profile_action: 프로필 설정
-      edit_profile_step: 프로필 사진을 업로드하고, 사람들에게 표시 될 이름을 바꾸는 것 등으로 당신의 프로필을 커스텀 할 수 있습니다. 사람들이 당신을 팔로우 하기 전에 리뷰를 거치게 할 수도 있습니다.
+      edit_profile_step: 프로필 사진을 업로드하거나 사람들에게 표시할 이름을 바꾸는 것 등으로 자신의 프로필을 커스텀 할 수 있습니다. 새로운 팔로워를 검토 후에 허용하도록 할 수도 있습니다.
       explanation: 시작하기 전에 몇가지 팁들을 준비했습니다
       final_action: 포스팅 시작하기
       final_step: '게시물을 올리세요! 팔로워가 없더라도, 공개 게시물들은 다른 사람에게 보여질 수 있습니다, 예를 들자면 로컬이나 연합 타임라인 등이 있습니다. 사람들에게 자신을 소개하고 싶다면 #툿친소 해시태그를 이용해보세요.'

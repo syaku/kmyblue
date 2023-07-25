@@ -385,6 +385,7 @@
   "mute_modal.hide_notifications": "Masquer les notifications de ce compte?",
   "mute_modal.indefinite": "Indéfinie",
   "navigation_bar.about": "À propos",
+  "navigation_bar.advanced_interface": "Ouvrir dans l’interface avancée",
   "navigation_bar.blocks": "Comptes bloqués",
   "navigation_bar.bookmarks": "Signets",
   "navigation_bar.community_timeline": "Fil local",

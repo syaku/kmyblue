@@ -972,7 +972,6 @@ es:
       guide_link: https://es.crowdin.com/project/mastodon
       guide_link_text: Todos pueden contribuir.
     sensitive_content: Contenido sensible
-    toot_layout: Diseño de las publicaciones
   application_mailer:
     notification_preferences: Cambiar preferencias de correo electrónico
     salutation: "%{name}:"
@@ -993,7 +992,7 @@ es:
     apply_for_account: Solicitar una cuenta
     captcha_confirmation:
       help_html: Si tienes problemas resolviendo el CAPTCHA, puedes contactarnos por email en %{email} y te ayudaremos.
-      hint_html: '¡Una última cosita! Necesitamos confirmar que eres humano (¡así podemos evitar el spam!). Resuelve este CAPTCHA de debajo y pulsa en "Continuar".'
+      hint_html: ¡Una última cosita! Necesitamos confirmar que eres humano (¡así podemos evitar el spam!). Resuelve este CAPTCHA de debajo y pulsa en "Continuar".
       title: Comprobación de seguridad
     confirmations:
       wrong_email_hint: Si esa dirección de correo electrónico no es correcta, puedes cambiarla en la configuración de la cuenta.
@@ -1242,7 +1241,7 @@ es:
       one: "<strong>%{count}</strong> elemento que coincide con su búsqueda está seleccionado."
       other: Todos los <strong>%{count}</strong> elementos que coinciden con su búsqueda están seleccionados.
     cancel: Cancelar
-    changes_saved_msg: '¡Cambios guardados con éxito!'
+    changes_saved_msg: "¡Cambios guardados con éxito!"
     confirm: Confirmar
     copy: Copiar
     delete: Eliminar
@@ -1351,7 +1350,7 @@ es:
     unsubscribe:
       action: Sí, cancelar suscripción
       complete: Has cancelado tu suscripción
-      confirmation_html: '¿Estás seguro de que quieres dejar de recibir %{type} de Mastodon en %{domain} a tu email %{email}? Siempre podrás volver a suscribirte desde los <a href="%{settings_path}"> ajustes de notificación por correo.</a>.'
+      confirmation_html: ¿Estás seguro de que quieres dejar de recibir %{type} de Mastodon en %{domain} a tu email %{email}? Siempre podrás volver a suscribirte desde los <a href="%{settings_path}"> ajustes de notificación por correo.</a>.
       emails:
         notification_emails:
           favourite: notificaciones de me gusta por correo
@@ -1633,8 +1632,7 @@ es:
     show_newer: Mostrar más recientes
     show_older: Mostrar más antiguos
     show_thread: Mostrar discusión
-    sign_in_to_participate: Inicia sesión para participar en la conversación
-    title: '%{name}: «%{quote}»'
+    title: "%{name}: «%{quote}»"
     visibilities:
       direct: Directa
       private: Sólo mostrar a seguidores
@@ -1679,8 +1677,6 @@ es:
     min_reblogs: Mantener publicaciones reblogueadas más de
     min_reblogs_hint: No borra ninguna de las publicaciones que hayan sido reblogueadas más de este número de veces. Deja en blanco para eliminar publicaciones sin importar el número de reblogueos
   stream_entries:
-    pinned: Publicación fijada
-    reblogged: impulsó
     sensitive_content: Contenido sensible
   strikes:
     errors:

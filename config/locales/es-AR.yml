@@ -972,7 +972,6 @@ es-AR:
       guide_link: https://es.crowdin.com/project/mastodon
       guide_link_text: Todos pueden contribuir.
     sensitive_content: Contenido sensible
-    toot_layout: Diseño del mensaje
   application_mailer:
     notification_preferences: Cambiar configuración de correo electrónico
     salutation: "%{name}:"
@@ -993,7 +992,7 @@ es-AR:
     apply_for_account: Solicitar una cuenta
     captcha_confirmation:
       help_html: Si tenés problemas resolviendo la CAPTCHA, podés ponerte en contacto con nosotros a través de %{email} y te vamos a ayudar.
-      hint_html: '¡Sólo una cosa más! Necesitamos confirmar que sos humano (¡esto es para que podamos mantener el spam fuera!). Resuelvé la CAPTCHA abajo y hacé clic en "Continuar".'
+      hint_html: ¡Sólo una cosa más! Necesitamos confirmar que sos humano (¡esto es para que podamos mantener el spam fuera!). Resuelvé la CAPTCHA abajo y hacé clic en "Continuar".
       title: Comprobación de seguridad
     confirmations:
       wrong_email_hint: Si esa dirección de correo electrónico no es correcta, podés cambiarla en la configuración de la cuenta.
@@ -1242,7 +1241,7 @@ es-AR:
       one: "<strong>%{count}</strong> elemento que coincide con tu búsqueda está seleccionado."
       other: Todos los <strong>%{count}</strong> elementos que coinciden con tu búsqueda están seleccionados.
     cancel: Cancelar
-    changes_saved_msg: '¡Cambios guardados exitosamente!'
+    changes_saved_msg: "¡Cambios guardados exitosamente!"
     confirm: Confirmar
     copy: Copiar
     delete: Eliminar
@@ -1351,7 +1350,7 @@ es-AR:
     unsubscribe:
       action: Sí, desuscribir
       complete: Desuscripto
-      confirmation_html: '¿Estás seguro que querés dejar de recibir %{type} de Mastodon en %{domain} a tu correo electrónico %{email}? Siempre podrás volver a suscribirte desde la <a href="%{settings_path}"> configuración de notificaciones por correo electrónico.</a>.'
+      confirmation_html: ¿Estás seguro que querés dejar de recibir %{type} de Mastodon en %{domain} a tu correo electrónico %{email}? Siempre podrás volver a suscribirte desde la <a href="%{settings_path}"> configuración de notificaciones por correo electrónico.</a>.
       emails:
         notification_emails:
           favourite: notificaciones de favoritos por correo electrónico
@@ -1633,7 +1632,6 @@ es-AR:
     show_newer: Mostrar más recientes
     show_older: Mostrar más antiguos
     show_thread: Mostrar hilo
-    sign_in_to_participate: Iniciá sesión para participar en la conversación
     title: '%{name}: "%{quote}"'
     visibilities:
       direct: Directo
@@ -1679,8 +1677,6 @@ es-AR:
     min_reblogs: Conservar adhesiones de por lo menos
     min_reblogs_hint: No elimina ninguno de tus mensajes que haya recibido más de esta cantidad de adhesiones. Dejá en blanco para eliminar mensajes independientemente de su número de adhesiones.
   stream_entries:
-    pinned: Mensaje fijado
-    reblogged: adhirió a este mensaje
     sensitive_content: Contenido sensible
   strikes:
     errors:

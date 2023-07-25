@@ -389,6 +389,7 @@ fi:
         remove_all_data: Tämä poistaa palvelimeltasi kaiken sisällön, median ja profiilitiedot tämän verkkotunnuksen tileiltä.
         stop_communication: Palvelimesi lopettaa näiden palvelinten viestinnän.
         title: Vahvista verkkotunnuksen %{domain} esto
+        undo_relationships: Tämä kumoaa näiden palvelimien ja sinun tilien välisen seurannan.
       created_msg: Verkkotunnuksen estoa käsitellään
       destroyed_msg: Verkkotunnuksen esto on peruttu
       domain: Verkkotunnus
@@ -739,6 +740,7 @@ fi:
         preamble: Palvelimesi brändäys erottaa sen muista verkon palvelimista. Nämä tiedot voidaan näyttää useissa eri ympäristöissä, kuten Mastodonin käyttöliittymässä, sovelluksissa, linkkien esikatselu muilla sivustoilla ja viestisovelluksien sisällä ja niin edelleen. Tästä syystä on parasta pitää nämä tiedot selkeinä, lyhyinä ja ytimekkäinä.
         title: Brändäys
       captcha_enabled:
+        desc_html: Tämä perustuu ulkoisiin skripteihin hCaptchasta, mikä voi olla turvallisuus- ja yksityisyysongelma. Lisäksi <strong>tämä voi tehdä rekisteröinnin ihmisille huomattavasti (erityisesti vammaisten) helpommaksi</strong>. Harkitse vaihtoehtoisia toimenpiteitä, kuten hyväksymisperusteista tai kutsupohjaista rekisteröintiä.
         title: Vaadi uusia käyttäjiä vahvistaamaan tilinsä ratkaisemalla CAPTCHA-vahvistus
       content_retention:
         preamble: Määritä, miten käyttäjän luoma sisältö tallennetaan Mastodoniin.
@@ -970,7 +972,6 @@ fi:
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: Kaikki voivat osallistua.
     sensitive_content: Arkaluonteinen sisältö
-    toot_layout: Viestin asettelu
   application_mailer:
     notification_preferences: Muuta sähköpostiasetuksia
     salutation: "%{name},"
@@ -1030,7 +1031,7 @@ fi:
       accept: Hyväksy
       back: Takaisin
       invited_by: 'Seuraavalta käyttäjältä vastaanottamasi kutsun ansiosta voit liittyä palvelimelle %{domain}:'
-      preamble: '%{domain} valvojat määrittävät ja valvovat sääntöjä.'
+      preamble: "%{domain} valvojat määrittävät ja valvovat sääntöjä."
       preamble_invited: Ennen kuin jatkat, huomioi palvelimen %{domain} valvojien asettamat perussäännöt.
       title: Joitakin perussääntöjä.
       title_invited: Sinut on kutsuttu.
@@ -1148,6 +1149,7 @@ fi:
     invalid_domain: ei ole kelvollinen toimialueen nimi
   edit_profile:
     basic_information: Perustiedot
+    hint_html: "<strong>Mukauta mitä ihmiset näkevät julkisessa profiilissasi ja sinun julkaisujen vieressä.</strong> Ihmiset todennäköisesti seuraavat ja kirjoittavat sinulle, kun sinulla on täytetty profiili ja profiilikuva."
     other: Muu
     safety_and_privacy: Turvallisuus ja yksityisyys
   errors:
@@ -1348,6 +1350,16 @@ fi:
     unsubscribe:
       action: Kyllä, peru tilaus
       complete: Tilaus lopetettiin
+      confirmation_html: Oletko varma, että haluat lopettaa käyttäjän %{type} vastaanottamisen Mastodonista %{domain} sähköpostiisi osoitteessa %{email}? Voit aina tilata <a href="%{settings_path}">sähköposti-ilmoitusasetuksesi</a> uudelleen .
+      emails:
+        notification_emails:
+          favourite: sähköpostit ilmoituksille
+          follow: seuraa sähköpostin ilmoituksia
+          follow_request: seuraa pyyntöjä sähköpostiin
+          mention: mainitse sähköpostin ilmoitukset
+          reblog: tehosta sähköpostien ilmoituksia
+      resubscribe_html: Jos olet perunut tilauksen erehdyksellä, voit tilata uudelleen <a href="%{settings_path}">sähköpostin ilmoitusasetuksistasi</a>.
+      success_html: Et enää saa %{type} Mastodonilta %{domain} sähköpostiisi osoitteeseen %{email}.
       title: Lopeta tilaus
   media_attachments:
     validations:
@@ -1620,8 +1632,7 @@ fi:
     show_newer: Näytä uudemmat
     show_older: Näytä vanhempi
     show_thread: Näytä ketju
-    sign_in_to_participate: Kirjaudu osallistuaksesi keskusteluun
-    title: '%{name}: ”%{quote}”'
+    title: "%{name}: ”%{quote}”"
     visibilities:
       direct: Suoraan
       private: Vain seuraajille
@@ -1666,8 +1677,6 @@ fi:
     min_reblogs: Pidä viestit tehostettuna vähintään
     min_reblogs_hint: Ei poista yhtään viestiäsi, jota on tehostettu vähintään näin monta kertaa. Jätä tyhjäksi poistaaksesi viestejä riippumatta niiden tehosteiden määrästä
   stream_entries:
-    pinned: Kiinnitetty tuuttaus
-    reblogged: tehosti
     sensitive_content: Arkaluontoista sisältöä
   strikes:
     errors:
@@ -1768,6 +1777,10 @@ fi:
     seamless_external_login: Olet kirjautunut ulkoisen palvelun kautta, joten salasana- ja sähköpostiasetukset eivät ole käytettävissä.
     signed_in_as: 'Kirjautunut tilillä:'
   verification:
+    extra_instructions_html: <strong>Vihje:</strong> Sivuston linkki voi olla näkymätön. Tärkeä osa on <code>rel="me"</code> joka estää personoinnin verkkosivustoilla, joilla on käyttäjän luomaa sisältöä. Voit jopa käyttää <code>linkkiä</code> tag sivun otsikossa sen sijaan <code>a</code>, mutta HTML:n on oltava käytettävissä suorittamatta JavaScriptiä.
+    here_is_how: Näin voit tehdä sen
+    hint_html: "<strong>Henkilöllisyytesi varmentaminen Mastodonissa on kaikille.</strong> Perustuu avoimiin web-standardeihin, nyt ja ikuisesti ilmaiseksi. Kaikki mitä tarvitset on henkilökohtainen sivusto, että ihmiset tunnistavat sinut. Kun linkit tälle sivustolle profiilistasi, tarkistamme, että sivusto linkit takaisin profiiliisi ja näyttää visuaalinen indikaattori sitä."
+    instructions_html: Kopioi ja liitä alla oleva koodi verkkosivusi HTML:ään. Lisää sitten sivustosi osoite johonkin ylimääräisestä kentästä profiilissasi "Muokkaa profiilia" -välilehdestä ja tallenna muutokset.
     verification: Vahvistus
     verified_links: Vahvistetut linkkisi
   webauthn_credentials:
