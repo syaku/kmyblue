@@ -32,7 +32,6 @@ class UserSettings
   setting :emoji_reaction_streaming_notify_impl2, default: false
 
   namespace :web do
-    setting :crop_images, default: true
     setting :advanced_layout, default: false
     setting :trends, default: true
     setting :use_blurhash, default: true

@@ -13,7 +13,7 @@ const messages = defineMessages({
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   reaction_deck: { id: 'navigation_bar.reaction_deck', defaultMessage: 'Reaction deck' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
-  favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favourites' },
+  favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favorites' },
   emoji_reactions: { id: 'navigation_bar.emoji_reactions', defaultMessage: 'Stamps' },
   lists: { id: 'navigation_bar.lists', defaultMessage: 'Lists' },
   followed_tags: { id: 'navigation_bar.followed_tags', defaultMessage: 'Followed hashtags' },
