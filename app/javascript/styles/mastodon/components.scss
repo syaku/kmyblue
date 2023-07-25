@@ -6266,6 +6266,7 @@ a.status-card {
   position: relative;
   width: 100%;
   min-height: 64px;
+  max-height: 70vh;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
@@ -6317,7 +6318,6 @@ a.status-card {
   img {
     height: 100%;
     width: 100%;
-    max-height: 70vh;
   }
 
   img {
