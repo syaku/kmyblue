@@ -27,6 +27,8 @@ class UpdateStatusService < BaseService
 
     clear_histories! if @options[:no_history]
 
+    validate_status!
+
     Status.transaction do
       create_previous_edit! unless @options[:no_history]
       update_media_attachments! if @options.key?(:media_ids)
@@ -69,6 +71,11 @@ class UpdateStatusService < BaseService
     @status.ordered_media_attachment_ids = (@options[:media_ids] || []).map(&:to_i) & next_media_attachments.map(&:id)
     @media_attachments_changed ||= previous_media_attachments.map(&:id) != @status.ordered_media_attachment_ids
     @status.media_attachments.reload
+  end
+
+  def validate_status!
+    raise Mastodon::ValidationError, I18n.t('statuses.contains_ng_words') if Admin::NgWord.reject?("#{@options[:spoiler_text]}\n#{@options[:text]}")
+    raise Mastodon::ValidationError, I18n.t('statuses.too_many_hashtags') if Admin::NgWord.hashtag_reject_with_extractor?(@options[:text])
   end
 
   def validate_media!

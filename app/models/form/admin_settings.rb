@@ -34,12 +34,17 @@ class Form::AdminSettings
     backups_retention_period
     status_page_url
     captcha_enabled
+    ng_words
+    enable_block_emoji_reaction_settings
+    hide_local_users_for_anonymous
+    post_hash_tags_max
   ).freeze
 
   INTEGER_KEYS = %i(
     media_cache_retention_period
     content_cache_retention_period
     backups_retention_period
+    post_hash_tags_max
   ).freeze
 
   BOOLEAN_KEYS = %i(
@@ -54,11 +59,17 @@ class Form::AdminSettings
     noindex
     require_invite_text
     captcha_enabled
+    enable_block_emoji_reaction_settings
+    hide_local_users_for_anonymous
   ).freeze
 
   UPLOAD_KEYS = %i(
     thumbnail
     mascot
+  ).freeze
+
+  STRING_ARRAY_KEYS = %i(
+    ng_words
   ).freeze
 
   attr_accessor(*KEYS)
@@ -80,6 +91,8 @@ class Form::AdminSettings
 
       stored_value = if UPLOAD_KEYS.include?(key)
                        SiteUpload.where(var: key).first_or_initialize(var: key)
+                     elsif STRING_ARRAY_KEYS.include?(key)
+                       Setting.public_send(key)&.join("\n") || ''
                      else
                        Setting.public_send(key)
                      end
@@ -122,6 +135,8 @@ class Form::AdminSettings
       value == '1'
     elsif INTEGER_KEYS.include?(key)
       value.blank? ? value : Integer(value)
+    elsif STRING_ARRAY_KEYS.include?(key)
+      value&.split(/\r\n|\r|\n/)&.filter(&:present?)&.uniq || []
     else
       value
     end

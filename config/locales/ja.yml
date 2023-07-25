@@ -594,6 +594,12 @@ ja:
       title: IPルール
     media_attachments:
       title: 投稿された画像
+    ng_words:
+      enable_block_emoji_reaction_settings: 各ユーザーにスタンプ機能のブロック設定項目を解放する
+      hide_local_users_for_anonymous: ログインしていない状態でローカルユーザーの投稿をタイムラインから取得できないようにする
+      keywords: 投稿できないキーワード
+      post_hash_tags_max: 投稿に設定可能なハッシュタグの最大数
+      title: NGワードとスパム
     relationships:
       title: "%{acct} さんのフォロー・フォロワー"
     relays:
@@ -1697,6 +1703,7 @@ ja:
       video:
         other: "%{count}本の動画"
     boosted_from_html: '%{acct_link}からブースト'
+    contains_ng_words: 投稿できない単語が含まれています
     content_warning: '閲覧注意: %{warning}'
     default_language: UIの表示言語
     disallowed_hashtags:
@@ -1731,6 +1738,7 @@ ja:
     show_older: 古いものを表示
     show_thread: スレッドを表示
     title: '%{name}: "%{quote}"'
+    too_many_hashtags: ハッシュタグが多すぎます
     visibilities:
       direct: ダイレクト
       private: フォロワー限定

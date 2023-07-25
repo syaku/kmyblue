@@ -88,6 +88,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     process_tags
     process_audience
 
+    return unless valid_status?
+
     ApplicationRecord.transaction do
       @status = Status.create!(@params)
       attach_tags(@status)
@@ -137,6 +139,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       media_attachment_ids: process_attachments.take(MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX).map(&:id),
       poll: process_poll,
     }
+  end
+
+  def valid_status?
+    !Admin::NgWord.reject?("#{@params[:spoiler_text]}\n#{@params[:text]}") && !Admin::NgWord.hashtag_reject?(@tags.size)
   end
 
   def reply_to_local_account?

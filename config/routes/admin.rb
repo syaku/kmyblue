@@ -33,6 +33,7 @@ namespace :admin do
   resources :action_logs, only: [:index]
   resources :warning_presets, except: [:new, :show]
   resources :media_attachments, only: [:index]
+  resource :ng_words, only: [:show, :create]
 
   resources :announcements, except: [:show] do
     member do

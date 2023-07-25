@@ -8,7 +8,7 @@ class EmojiReactionValidator < ActiveModel::Validator
 
     emoji_reaction.errors.add(:name, I18n.t('reactions.errors.unrecognized_emoji')) if emoji_reaction.custom_emoji_id.blank? && !unicode_emoji?(emoji_reaction.name)
     emoji_reaction.errors.add(:name, I18n.t('reactions.errors.unrecognized_emoji')) if emoji_reaction.custom_emoji_id.present? && disabled_custom_emoji?(emoji_reaction.custom_emoji)
-    emoji_reaction.errors.add(:name, I18n.t('reactions.errors.banned')) if deny_from_all?(emoji_reaction) || non_follower?(emoji_reaction) || non_following?(emoji_reaction)
+    emoji_reaction.errors.add(:name, I18n.t('reactions.errors.banned')) if deny_emoji_reactions?(emoji_reaction)
   end
 
   private
@@ -21,24 +21,23 @@ class EmojiReactionValidator < ActiveModel::Validator
     custom_emoji.nil? ? false : custom_emoji.disabled
   end
 
-  def deny_from_all?(emoji_reaction)
+  def deny_emoji_reactions?(emoji_reaction)
+    return false unless Setting.enable_block_emoji_reaction_settings
     return false if emoji_reaction.status.account.user.nil?
     return false if emoji_reaction.status.account_id == emoji_reaction.account_id
 
+    deny_from_all?(emoji_reaction) || non_follower?(emoji_reaction) || non_following?(emoji_reaction)
+  end
+
+  def deny_from_all?(emoji_reaction)
     emoji_reaction.status.account.user.settings['emoji_reactions.deny_from_all']
   end
 
   def non_following?(emoji_reaction)
-    return false if emoji_reaction.status.account.user.nil?
-    return false if emoji_reaction.status.account_id == emoji_reaction.account_id
-
     emoji_reaction.status.account.user.settings['emoji_reactions.must_be_following'] && !emoji_reaction.status.account.following?(emoji_reaction.account)
   end
 
   def non_follower?(emoji_reaction)
-    return false if emoji_reaction.status.account.user.nil?
-    return false if emoji_reaction.status.account_id == emoji_reaction.account_id
-
     emoji_reaction.status.account.user.settings['emoji_reactions.must_be_follower'] && !emoji_reaction.account.following?(emoji_reaction.status.account)
   end
 end

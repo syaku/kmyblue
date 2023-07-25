@@ -595,6 +595,12 @@ en:
       title: IP rules
     media_attachments:
       title: Media attachments
+    ng_words:
+      enable_block_emoji_reaction_settings: Enable block emoji reactions settings for users
+      hide_local_users_for_anonymous: Hide timeline local user posts from anonymous
+      keywords: Reject keywords
+      post_hash_tags_max: Hash tags max for posts
+      title: NG words and against spams
     relationships:
       title: "%{acct}'s relationships"
     relays:
@@ -1710,6 +1716,7 @@ en:
         one: "%{count} video"
         other: "%{count} videos"
     boosted_from_html: Boosted from %{acct_link}
+    contains_ng_words: The post contains NG words
     content_warning: 'Content warning: %{warning}'
     default_language: Same as interface language
     disallowed_hashtags:
@@ -1747,6 +1754,7 @@ en:
     show_older: Show older
     show_thread: Show thread
     title: '%{name}: "%{quote}"'
+    too_many_hashtags: Too many hashtags
     visibilities:
       direct: Direct
       private: Followers-only

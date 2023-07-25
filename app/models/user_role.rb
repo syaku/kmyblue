@@ -36,6 +36,7 @@ class UserRole < ApplicationRecord
     manage_roles: (1 << 17),
     manage_user_access: (1 << 18),
     delete_user_data: (1 << 19),
+    manage_ng_words: (1 << 30),
   }.freeze
 
   module Flags
@@ -61,6 +62,7 @@ class UserRole < ApplicationRecord
         manage_blocks
         manage_taxonomies
         manage_invites
+        manage_ng_words
       ).freeze,
 
       administration: %w(

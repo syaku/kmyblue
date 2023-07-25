@@ -18,7 +18,7 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
     @request_id                = request_id
 
     # Only native types can be updated at the moment
-    return @status if !expected_type? || already_updated_more_recently?
+    return @status if !expected_type? || already_updated_more_recently? || !valid_status?
 
     if @status_parser.edited_at.present? && (@status.edited_at.nil? || @status_parser.edited_at > @status.edited_at)
       handle_explicit_update!
@@ -150,6 +150,10 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
       @poll_changed = true
       @status.poll_id = nil
     end
+  end
+
+  def valid_status?
+    !Admin::NgWord.reject?("#{@status_parser.spoiler_text}\n#{@status_parser.text}") && !Admin::NgWord.hashtag_reject?(@tags.size)
   end
 
   def update_immediate_attributes!
