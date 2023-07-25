@@ -18,9 +18,12 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
     @request_id                = request_id
 
     # Only native types can be updated at the moment
-    return @status if !expected_type? || already_updated_more_recently? || !valid_status?
+    return @status if !expected_type? || already_updated_more_recently?
 
     if @status_parser.edited_at.present? && (@status.edited_at.nil? || @status_parser.edited_at > @status.edited_at)
+      read_metadata
+      return @status unless valid_status?
+
       handle_explicit_update!
     else
       handle_implicit_update!
@@ -169,7 +172,7 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
     @status.save!
   end
 
-  def update_metadata!
+  def read_metadata
     @raw_tags     = []
     @raw_mentions = []
     @raw_emojis   = []
@@ -183,7 +186,9 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
         @raw_emojis << tag
       end
     end
+  end
 
+  def update_metadata!
     update_tags!
     update_mentions!
     update_emojis!
