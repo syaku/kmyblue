@@ -23,6 +23,7 @@ import PollFormContainer from '../containers/poll_form_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
 import SearchabilityDropdownContainer from '../containers/searchability_dropdown_container';
+import SensitiveButtonContainer from '../containers/sensitive_button_container';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
 import UploadFormContainer from '../containers/upload_form_container';
@@ -234,7 +235,7 @@ class ComposeForm extends ImmutablePureComponent {
   };
 
   render () {
-    const { intl, onPaste, autoFocus } = this.props;
+    const { intl, onPaste, autoFocus, anyMedia, text } = this.props;
     const { highlighted } = this.state;
     const disabled = this.props.isSubmitting;
 
@@ -247,6 +248,8 @@ class ComposeForm extends ImmutablePureComponent {
     } else {
       publishText = (this.props.privacy !== 'unlisted' && this.props.privacy !== 'public_unlisted' && this.props.privacy !== 'login') ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
     }
+
+    const anyLink = text.indexOf('https://') >= 0;
 
     return (
       <form className='compose-form' onSubmit={this.handleSubmit}>
@@ -297,6 +300,7 @@ class ComposeForm extends ImmutablePureComponent {
             <div className='compose-form__modifiers'>
               <UploadFormContainer />
               <PollFormContainer />
+              {(anyMedia || anyLink) && <SensitiveButtonContainer />}
             </div>
           </AutosuggestTextarea>
 
