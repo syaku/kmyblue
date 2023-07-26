@@ -28,6 +28,7 @@ class Notification < ApplicationRecord
     'EmojiReaction' => :emoji_reaction,
     'StatusReference' => :status_reference,
     'Poll' => :poll,
+    'AccountWarning' => :warning,
   }.freeze
 
   TYPES = %i(
@@ -42,6 +43,7 @@ class Notification < ApplicationRecord
     reaction
     poll
     update
+    warning
     admin.sign_up
     admin.report
   ).freeze
@@ -73,6 +75,7 @@ class Notification < ApplicationRecord
     belongs_to :status_reference, inverse_of: :notification
     belongs_to :poll, inverse_of: false
     belongs_to :report, inverse_of: false
+    belongs_to :account_warning, inverse_of: false
   end
 
   validates :type, inclusion: { in: TYPES }
@@ -159,6 +162,15 @@ class Notification < ApplicationRecord
     end
   end
 
+  def from_account_web
+    case activity_type
+    when 'AccountWarning'
+      account_warning&.target_account
+    else
+      from_account
+    end
+  end
+
   after_initialize :set_from_account
   before_validation :set_from_account
 
@@ -168,7 +180,7 @@ class Notification < ApplicationRecord
     return unless new_record?
 
     case activity_type
-    when 'Status', 'Follow', 'Favourite', 'EmojiReaction', 'EmojiReact', 'FollowRequest', 'Poll', 'Report'
+    when 'Status', 'Follow', 'Favourite', 'EmojiReaction', 'EmojiReact', 'FollowRequest', 'Poll', 'Report', 'AccountWarning'
       self.from_account_id = activity&.account_id
     when 'Mention', 'StatusReference'
       self.from_account_id = activity&.status&.account_id

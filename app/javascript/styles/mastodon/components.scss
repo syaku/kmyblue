@@ -1848,6 +1848,11 @@ a.account__display-name {
   }
 }
 
+.notification__warning-text {
+  padding: 16px 16px 16px 48px;
+  color: $darker-text-color;
+}
+
 .notification__display-name {
   color: inherit;
   font-weight: 500;

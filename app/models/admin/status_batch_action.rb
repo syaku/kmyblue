@@ -17,6 +17,7 @@ class Admin::StatusBatchAction
 
   def save!
     process_action!
+    notify!
   end
 
   private
@@ -155,6 +156,10 @@ class Admin::StatusBatchAction
 
     report.status_ids -= status_ids.map(&:to_i)
     report.save!
+  end
+
+  def notify!
+    LocalNotificationWorker.perform_async(target_account.id, @warning.id, 'AccountWarning', 'warning') if warnable? && @warning
   end
 
   def report

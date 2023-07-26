@@ -30,6 +30,7 @@ const messages = defineMessages({
   status: { id: 'notification.status', defaultMessage: '{name} just posted' },
   statusReference: { id: 'notification.status_reference', defaultMessage: '{name} refered' },
   update: { id: 'notification.update', defaultMessage: '{name} edited a post' },
+  warning: { id: 'notification.warning', defaultMessage: 'You have been warned and "{action}" has been executed. Check your mailbox' },
   adminSignUp: { id: 'notification.admin.sign_up', defaultMessage: '{name} signed up' },
   adminReport: { id: 'notification.admin.report', defaultMessage: '{name} reported {target}' },
 });
@@ -443,6 +444,31 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderWarning (notification) {
+    const { intl, unread } = this.props;
+    console.dir(notification);
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-warning focusable', { unread })} tabIndex={0} aria-label={notificationForScreenReader(intl, intl.formatMessage(messages.statusReference, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='exclamation-triangle' className='star-icon' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.warning' defaultMessage='You have been warned and "{action}" has been executed. Check your mailbox' values={{action: notification.getIn(['account_warning', 'action'])}} />
+            </span>
+          </div>
+
+          <div className='notification__warning-text'>
+            {notification.getIn(['account_warning', 'text'])}
+          </div>
+        </div>
+      </HotKeys>
+    );
+  }
+
   renderAdminSignUp (notification, account, link) {
     const { intl, unread } = this.props;
 
@@ -522,6 +548,8 @@ class Notification extends ImmutablePureComponent {
       return this.renderUpdate(notification, link);
     case 'poll':
       return this.renderPoll(notification, account);
+    case 'warning':
+      return this.renderWarning(notification);
     case 'admin.sign_up':
       return this.renderAdminSignUp(notification, account, link);
     case 'admin.report':
