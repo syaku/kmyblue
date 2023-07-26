@@ -28,7 +28,6 @@ class EmojiReaction < ApplicationRecord
 
   has_one :notification, as: :activity, dependent: :destroy
 
-  validate :status_same_emoji_reaction
   validate :status_emoji_reactions_count
   validates_with EmojiReactionValidator
 

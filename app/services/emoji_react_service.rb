@@ -4,6 +4,7 @@ class EmojiReactService < BaseService
   include Authorization
   include Payloadable
   include Redisable
+  include Lockable
 
   # React a status with emoji and notify remote user
   # @param [Account] account
@@ -14,17 +15,20 @@ class EmojiReactService < BaseService
     status = status.reblog if status.reblog? && !status.reblog.nil?
     authorize_with account, status, :emoji_reaction?
 
-    emoji_reaction = EmojiReaction.find_by(account: account, status: status, name: name)
+    emoji_reaction = nil
 
-    return emoji_reaction unless emoji_reaction.nil?
+    with_redis_lock("emoji_reaction:#{status.id}") do
+      emoji_reaction = EmojiReaction.find_by(account: account, status: status, name: name)
+      raise Mastodon::ValidationError, I18n.t('reactions.errors.duplication') unless emoji_reaction.nil?
 
-    shortcode, domain = name.split('@')
+      shortcode, domain = name.split('@')
+      custom_emoji = CustomEmoji.find_by(shortcode: shortcode, domain: domain)
+      emoji_reaction = EmojiReaction.create!(account: account, status: status, name: shortcode, custom_emoji: custom_emoji)
 
-    custom_emoji = CustomEmoji.find_by(shortcode: shortcode, domain: domain)
+      status.touch # rubocop:disable Rails/SkipsModelValidations
+    end
 
-    emoji_reaction = EmojiReaction.create!(account: account, status: status, name: shortcode, custom_emoji: custom_emoji)
-
-    status.touch # rubocop:disable Rails/SkipsModelValidations
+    raise Mastodon::ValidationError, I18n.t('reactions.errors.duplication') if emoji_reaction.nil?
 
     Trends.statuses.register(status)
 
