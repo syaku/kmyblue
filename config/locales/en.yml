@@ -773,6 +773,12 @@ en:
       edit: Edit rule
       empty: No server rules have been defined yet.
       title: Server rules
+    sensitive_words:
+      alert: This post contains sensitive words, so alert added
+      hint: This keywords is applied to public posts only..
+      keywords: Sensitive keywords
+      keywords_for_all: Sensitive keywords (Contains CW alert)
+      title: Sensitive words and moderation options
     settings:
       about:
         manage_rules: Manage server rules

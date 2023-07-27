@@ -82,8 +82,16 @@ class PostStatusService < BaseService
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
     @reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
+    process_sensitive_words
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
+  end
+
+  def process_sensitive_words
+    if [:public, :public_unlisted, :login].include?(@visibility&.to_sym) && Admin::SensitiveWord.sensitive?(@text, @options[:spoiler_text] || '')
+      @text = Admin::SensitiveWord.modified_text(@text, @options[:spoiler_text])
+      @options[:spoiler_text] = I18n.t('admin.sensitive_words.alert')
+    end
   end
 
   def searchability
