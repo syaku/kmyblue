@@ -11,17 +11,30 @@ module Admin
     def create
       authorize :ng_words, :create?
 
+      begin
+        test_words
+      rescue
+        flash[:alert] = I18n.t('admin.ng_words.test_error')
+        redirect_to after_update_redirect_path
+        return
+      end
+
       @admin_settings = Form::AdminSettings.new(settings_params)
 
       if @admin_settings.save
         flash[:notice] = I18n.t('generic.changes_saved_msg')
         redirect_to after_update_redirect_path
       else
-        render :index
+        render :show
       end
     end
 
     private
+
+    def test_words
+      ng_words = settings_params['ng_words'].split(/\r\n|\r|\n/)
+      Admin::NgWord.reject_with_custom_words?('Sample text', ng_words)
+    end
 
     def after_update_redirect_path
       admin_ng_words_path

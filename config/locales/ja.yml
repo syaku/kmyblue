@@ -599,6 +599,7 @@ ja:
       hide_local_users_for_anonymous: ログインしていない状態でローカルユーザーの投稿をタイムラインから取得できないようにする
       keywords: 投稿できないキーワード
       post_hash_tags_max: 投稿に設定可能なハッシュタグの最大数
+      test_error: NGワードのテストに失敗しました。正規表現のミスが含まれているかもしれません
       title: NGワードとスパム
     relationships:
       title: "%{acct} さんのフォロー・フォロワー"
