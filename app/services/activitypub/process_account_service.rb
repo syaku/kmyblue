@@ -21,6 +21,8 @@ class ActivityPub::ProcessAccountService < BaseService
     @domain      = TagManager.instance.normalize_domain(domain)
     @collections = {}
 
+    return unless valid_account?
+
     # The key does not need to be unguessable, it just needs to be somewhat unique
     @options[:request_id] ||= "#{Time.now.utc.to_i}-#{username}@#{domain}"
 
@@ -121,6 +123,12 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.searchability           = searchability_from_audience
     @account.dissubscribable         = !subscribable(@account.note)
     @account.settings                = other_settings
+  end
+
+  def valid_account?
+    display_name = @json['name']
+    note = @json['summary']
+    !Admin::NgWord.reject?(display_name) && !Admin::NgWord.reject?(note)
   end
 
   def set_fetchable_key!
