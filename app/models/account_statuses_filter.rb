@@ -26,11 +26,17 @@ class AccountStatusesFilter
     scope.merge!(no_reblogs_scope) if exclude_reblogs?
     scope.merge!(hashtag_scope)    if tagged?
 
-    scope.merge!(scope.where(searchability: :public)) if domain_block&.reject_send_not_public_searchability
-    scope.merge!(scope.where.not(visibility: :public_unlisted)) if domain_block&.reject_send_public_unlisted || (domain_block&.detect_invalid_subscription && @account.user&.setting_reject_public_unlisted_subscription)
-    scope.merge!(scope.where.not(visibility: :unlisted)) if domain_block&.detect_invalid_subscription && @account.user&.setting_reject_unlisted_subscription
+    available_searchabilities = [:public, :unlisted, :private, :direct, :limited]
+    available_visibilities = [:public, :public_unlisted, :login, :unlisted, :private, :direct, :limited]
+
+    available_searchabilities = [:public] if domain_block&.reject_send_not_public_searchability
+    available_visibilities -= [:public_unlisted] if domain_block&.reject_send_public_unlisted || (domain_block&.detect_invalid_subscription && @account.user&.setting_reject_public_unlisted_subscription)
+    available_visibilities -= [:unlisted] if domain_block&.detect_invalid_subscription && @account.user&.setting_reject_unlisted_subscription
+    available_visibilities -= [:login] if current_account.nil?
+
     scope.merge!(scope.where(spoiler_text: ['', nil])) if domain_block&.reject_send_sensitive
-    scope.merge!(scope.where.not(visibility: :login)) if current_account.nil?
+    scope.merge!(scope.where(searchability: available_searchabilities))
+    scope.merge!(scope.where(visibility: available_visibilities))
 
     scope
   end
