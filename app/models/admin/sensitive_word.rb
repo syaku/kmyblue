@@ -4,8 +4,8 @@ class Admin::SensitiveWord
   class << self
     def sensitive?(text, spoiler_text)
       exposure_text = (spoiler_text.presence || text)
-      (spoiler_text.blank? && sensitive_words.any? { |word| text.include?(word) }) ||
-        sensitive_words_for_full.any? { |word| exposure_text.include?(word) }
+      (spoiler_text.blank? && sensitive_words.any? { |word| include?(text, word) }) ||
+        sensitive_words_for_full.any? { |word| include?(exposure_text, word) }
     end
 
     def modified_text(text, spoiler_text)
@@ -13,6 +13,14 @@ class Admin::SensitiveWord
     end
 
     private
+
+    def include?(text, word)
+      if word.start_with?('?') && word.size >= 2
+        text =~ /#{word[1..]}/i
+      else
+        text.include?(word)
+      end
+    end
 
     def sensitive_words
       Setting.sensitive_words || []
