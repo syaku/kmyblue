@@ -126,7 +126,6 @@ cs:
         bookmarks: Záložky
         conversations: Konverzace
         crypto: End-to-end šifrování
-        favourites: Oblíbení
         filters: Filtry
         follow: Sledování, ztlumení a blokování
         follows: Sledovaní
@@ -166,29 +165,27 @@ cs:
       follow: upravovat vztahy mezi profily
       push: přijímat vaše push oznámení
       read: vidět všechna data vašeho účtu
-      "read:accounts": vidět informace o účtech
-      "read:blocks": vidět vaše blokace
-      "read:bookmarks": vidět vaše záložky
-      "read:favourites": vidět vaše oblíbené příspěvky
-      "read:filters": vidět vaše filtry
-      "read:follows": vidět vaše sledování
-      "read:lists": vidět vaše seznamy
-      "read:mutes": vidět vaše skrytí
-      "read:notifications": vidět vaše oznámení
-      "read:reports": vidět vaše hlášení
-      "read:search": vyhledávat za vás
-      "read:statuses": vidět všechny příspěvky
+      read:accounts: vidět informace o účtech
+      read:blocks: vidět vaše blokace
+      read:bookmarks: vidět vaše záložky
+      read:filters: vidět vaše filtry
+      read:follows: vidět vaše sledování
+      read:lists: vidět vaše seznamy
+      read:mutes: vidět vaše skrytí
+      read:notifications: vidět vaše oznámení
+      read:reports: vidět vaše hlášení
+      read:search: vyhledávat za vás
+      read:statuses: vidět všechny příspěvky
       write: měnit všechna data vašeho účtu
-      "write:accounts": měnit váš profil
-      "write:blocks": blokovat účty a domény
-      "write:bookmarks": přidávat příspěvky do záložek
-      "write:conversations": skrývat a mazat konverzace
-      "write:favourites": oblibovat si příspěvky
-      "write:filters": vytvářet filtry
-      "write:follows": sledovat lidi
-      "write:lists": vytvářet seznamy
-      "write:media": nahrávat mediální soubory
-      "write:mutes": skrývat lidi a konverzace
-      "write:notifications": mazat vaše oznámení
-      "write:reports": nahlašovat jiné uživatele
-      "write:statuses": zveřejňovat příspěvky
+      write:accounts: měnit váš profil
+      write:blocks: blokovat účty a domény
+      write:bookmarks: přidávat příspěvky do záložek
+      write:conversations: skrývat a mazat konverzace
+      write:filters: vytvářet filtry
+      write:follows: sledovat lidi
+      write:lists: vytvářet seznamy
+      write:media: nahrávat mediální soubory
+      write:mutes: skrývat lidi a konverzace
+      write:notifications: mazat vaše oznámení
+      write:reports: nahlašovat jiné uživatele
+      write:statuses: zveřejňovat příspěvky

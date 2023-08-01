@@ -126,7 +126,6 @@ be:
         bookmarks: Закладкі
         conversations: Размовы
         crypto: Скразное шыфраванне
-        favourites: Абраныя
         filters: Фільтры
         follow: Падпіскі, ігнараванне і блакіроўка
         follows: Падпіскі
@@ -166,29 +165,27 @@ be:
       follow: змяняць зносіны ўліковага запісу
       push: атрымліваць push-апавяшчэнні
       read: чытаць усе даныя вашага ўліковага запісу
-      "read:accounts": бачыць інфармацыю аб уліковых запісах
-      "read:blocks": бачыць свае блакіроўкі
-      "read:bookmarks": бачыць свае закладкі
-      "read:favourites": Бачыць сваё абранае
-      "read:filters": бачыць свае фільтры
-      "read:follows": бачыць свае падпіскі
-      "read:lists": бачыць свае спісы
-      "read:mutes": бачыць свае ігнараванні
-      "read:notifications": бачыць свае абвесткі
-      "read:reports": бачыць свае скаргі
-      "read:search": шукаць ад вашага імя
-      "read:statuses": бачыць усе допісы
+      read:accounts: бачыць інфармацыю аб уліковых запісах
+      read:blocks: бачыць свае блакіроўкі
+      read:bookmarks: бачыць свае закладкі
+      read:filters: бачыць свае фільтры
+      read:follows: бачыць свае падпіскі
+      read:lists: бачыць свае спісы
+      read:mutes: бачыць свае ігнараванні
+      read:notifications: бачыць свае абвесткі
+      read:reports: бачыць свае скаргі
+      read:search: шукаць ад вашага імя
+      read:statuses: бачыць усе допісы
       write: змяняць усе даныя вашага ўліковага запісу
-      "write:accounts": змяняць свой профіль
-      "write:blocks": блакіраваць уліковыя запісы і дамены
-      "write:bookmarks": закладкі допісаў
-      "write:conversations": ігнараваць і выдаляць размовы
-      "write:favourites": дадаваць допісы ва ўпадабанае
-      "write:filters": ствараць фільтры
-      "write:follows": Сачыць за людзьмі
-      "write:lists": ствараць спiсы
-      "write:media": запампоўваць медыяфайлы
-      "write:mutes": ігнараваць людзей і размовы
-      "write:notifications": выдаляць апавяшчэнні
-      "write:reports": скардзіцца на іншых людзей
-      "write:statuses": публікаваць допісы
+      write:accounts: змяняць свой профіль
+      write:blocks: блакіраваць уліковыя запісы і дамены
+      write:bookmarks: закладкі допісаў
+      write:conversations: ігнараваць і выдаляць размовы
+      write:filters: ствараць фільтры
+      write:follows: Сачыць за людзьмі
+      write:lists: ствараць спiсы
+      write:media: запампоўваць медыяфайлы
+      write:mutes: ігнараваць людзей і размовы
+      write:notifications: выдаляць апавяшчэнні
+      write:reports: скардзіцца на іншых людзей
+      write:statuses: публікаваць допісы

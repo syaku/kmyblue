@@ -179,16 +179,16 @@ pt-PT:
       "read:search": pesquisar em seu nome
       "read:statuses": ver todos os estados
       write: publique por ti
-      "write:accounts": modificar o seu perfil
-      "write:blocks": bloquear contas e domínios
-      "write:bookmarks": estado dos favoritos
-      "write:conversations": silenciar e eliminar conversas
-      "write:favourites": estado dos favoritos
-      "write:filters": criar filtros
-      "write:follows": seguir pessoas
-      "write:lists": criar listas
-      "write:media": carregar arquivos de media
-      "write:mutes": silenciar pessoas e conversas
-      "write:notifications": limpar as suas notificações
-      "write:reports": denunciar outras pessoas
-      "write:statuses": publicar estado
+      write:accounts: modificar o seu perfil
+      write:blocks: bloquear contas e domínios
+      write:bookmarks: estado dos favoritos
+      write:conversations: silenciar e eliminar conversas
+      write:favourites: assinalar como favoritas
+      write:filters: criar filtros
+      write:follows: seguir pessoas
+      write:lists: criar listas
+      write:media: carregar arquivos de media
+      write:mutes: silenciar pessoas e conversas
+      write:notifications: limpar as suas notificações
+      write:reports: denunciar outras pessoas
+      write:statuses: publicar estado

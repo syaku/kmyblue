@@ -155,18 +155,17 @@ sk:
       follow: uprav vzťahy svojho účtu
       push: dostávaj oboznámenia ohľadom tvojho účtu na obrazovku
       read: prezri si všetky dáta ohľadom svojho účetu
-      "read:accounts": prezri si informácie o účte
-      "read:blocks": prezri svoje bloky
-      "read:bookmarks": pozri svoje záložky
-      "read:favourites": prezri svoje obľúbené
-      "read:filters": prezri svoje filtrovanie
-      "read:follows": prezri si svoje sledovania
-      "read:lists": prezri si svoje zoznamy
-      "read:mutes": prezri svoje utíšenia
-      "read:notifications": zhliadni svoje oboznámenia
-      "read:reports": prezri svoje reporty
-      "read:search": vyhľadvávaj v rámci seba
-      "read:statuses": zhliadni všetky príspevky
+      read:accounts: prezri si informácie o účte
+      read:blocks: prezri svoje bloky
+      read:bookmarks: pozri svoje záložky
+      read:filters: prezri svoje filtrovanie
+      read:follows: prezri si svoje sledovania
+      read:lists: prezri si svoje zoznamy
+      read:mutes: prezri svoje utíšenia
+      read:notifications: zhliadni svoje oboznámenia
+      read:reports: prezri svoje reporty
+      read:search: vyhľadvávaj v rámci seba
+      read:statuses: zhliadni všetky príspevky
       write: upraviť všetky dáta tvojho účtu
       "write:accounts": uprav svoj profil
       "write:blocks": blokuj účty a domény

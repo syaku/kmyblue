@@ -126,7 +126,6 @@ sv:
         bookmarks: Bokmärken
         conversations: Konversationer
         crypto: Ände-till-ände-kryptering
-        favourites: Favoriter
         filters: Filter
         follow: Följare, mjutade och blockerade
         follows: Följer
@@ -166,29 +165,27 @@ sv:
       follow: modifiera kontorelationer
       push: ta emot dina push-notiser
       read: läsa dina kontodata
-      "read:accounts": se kontoinformation
-      "read:blocks": se dina blockeringar
-      "read:bookmarks": se dina bokmärken
-      "read:favourites": se dina favoriter
-      "read:filters": se dina filter
-      "read:follows": se vem du följer
-      "read:lists": se dina listor
-      "read:mutes": se dina tystningar
-      "read:notifications": se dina notiser
-      "read:reports": se dina rapporter
-      "read:search": sök å dina vägnar
-      "read:statuses": se alla inlägg
+      read:accounts: se kontoinformation
+      read:blocks: se dina blockeringar
+      read:bookmarks: se dina bokmärken
+      read:filters: se dina filter
+      read:follows: se vem du följer
+      read:lists: se dina listor
+      read:mutes: se dina tystningar
+      read:notifications: se dina notiser
+      read:reports: se dina rapporter
+      read:search: sök å dina vägnar
+      read:statuses: se alla inlägg
       write: ändra all din kontodata
-      "write:accounts": ändra din profil
-      "write:blocks": blockera konton och domäner
-      "write:bookmarks": bokmärka inlägg
-      "write:conversations": tysta och radera konversationer
-      "write:favourites": favoritmarkera inlägg
-      "write:filters": skapa filter
-      "write:follows": följa folk
-      "write:lists": skapa listor
-      "write:media": ladda upp mediefiler
-      "write:mutes": tysta folk och konversationer
-      "write:notifications": rensa dina notiser
-      "write:reports": rapportera andra personer
-      "write:statuses": publicera inlägg
+      write:accounts: ändra din profil
+      write:blocks: blockera konton och domäner
+      write:bookmarks: bokmärka inlägg
+      write:conversations: tysta och radera konversationer
+      write:filters: skapa filter
+      write:follows: följa folk
+      write:lists: skapa listor
+      write:media: ladda upp mediefiler
+      write:mutes: tysta folk och konversationer
+      write:notifications: rensa dina notiser
+      write:reports: rapportera andra personer
+      write:statuses: publicera inlägg

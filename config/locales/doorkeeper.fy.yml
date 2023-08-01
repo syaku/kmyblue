@@ -126,7 +126,6 @@ fy:
         bookmarks: Blêdwizers
         conversations: Petearen
         crypto: End-to-end-fersifering
-        favourites: Favoriten
         filters: Filters
         follow: Folgers, negearre en blokkearre brûkers
         follows: Folgjend
@@ -166,29 +165,27 @@ fy:
       follow: relaasjes tusken accounts bewurkje
       push: dyn pushmeldingen ûntfange
       read: alle gegevens fan dyn account lêze
-      "read:accounts": accountynformaasje besjen
-      "read:blocks": dyn blokkearre brûkers besjen
-      "read:bookmarks": dyn blêdwizers besjen
-      "read:favourites": jo favoriten besjen
-      "read:filters": dyn filters besjen
-      "read:follows": de accounts dy’tsto folgest besjen
-      "read:lists": dyn listen besjen
-      "read:mutes": dyn negearre brûkers besjen
-      "read:notifications": dyn meldingen besjen
-      "read:reports": dyn rapportearre berjochten besjen
-      "read:search": út dyn namme sykje
-      "read:statuses": alle berjochten besjen
+      read:accounts: accountynformaasje besjen
+      read:blocks: dyn blokkearre brûkers besjen
+      read:bookmarks: dyn blêdwizers besjen
+      read:filters: dyn filters besjen
+      read:follows: de accounts dy’tsto folgest besjen
+      read:lists: dyn listen besjen
+      read:mutes: dyn negearre brûkers besjen
+      read:notifications: dyn meldingen besjen
+      read:reports: dyn rapportearre berjochten besjen
+      read:search: út dyn namme sykje
+      read:statuses: alle berjochten besjen
       write: alle gegevens fan dyn account bewurkje
-      "write:accounts": dyn profyl bewurkje
-      "write:blocks": accounts en domeinen blokkearje
-      "write:bookmarks": berjochten oan blêdwizers tafoegje
-      "write:conversations": petearen negearre en fuortsmite
-      "write:favourites": berjochten as favoryt markearje
-      "write:filters": filters oanmeitsje
-      "write:follows": minsken folgje
-      "write:lists": listen oanmeitsje
-      "write:media": mediabestannen oplade
-      "write:mutes": minsken en petearen dôvje
-      "write:notifications": meldingen fuortsmite
-      "write:reports": oare minsken rapportearje
-      "write:statuses": berjochten pleatse
+      write:accounts: dyn profyl bewurkje
+      write:blocks: accounts en domeinen blokkearje
+      write:bookmarks: berjochten oan blêdwizers tafoegje
+      write:conversations: petearen negearre en fuortsmite
+      write:filters: filters oanmeitsje
+      write:follows: minsken folgje
+      write:lists: listen oanmeitsje
+      write:media: mediabestannen oplade
+      write:mutes: minsken en petearen dôvje
+      write:notifications: meldingen fuortsmite
+      write:reports: oare minsken rapportearje
+      write:statuses: berjochten pleatse

@@ -166,29 +166,29 @@ it:
       follow: modifica le relazioni tra profili
       push: ricevere le tue notifiche push
       read: leggere tutti i dati del tuo profilo
-      "read:accounts": visualizzare le informazioni sui profili
-      "read:blocks": visualizzare i tuoi blocchi
-      "read:bookmarks": visualizzare i tuoi segnalibri
-      "read:favourites": visualizzare i tuoi preferiti
-      "read:filters": visualizzare i tuoi filtri
-      "read:follows": visualizzare i tuoi seguiti
-      "read:lists": visualizzare i tuoi elenchi
-      "read:mutes": visualizzare i tuoi silenziamenti
-      "read:notifications": visualizzare le tue notifiche
-      "read:reports": visualizzare le tue segnalazioni
-      "read:search": fare ricerche per conto tuo
-      "read:statuses": visualizzare tutti i post
+      read:accounts: visualizzare le informazioni sui profili
+      read:blocks: visualizzare i tuoi blocchi
+      read:bookmarks: visualizzare i tuoi segnalibri
+      read:favourites: vedi i tuoi preferiti
+      read:filters: visualizzare i tuoi filtri
+      read:follows: visualizzare i tuoi seguiti
+      read:lists: visualizzare i tuoi elenchi
+      read:mutes: visualizzare i tuoi silenziamenti
+      read:notifications: visualizzare le tue notifiche
+      read:reports: visualizzare le tue segnalazioni
+      read:search: fare ricerche per conto tuo
+      read:statuses: visualizzare tutti i post
       write: modificare tutti i dati del tuo profilo
-      "write:accounts": modificare il tuo profilo
-      "write:blocks": bloccare profili e domini
-      "write:bookmarks": aggiungere post tra i segnalibri
-      "write:conversations": silenziare ed eliminare conversazioni
-      "write:favourites": salvare post tra i preferiti
-      "write:filters": creare filtri
-      "write:follows": seguire persone
-      "write:lists": creare elenchi
-      "write:media": caricare file multimediali
-      "write:mutes": silenziare persone e conversazioni
-      "write:notifications": cancellare le tue notifiche
-      "write:reports": segnalare altre persone
-      "write:statuses": pubblicare post
+      write:accounts: modificare il tuo profilo
+      write:blocks: bloccare profili e domini
+      write:bookmarks: aggiungere post tra i segnalibri
+      write:conversations: silenziare ed eliminare conversazioni
+      write:favourites: post preferiti
+      write:filters: creare filtri
+      write:follows: seguire persone
+      write:lists: creare elenchi
+      write:media: caricare file multimediali
+      write:mutes: silenziare persone e conversazioni
+      write:notifications: cancellare le tue notifiche
+      write:reports: segnalare altre persone
+      write:statuses: pubblicare post

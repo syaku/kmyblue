@@ -125,7 +125,6 @@ ro:
         bookmarks: Marcaje
         conversations: Conversații
         crypto: Criptare în ambele părți
-        favourites: Favorite
         filters: Filtre
         follows: Urmăriri
         lists: Liste
@@ -154,29 +153,27 @@ ro:
       follow: modifică relațiile contului
       push: primește notificările tale push
       read: citește toate datele contului tău
-      "read:accounts": vede informațiile privind conturile
-      "read:blocks": vede blocurile tale
-      "read:bookmarks": vede marcajele tale
-      "read:favourites": vede favoritele tale
-      "read:filters": vede filtrele tale
-      "read:follows": vede urmăririle tale
-      "read:lists": vede listele tale
-      "read:mutes": vede ignorările tale
-      "read:notifications": vede notificările tale
-      "read:reports": vede raportările tale
-      "read:search": caută în numele tău
-      "read:statuses": vede toate stările
+      read:accounts: vede informațiile privind conturile
+      read:blocks: vede blocurile tale
+      read:bookmarks: vede marcajele tale
+      read:filters: vede filtrele tale
+      read:follows: vede urmăririle tale
+      read:lists: vede listele tale
+      read:mutes: vede ignorările tale
+      read:notifications: vede notificările tale
+      read:reports: vede raportările tale
+      read:search: caută în numele tău
+      read:statuses: vede toate stările
       write: modifică toate datele contului tău
-      "write:accounts": modifică profilul tău
-      "write:blocks": blochează conturile și domeniile
-      "write:bookmarks": marchează stările
-      "write:conversations": dezactivează și șterge conversațiile
-      "write:favourites": favorizează stările
-      "write:filters": creează filtre
-      "write:follows": urmărește persoane
-      "write:lists": creează liste
-      "write:media": încarcă fișiere media
-      "write:mutes": ignoră persoane și conversații
-      "write:notifications": curăță notificările
-      "write:reports": raportează alte persoane
-      "write:statuses": publică stări
+      write:accounts: modifică profilul tău
+      write:blocks: blochează conturile și domeniile
+      write:bookmarks: marchează stările
+      write:conversations: dezactivează și șterge conversațiile
+      write:filters: creează filtre
+      write:follows: urmărește persoane
+      write:lists: creează liste
+      write:media: încarcă fișiere media
+      write:mutes: ignoră persoane și conversații
+      write:notifications: curăță notificările
+      write:reports: raportează alte persoane
+      write:statuses: publică stări

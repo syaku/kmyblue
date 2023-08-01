@@ -166,18 +166,18 @@ zh-TW:
       follow: 修改帳號關係
       push: 接收帳號的推播通知
       read: 讀取您所有的帳號資料
-      "read:accounts": 檢視帳號資訊
-      "read:blocks": 檢視您的封鎖列表
-      "read:bookmarks": 檢視您的書籤
-      "read:favourites": 檢視您收藏的最愛
-      "read:filters": 檢視您的過濾條件
-      "read:follows": 檢視您跟隨的人
-      "read:lists": 檢視您的列表
-      "read:mutes": 檢視您靜音的人
-      "read:notifications": 檢視您的通知
-      "read:reports": 檢視您的檢舉
-      "read:search": 以您的身份搜尋
-      "read:statuses": 檢視所有嘟文
+      read:accounts: 檢視帳號資訊
+      read:blocks: 檢視您的封鎖列表
+      read:bookmarks: 檢視您的書籤
+      read:favourites: 檢視您收藏之最愛嘟文
+      read:filters: 檢視您的過濾條件
+      read:follows: 檢視您跟隨的人
+      read:lists: 檢視您的列表
+      read:mutes: 檢視您靜音的人
+      read:notifications: 檢視您的通知
+      read:reports: 檢視您的檢舉
+      read:search: 以您的身份搜尋
+      read:statuses: 檢視所有嘟文
       write: 修改您帳號的所有資料
       "write:accounts": 修改您的個人檔案
       "write:blocks": 封鎖帳號及站台

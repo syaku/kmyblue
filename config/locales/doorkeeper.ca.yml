@@ -126,7 +126,7 @@ ca:
         bookmarks: Marcadors
         conversations: Converses
         crypto: Xifrat d'extrem a extrem
-        favourites: Preferits
+        favourites: Favorits
         filters: Filtres
         follow: Seguits, Silenciats i Blocats
         follows: Seguits
@@ -166,29 +166,29 @@ ca:
       follow: modifica les relacions del compte
       push: rebre notificacions push del teu compte
       read: llegir les dades del teu compte
-      "read:accounts": mira informació dels comptes
-      "read:blocks": mira els teus bloqueigs
-      "read:bookmarks": mira els teus marcadors
-      "read:favourites": mira els teus preferits
-      "read:filters": mira els teus filtres
-      "read:follows": mira els teus seguiments
-      "read:lists": mira les teves llistes
-      "read:mutes": mira els teus silenciats
-      "read:notifications": mira les teves notificacions
-      "read:reports": mira els teus informes
-      "read:search": cerca en nom teu
-      "read:statuses": veure tots els tuts
+      read:accounts: mira informació dels comptes
+      read:blocks: mira els teus bloqueigs
+      read:bookmarks: mira els teus marcadors
+      read:favourites: mira els teus favorits
+      read:filters: mira els teus filtres
+      read:follows: mira els teus seguiments
+      read:lists: mira les teves llistes
+      read:mutes: mira els teus silenciats
+      read:notifications: mira les teves notificacions
+      read:reports: mira els teus informes
+      read:search: cerca en nom teu
+      read:statuses: veure tots els tuts
       write: modifica totes les dades del teu compte
-      "write:accounts": modifica el teu perfil
-      "write:blocks": bloca comptes i dominis
-      "write:bookmarks": marca tuts
-      "write:conversations": silencia i esborra converses
-      "write:favourites": afavoreix tuts
-      "write:filters": crea filtres
-      "write:follows": segueix gent
-      "write:lists": crea llistes
-      "write:media": puja fitxers multimèdia
-      "write:mutes": silencia usuaris i converses
-      "write:notifications": esborra les teves notificacions
-      "write:reports": informa sobre altres persones
-      "write:statuses": publica tuts
+      write:accounts: modifica el teu perfil
+      write:blocks: bloca comptes i dominis
+      write:bookmarks: marca tuts
+      write:conversations: silencia i esborra converses
+      write:favourites: tuts favorits
+      write:filters: crea filtres
+      write:follows: segueix gent
+      write:lists: crea llistes
+      write:media: puja fitxers multimèdia
+      write:mutes: silencia usuaris i converses
+      write:notifications: esborra les teves notificacions
+      write:reports: informa sobre altres persones
+      write:statuses: publica tuts

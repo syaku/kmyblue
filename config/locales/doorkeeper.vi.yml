@@ -179,16 +179,16 @@ vi:
       "read:search": thay mặt bạn tìm kiếm
       "read:statuses": xem toàn bộ tút
       write: sửa đổi mọi dữ liệu tài khoản của bạn
-      "write:accounts": sửa đổi trang hồ sơ của bạn
-      "write:blocks": chặn người và máy chủ
-      "write:bookmarks": sửa đổi những thứ bạn lưu
-      "write:conversations": ẩn và xóa thảo luận
-      "write:favourites": lượt thích
-      "write:filters": tạo bộ lọc
-      "write:follows": theo dõi ai đó
-      "write:lists": tạo danh sách
-      "write:media": tải lên tập tin
-      "write:mutes": ẩn người và thảo luận
-      "write:notifications": xóa thông báo của bạn
-      "write:reports": báo cáo người khác
-      "write:statuses": đăng tút
+      write:accounts: sửa đổi trang hồ sơ của bạn
+      write:blocks: chặn người và máy chủ
+      write:bookmarks: sửa đổi những thứ bạn lưu
+      write:conversations: ẩn và xóa thảo luận
+      write:favourites: thích tút
+      write:filters: tạo bộ lọc
+      write:follows: theo dõi ai đó
+      write:lists: tạo danh sách
+      write:media: tải lên tập tin
+      write:mutes: ẩn người và thảo luận
+      write:notifications: xóa thông báo của bạn
+      write:reports: báo cáo người khác
+      write:statuses: đăng tút

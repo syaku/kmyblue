@@ -126,7 +126,6 @@ zh-HK:
         bookmarks: 書籤
         conversations: 對話
         crypto: 端到端加密
-        favourites: 最愛
         filters: 篩選器
         follow: 追蹤、靜音及封鎖
         follows: 追蹤
@@ -179,16 +178,15 @@ zh-HK:
       "read:search": 以你的身份進行搜尋
       "read:statuses": 檢視所有文章
       write: 以你的名義發佈文章
-      "write:accounts": 修改你的個人檔案
-      "write:blocks": 封鎖帳號及域名
-      "write:bookmarks": 把文章加入最愛
-      "write:conversations": 靜音及刪除對話
-      "write:favourites": 喜歡的文章
-      "write:filters": 建立過濾條件
-      "write:follows": 關注其他人
-      "write:lists": 建立清單
-      "write:media": 上傳媒體檔案
-      "write:mutes": 靜音使用者及對話
-      "write:notifications": 清除你的通知
-      "write:reports": 檢舉其他人
-      "write:statuses": 發布嘟文
+      write:accounts: 修改你的個人檔案
+      write:blocks: 封鎖帳號及域名
+      write:bookmarks: 把文章加入最愛
+      write:conversations: 靜音及刪除對話
+      write:filters: 建立過濾條件
+      write:follows: 關注其他人
+      write:lists: 建立清單
+      write:media: 上傳媒體檔案
+      write:mutes: 靜音使用者及對話
+      write:notifications: 清除你的通知
+      write:reports: 檢舉其他人
+      write:statuses: 發布嘟文
