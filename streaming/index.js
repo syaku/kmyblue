@@ -704,9 +704,8 @@ const startServer = async () => {
           queries.push(client.query('SELECT filter.id AS id, filter.phrase AS title, filter.context AS context, filter.expires_at AS expires_at, filter.action AS filter_action, keyword.keyword AS keyword, keyword.whole_word AS whole_word, filter.exclude_follows AS exclude_follows, filter.exclude_localusers AS exclude_localusers FROM custom_filter_keywords keyword JOIN custom_filters filter ON keyword.custom_filter_id = filter.id WHERE filter.account_id = $1 AND (filter.expires_at IS NULL OR filter.expires_at > NOW())', [req.accountId]));
         }
         if (!payload.filtered) {
-          queries.push(client.query(`SELECT accounts.domain AS domain
+          queries.push(client.query(`SELECT 1
                                      FROM follows
-                                     JOIN accounts ON follows.target_account_id = accounts.id
                                      WHERE (account_id = $1 AND target_account_id = $2)`, [req.accountId, payload.account.id]));
         }
 
@@ -799,11 +798,11 @@ const startServer = async () => {
                 return results;
               }
 
-              if (cachedFilter.repr.excludeFollows && following) {
+              if (cachedFilter.filter && cachedFilter.filter.excludeFollows && following) {
                 return results;
               }
 
-              if (cachedFilter.repr.excludeLocalusers && !accountDomain) {
+              if (cachedFilter.filter && cachedFilter.filter.excludeLocalusers && !accountDomain) {
                 return results;
               }
 

@@ -20,7 +20,7 @@ class StatusCacheHydrator
       payload[:bookmarked] = false
       payload[:pinned]     = false if @status.account_id == account_id
       payload[:filtered]   = CustomFilter
-                             .apply_cached_filters(CustomFilter.cached_filters_for(account_id), @status.reblog)
+                             .apply_cached_filters(CustomFilter.cached_filters_for(account_id), @status.reblog, following?(account_id))
                              .map { |filter| serialized_filter(filter) }
 
       # If the reblogged status is being delivered to the author who disabled the display of the application
@@ -54,7 +54,7 @@ class StatusCacheHydrator
       payload[:bookmarked] = Bookmark.where(account_id: account_id, status_id: @status.id).exists?
       payload[:pinned]     = StatusPin.where(account_id: account_id, status_id: @status.id).exists? if @status.account_id == account_id
       payload[:filtered]   = CustomFilter
-                             .apply_cached_filters(CustomFilter.cached_filters_for(account_id), @status)
+                             .apply_cached_filters(CustomFilter.cached_filters_for(account_id), @status, following?(account_id))
                              .map { |filter| serialized_filter(filter) }
 
       if payload[:poll]
@@ -67,6 +67,10 @@ class StatusCacheHydrator
   end
 
   private
+
+  def following?(account_id)
+    Follow.exists?(account_id: account_id, target_account_id: @status.account_id)
+  end
 
   def serialized_filter(filter)
     ActiveModelSerializers::SerializableResource.new(
