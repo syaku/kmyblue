@@ -38,6 +38,8 @@ class Form::AdminSettings
     enable_block_emoji_reaction_settings
     hide_local_users_for_anonymous
     post_hash_tags_max
+    sensitive_words
+    sensitive_words_for_full
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -70,6 +72,8 @@ class Form::AdminSettings
 
   STRING_ARRAY_KEYS = %i(
     ng_words
+    sensitive_words
+    sensitive_words_for_full
   ).freeze
 
   attr_accessor(*KEYS)

@@ -439,6 +439,7 @@
   "notification.status": "{name}さんが投稿しました",
   "notification.status_reference": "{name}さんがあなたの投稿を参照しました",
   "notification.update": "{name}さんが投稿を編集しました",
+  "notification.warning": "あなたは警告を出され、「{action}」が実行されました。詳細はメールをご確認ください",
   "notifications.clear": "通知を消去",
   "notifications.clear_confirmation": "本当に通知を消去しますか？",
   "notifications.column_settings.admin.report": "新しい通報:",

@@ -107,7 +107,7 @@ class PublicFeed
   end
 
   def anonymous_scope
-    Status.where.not(visibility: :login)
+    Status.where(visibility: [:public, :public_unlisted])
   end
 
   def account_filters_scope

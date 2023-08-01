@@ -1848,6 +1848,11 @@ a.account__display-name {
   }
 }
 
+.notification__warning-text {
+  padding: 16px 16px 16px 48px;
+  color: $darker-text-color;
+}
+
 .notification__display-name {
   color: inherit;
   font-weight: 500;
@@ -3722,6 +3727,7 @@ a.status-card {
   margin: 0;
   width: 100%;
   height: 100%;
+  max-height: 286px;
   object-fit: cover;
   background-size: cover;
   background-position: center center;
@@ -6265,6 +6271,7 @@ a.status-card {
   position: relative;
   width: 100%;
   min-height: 64px;
+  max-height: 70vh;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;

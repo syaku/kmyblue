@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module Admin
-  class NgWordsController < BaseController
+  class SensitiveWordsController < BaseController
     def show
-      authorize :ng_words, :show?
+      authorize :sensitive_words, :show?
 
       @admin_settings = Form::AdminSettings.new
     end
 
     def create
-      authorize :ng_words, :create?
+      authorize :sensitive_words, :create?
 
       begin
         test_words
@@ -25,19 +25,20 @@ module Admin
         flash[:notice] = I18n.t('generic.changes_saved_msg')
         redirect_to after_update_redirect_path
       else
-        render :show
+        render :index
       end
     end
 
     private
 
     def test_words
-      ng_words = settings_params['ng_words'].split(/\r\n|\r|\n/)
-      Admin::NgWord.reject_with_custom_words?('Sample text', ng_words)
+      sensitive_words = settings_params['sensitive_words'].split(/\r\n|\r|\n/)
+      sensitive_words_for_full = settings_params['sensitive_words_for_full'].split(/\r\n|\r|\n/)
+      Admin::NgWord.reject_with_custom_words?('Sample text', sensitive_words + sensitive_words_for_full)
     end
 
     def after_update_redirect_path
-      admin_ng_words_path
+      admin_sensitive_words_path
     end
 
     def settings_params

@@ -3,7 +3,11 @@
 class Admin::NgWord
   class << self
     def reject?(text)
-      ng_words.any? { |word| text.include?(word) }
+      ng_words.any? { |word| include?(text, word) }
+    end
+
+    def reject_with_custom_words?(text, custom_ng_words)
+      custom_ng_words.any? { |word| include?(text, word) }
     end
 
     def hashtag_reject?(hashtag_count)
@@ -16,8 +20,16 @@ class Admin::NgWord
 
     private
 
+    def include?(text, word)
+      if word.start_with?('?') && word.size >= 2
+        text =~ /#{word[1..]}/i
+      else
+        text.include?(word)
+      end
+    end
+
     def ng_words
-      Setting.ng_words
+      Setting.ng_words || []
     end
 
     def post_hash_tags_max

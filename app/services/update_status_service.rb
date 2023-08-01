@@ -127,6 +127,7 @@ class UpdateStatusService < BaseService
     @status.markdown     = @options[:markdown] || false
     @status.sensitive    = @options[:sensitive] || @options[:spoiler_text].present? if @options.key?(:sensitive) || @options.key?(:spoiler_text)
     @status.language     = valid_locale_cascade(@options[:language], @status.language, @status.account.user&.preferred_posting_language, I18n.default_locale)
+    process_sensitive_words
 
     # We raise here to rollback the entire transaction
     raise NoChangesSubmittedError unless significant_changes?
@@ -135,6 +136,13 @@ class UpdateStatusService < BaseService
 
     @status.edited_at = Time.now.utc
     @status.save!
+  end
+
+  def process_sensitive_words
+    return unless [:public, :public_unlisted, :login].include?(@status.visibility&.to_sym) && Admin::SensitiveWord.sensitive?(@status.text, @status.spoiler_text || '')
+
+    @status.text = Admin::SensitiveWord.modified_text(@status.text, @status.spoiler_text)
+    @status.spoiler_text = I18n.t('admin.sensitive_words.alert')
   end
 
   def update_expiration!

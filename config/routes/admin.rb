@@ -34,6 +34,7 @@ namespace :admin do
   resources :warning_presets, except: [:new, :show]
   resources :media_attachments, only: [:index]
   resource :ng_words, only: [:show, :create]
+  resource :sensitive_words, only: [:show, :create]
 
   resources :announcements, except: [:show] do
     member do
