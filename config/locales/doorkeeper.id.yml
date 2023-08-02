@@ -125,7 +125,6 @@ id:
         bookmarks: Markah
         conversations: Percakapan
         crypto: Enkripsi end-to-end
-        favourites: Favorit
         filters: Saringan
         follows: Mengikuti
         lists: Daftar
@@ -161,29 +160,27 @@ id:
       follow: mengikuti, blokir, menghapus blokir, dan berhenti mengikuti akun
       push: terima notifikasi dorong
       read: membaca data pada akun anda
-      "read:accounts": lihat informasi akun
-      "read:blocks": lihat blokiran Anda
-      "read:bookmarks": lihat markah Anda
-      "read:favourites": lihat favorit Anda
-      "read:filters": lihat saringan Anda
-      "read:follows": lihat yang Anda ikuti
-      "read:lists": lihat daftar Anda
-      "read:mutes": lihat daftar bisu Anda
-      "read:notifications": lihat notifikasi Anda
-      "read:reports": lihat laporan Anda
-      "read:search": cari atas nama Anda
-      "read:statuses": lihat semua status
+      read:accounts: lihat informasi akun
+      read:blocks: lihat blokiran Anda
+      read:bookmarks: lihat markah Anda
+      read:filters: lihat saringan Anda
+      read:follows: lihat yang Anda ikuti
+      read:lists: lihat daftar Anda
+      read:mutes: lihat daftar bisu Anda
+      read:notifications: lihat notifikasi Anda
+      read:reports: lihat laporan Anda
+      read:search: cari atas nama Anda
+      read:statuses: lihat semua status
       write: memposting sebagai anda
-      "write:accounts": ubah profil Anda
-      "write:blocks": blokir akun dan domain
-      "write:bookmarks": status markah
-      "write:conversations": bisukan dan hapus percakapan
-      "write:favourites": status favorit
-      "write:filters": buat saringan
-      "write:follows": ikuti orang
-      "write:lists": buat daftar
-      "write:media": unggah berkas media
-      "write:mutes": bisukan orang dan percakapan
-      "write:notifications": hapus notifikasi Anda
-      "write:reports": laporkan orang lain
-      "write:statuses": terbitkan status
+      write:accounts: ubah profil Anda
+      write:blocks: blokir akun dan domain
+      write:bookmarks: status markah
+      write:conversations: bisukan dan hapus percakapan
+      write:filters: buat saringan
+      write:follows: ikuti orang
+      write:lists: buat daftar
+      write:media: unggah berkas media
+      write:mutes: bisukan orang dan percakapan
+      write:notifications: hapus notifikasi Anda
+      write:reports: laporkan orang lain
+      write:statuses: terbitkan status

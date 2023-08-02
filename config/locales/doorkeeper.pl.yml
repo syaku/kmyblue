@@ -179,16 +179,16 @@ pl:
       "read:search": wyświetlanie z Twojego konta
       "read:statuses": wyświetlanie wszystkich wpisów
       write: możliwość modyfikowania wszystkich danych o koncie
-      "write:accounts": możliwość modyfikowania informacji o koncie
-      "write:blocks": możliwość blokowania domen i użytkowników
-      "write:bookmarks": możliwość dodawania wpisów do zakładek
-      "write:conversations": wycisz i usuń konwersacje
-      "write:favourites": możliwość dodawnia wpisów do ulubionych
-      "write:filters": możliwość tworzenia filtrów
-      "write:follows": możliwość obserwowania ludzi
-      "write:lists": możliwość tworzenia list
-      "write:media": możliwość wysyłania zawartości multimedialnej
-      "write:mutes": możliwość wyciszania ludzi i konwersacji
-      "write:notifications": możliwość usuwania Twoich powiadomień
-      "write:reports": możliwość zgłaszania wpisów
-      "write:statuses": możliwość publikowania wpisów
+      write:accounts: możliwość modyfikowania informacji o koncie
+      write:blocks: możliwość blokowania domen i użytkowników
+      write:bookmarks: możliwość dodawania wpisów do zakładek
+      write:conversations: wycisz i usuń konwersacje
+      write:favourites: polubianie wpisów
+      write:filters: możliwość tworzenia filtrów
+      write:follows: możliwość obserwowania ludzi
+      write:lists: możliwość tworzenia list
+      write:media: możliwość wysyłania zawartości multimedialnej
+      write:mutes: możliwość wyciszania ludzi i konwersacji
+      write:notifications: możliwość usuwania Twoich powiadomień
+      write:reports: możliwość zgłaszania wpisów
+      write:statuses: możliwość publikowania wpisów

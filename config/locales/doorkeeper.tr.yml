@@ -126,7 +126,7 @@ tr:
         bookmarks: Yer imleri
         conversations: Sohbetler
         crypto: Uçtan uca şifreleme
-        favourites: Beğeniler
+        favourites: Favoriler
         filters: Filtreler
         follow: Takipler, Sessizler ve Engeller
         follows: Takip edilenler
@@ -166,29 +166,29 @@ tr:
       follow: hesap ilişkilerini değiştirin
       push: anlık bildirimlerizi alın
       read: hesabınızın tüm verilerini okuyun
-      "read:accounts": hesap bilgilerini görün
-      "read:blocks": engellemelerinizi görün
-      "read:bookmarks": yer imlerinizi görün
-      "read:favourites": beğenilerinizi görün
-      "read:filters": filtrelerinizi görün
-      "read:follows": takip ettiklerinizi görün
-      "read:lists": listelerinizi görün
-      "read:mutes": sessize aldıklarınızı görün
-      "read:notifications": bildirimlerinizi görün
-      "read:reports": raporlarınızı görün
-      "read:search": kendi adınıza arama yapın
-      "read:statuses": tüm durumları görün
+      read:accounts: hesap bilgilerini görün
+      read:blocks: engellemelerinizi görün
+      read:bookmarks: yer imlerinizi görün
+      read:favourites: favorilerinizi görün
+      read:filters: filtrelerinizi görün
+      read:follows: takip ettiklerinizi görün
+      read:lists: listelerinizi görün
+      read:mutes: sessize aldıklarınızı görün
+      read:notifications: bildirimlerinizi görün
+      read:reports: raporlarınızı görün
+      read:search: kendi adınıza arama yapın
+      read:statuses: tüm durumları görün
       write: hesabınızın tüm verilerini değiştirin
-      "write:accounts": profilinizi değiştirin
-      "write:blocks": hesapları ve alan adlarını engelleyin
-      "write:bookmarks": durumları yer imleyin
-      "write:conversations": sessize al ve sohbetleri sil
-      "write:favourites": durumları beğenin
-      "write:filters": filtreler oluşturun
-      "write:follows": insanları takip edin
-      "write:lists": listeler oluşturun
-      "write:media": medya dosyaları yükleyin
-      "write:mutes": insanları ve sohbetleri sessize al
-      "write:notifications": bildirimlerinizi temizleyin
-      "write:reports": diğer insanları raporlayın
-      "write:statuses": durumları yayınlayın
+      write:accounts: profilinizi değiştirin
+      write:blocks: hesapları ve alan adlarını engelleyin
+      write:bookmarks: durumları yer imleyin
+      write:conversations: sessize al ve sohbetleri sil
+      write:favourites: favori gönderiler
+      write:filters: filtreler oluşturun
+      write:follows: insanları takip edin
+      write:lists: listeler oluşturun
+      write:media: medya dosyaları yükleyin
+      write:mutes: insanları ve sohbetleri sessize al
+      write:notifications: bildirimlerinizi temizleyin
+      write:reports: diğer insanları raporlayın
+      write:statuses: durumları yayınlayın

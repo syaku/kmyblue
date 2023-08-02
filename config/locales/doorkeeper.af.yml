@@ -106,7 +106,6 @@ af:
         bookmarks: Boekmerke
         conversations: Gesprekke
         crypto: End-tot-end-enkripsie
-        favourites: Gunstelinge
         filters: Filters
         lists: Lyste
         media: Media-aanhegsels
@@ -134,28 +133,26 @@ af:
       follow: verander rekeningverhoudings
       push: ontvang jou stootkennisgewings
       read: lees al jou rekeningdata
-      "read:accounts": sien rekeninginligting
-      "read:blocks": sien jou blokkerings
-      "read:bookmarks": sien jou boekmerke
-      "read:favourites": sien jou gunstelinge
-      "read:filters": sien jou filters
-      "read:lists": sien jou lyste
-      "read:mutes": sien jou uitdowings
-      "read:notifications": sien jou kennisgewinge
-      "read:reports": sien jou rapporterings
-      "read:search": soek namens jou
-      "read:statuses": sien alle plasings
+      read:accounts: sien rekeninginligting
+      read:blocks: sien jou blokkerings
+      read:bookmarks: sien jou boekmerke
+      read:filters: sien jou filters
+      read:lists: sien jou lyste
+      read:mutes: sien jou uitdowings
+      read:notifications: sien jou kennisgewinge
+      read:reports: sien jou rapporterings
+      read:search: soek namens jou
+      read:statuses: sien alle plasings
       write: pas al jou rekeningdata aan
-      "write:accounts": pas jou profiel aan
-      "write:blocks": blokkeer rekeninge en domeine
-      "write:bookmarks": laat ’n boekmerk by plasings
-      "write:conversations": doof en wis gesprekke uit
-      "write:favourites": merk gunstelingplasings
-      "write:filters": skep filters
-      "write:follows": volg mense
-      "write:lists": skep lyste
-      "write:media": laai medalêers op
-      "write:mutes": doof mense en gesprekke uit
-      "write:notifications": verwyder jou kennisgewings
-      "write:reports": rapporteer ander mense
-      "write:statuses": publiseer plasings
+      write:accounts: pas jou profiel aan
+      write:blocks: blokkeer rekeninge en domeine
+      write:bookmarks: laat ’n boekmerk by plasings
+      write:conversations: doof en wis gesprekke uit
+      write:filters: skep filters
+      write:follows: volg mense
+      write:lists: skep lyste
+      write:media: laai medalêers op
+      write:mutes: doof mense en gesprekke uit
+      write:notifications: verwyder jou kennisgewings
+      write:reports: rapporteer ander mense
+      write:statuses: publiseer plasings

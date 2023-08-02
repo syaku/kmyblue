@@ -121,27 +121,25 @@ br:
       follow: kemmañ darempredoù ho kont
       push: resev ho kemennoù push
       read: lenn holl titouroù ho kont
-      "read:accounts": gwelout titouroù ar c'hontoù
-      "read:blocks": gwelout ar pezh a zo stanket ganeoc'h
-      "read:bookmarks": gwelout ho sinedoù
-      "read:favourites": gwelout ho muiañ-karet
-      "read:filters": gwelout ho siloù
-      "read:follows": gwelout ar pezh a zo heuliet ganeoc'h
-      "read:lists": gwelout ho listennoù
-      "read:mutes": gwelout traoù pe kontoù kuzhet ganeoc'h
-      "read:notifications": gwellout ho kemennoù
-      "read:reports": gwelout ho tanevelloù
-      "read:statuses": gwelout an holl toudoù
+      read:accounts: gwelout titouroù ar c'hontoù
+      read:blocks: gwelout ar pezh a zo stanket ganeoc'h
+      read:bookmarks: gwelout ho sinedoù
+      read:filters: gwelout ho siloù
+      read:follows: gwelout ar pezh a zo heuliet ganeoc'h
+      read:lists: gwelout ho listennoù
+      read:mutes: gwelout traoù pe kontoù kuzhet ganeoc'h
+      read:notifications: gwellout ho kemennoù
+      read:reports: gwelout ho tanevelloù
+      read:statuses: gwelout an holl toudoù
       write: kemmañ holl titouroù ho kont
-      "write:accounts": kemmañ ho profil
-      "write:blocks": berzañ kontoù ha domanioù
-      "write:bookmarks": toudoù enrollet evel sinedoù
-      "write:favourites": merkañ toudoù evel muiañ-karet
-      "write:filters": krouiñ siloù
-      "write:follows": heuliañ an dud
-      "write:lists": krouiñ listennoù
-      "write:media": pellgargañ restroù media
-      "write:mutes": kuzhat tud ha kaozeadennoù
-      "write:notifications": skarzhañ ho kemennoù
-      "write:reports": danevellañ tud all
-      "write:statuses": embann toudoù
+      write:accounts: kemmañ ho profil
+      write:blocks: berzañ kontoù ha domanioù
+      write:bookmarks: toudoù enrollet evel sinedoù
+      write:filters: krouiñ siloù
+      write:follows: heuliañ an dud
+      write:lists: krouiñ listennoù
+      write:media: pellgargañ restroù media
+      write:mutes: kuzhat tud ha kaozeadennoù
+      write:notifications: skarzhañ ho kemennoù
+      write:reports: danevellañ tud all
+      write:statuses: embann toudoù

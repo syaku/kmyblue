@@ -126,7 +126,7 @@ fo:
         bookmarks: Bókamerki
         conversations: Samrøður
         crypto: Enda-til-enda bronglan
-        favourites: Yndispostar
+        favourites: Dámdir postar
         filters: Filtur
         follow: Fylgingar, doyvingar og blokeringar
         follows: Fylgir
@@ -166,29 +166,29 @@ fo:
       follow: broyta viðurskifti millum kontur
       push: móttaka tínar skumpifráboðanir
       read: lesa allar dátur í tíni kontu
-      "read:accounts": vís kontuupplýsingar
-      "read:blocks": síggja tínar blokeringar
-      "read:bookmarks": síggja tíni bókamerki
-      "read:favourites": síggja tínar yndispostar
-      "read:filters": síggja tíni filtur
-      "read:follows": síggja hvørji tú fylgir
-      "read:lists": síggja tínar listar
-      "read:mutes": síggja tínar doyvingar
-      "read:notifications": síggja tínar fráboðanir
-      "read:reports": síggja tínar meldingar
-      "read:search": leita vegna teg
-      "read:statuses": síggja allar postar
+      read:accounts: vís kontuupplýsingar
+      read:blocks: síggja tínar blokeringar
+      read:bookmarks: síggja tíni bókamerki
+      read:favourites: sí tínar dámdu postar
+      read:filters: síggja tíni filtur
+      read:follows: síggja hvørji tú fylgir
+      read:lists: síggja tínar listar
+      read:mutes: síggja tínar doyvingar
+      read:notifications: síggja tínar fráboðanir
+      read:reports: síggja tínar meldingar
+      read:search: leita vegna teg
+      read:statuses: síggja allar postar
       write: broyta allar dátur í tínari kontu
-      "write:accounts": broyt vangamyndina
-      "write:blocks": blokera kontur og domenir
-      "write:bookmarks": bókamerkja postar
-      "write:conversations": doyva og strika samrøður
-      "write:favourites": yndismerkja postar
-      "write:filters": gera filtur
-      "write:follows": fylgja fólki
-      "write:lists": gera listar
-      "write:media": leggja miðlafílur upp
-      "write:mutes": doyva fólk og samrøður
-      "write:notifications": nullstilla tínar fráboðanir
-      "write:reports": melda onnur fólk
-      "write:statuses": útgeva postar
+      write:accounts: broyt vangamyndina
+      write:blocks: blokera kontur og domenir
+      write:bookmarks: bókamerkja postar
+      write:conversations: doyva og strika samrøður
+      write:favourites: dáma postar
+      write:filters: gera filtur
+      write:follows: fylgja fólki
+      write:lists: gera listar
+      write:media: leggja miðlafílur upp
+      write:mutes: doyva fólk og samrøður
+      write:notifications: nullstilla tínar fráboðanir
+      write:reports: melda onnur fólk
+      write:statuses: útgeva postar

@@ -126,7 +126,7 @@ uk:
         bookmarks: Закладки
         conversations: Бесіди
         crypto: Наскрізне шифрування
-        favourites: Вподобане
+        favourites: Уподобане
         filters: Фільтри
         follow: Підписки, ігнорування і блокування
         follows: Підписки
@@ -166,18 +166,18 @@ uk:
       follow: змінювати стосунки облікового запису
       push: отримувати Ваші Push-повідомлення
       read: читати усі дані вашого облікового запису
-      "read:accounts": бачити інформацію про облікові записи
-      "read:blocks": бачити Ваші блокування
-      "read:bookmarks": бачити ваші закладки
-      "read:favourites": бачити вподобані дописи
-      "read:filters": бачити Ваші фільтри
-      "read:follows": бачити Ваші підписки
-      "read:lists": бачити Ваші списки
-      "read:mutes": бачити ваші нехтування
-      "read:notifications": бачити Ваші сповіщення
-      "read:reports": бачити Ваші скарги
-      "read:search": шукати від вашого імені
-      "read:statuses": бачити всі дописи
+      read:accounts: бачити інформацію про облікові записи
+      read:blocks: бачити Ваші блокування
+      read:bookmarks: бачити ваші закладки
+      read:favourites: бачити вподобані
+      read:filters: бачити Ваші фільтри
+      read:follows: бачити Ваші підписки
+      read:lists: бачити Ваші списки
+      read:mutes: бачити ваші нехтування
+      read:notifications: бачити Ваші сповіщення
+      read:reports: бачити Ваші скарги
+      read:search: шукати від вашого імені
+      read:statuses: бачити всі дописи
       write: змінювати усі дані вашого облікового запису
       "write:accounts": змінювати ваш профіль
       "write:blocks": блокувати облікові записи і домени

@@ -126,7 +126,7 @@ ru:
         bookmarks: Закладки
         conversations: Диалоги
         crypto: Сквозное шифрование
-        favourites: Избранное
+        favourites: Избранные
         filters: Фильтры
         follow: Подписки, заглушенные и заблокированные
         follows: Подписки
@@ -179,16 +179,16 @@ ru:
       "read:search": использовать поиск
       "read:statuses": видеть все ваши посты
       write: изменять все данные вашей учётной записи
-      "write:accounts": редактировать ваш профиль
-      "write:blocks": блокировать учётные записи и домены
-      "write:bookmarks": добавлять посты в закладки
-      "write:conversations": игнорировать и удалить разговоры
-      "write:favourites": отмечать посты как избранные
-      "write:filters": создавать фильтры
-      "write:follows": подписываться на людей
-      "write:lists": создавать списки
-      "write:media": загружать медиафайлы
-      "write:mutes": игнорировать людей и обсуждения
-      "write:notifications": очищать список уведомлений
-      "write:reports": отправлять жалобы на других
-      "write:statuses": публиковать посты
+      write:accounts: редактировать ваш профиль
+      write:blocks: блокировать учётные записи и домены
+      write:bookmarks: добавлять посты в закладки
+      write:conversations: игнорировать и удалить разговоры
+      write:favourites: добавить посты в избранное
+      write:filters: создавать фильтры
+      write:follows: подписываться на людей
+      write:lists: создавать списки
+      write:media: загружать медиафайлы
+      write:mutes: игнорировать людей и обсуждения
+      write:notifications: очищать список уведомлений
+      write:reports: отправлять жалобы на других
+      write:statuses: публиковать посты

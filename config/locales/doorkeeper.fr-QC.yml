@@ -179,16 +179,16 @@ fr-QC:
       "read:search": rechercher en votre nom
       "read:statuses": voir tous les messages
       write: modifier toutes les données de votre compte
-      "write:accounts": modifier votre profil
-      "write:blocks": bloquer des comptes et des domaines
-      "write:bookmarks": mettre des messages en marque-pages
-      "write:conversations": masquer et effacer les conversations
-      "write:favourites": mettre des messages en favori
-      "write:filters": créer des filtres
-      "write:follows": suivre des personnes
-      "write:lists": créer des listes
-      "write:media": téléverser des fichiers média
-      "write:mutes": masquer des comptes et des conversations
-      "write:notifications": effacer vos notifications
-      "write:reports": signaler d’autres personnes
-      "write:statuses": publier des messages
+      write:accounts: modifier votre profil
+      write:blocks: bloquer des comptes et des domaines
+      write:bookmarks: mettre des messages en marque-pages
+      write:conversations: masquer et effacer les conversations
+      write:favourites: publications favorites
+      write:filters: créer des filtres
+      write:follows: suivre des personnes
+      write:lists: créer des listes
+      write:media: téléverser des fichiers média
+      write:mutes: masquer des comptes et des conversations
+      write:notifications: effacer vos notifications
+      write:reports: signaler d’autres personnes
+      write:statuses: publier des messages

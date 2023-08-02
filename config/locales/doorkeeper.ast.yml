@@ -77,7 +77,6 @@ ast:
         bookmarks: Marcadores
         conversations: Conversaciones
         crypto: Cifráu de puntu a puntu
-        favourites: Favoritos
         filters: Peñeres
         lists: Llistes
         media: Elementos multimedia
@@ -110,16 +109,15 @@ ast:
       "read:search": busca nel to nome
       "read:statuses": mira tolos artículos
       write: modifica los datos de les cuentes
-      "write:accounts": modifica los perfiles
-      "write:blocks": bloquia cuentes ya dominios
-      "write:bookmarks": meter artículos en Marcadores
-      "write:conversations": desaniciar ya desactivar los avisos de conversaciones
-      "write:favourites": artículos favoritos
-      "write:filters": crea peñeres
-      "write:follows": sigue a perfiles
-      "write:lists": crea llistes
-      "write:media": xube ficheros multimedia
-      "write:mutes": desactiva los avisos de perfiles ya de conversaciones
-      "write:notifications": borra los avisos
-      "write:reports": informa d'otros perfiles
-      "write:statuses": espubliza artículos
+      write:accounts: modifica los perfiles
+      write:blocks: bloquia cuentes ya dominios
+      write:bookmarks: meter artículos en Marcadores
+      write:conversations: desaniciar ya desactivar los avisos de conversaciones
+      write:filters: crea peñeres
+      write:follows: sigue a perfiles
+      write:lists: crea llistes
+      write:media: xube ficheros multimedia
+      write:mutes: desactiva los avisos de perfiles ya de conversaciones
+      write:notifications: borra los avisos
+      write:reports: informa d'otros perfiles
+      write:statuses: espubliza artículos
