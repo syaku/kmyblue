@@ -6,10 +6,9 @@ class ProcessReferencesService < BaseService
   DOMAIN = ENV['WEB_DOMAIN'] || ENV.fetch('LOCAL_DOMAIN', nil)
   REFURL_EXP = /(RT|QT|BT|RN|RE)((:|;)?\s+|:|;)(#{URI::DEFAULT_PARSER.make_regexp(%w(http https))})/
 
-  def call(status, reference_parameters, save_records: true, urls: nil)
+  def call(status, reference_parameters, urls: nil)
     @status = status
     @reference_parameters = reference_parameters || []
-    @save_records = save_records
     @urls = urls || []
 
     old_references
@@ -20,10 +19,10 @@ class ProcessReferencesService < BaseService
       remove_old_references
       add_references
 
-      @status.save! if @save_records
-
-      create_notifications!
+      @status.save!
     end
+
+    create_notifications!
   end
 
   private
