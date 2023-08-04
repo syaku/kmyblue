@@ -522,8 +522,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     searchability = :public  if %w(public all_users).include?(searchability)
     searchability = :private if %w(followers followers_only).include?(searchability)
-    searchability = :limited if %w(private reacted_users_only).include?(searchability)
-    searchability = :direct  if %w(reactors nobody).include?(searchability)
+    searchability = :direct  if %w(reactors reacted_users_only).include?(searchability)
+    searchability = :limited if %w(private nobody).include?(searchability)
 
     searchability
   end
