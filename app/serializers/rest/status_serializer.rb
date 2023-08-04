@@ -66,7 +66,11 @@ class REST::StatusSerializer < ActiveModel::Serializer
   end
 
   def visibility_ex
-    object.visibility
+    if object.limited_visibility?
+      'private'
+    else
+      object.visibility
+    end
   end
 
   def searchability
