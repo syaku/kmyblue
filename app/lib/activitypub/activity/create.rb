@@ -504,35 +504,43 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   SCAN_SEARCHABILITY_RE = /\[searchability:(public|followers|reactors|private)\]/
+  SCAN_SEARCHABILITY_FEDIBIRD_RE = /searchable_by_(all_users|followers_only|reacted_users_only|nobody)/
 
   def searchability
-    searchability = searchability_from_audience
-
-    if searchability.nil?
-      note = @account&.note
-      return nil if note.blank?
-
-      searchability_bio = note.scan(SCAN_SEARCHABILITY_RE).first
-      return nil unless searchability_bio
-
-      searchability = searchability_bio[0]
-      return nil if searchability.nil?
-
-      searchability = :public  if searchability == 'public'
-      searchability = :private if searchability == 'followers'
-      searchability = :limited if searchability == 'private'
-      searchability = :direct  if searchability == 'reactors'
-    end
+    searchability = searchability_from_audience || searchability_from_bio || (marked_as_misskey_searchability? ? :public : nil)
+    return nil if searchability.nil?
 
     visibility = visibility_from_audience_with_silence
 
     if searchability == visibility || searchability == :limited || searchability == :direct
       searchability
-    elsif [:public, :unlisted, :private].include?(searchability) && [:public, :public_unlisted, :unlisted, :login, :private].include?(visibility)
+    elsif [:public, :unlisted, :private].include?(searchability) && [:private].include?(visibility)
       :private
     else
       :direct
     end
+  end
+
+  def searchability_from_bio
+    note = @account&.note
+    return nil if note.blank?
+
+    searchability_bio = note.scan(SCAN_SEARCHABILITY_RE).first || note.scan(SCAN_SEARCHABILITY_FEDIBIRD_RE).first
+    return nil unless searchability_bio
+
+    searchability = searchability_bio[0]
+    return nil if searchability.nil?
+
+    searchability = :public  if %w(public all_users).include?(searchability)
+    searchability = :private if %w(followers followers_only).include?(searchability)
+    searchability = :limited if %w(private reacted_users_only).include?(searchability)
+    searchability = :direct  if %w(reactors nobody).include?(searchability)
+
+    searchability
+  end
+
+  def marked_as_misskey_searchability?
+    @marked_as_misskey_searchability ||= DomainBlock.detect_invalid_subscription?(@account.domain)
   end
 
   def visibility_from_audience

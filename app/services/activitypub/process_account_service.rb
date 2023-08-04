@@ -8,6 +8,8 @@ class ActivityPub::ProcessAccountService < BaseService
 
   SUBDOMAINS_RATELIMIT = 10
   DISCOVERIES_PER_REQUEST = 400
+  SCAN_SEARCHABILITY_RE = /\[searchability:(public|followers|reactors|private)\]/
+  SCAN_SEARCHABILITY_FEDIBIRD_RE = /searchable_by_(all_users|followers_only|reacted_users_only|nobody)/
 
   # Should be called with confirmed valid JSON
   # and WebFinger-resolved username and domain
@@ -252,7 +254,12 @@ class ActivityPub::ProcessAccountService < BaseService
   end
 
   def searchability_from_audience
-    return :private if audience_searchable_by.nil?
+    if audience_searchable_by.nil?
+      bio = searchability_from_bio
+      return bio unless bio.nil?
+
+      return marked_as_misskey_searchability? ? :public : :private
+    end
 
     if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
@@ -261,6 +268,28 @@ class ActivityPub::ProcessAccountService < BaseService
     else
       :direct     # Reaction only in kmyblue (generics: direct)
     end
+  end
+
+  def searchability_from_bio
+    note = @json['summary'] || ''
+    return nil if note.blank?
+
+    searchability_bio = note.scan(SCAN_SEARCHABILITY_RE).first || note.scan(SCAN_SEARCHABILITY_FEDIBIRD_RE).first
+    return nil unless searchability_bio
+
+    searchability = searchability_bio[0]
+    return nil if searchability.nil?
+
+    searchability = :public  if %w(public all_users).include?(searchability)
+    searchability = :private if %w(followers followers_only).include?(searchability)
+    searchability = :limited if %w(private reacted_users_only).include?(searchability)
+    searchability = :direct  if %w(reactors nobody).include?(searchability)
+
+    searchability
+  end
+
+  def marked_as_misskey_searchability?
+    domain_block&.detect_invalid_subscription
   end
 
   def subscribable_by
