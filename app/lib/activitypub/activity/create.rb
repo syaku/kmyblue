@@ -507,18 +507,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   SCAN_SEARCHABILITY_FEDIBIRD_RE = /searchable_by_(all_users|followers_only|reacted_users_only|nobody)/
 
   def searchability
-    searchability = searchability_from_audience || searchability_from_bio || (marked_as_misskey_searchability? ? :public : nil)
-    return nil if searchability.nil?
-
-    visibility = visibility_from_audience_with_silence
-
-    if searchability == visibility || searchability == :limited || searchability == :direct
-      searchability
-    elsif [:public, :unlisted, :private].include?(searchability) && [:private].include?(visibility)
-      :private
-    else
-      :direct
-    end
+    searchability_from_audience || searchability_from_bio || (marked_as_misskey_searchability? ? :public : nil)
   end
 
   def searchability_from_bio
