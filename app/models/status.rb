@@ -543,15 +543,17 @@ class Status < ApplicationRecord
   def set_searchability
     return if searchability.nil?
 
-    if visibility == 'public' || visibility == 'public_unlisted' || visibility == 'login' || (visibility == 'unlisted' && account.local?)
-      self.searchability = [Status.searchabilities[searchability], Status.visibilities['public']].max
-    elsif visibility == 'limited'
-      self.searchability = Status.searchabilities['limited']
-    else
-      s = [Status.searchabilities[searchability], Status.visibilities[visibility] - 1].max
-      s = [s, 3].min
-      self.searchability = s
-    end
+    self.searchability = if %w(public public_unlisted login unlisted).include?(visibility)
+                           searchability
+                         elsif visibility == 'limited'
+                           :limited
+                         elsif visibility == 'private'
+                           searchability == 'public' ? :private : searchability
+                         elsif visibility == 'direct'
+                           searchability == 'limited' ? :limited : :direct
+                         else
+                           :direct
+                         end
   end
 
   def set_conversation

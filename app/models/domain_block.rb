@@ -110,6 +110,10 @@ class DomainBlock < ApplicationRecord
       !!rule_for(domain)&.reject_new_follow?
     end
 
+    def detect_invalid_subscription?(domain)
+      !!rule_for(domain)&.detect_invalid_subscription?
+    end
+
     def reject_reports?(domain)
       !!rule_for(domain)&.reject_reports?
     end
