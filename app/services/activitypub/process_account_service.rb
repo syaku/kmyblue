@@ -294,7 +294,7 @@ class ActivityPub::ProcessAccountService < BaseService
   end
 
   def instance_info
-    @instance_info ||= InstanceInfo.find_by(@domain)
+    @instance_info ||= InstanceInfo.find_by(domain: @domain)
   end
 
   def misskey_software?

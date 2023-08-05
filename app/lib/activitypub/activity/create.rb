@@ -529,7 +529,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def instance_info
-    @instance_info ||= InstanceInfo.find_by(@account.domain)
+    @instance_info ||= InstanceInfo.find_by(domain: @account.domain)
   end
 
   def misskey_software?
