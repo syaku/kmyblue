@@ -507,7 +507,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   SCAN_SEARCHABILITY_FEDIBIRD_RE = /searchable_by_(all_users|followers_only|reacted_users_only|nobody)/
 
   def searchability
-    searchability_from_audience || searchability_from_bio || (marked_as_misskey_searchability? ? misskey_searchability : nil)
+    searchability_from_audience || searchability_from_bio || (misskey_software? ? misskey_searchability : nil)
   end
 
   def searchability_from_bio
@@ -528,8 +528,15 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     searchability
   end
 
-  def marked_as_misskey_searchability?
-    @marked_as_misskey_searchability ||= DomainBlock.detect_invalid_subscription?(@account.domain)
+  def instance_info
+    @instance_info ||= InstanceInfo.find_by(@account.domain)
+  end
+
+  def misskey_software?
+    info = instance_info
+    return DomainBlock.detect_invalid_subscription?(@account.domain) if info.nil?
+
+    %w(misskey calckey firefish).include?(info.software) || DomainBlock.detect_invalid_subscription?(@account.domain)
   end
 
   def misskey_searchability

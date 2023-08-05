@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_24_160715) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_04_222017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -629,6 +629,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_24_160715) do
     t.datetime "data_updated_at", precision: nil
     t.bigint "account_id", null: false
     t.boolean "overwrite", default: false, null: false
+  end
+
+  create_table "instance_infos", force: :cascade do |t|
+    t.string "domain", default: "", null: false
+    t.string "software", default: "", null: false
+    t.string "version", default: "", null: false
+    t.jsonb "data", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["domain"], name: "index_instance_infos_on_domain", unique: true
   end
 
   create_table "invites", force: :cascade do |t|
