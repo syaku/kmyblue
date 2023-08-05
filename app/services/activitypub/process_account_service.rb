@@ -263,7 +263,7 @@ class ActivityPub::ProcessAccountService < BaseService
       bio = searchability_from_bio
       return bio unless bio.nil?
 
-      return misskey_software? ? :public : :private
+      return misskey_software? ? :public : :direct
     end
 
     if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
