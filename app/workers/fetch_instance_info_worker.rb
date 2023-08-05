@@ -10,6 +10,8 @@ class FetchInstanceInfoWorker
   class GoneError < Error; end
   class RequestError < Error; end
 
+  SUPPORTED_NOTEINFO_RELS = ['http://nodeinfo.diaspora.software/ns/schema/2.0', 'http://nodeinfo.diaspora.software/ns/schema/2.1'].freeze
+
   def perform(domain)
     @instance = Instance.find_by(domain: domain)
     return if !@instance || @instance.unavailable_domain.present?
@@ -31,7 +33,7 @@ class FetchInstanceInfoWorker
     nodeinfo_links = nodeinfo['links']
     return nil if !nodeinfo_links.is_a?(Array) || nodeinfo_links.blank?
 
-    nodeinfo_link = nodeinfo_links.find { |item| item.key?('rel') && item.key?('href') && item['rel'] == 'http://nodeinfo.diaspora.software/ns/schema/2.0' }
+    nodeinfo_link = nodeinfo_links.find { |item| item.key?('rel') && item.key?('href') && SUPPORTED_NOTEINFO_RELS.include?(item['rel']) }
     return nil if nodeinfo_link.nil? || nodeinfo_link['href'].nil? || !nodeinfo_link['href'].start_with?('http')
 
     nodeinfo_link['href']
