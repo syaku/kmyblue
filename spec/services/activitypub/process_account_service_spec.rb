@@ -19,6 +19,10 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
       }.with_indifferent_access
     end
 
+    before do
+      stub_request(:get, 'https://example.com/.well-known/nodeinfo').to_return(body: '{}')
+    end
+
     it 'parses out of attachment' do
       account = subject.call('alice', 'example.com', payload)
       expect(account.fields).to be_a Array
@@ -127,6 +131,9 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
 
     before do
       stub_const 'ActivityPub::ProcessAccountService::SUBDOMAINS_RATELIMIT', 5
+      8.times do |i|
+        stub_request(:get, "https://test#{i}.testdomain.com/.well-known/nodeinfo").to_return(body: '{}')
+      end
     end
 
     it 'creates at least some accounts' do
@@ -192,6 +199,7 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
         stub_request(:get, "https://foo.test/users/#{i}/featured").to_return(status: 200, body: featured_json.to_json, headers: { 'Content-Type': 'application/activity+json' })
         stub_request(:get, "https://foo.test/users/#{i}/status").to_return(status: 200, body: status_json.to_json, headers: { 'Content-Type': 'application/activity+json' })
         stub_request(:get, "https://foo.test/.well-known/webfinger?resource=acct:user#{i}@foo.test").to_return(body: webfinger.to_json, headers: { 'Content-Type': 'application/jrd+json' })
+        stub_request(:get, 'https://foo.test/.well-known/nodeinfo').to_return(body: '{}')
       end
     end
 
