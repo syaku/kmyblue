@@ -534,9 +534,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def misskey_software?
     info = instance_info
-    return DomainBlock.detect_invalid_subscription?(@account.domain) if info.nil?
+    return false if info.nil?
 
-    %w(misskey calckey firefish).include?(info.software) || DomainBlock.detect_invalid_subscription?(@account.domain)
+    %w(misskey calckey firefish).include?(info.software)
   end
 
   def misskey_searchability

@@ -299,9 +299,9 @@ class ActivityPub::ProcessAccountService < BaseService
 
   def misskey_software?
     info = instance_info
-    return domain_block&.detect_invalid_subscription if info.nil?
+    return false if info.nil?
 
-    %w(misskey calckey firefish).include?(info.software) || domain_block&.detect_invalid_subscription
+    %w(misskey calckey firefish).include?(info.software)
   end
 
   def subscribable_by
