@@ -1,5 +1,7 @@
 # kmyblue
 
+[![Ruby Testing](https://github.com/mastodon/mastodon/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/mastodon/mastodon/actions/workflows/test-ruby.yml)
+
 kmyblue は[Mastodon](https://github.com/mastodon/mastodon)のフォークです。創作作家のための Mastodon を目指して開発しました。
 
 kmyblue はフォーク名であり、同時に[サーバー名](https://kmy.blue)でもあります。以下は特に記述がない限り、フォークとしての kmyblue をさします。
