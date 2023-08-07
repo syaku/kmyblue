@@ -46,6 +46,7 @@ class ActivityPub::ProcessAccountService < BaseService
         end
 
         create_account
+        fetch_instance_info
       end
 
       update_account
@@ -81,7 +82,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.suspended_at      = domain_block.created_at if auto_suspend?
     @account.suspension_origin = :local if auto_suspend?
     @account.silenced_at       = domain_block.created_at if auto_silence?
-    @account.searchability     = :private  # not null
+    @account.searchability     = :direct   # not null
     @account.dissubscribable   = false     # not null
 
     set_immediate_protocol_attributes!
@@ -207,6 +208,10 @@ class ActivityPub::ProcessAccountService < BaseService
     AccountMergingWorker.perform_async(@account.id)
   end
 
+  def fetch_instance_info
+    FetchInstanceInfoWorker.perform_async(@account.domain) unless InstanceInfo.exists?(domain: @account.domain)
+  end
+
   def actor_type
     if @json['type'].is_a?(Array)
       @json['type'].find { |type| ActivityPub::FetchRemoteAccountService::SUPPORTED_TYPES.include?(type) }
@@ -258,7 +263,7 @@ class ActivityPub::ProcessAccountService < BaseService
       bio = searchability_from_bio
       return bio unless bio.nil?
 
-      return marked_as_misskey_searchability? ? :public : :private
+      return misskey_software? ? :public : :direct
     end
 
     if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
@@ -282,14 +287,21 @@ class ActivityPub::ProcessAccountService < BaseService
 
     searchability = :public  if %w(public all_users).include?(searchability)
     searchability = :private if %w(followers followers_only).include?(searchability)
-    searchability = :limited if %w(private reacted_users_only).include?(searchability)
-    searchability = :direct  if %w(reactors nobody).include?(searchability)
+    searchability = :direct  if %w(reactors reacted_users_only).include?(searchability)
+    searchability = :limited if %w(private nobody).include?(searchability)
 
     searchability
   end
 
-  def marked_as_misskey_searchability?
-    domain_block&.detect_invalid_subscription
+  def instance_info
+    @instance_info ||= InstanceInfo.find_by(domain: @domain)
+  end
+
+  def misskey_software?
+    info = instance_info
+    return false if info.nil?
+
+    %w(misskey calckey firefish).include?(info.software)
   end
 
   def subscribable_by

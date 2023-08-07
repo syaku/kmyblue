@@ -507,7 +507,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   SCAN_SEARCHABILITY_FEDIBIRD_RE = /searchable_by_(all_users|followers_only|reacted_users_only|nobody)/
 
   def searchability
-    searchability_from_audience || searchability_from_bio || (marked_as_misskey_searchability? ? :public : nil)
+    searchability_from_audience || searchability_from_bio || (misskey_software? ? misskey_searchability : nil)
   end
 
   def searchability_from_bio
@@ -522,14 +522,26 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     searchability = :public  if %w(public all_users).include?(searchability)
     searchability = :private if %w(followers followers_only).include?(searchability)
-    searchability = :limited if %w(private reacted_users_only).include?(searchability)
-    searchability = :direct  if %w(reactors nobody).include?(searchability)
+    searchability = :direct  if %w(reactors reacted_users_only).include?(searchability)
+    searchability = :limited if %w(private nobody).include?(searchability)
 
     searchability
   end
 
-  def marked_as_misskey_searchability?
-    @marked_as_misskey_searchability ||= DomainBlock.detect_invalid_subscription?(@account.domain)
+  def instance_info
+    @instance_info ||= InstanceInfo.find_by(domain: @account.domain)
+  end
+
+  def misskey_software?
+    info = instance_info
+    return false if info.nil?
+
+    %w(misskey calckey firefish).include?(info.software)
+  end
+
+  def misskey_searchability
+    visibility = visibility_from_audience
+    %i(public unlisted).include?(visibility) ? :public : :limited
   end
 
   def visibility_from_audience

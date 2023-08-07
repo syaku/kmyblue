@@ -45,7 +45,7 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    privacy_definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }).track_scores(true).min_score(@min_score))
+    privacy_definition = parsed_query.apply(StatusesIndex.filter(terms: { searchability: %w(public private direct) }).filter(term: { searchable_by: @account.id }).track_scores(true).min_score(@min_score))
 
     # 'direct' searchability posts are NOT in here because it's already added at previous line.
     case @searchability
