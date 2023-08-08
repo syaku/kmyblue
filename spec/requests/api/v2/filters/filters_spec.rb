@@ -47,7 +47,7 @@ RSpec.describe 'Filters' do
     it_behaves_like 'unauthorized for invalid token'
 
     context 'with valid params' do
-      let(:params) { { title: 'magic', context: %w(home), filter_action: 'hide', keywords_attributes: [keyword: 'magic'] } }
+      let(:params) { { title: 'magic', context: %w(home), filter_action: 'hide', keywords_attributes: [keyword: 'magic', whole_word: true] } }
 
       it 'returns http success' do
         subject
@@ -63,7 +63,7 @@ RSpec.describe 'Filters' do
         expect(json[:title]).to eq 'magic'
         expect(json[:filter_action]).to eq 'hide'
         expect(json[:context]).to eq ['home']
-        expect(json[:keywords].map { |keyword| keyword.slice(:keyword, :whole_word) }).to eq [{ keyword: 'magic', whole_word: false }]
+        expect(json[:keywords].map { |keyword| keyword.slice(:keyword, :whole_word) }).to eq [{ keyword: 'magic', whole_word: true }]
       end
 
       it 'creates a filter', :aggregate_failures do
