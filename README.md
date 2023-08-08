@@ -1,6 +1,6 @@
 # kmyblue
 
-[![Ruby Testing](https://github.com/mastodon/mastodon/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/mastodon/mastodon/actions/workflows/test-ruby.yml)
+[![Ruby Testing](https://github.com/kmycode/mastodon/actions/workflows/test-ruby.yml/badge.svg)](https://github.com/kmycode/mastodon/actions/workflows/test-ruby.yml)
 
 kmyblue は[Mastodon](https://github.com/mastodon/mastodon)のフォークです。創作作家のための Mastodon を目指して開発しました。
 
