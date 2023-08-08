@@ -19,13 +19,12 @@ class PublicFeed
   # @param [Integer] min_id
   # @return [Array<Status>]
   def get(limit, max_id = nil, since_id = nil, min_id = nil)
-    scope = public_scope
+    scope = local_only? ? public_scope : global_timeline_only_scope
 
     scope.merge!(without_replies_scope) unless with_replies?
     scope.merge!(without_reblogs_scope) unless with_reblogs?
     scope.merge!(local_only_scope) if local_only?
     scope.merge!(remote_only_scope) if remote_only? || hide_local_users?
-    scope.merge!(global_timeline_only_scope) if global_timeline?
     scope.merge!(account_filters_scope) if account?
     scope.merge!(media_only_scope) if media_only?
     scope.merge!(language_scope) if account&.chosen_languages.present?
@@ -58,10 +57,6 @@ class PublicFeed
     @account.nil? && Setting.hide_local_users_for_anonymous
   end
 
-  def global_timeline?
-    !options[:remote] && !options[:local]
-  end
-
   def account?
     account.present?
   end
@@ -74,6 +69,10 @@ class PublicFeed
     Status.with_public_visibility.joins(:account).merge(Account.without_suspended.without_silenced)
   end
 
+  def global_timeline_only_scope
+    Status.with_global_timeline_visibility.joins(:account).merge(Account.without_suspended.without_silenced)
+  end
+
   def public_search_scope
     Status.with_public_search_visibility.joins(:account).merge(Account.without_suspended.without_silenced)
   end
@@ -84,10 +83,6 @@ class PublicFeed
 
   def remote_only_scope
     Status.remote
-  end
-
-  def global_timeline_only_scope
-    Status.with_global_timeline_visibility.joins(:account).merge(Account.without_suspended.without_silenced)
   end
 
   def without_replies_scope
@@ -107,7 +102,7 @@ class PublicFeed
   end
 
   def anonymous_scope
-    Status.where(visibility: [:public, :public_unlisted])
+    local_only? ? Status.where(visibility: [:public, :public_unlisted]) : Status.where(visibility: :public)
   end
 
   def account_filters_scope

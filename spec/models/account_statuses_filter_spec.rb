@@ -42,8 +42,11 @@ RSpec.describe AccountStatusesFilter do
 
     before do
       status!(:public)
+      status!(:public_unlisted)
       status!(:unlisted)
+      status!(:login)
       status!(:private)
+      status!(:direct)
       status_with_parent!(:public)
       status_with_reblog!(:public)
       status_with_tag!(:public, tag)
@@ -90,7 +93,7 @@ RSpec.describe AccountStatusesFilter do
       let(:direct_status) { nil }
 
       it 'returns only public statuses' do
-        expect(subject.results.pluck(:visibility).uniq).to match_array %w(unlisted public)
+        expect(subject.results.pluck(:visibility).uniq).to match_array %w(unlisted public_unlisted public)
       end
 
       it 'returns public replies' do
@@ -120,7 +123,7 @@ RSpec.describe AccountStatusesFilter do
       let(:current_account) { account }
 
       it 'returns everything' do
-        expect(subject.results.pluck(:visibility).uniq).to match_array %w(direct private unlisted public)
+        expect(subject.results.pluck(:visibility).uniq).to match_array %w(direct private login unlisted public_unlisted public)
       end
 
       it 'returns replies' do
@@ -142,7 +145,7 @@ RSpec.describe AccountStatusesFilter do
       end
 
       it 'returns private statuses' do
-        expect(subject.results.pluck(:visibility).uniq).to match_array %w(private unlisted public)
+        expect(subject.results.pluck(:visibility).uniq).to match_array %w(private login unlisted public_unlisted public)
       end
 
       it 'returns replies' do
@@ -168,7 +171,7 @@ RSpec.describe AccountStatusesFilter do
       let(:current_account) { Fabricate(:account) }
 
       it 'returns only public statuses' do
-        expect(subject.results.pluck(:visibility).uniq).to match_array %w(unlisted public)
+        expect(subject.results.pluck(:visibility).uniq).to match_array %w(login unlisted public_unlisted public)
       end
 
       it 'returns public replies' do

@@ -106,7 +106,9 @@ class Trends::Statuses < Trends::Base
   private
 
   def eligible?(status)
-    (status.searchability.nil? || status.public_searchability?) && (status.public_visibility? || status.public_unlisted_visibility?) && status.account.discoverable? && !status.account.silenced? && status.spoiler_text.blank? && (!status.sensitive? || status.media_attachments.none?) && !status.reply? && valid_locale?(status.language)
+    (status.searchability.nil? || status.public_searchability?) && (status.public_visibility? || status.public_unlisted_visibility?) &&
+      status.account.discoverable? && !status.account.silenced? && status.spoiler_text.blank? && (!status.sensitive? || status.media_attachments.none?) &&
+      !status.reply? && valid_locale?(status.language)
   end
 
   def calculate_scores(statuses, at_time)

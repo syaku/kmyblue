@@ -39,11 +39,13 @@ class UpdateStatusService < BaseService
 
     queue_poll_notifications!
     reset_preview_card!
-    update_references!
     update_metadata!
+    update_references!
     broadcast_updates!
 
+    # Mentions are not updated (Cause unknown)
     @status.reload
+
     @status
   rescue NoChangesSubmittedError
     # For calls that result in no changes, swallow the error
@@ -165,7 +167,6 @@ class UpdateStatusService < BaseService
   def update_metadata!
     ProcessHashtagsService.new.call(@status)
     ProcessMentionsService.new.call(@status)
-    ProcessReferencesWorker.perform_async(@status.id, (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?), [])
   end
 
   def broadcast_updates!

@@ -114,6 +114,72 @@ RSpec.describe Status do
     end
   end
 
+  describe '#searchability' do
+    subject { Fabricate(:status, account: account, searchability: status_searchability) }
+
+    let(:account_searchability) { :public }
+    let(:status_searchability) { :public }
+    let(:account_domain) { 'example.com' }
+    let(:account) { Fabricate(:account, domain: account_domain, searchability: account_searchability) }
+
+    context 'when public-public' do
+      it 'returns public' do
+        expect(subject.compute_searchability).to eq 'public'
+      end
+    end
+
+    context 'when public-private' do
+      let(:status_searchability) { :private }
+
+      it 'returns private' do
+        expect(subject.compute_searchability).to eq 'private'
+      end
+    end
+
+    context 'when public-direct' do
+      let(:status_searchability) { :direct }
+
+      it 'returns direct' do
+        expect(subject.compute_searchability).to eq 'direct'
+      end
+    end
+
+    context 'when private-public' do
+      let(:account_searchability) { :private }
+
+      it 'returns private' do
+        expect(subject.compute_searchability).to eq 'private'
+      end
+    end
+
+    context 'when direct-public' do
+      let(:account_searchability) { :direct }
+
+      it 'returns direct' do
+        expect(subject.compute_searchability).to eq 'direct'
+      end
+    end
+
+    context 'when private-limited' do
+      let(:account_searchability) { :private }
+      let(:status_searchability) { :limited }
+
+      it 'returns limited' do
+        expect(subject.compute_searchability).to eq 'limited'
+      end
+    end
+
+    context 'when private-public of local account' do
+      let(:account_searchability) { :private }
+      let(:account_domain) { nil }
+      let(:status_searchability) { :public }
+
+      it 'returns public' do
+        expect(subject.compute_searchability).to eq 'public'
+      end
+    end
+  end
+
   describe '#content' do
     it 'returns the text of the status if it is not a reblog' do
       expect(subject.content).to eql subject.text

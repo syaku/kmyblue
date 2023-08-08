@@ -47,7 +47,7 @@ RSpec.describe 'Filters' do
     it_behaves_like 'unauthorized for invalid token'
 
     context 'with valid params' do
-      let(:params) { { title: 'magic', context: %w(home), filter_action: 'hide', keywords_attributes: [keyword: 'magic'] } }
+      let(:params) { { title: 'magic', context: %w(home), filter_action: 'hide', keywords_attributes: [keyword: 'magic', whole_word: true] } }
 
       it 'returns http success' do
         subject

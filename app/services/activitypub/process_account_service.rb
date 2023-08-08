@@ -269,9 +269,11 @@ class ActivityPub::ProcessAccountService < BaseService
     if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
-      :private    # Followers only in kmyblue (generics: private)
+      :private
+    elsif audience_searchable_by.include?('as:Limited')
+      :limited
     else
-      :direct     # Reaction only in kmyblue (generics: direct)
+      :direct
     end
   end
 
@@ -279,7 +281,7 @@ class ActivityPub::ProcessAccountService < BaseService
     note = @json['summary'] || ''
     return nil if note.blank?
 
-    searchability_bio = note.scan(SCAN_SEARCHABILITY_RE).first || note.scan(SCAN_SEARCHABILITY_FEDIBIRD_RE).first
+    searchability_bio = note.scan(SCAN_SEARCHABILITY_FEDIBIRD_RE).first || note.scan(SCAN_SEARCHABILITY_RE).first
     return nil unless searchability_bio
 
     searchability = searchability_bio[0]
