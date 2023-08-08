@@ -3,7 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe ActivityPub::Activity::Create do
-  let(:sender) { Fabricate(:account, followers_url: 'http://example.com/followers', domain: 'example.com', uri: 'https://example.com/actor') }
+  let(:sender_bio) { '' }
+  let(:sender) { Fabricate(:account, followers_url: 'http://example.com/followers', domain: 'example.com', uri: 'https://example.com/actor', note: sender_bio) }
 
   let(:json) do
     {
@@ -27,7 +28,10 @@ RSpec.describe ActivityPub::Activity::Create do
     context 'when fetching' do
       subject { described_class.new(json, sender) }
 
+      let(:sender_software) { 'mastodon' }
+
       before do
+        Fabricate(:instance_info, domain: 'example.com', software: sender_software)
         subject.perform
       end
 
@@ -315,6 +319,219 @@ RSpec.describe ActivityPub::Activity::Create do
 
           expect(status).to_not be_nil
           expect(status.visibility).to eq 'direct'
+        end
+      end
+
+      context 'when searchability' do
+        let(:searchable_by) { 'https://www.w3.org/ns/activitystreams#Public' }
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: 'https://www.w3.org/ns/activitystreams#Public',
+            searchableBy: searchable_by,
+          }
+        end
+
+        context 'with explicit public address' do
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'public'
+          end
+        end
+
+        context 'with public with as:Public' do
+          let(:searchable_by) { 'as:Public' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'public'
+          end
+        end
+
+        context 'with public with Public' do
+          let(:searchable_by) { 'Public' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'public'
+          end
+        end
+
+        context 'with private' do
+          let(:searchable_by) { 'http://example.com/followers' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'private'
+          end
+        end
+
+        context 'with direct' do
+          let(:searchable_by) { '' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'direct'
+          end
+        end
+
+        context 'with direct when not specify' do
+          let(:searchable_by) { nil }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to be_nil
+          end
+        end
+
+        context 'with limited' do
+          let(:searchable_by) { 'as:Limited' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'limited'
+          end
+        end
+
+        context 'with bio' do
+          let(:searchable_by) { nil }
+
+          context 'with public' do
+            let(:sender_bio) { '#searchable_by_all_users' }
+
+            it 'create status' do
+              status = sender.statuses.first
+
+              expect(status).to_not be_nil
+              expect(status.searchability).to eq 'public'
+            end
+          end
+
+          context 'with private' do
+            let(:sender_bio) { '#searchable_by_followers_only' }
+
+            it 'create status' do
+              status = sender.statuses.first
+
+              expect(status).to_not be_nil
+              expect(status.searchability).to eq 'private'
+            end
+          end
+
+          context 'with direct' do
+            let(:sender_bio) { '#searchable_by_reacted_users_only' }
+
+            it 'create status' do
+              status = sender.statuses.first
+
+              expect(status).to_not be_nil
+              expect(status.searchability).to eq 'direct'
+            end
+          end
+
+          context 'with limited' do
+            let(:sender_bio) { '#searchable_by_nobody' }
+
+            it 'create status' do
+              status = sender.statuses.first
+
+              expect(status).to_not be_nil
+              expect(status.searchability).to eq 'limited'
+            end
+          end
+
+          context 'without hashtags' do
+            let(:sender_bio) { '' }
+
+            it 'create status' do
+              status = sender.statuses.first
+
+              expect(status).to_not be_nil
+              expect(status.searchability).to be_nil
+            end
+          end
+        end
+      end
+
+      context 'when searchability from misskey server' do
+        let(:sender_software) { 'misskey' }
+        let(:to) { 'https://www.w3.org/ns/activitystreams#Public' }
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: to,
+          }
+        end
+
+        context 'without specify searchability from misskey' do
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'public'
+          end
+        end
+
+        context 'without specify searchability from misskey which visibility is private' do
+          let(:to) { 'http://example.com/followers' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'limited'
+          end
+        end
+      end
+
+      context 'with multible searchabilities' do
+        let(:bio) { '#searchable_by_nobody' }
+        let(:searchable_by) { 'https://www.w3.org/ns/activitystreams#Public' }
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: 'https://www.w3.org/ns/activitystreams#Public',
+            searchableBy: searchable_by,
+          }
+        end
+
+        it 'create status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.searchability).to eq 'public'
+        end
+
+        context 'with misskey' do
+          let(:sender_software) { 'misskey' }
+          let(:searchable_by) { 'as:Limited' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'limited'
+          end
         end
       end
 
