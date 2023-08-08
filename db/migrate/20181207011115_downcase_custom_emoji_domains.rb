@@ -3,6 +3,10 @@
 class DowncaseCustomEmojiDomains < ActiveRecord::Migration[5.2]
   disable_ddl_transaction!
 
+  class EmojiReaction < ApplicationRecord
+    # Dummy class, to make migration possible across version changes
+  end
+
   def up
     duplicates = CustomEmoji.connection.select_all('SELECT string_agg(id::text, \',\') AS ids FROM custom_emojis GROUP BY shortcode, lower(domain) HAVING count(*) > 1').to_ary
 
