@@ -514,7 +514,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     note = @account&.note
     return nil if note.blank?
 
-    searchability_bio = note.scan(SCAN_SEARCHABILITY_RE).first || note.scan(SCAN_SEARCHABILITY_FEDIBIRD_RE).first
+    searchability_bio = note.scan(SCAN_SEARCHABILITY_FEDIBIRD_RE).first || note.scan(SCAN_SEARCHABILITY_RE).first
     return nil unless searchability_bio
 
     searchability = searchability_bio[0]

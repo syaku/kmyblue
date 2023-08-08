@@ -503,7 +503,7 @@ RSpec.describe ActivityPub::Activity::Create do
       end
 
       context 'with multible searchabilities' do
-        let(:bio) { '#searchable_by_nobody' }
+        let(:sender_bio) { '#searchable_by_nobody' }
         let(:searchable_by) { 'https://www.w3.org/ns/activitystreams#Public' }
         let(:object_json) do
           {
