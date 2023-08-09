@@ -111,6 +111,10 @@ module HasUserSettings
     settings['bio_markdown']
   end
 
+  def setting_discoverable_local
+    settings['discoverable_local']
+  end
+
   def setting_display_media
     settings['web.display_media']
   end

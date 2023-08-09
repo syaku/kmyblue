@@ -96,6 +96,14 @@ class ActivityPub::ActorSerializer < ActivityPub::Serializer
   end
 
   def discoverable
+    if object.local?
+      object.user&.setting_discoverable_local ? false : original_discoverable
+    else
+      original_discoverable
+    end
+  end
+
+  def original_discoverable
     object.suspended? ? false : (object.discoverable || false)
   end
 

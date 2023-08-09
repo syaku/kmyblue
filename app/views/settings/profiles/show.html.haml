@@ -64,6 +64,10 @@
   .fields-group
     = f.input :discoverable, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.discoverable'), recommended: true
 
+  = f.simple_fields_for :settings, current_user.settings do |ff|
+    .fields-group
+      = ff.input :discoverable_local, input_html: { name: 'account[discoverable_local]' }, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.discoverable_local'), hint: I18n.t('simple_form.hints.defaults.discoverable_local')
+
   .fields-group
     = f.input :locked, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.locked')
 
