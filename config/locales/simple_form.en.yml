@@ -42,6 +42,7 @@ en:
         current_username: To confirm, please enter the username of the current account
         digest: Only sent after a long period of inactivity and only if you have received any personal messages in your absence
         discoverable: Allow your account to be discovered by strangers through recommendations, trends and other features
+        discoverable_local: Disable the setting on federated servers. The setting is available this server only for avoiding full-text search on other servers
         dissubscribable: Your post is not picked by antenna
         email: You will be sent a confirmation e-mail
         group: Reps sent to this account will be automatically BT'd and distributed to all accounts you follow!
@@ -184,6 +185,7 @@ en:
         current_password: Current password
         data: Data
         discoverable: Suggest account to others
+        discoverable_local: Disallow suggesting account on other servers
         display_name: Display name
         dissubscribable: Reject any subscriptions
         email: E-mail address
