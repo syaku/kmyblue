@@ -515,14 +515,14 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def default_searchability_from_bio?
-    note = @account&.note
+    note = @account.note
     return false if note.blank?
 
     note.include?('searchable_by_default_range')
   end
 
   def searchability_from_bio
-    note = @account&.note
+    note = @account.note
     return nil if note.blank?
 
     searchability_bio = note.scan(SCAN_SEARCHABILITY_FEDIBIRD_RE).first || note.scan(SCAN_SEARCHABILITY_RE).first
