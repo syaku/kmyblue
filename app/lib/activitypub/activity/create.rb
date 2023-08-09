@@ -507,7 +507,18 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   SCAN_SEARCHABILITY_FEDIBIRD_RE = /searchable_by_(all_users|followers_only|reacted_users_only|nobody)/
 
   def searchability
-    searchability_from_audience || searchability_from_bio || (misskey_software? ? misskey_searchability : nil)
+    from_audience = searchability_from_audience
+    return from_audience if from_audience
+    return nil if default_searchability_from_bio?
+
+    searchability_from_bio || (misskey_software? ? misskey_searchability : nil)
+  end
+
+  def default_searchability_from_bio?
+    note = @account&.note
+    return false if note.blank?
+
+    note.include?('searchable_by_default_range')
   end
 
   def searchability_from_bio
