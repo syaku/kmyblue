@@ -48,6 +48,38 @@ describe ActivityPub::FetchInstanceInfoWorker do
     end
   end
 
+  context 'when update' do
+    let(:new_nodeinfo) do
+      {
+        version: '2.0',
+        software: {
+          name: 'mastodon',
+          version: '4.2.0-beta3',
+        },
+        protocols: ['activitypub'],
+      }
+    end
+    let(:new_nodeinfo_json) { Oj.dump(new_nodeinfo) }
+
+    before do
+      stub_request(:get, 'https://example.com/.well-known/nodeinfo').to_return(status: 200, body: wellknown_nodeinfo_json)
+      Fabricate(:account, domain: 'example.com')
+      Instance.refresh
+    end
+
+    it 'performs a mastodon instance' do
+      stub_request(:get, 'https://example.com/nodeinfo/2.0').to_return(status: 200, body: nodeinfo_json)
+      subject.perform('example.com')
+      stub_request(:get, 'https://example.com/nodeinfo/2.0').to_return(status: 200, body: new_nodeinfo_json)
+      subject.perform('example.com')
+
+      info = InstanceInfo.find_by(domain: 'example.com')
+      expect(info).to_not be_nil
+      expect(info.software).to eq 'mastodon'
+      expect(info.version).to eq '4.2.0-beta3'
+    end
+  end
+
   context 'when failed' do
     before do
       stub_request(:get, 'https://example.com/.well-known/nodeinfo').to_return(status: 404)
