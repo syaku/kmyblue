@@ -178,6 +178,26 @@ RSpec.describe Status do
         expect(subject.compute_searchability).to eq 'public'
       end
     end
+
+    context 'when direct-public of local account' do
+      let(:account_searchability) { :direct }
+      let(:account_domain) { nil }
+      let(:status_searchability) { :public }
+
+      it 'returns public' do
+        expect(subject.compute_searchability).to eq 'public'
+      end
+    end
+
+    context 'when limited-public of local account' do
+      let(:account_searchability) { :limited }
+      let(:account_domain) { nil }
+      let(:status_searchability) { :public }
+
+      it 'returns public' do
+        expect(subject.compute_searchability).to eq 'public'
+      end
+    end
   end
 
   describe '#content' do
