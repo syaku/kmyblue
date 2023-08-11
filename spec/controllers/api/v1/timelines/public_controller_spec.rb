@@ -35,20 +35,23 @@ describe Api::V1::Timelines::PublicController do
 
     context 'with filter' do
       subject do
-        Fabricate(:follow, account: account, target_account: remote_account)
         get :show
         body_as_json.filter { |status| status[:filtered].empty? || status[:filtered][0][:filter][:id] != filter.id.to_s }.map { |status| status[:id].to_i }
+      end
+
+      before do
+        Fabricate(:custom_filter_keyword, custom_filter: filter, keyword: 'ohagi')
+        Fabricate(:follow, account: account, target_account: remote_account)
       end
 
       let(:exclude_follows) { false }
       let(:exclude_localusers) { false }
       let!(:filter) { Fabricate(:custom_filter, account: account, exclude_follows: exclude_follows, exclude_localusers: exclude_localusers) }
-      let!(:filter_keyword) { Fabricate(:custom_filter_keyword, custom_filter: filter, keyword: 'ohagi') } # rubocop:disable RSpec/LetSetup
 
       it 'load statuses', :aggregate_failures do
         ids = subject
-        expect(ids).to exclude(local_status.id)
-        expect(ids).to exclude(remote_status.id)
+        expect(ids).to_not include(local_status.id)
+        expect(ids).to_not include(remote_status.id)
       end
 
       context 'when exclude_followers' do
@@ -56,7 +59,7 @@ describe Api::V1::Timelines::PublicController do
 
         it 'load statuses', :aggregate_failures do
           ids = subject
-          expect(ids).to exclude(local_status.id)
+          expect(ids).to_not include(local_status.id)
           expect(ids).to include(remote_status.id)
         end
       end
@@ -67,7 +70,7 @@ describe Api::V1::Timelines::PublicController do
         it 'load statuses', :aggregate_failures do
           ids = subject
           expect(ids).to include(local_status.id)
-          expect(ids).to exclude(remote_status.id)
+          expect(ids).to_not include(remote_status.id)
         end
       end
     end
