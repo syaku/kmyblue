@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FetchInstanceInfoWorker
+class ActivityPub::FetchInstanceInfoWorker
   include Sidekiq::Worker
   include JsonLdHelper
   include Redisable
@@ -64,9 +64,9 @@ class FetchInstanceInfoWorker
 
         body_to_json(response.body_with_limit)
       elsif response.code == 410
-        raise FetchInstanceInfoWorker::GoneError, "#{domain} is gone from the server"
+        raise ActivityPub::FetchInstanceInfoWorker::GoneError, "#{@instance.domain} is gone from the server"
       else
-        raise FetchInstanceInfoWorker::RequestError, "Request for #{domain} returned HTTP #{response.code}"
+        raise ActivityPub::FetchInstanceInfoWorker::RequestError, "Request for #{@instance.domain} returned HTTP #{response.code}"
       end
     end
   end
