@@ -153,7 +153,7 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
   end
 
   def not_private_post?
-    !object.private_visibility?
+    !object.private_visibility? && !object.direct_visibility? && !object.limited_visibility?
   end
 
   def poll_options
