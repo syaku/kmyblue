@@ -29,6 +29,7 @@
 #  ordered_media_attachment_ids :bigint(8)        is an Array
 #  searchability                :integer
 #  markdown                     :boolean          default(FALSE)
+#  limited_scope                :integer
 #
 
 require 'ostruct'
@@ -54,6 +55,7 @@ class Status < ApplicationRecord
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, _suffix: :visibility
   enum searchability: { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, _suffix: :searchability
+  enum limited_scope: { none: 0, mutual: 1 }, _suffix: :limited
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
 

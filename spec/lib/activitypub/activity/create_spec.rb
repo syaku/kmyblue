@@ -290,11 +290,56 @@ RSpec.describe ActivityPub::Activity::Create do
 
           expect(status).to_not be_nil
           expect(status.visibility).to eq 'limited'
+          expect(status.limited_scope).to eq 'none'
         end
 
         it 'creates silent mention' do
           status = sender.statuses.first
           expect(status.mentions.first).to be_silent
+        end
+      end
+
+      context 'when limited_scope' do
+        let(:recipient) { Fabricate(:account) }
+
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: ActivityPub::TagManager.instance.uri_for(recipient),
+            limitedScope: 'Mutual',
+          }
+        end
+
+        it 'creates status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.visibility).to eq 'limited'
+          expect(status.limited_scope).to eq 'mutual'
+        end
+      end
+
+      context 'when invalid limited_scope' do
+        let(:recipient) { Fabricate(:account) }
+
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: ActivityPub::TagManager.instance.uri_for(recipient),
+            limitedScope: 'IdosdsazsF',
+          }
+        end
+
+        it 'creates status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.visibility).to eq 'limited'
+          expect(status.limited_scope).to eq 'none'
         end
       end
 

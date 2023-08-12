@@ -168,7 +168,17 @@ RSpec.describe PostStatusService, type: :service do
     status = subject.call(account, text: 'test status update')
 
     expect(ProcessMentionsService).to have_received(:new)
-    expect(mention_service).to have_received(:call).with(status, save_records: false)
+    expect(mention_service).to have_received(:call).with(status, limited_type: '', save_records: false)
+  end
+
+  it 'mutual visibility' do
+    account = Fabricate(:account)
+    text = 'This is an English text.'
+
+    status = subject.call(account, text: text, visibility: 'mutual')
+
+    expect(status.visibility).to eq 'limited'
+    expect(status.limited_scope).to eq 'mutual'
   end
 
   it 'safeguards mentions' do

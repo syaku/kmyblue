@@ -133,6 +133,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       reply: @status_parser.reply,
       sensitive: @account.sensitized? || @status_parser.sensitive || false,
       visibility: @status_parser.visibility,
+      limited_scope: @status_parser.limited_scope,
       searchability: searchability,
       thread: replied_to_status,
       conversation: conversation_from_uri(@object['conversation']),

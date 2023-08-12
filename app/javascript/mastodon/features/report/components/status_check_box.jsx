@@ -21,6 +21,7 @@ const messages = defineMessages({
   login_short: { id: 'privacy.login.short', defaultMessage: 'Login only' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
   limited_short: { id: 'privacy.limited.short', defaultMessage: 'Limited menbers only' },
+  mutual_short: { id: 'privacy.mutual.short', defaultMessage: 'Mutual followers only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
 });
 
@@ -53,10 +54,11 @@ class StatusCheckBox extends PureComponent {
       'login': { icon: 'key', text: intl.formatMessage(messages.login_short) },
       'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
       'limited': { icon: 'get-pocket', text: intl.formatMessage(messages.limited_short) },
+      'mutual': { icon: 'exchange', text: intl.formatMessage(messages.mutual_short) },
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')];
+    const visibilityIcon = visibilityIconInfo[status.get('limited_scope') || status.get('visibility_ex')];
 
     const labelComponent = (
       <div className='status-check-box__status poll__option__text'>

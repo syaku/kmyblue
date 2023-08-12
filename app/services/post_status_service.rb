@@ -247,6 +247,7 @@ class PostStatusService < BaseService
       spoiler_text: @options[:spoiler_text] || '',
       markdown: @markdown,
       visibility: @visibility,
+      limited_scope: @visibility == :limited ? :mutual : :none,
       searchability: @searchability,
       language: valid_locale_cascade(@options[:language], @account.user&.preferred_posting_language, I18n.default_locale),
       application: @options[:application],

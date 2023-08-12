@@ -221,6 +221,10 @@ class ActivityPub::TagManager
     nil
   end
 
+  def limited_scope(status)
+    status.mutual_limited? ? 'Mutual' : ''
+  end
+
   def subscribable_by(account)
     account.dissubscribable ? [] : [COLLECTIONS[:public]]
   end

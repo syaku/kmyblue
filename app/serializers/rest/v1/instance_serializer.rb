@@ -128,6 +128,7 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
       :kmyblue_visibility_login,
       :status_reference,
       :visibility_mutual,
+      :kmyblue_limited_scope,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?

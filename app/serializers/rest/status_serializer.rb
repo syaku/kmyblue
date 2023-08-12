@@ -4,7 +4,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   include FormattingHelper
 
   attributes :id, :created_at, :in_reply_to_id, :in_reply_to_account_id,
-             :sensitive, :spoiler_text, :visibility, :visibility_ex, :language,
+             :sensitive, :spoiler_text, :visibility, :visibility_ex, :limited_scope, :language,
              :uri, :url, :replies_count, :reblogs_count, :searchability, :markdown,
              :status_reference_ids, :status_references_count, :status_referred_by_count,
              :favourites_count, :emoji_reactions, :emoji_reactions_count, :reactions, :edited_at
@@ -67,6 +67,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   def visibility_ex
     object.visibility
+  end
+
+  def limited_scope
+    !object.none_limited? && object.limited_visibility? ? object.limited_scope : nil
   end
 
   def searchability
