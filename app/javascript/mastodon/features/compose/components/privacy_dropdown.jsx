@@ -24,6 +24,8 @@ const messages = defineMessages({
   login_long: { id: 'privacy.login.long', defaultMessage: 'Login user only' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
   private_long: { id: 'privacy.private.long', defaultMessage: 'Visible for followers only' },
+  mutual_short: { id: 'privacy.mutual.short', defaultMessage: 'Mutual' },
+  mutual_long: { id: 'privacy.mutual.long', defaultMessage: 'Mutual follows only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
   direct_long: { id: 'privacy.direct.long', defaultMessage: 'Visible for mentioned users only' },
   change_privacy: { id: 'privacy.change', defaultMessage: 'Adjust status privacy' },
@@ -119,7 +121,7 @@ class PrivacyDropdownMenu extends PureComponent {
   setFocusRef = c => {
     this.focusedItem = c;
   };
-
+  
   render () {
     const { style, items, value } = this.props;
 
@@ -231,6 +233,7 @@ class PrivacyDropdown extends PureComponent {
       { icon: 'cloud', value: 'public_unlisted', text: formatMessage(messages.public_unlisted_short), meta: formatMessage(messages.public_unlisted_long) },
       { icon: 'key', value: 'login', text: formatMessage(messages.login_short), meta: formatMessage(messages.login_long) },
       { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
+      { icon: 'exchange', value: 'mutual', text: formatMessage(messages.mutual_short), meta: formatMessage(messages.mutual_long) },
       { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
       { icon: 'at', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },
     ];

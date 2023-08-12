@@ -303,6 +303,10 @@ module AccountInteractions
     end
   end
 
+  def mutuals
+    followers.merge(Account.where(id: following))
+  end
+
   def relations_map(account_ids, domains = nil, **options)
     relations = {
       blocked_by: Account.blocked_by_map(account_ids, id),
