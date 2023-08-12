@@ -27,17 +27,17 @@ class StatusReachFinder
     # When the status is a reblog, there are no interactions with it
     # directly, we assume all interactions are with the original one
 
-    if @status.reblog?
+    if @status.reblog? || @status.limited_visibility?
       []
-    elsif !@status.limited_visibility?
+    else
       Account.where(id: reached_account_ids).where.not(domain: banned_domains).inboxes
     end
   end
 
   def reached_account_inboxes_for_misskey
-    if @status.reblog?
+    if @status.reblog? || @status.limited_visibility?
       []
-    elsif !@status.limited_visibility?
+    else
       Account.where(id: reached_account_ids).where(domain: banned_domains_for_misskey).inboxes
     end
   end
