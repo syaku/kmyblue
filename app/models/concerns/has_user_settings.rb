@@ -55,6 +55,10 @@ module HasUserSettings
     settings['send_without_domain_blocks']
   end
 
+  def setting_unsafe_limited_distribution
+    settings['unsafe_limited_distribution']
+  end
+
   def setting_stop_emoji_reaction_streaming
     settings['stop_emoji_reaction_streaming']
   end
