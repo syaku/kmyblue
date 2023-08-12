@@ -27,6 +27,7 @@ const messages = defineMessages({
   public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
   login_short: { id: 'privacy.login.short', defaultMessage: 'Login only' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
+  limited_short: { id: 'privacy.limited.short', defaultMessage: 'Limited menbers only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
 });
 
@@ -94,6 +95,7 @@ class BoostModal extends ImmutablePureComponent {
       'public_unlisted': { icon: 'cloud', text: intl.formatMessage(messages.public_unlisted_short) },
       'login': { icon: 'key', text: intl.formatMessage(messages.login_short) },
       'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
+      'limited': { icon: 'get-pocket', text: intl.formatMessage(messages.limited_short) },
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
