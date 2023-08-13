@@ -7,8 +7,9 @@ class ProcessMentionsService < BaseService
   # and create local mention pointers
   # @param [Status] status
   # @param [Boolean] save_records Whether to save records in database
-  def call(status, save_records: true)
+  def call(status, limited_type: '', save_records: true)
     @status = status
+    @limited_type = limited_type
     @save_records = save_records
 
     return unless @status.local?
@@ -62,6 +63,8 @@ class ProcessMentionsService < BaseService
       "@#{mentioned_account.acct}"
     end
 
+    process_mutual! if @limited_type == 'mutual'
+
     @status.save! if @save_records
   end
 
@@ -91,5 +94,13 @@ class ProcessMentionsService < BaseService
 
   def mention_undeliverable?(mentioned_account)
     mentioned_account.nil? || (!mentioned_account.local? && !mentioned_account.activitypub?)
+  end
+
+  def process_mutual!
+    mentioned_account_ids = @current_mentions.map(&:account_id)
+
+    @status.account.mutuals.find_each do |target_account|
+      @current_mentions << @status.mentions.new(silent: true, account: target_account) unless mentioned_account_ids.include?(target_account.id)
+    end
   end
 end

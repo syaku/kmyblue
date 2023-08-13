@@ -100,7 +100,7 @@ class ActivityPub::TagManager
       [account_followers_url(status.account)]
     when 'login'
       [account_followers_url(status.account), 'as:LoginOnly', 'LoginUser']
-    when 'direct', 'limited'
+    when 'direct'
       if status.account.silenced?
         # Only notify followers if the account is locally silenced
         account_ids = status.active_mentions.pluck(:account_id)
@@ -118,6 +118,11 @@ class ActivityPub::TagManager
           result << followers_uri_for(mention.account) if mention.account.group?
         end.compact
       end
+    when 'limited'
+      status.mentions.each_with_object([]) do |mention, result|
+        result << uri_for(mention.account)
+        result << followers_uri_for(mention.account) if mention.account.group?
+      end.compact
     end
   end
 
@@ -214,6 +219,10 @@ class ActivityPub::TagManager
     end
   rescue ActiveRecord::RecordNotFound
     nil
+  end
+
+  def limited_scope(status)
+    status.mutual_limited? ? 'Mutual' : ''
   end
 
   def subscribable_by(account)

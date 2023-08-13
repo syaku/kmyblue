@@ -31,6 +31,7 @@ class UserSettings
   setting :reaction_deck, default: nil
   setting :stop_emoji_reaction_streaming, default: false
   setting :emoji_reaction_streaming_notify_impl2, default: false
+  setting :unsafe_limited_distribution, default: false
 
   namespace :web do
     setting :advanced_layout, default: false

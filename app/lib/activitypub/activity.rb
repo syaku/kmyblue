@@ -119,7 +119,10 @@ class ActivityPub::Activity
 
     dereferencer = ActivityPub::Dereferencer.new(@object, permitted_origin: @account.uri, signature_actor: signed_fetch_actor)
 
-    @object = dereferencer.object unless dereferencer.object.nil?
+    return if dereferencer.object.nil?
+
+    @object = dereferencer.object
+    @json = @object
   end
 
   def signed_fetch_actor

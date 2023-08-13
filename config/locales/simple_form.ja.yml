@@ -73,6 +73,7 @@ ja:
         setting_reject_unlisted_subscription: Misskeyやそのフォーク(Calckeyなど)は、フォローしていないアカウントの「未収載」投稿を **購読・検索** することができます。これはkmyblueの挙動と異なります。そのようなサーバーのうち管理人が指定したものに、指定した公開範囲の投稿を「フォロワーのみ」として配送します。ただし構造上、完璧な対応は困難でたまに未収載として配信されること、ご理解ください
         setting_show_application: 投稿するのに使用したアプリが投稿の詳細ビューに表示されるようになります
         setting_stop_emoji_reaction_streaming: 通信容量の節約に役立ちます
+        setting_unsafe_limited_distribution: Mastodon 3.5、4.0、4.1のサーバーにも限定投稿（相互のみ）が届くようになりますが、安全でない方法で送信します
         setting_use_blurhash: ぼかしはメディアの色を元に生成されますが、細部は見えにくくなっています
         setting_use_pending_items: 新着があってもタイムラインを自動的にスクロールしないようにします
         username: アルファベット大文字と小文字、数字、アンダーバー「_」が使えます
@@ -255,6 +256,7 @@ ja:
         setting_theme: サイトテーマ
         setting_trends: 本日のトレンドタグを表示する
         setting_unfollow_modal: フォローを解除する前に確認ダイアログを表示する
+        setting_unsafe_limited_distribution: 安全でない方法で限定投稿を他サーバーに配信する (非推奨)
         setting_use_blurhash: 非表示のメディアを色付きのぼかしで表示する
         setting_use_pending_items: 手動更新モード
         severity: 重大性

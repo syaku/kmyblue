@@ -209,7 +209,7 @@ class ActivityPub::ProcessAccountService < BaseService
   end
 
   def fetch_instance_info
-    FetchInstanceInfoWorker.perform_async(@account.domain) unless InstanceInfo.exists?(domain: @account.domain)
+    ActivityPub::FetchInstanceInfoWorker.perform_async(@account.domain) unless InstanceInfo.exists?(domain: @account.domain)
   end
 
   def actor_type

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_04_222017) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_12_130612) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1029,6 +1029,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_222017) do
     t.index ["var"], name: "index_site_uploads_on_var", unique: true
   end
 
+  create_table "status_capability_tokens", force: :cascade do |t|
+    t.bigint "status_id", null: false
+    t.string "token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_status_capability_tokens_on_status_id"
+  end
+
   create_table "status_edits", force: :cascade do |t|
     t.bigint "status_id", null: false
     t.bigint "account_id"
@@ -1114,6 +1122,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_222017) do
     t.bigint "ordered_media_attachment_ids", array: true
     t.integer "searchability"
     t.boolean "markdown", default: false
+    t.integer "limited_scope"
     t.index ["account_id", "id", "visibility", "updated_at"], name: "index_statuses_20190820", order: { id: :desc }, where: "(deleted_at IS NULL)"
     t.index ["account_id"], name: "index_statuses_on_account_id"
     t.index ["deleted_at"], name: "index_statuses_on_deleted_at", where: "(deleted_at IS NOT NULL)"
@@ -1395,6 +1404,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_222017) do
   add_foreign_key "scheduled_statuses", "accounts", on_delete: :cascade
   add_foreign_key "session_activations", "oauth_access_tokens", column: "access_token_id", name: "fk_957e5bda89", on_delete: :cascade
   add_foreign_key "session_activations", "users", name: "fk_e5fda67334", on_delete: :cascade
+  add_foreign_key "status_capability_tokens", "statuses", on_delete: :cascade
   add_foreign_key "status_edits", "accounts", on_delete: :nullify
   add_foreign_key "status_edits", "statuses", on_delete: :cascade
   add_foreign_key "status_pins", "accounts", name: "fk_d4cb435b62", on_delete: :cascade

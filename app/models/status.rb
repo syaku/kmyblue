@@ -29,6 +29,7 @@
 #  ordered_media_attachment_ids :bigint(8)        is an Array
 #  searchability                :integer
 #  markdown                     :boolean          default(FALSE)
+#  limited_scope                :integer
 #
 
 require 'ostruct'
@@ -54,6 +55,7 @@ class Status < ApplicationRecord
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, _suffix: :visibility
   enum searchability: { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, _suffix: :searchability
+  enum limited_scope: { none: 0, mutual: 1 }, _suffix: :limited
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
 
@@ -79,6 +81,7 @@ class Status < ApplicationRecord
   has_many :references, through: :reference_objects, class_name: 'Status', source: :target_status
   has_many :referenced_by_status_objects, foreign_key: 'target_status_id', class_name: 'StatusReference', inverse_of: :target_status, dependent: :destroy
   has_many :referenced_by_statuses, through: :referenced_by_status_objects, class_name: 'Status', source: :status
+  has_many :capability_tokens, class_name: 'StatusCapabilityToken', inverse_of: :status, dependent: :destroy
 
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :preview_cards

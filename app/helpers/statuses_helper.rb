@@ -77,6 +77,8 @@ module StatusesHelper
       fa_icon 'key fw'
     when 'private'
       fa_icon 'lock fw'
+    when 'limited'
+      fa_icon 'get-pocket fw'
     when 'direct'
       fa_icon 'at fw'
     end

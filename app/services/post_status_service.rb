@@ -74,6 +74,8 @@ class PostStatusService < BaseService
                      end) || @options[:spoiler_text].present?
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
+    @visibility   = :direct if @in_reply_to&.limited_visibility?
+    @visibility   = :limited if @options[:visibility] == 'mutual'
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted || @visibility&.to_sym == :login) && @account.silenced?
     @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:force_visibility] && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
     @searchability = searchability
@@ -113,7 +115,7 @@ class PostStatusService < BaseService
 
   def process_status!
     @status = @account.statuses.new(status_attributes)
-    process_mentions_service.call(@status, save_records: false)
+    process_mentions_service.call(@status, limited_type: @status.limited_visibility? ? 'mutual' : '', save_records: false)
     safeguard_mentions!(@status)
 
     UpdateStatusExpirationService.new.call(@status)
@@ -122,6 +124,7 @@ class PostStatusService < BaseService
     # the media attachments when the status is created
     ApplicationRecord.transaction do
       @status.save!
+      @status.capability_tokens.create! if @status.limited_visibility?
     end
   end
 
@@ -245,6 +248,7 @@ class PostStatusService < BaseService
       spoiler_text: @options[:spoiler_text] || '',
       markdown: @markdown,
       visibility: @visibility,
+      limited_scope: @visibility == :limited ? :mutual : :none,
       searchability: @searchability,
       language: valid_locale_cascade(@options[:language], @account.user&.preferred_posting_language, I18n.default_locale),
       application: @options[:application],

@@ -29,6 +29,8 @@ class StatusReachFinder
 
     if @status.reblog?
       []
+    elsif @status.limited_visibility?
+      Account.where(id: mentioned_account_ids).where.not(domain: banned_domains).inboxes
     else
       Account.where(id: reached_account_ids).where.not(domain: banned_domains).inboxes
     end
@@ -37,6 +39,8 @@ class StatusReachFinder
   def reached_account_inboxes_for_misskey
     if @status.reblog?
       []
+    elsif @status.limited_visibility?
+      Account.where(id: mentioned_account_ids).where(domain: banned_domains_for_misskey).inboxes
     else
       Account.where(id: reached_account_ids).where(domain: banned_domains_for_misskey).inboxes
     end

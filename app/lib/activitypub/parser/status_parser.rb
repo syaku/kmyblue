@@ -86,6 +86,14 @@ class ActivityPub::Parser::StatusParser
     end
   end
 
+  def limited_scope
+    if @object['limitedScope'] == 'Mutual'
+      :mutual
+    else
+      :none
+    end
+  end
+
   def language
     if content_language_map?
       @object['contentMap'].keys.first

@@ -30,6 +30,8 @@ const messages = defineMessages({
   public_unlisted_short: { id: 'privacy.public_unlisted.short', defaultMessage: 'Public unlisted' },
   login_short: { id: 'privacy.login.short', defaultMessage: 'Login only' },
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
+  limited_short: { id: 'privacy.limited.short', defaultMessage: 'Limited menbers only' },
+  mutual_short: { id: 'privacy.mutual.short', defaultMessage: 'Mutual followers only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
   searchability_public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
   searchability_private_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
@@ -249,10 +251,12 @@ class DetailedStatus extends ImmutablePureComponent {
       'public_unlisted': { icon: 'cloud', text: intl.formatMessage(messages.public_unlisted_short) },
       'login': { icon: 'key', text: intl.formatMessage(messages.login_short) },
       'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
+      'limited': { icon: 'get-pocket', text: intl.formatMessage(messages.limited_short) },
+      'mutual': { icon: 'exchange', text: intl.formatMessage(messages.mutual_short) },
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 
-    const visibilityIcon = visibilityIconInfo[status.get('visibility_ex')];
+    const visibilityIcon = visibilityIconInfo[status.get('limited_scope') || status.get('visibility_ex')];
     const visibilityLink = <> · <Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></>;
 
     const searchabilityIconInfo = {
