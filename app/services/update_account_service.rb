@@ -10,11 +10,6 @@ class UpdateAccountService < BaseService
       params.delete(:bio_markdown)
       account.user.send(update_method, user_params)
     end
-    if account.user && params.key?(:discoverable_local)
-      user_params = { settings_attributes: { discoverable_local: params['discoverable_local'] } }
-      params.delete(:discoverable_local)
-      account.user.send(update_method, user_params)
-    end
 
     account.send(update_method, params).tap do |ret|
       next unless ret

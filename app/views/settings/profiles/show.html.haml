@@ -59,24 +59,6 @@
             = fa_icon 'trash fw'
             = t('generic.delete')
 
-  %h4= t('edit_profile.safety_and_privacy')
-
-  .fields-group
-    = f.input :discoverable, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.discoverable'), recommended: true
-
-  = f.simple_fields_for :settings, current_user.settings do |ff|
-    .fields-group
-      = ff.input :discoverable_local, input_html: { name: 'account[discoverable_local]' }, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.discoverable_local'), hint: I18n.t('simple_form.hints.defaults.discoverable_local')
-
-  .fields-group
-    = f.input :locked, as: :boolean, wrapper: :with_label, hint: t('simple_form.hints.defaults.locked')
-
-  .fields-group
-    = f.input :hide_collections, as: :boolean, wrapper: :with_label, label: t('simple_form.labels.defaults.setting_hide_network'), hint: t('simple_form.hints.defaults.setting_hide_network')
-
-  .fields-group
-    = f.input :dissubscribable, as: :boolean, wrapper: :with_label, kmyblue: true, hint: t('simple_form.hints.defaults.dissubscribable')
-
   %h4= t('edit_profile.other')
 
   .fields-group
