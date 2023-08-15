@@ -157,6 +157,7 @@ class DetailedStatus extends ImmutablePureComponent {
     }
 
     let media           = '';
+    let isCardMediaWithSensitive = false;
     let applicationLink = '';
     let reblogLink = '';
     let reblogIcon = 'retweet';
@@ -230,8 +231,9 @@ class DetailedStatus extends ImmutablePureComponent {
           />
         );
       }
-    } else if (status.get('spoiler_text').length === 0) {
+    } else if (status.get('card')) {
       media = <Card sensitive={status.get('sensitive')} onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
+      isCardMediaWithSensitive = status.get('spoiler_text').length > 0;
     }
 
     let emojiReactionsBar = null;
@@ -388,10 +390,10 @@ class DetailedStatus extends ImmutablePureComponent {
             onTranslate={this.handleTranslate}
           />
 
-          {media}
+          {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
 
           <HashtagBar hashtags={status.get('tags')} text={status.get('content')} />
-          
+
           {emojiReactionsBar}
 
           <div className='detailed-status__meta'>
