@@ -3,7 +3,6 @@
 class SearchService < BaseService
   def call(query, account, limit, options = {})
     @query = query&.strip
-    pull_query_commands
 
     @account   = account
     @options   = options
@@ -28,9 +27,6 @@ class SearchService < BaseService
 
   private
 
-  MIN_SCORE = 0.7
-  MIN_SCORE_RE = /MINSCORE=(((\d+\.\d+)|(\d+)){1,6})/
-
   def perform_accounts_search!
     AccountSearchService.new.call(
       @query,
@@ -45,22 +41,22 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    privacy_definition = parsed_query.apply(StatusesIndex.filter(terms: { searchability: %w(public private direct) }).filter(term: { searchable_by: @account.id }).track_scores(true).min_score(@min_score))
+    privacy_definition = parsed_query.apply(StatusesIndex.filter(terms: { searchability: %w(public private direct) }).filter(term: { searchable_by: @account.id }))
 
     # 'direct' searchability posts are NOT in here because it's already added at previous line.
     case @searchability
     when 'public'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }).track_scores(true).min_score(@min_score))
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'private' }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'public' }))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'private' }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }))
     when 'private', 'direct'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public private) }).filter(terms: { account_id: following_account_ids }).track_scores(true).min_score(@min_score)) unless following_account_ids.empty?
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(terms: { searchability: %w(public private) }).filter(terms: { account_id: following_account_ids })) unless following_account_ids.empty?
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }))
     when 'limited'
-      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }).track_scores(true).min_score(@min_score))
+      privacy_definition = privacy_definition.or(StatusesIndex.filter(term: { searchability: 'limited' }).filter(term: { account_id: @account.id }))
     end
 
-    definition = parsed_query.apply(StatusesIndex.min_score(@min_score).track_scores(true)).order(id: :desc)
+    definition = parsed_query.apply(StatusesIndex).order(id: :desc)
     definition = definition.filter(term: { account_id: @options[:account_id] }) if @options[:account_id].present?
 
     definition = definition.and(privacy_definition)
@@ -135,16 +131,6 @@ class SearchService < BaseService
 
   def statuses_search?
     @options[:type].blank? || @options[:type] == 'statuses'
-  end
-
-  def pull_query_commands
-    @min_score = MIN_SCORE
-
-    min_score_result = @query.scan(MIN_SCORE_RE).first
-    return unless min_score_result
-
-    @min_score = min_score_result[1].to_f
-    @query = @query.gsub(MIN_SCORE_RE, '').strip
   end
 
   def parsed_query
