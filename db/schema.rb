@@ -924,7 +924,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_12_130612) do
   create_table "preview_cards_statuses", primary_key: ["status_id", "preview_card_id"], force: :cascade do |t|
     t.bigint "preview_card_id", null: false
     t.bigint "status_id", null: false
-    t.index ["status_id", "preview_card_id"], name: "index_preview_cards_statuses_on_status_id_and_preview_card_id"
   end
 
   create_table "relays", force: :cascade do |t|
