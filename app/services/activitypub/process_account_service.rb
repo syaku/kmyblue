@@ -123,6 +123,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.fields                  = property_values || {}
     @account.also_known_as           = as_array(@json['alsoKnownAs'] || []).map { |item| value_or_id(item) }
     @account.discoverable            = @json['discoverable'] || false
+    @account.indexable               = @json['indexable'] || false
     @account.searchability           = searchability_from_audience
     @account.dissubscribable         = !subscribable(@account.note)
     @account.settings                = other_settings

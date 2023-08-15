@@ -54,6 +54,7 @@
 #  searchability                 :integer          default("direct"), not null
 #  dissubscribable               :boolean          default(FALSE), not null
 #  settings                      :jsonb
+#  indexable                     :boolean          default(FALSE), not null
 #
 
 class Account < ApplicationRecord
