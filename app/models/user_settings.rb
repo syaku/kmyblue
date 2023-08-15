@@ -11,7 +11,6 @@ class UserSettings
   setting :aggregate_reblogs, default: true
   setting :theme, default: -> { ::Setting.theme }
   setting :noindex, default: -> { ::Setting.noindex }
-  setting :indexable_local, default: false
   setting :noai, default: true
   setting :bio_markdown, default: false
   setting :discoverable_local, default: false
