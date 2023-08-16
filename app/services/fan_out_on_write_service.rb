@@ -54,6 +54,7 @@ class FanOutOnWriteService < BaseService
       deliver_to_antennas! if [:public, :public_unlisted, :login].include?(@status.visibility.to_sym) && !@account.dissubscribable
       deliver_to_stl_antennas!
     when :limited
+      deliver_to_lists_mentioned_accounts_only!
       deliver_to_mentioned_followers!
     else
       deliver_to_mentioned_followers!
@@ -117,6 +118,15 @@ class FanOutOnWriteService < BaseService
 
   def deliver_to_lists!
     @account.lists_for_local_distribution.select(:id).reorder(nil).find_in_batches do |lists|
+      FeedInsertWorker.push_bulk(lists) do |list|
+        [@status.id, list.id, 'list', { 'update' => update? }]
+      end
+    end
+  end
+
+  def deliver_to_lists_mentioned_accounts_only!
+    mentioned_account_ids = @status.mentions.pluck(:account_id)
+    @account.lists_for_local_distribution.where(account_id: mentioned_account_ids).select(:id).reorder(nil).find_in_batches do |lists|
       FeedInsertWorker.push_bulk(lists) do |list|
         [@status.id, list.id, 'list', { 'update' => update? }]
       end
