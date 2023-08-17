@@ -25,7 +25,7 @@
     = f.input :dissubscribable, as: :boolean, wrapper: :with_label, kmyblue: true, hint: t('simple_form.hints.defaults.dissubscribable')
 
   .fields-group
-    = f.input :locked, as: :boolean, wrapper: :with_label
+    = f.input :unlocked, as: :boolean, wrapper: :with_label
 
   %h4= t('privacy.search')
 
@@ -40,7 +40,7 @@
   %p.lead= t('privacy.privacy_hint_html')
 
   .fields-group
-    = f.input :hide_collections, as: :boolean, wrapper: :with_label
+    = f.input :show_collections, as: :boolean, wrapper: :with_label
 
   = f.simple_fields_for :settings, current_user.settings do |ff|
     .fields-group
