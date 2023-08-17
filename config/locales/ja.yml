@@ -1248,7 +1248,6 @@ ja:
     basic_information: 基本情報
     hint_html: "<strong>アカウントのトップページや投稿の隣に表示される公開情報です。</strong>プロフィールとアイコンを設定することで、ほかのユーザーは親しみやすく、またフォローしやすくなります。"
     other: その他
-    safety_and_privacy: 安全とプライバシー
   errors:
     '400': 送信されたリクエストは無効であるか、または不正なフォーマットです。
     '403': このページを表示する権限がありません。
@@ -1577,7 +1576,6 @@ ja:
       too_few_options: は複数必要です
       too_many_options: は%{max}個までです
   preferences:
-    hide: 隠蔽
     other: その他
     posting_defaults: デフォルトの投稿設定
     public_timelines: 公開タイムライン

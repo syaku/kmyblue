@@ -11,7 +11,7 @@ type ShortNumberRenderer = (
 
 interface ShortNumberProps {
   value: number;
-  isHide: boolean;
+  isHide?: boolean;
   renderer?: ShortNumberRenderer;
   children?: ShortNumberRenderer;
 }

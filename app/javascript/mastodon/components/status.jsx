@@ -23,6 +23,7 @@ import { displayMedia } from '../initial_state';
 import { Avatar } from './avatar';
 import { AvatarOverlay } from './avatar_overlay';
 import { DisplayName } from './display_name';
+import { HashtagBar } from './hashtag_bar';
 import { RelativeTimestamp } from './relative_timestamp';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
@@ -376,7 +377,7 @@ class Status extends ImmutablePureComponent {
       openMedia: this.handleHotkeyOpenMedia,
     };
 
-    let media, statusAvatar, prepend, rebloggedByText;
+    let media, isCardMediaWithSensitive, statusAvatar, prepend, rebloggedByText;
 
     if (hidden) {
       return (
@@ -466,6 +467,8 @@ class Status extends ImmutablePureComponent {
       );
     }
 
+    isCardMediaWithSensitive = false;
+
     if (pictureInPicture.get('inUse')) {
       media = <PictureInPicturePlaceholder aspectRatio={this.getAttachmentAspectRatio()} />;
     } else if (status.get('media_attachments').size > 0) {
@@ -549,7 +552,7 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       }
-    } else if (status.get('spoiler_text').length === 0 && status.get('card')) {
+    } else if (status.get('card') && !this.props.muted) {
       media = (
         <Card
           onOpenMedia={this.handleOpenMedia}
@@ -558,6 +561,7 @@ class Status extends ImmutablePureComponent {
           sensitive={status.get('sensitive')}
         />
       );
+      isCardMediaWithSensitive = status.get('spoiler_text').length > 0;
     }
 
     if (account === undefined || account === null) {
@@ -610,7 +614,9 @@ class Status extends ImmutablePureComponent {
               onCollapsedToggle={this.handleCollapsedToggle}
             />
 
-            {media}
+            {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
+
+            <HashtagBar hashtags={status.get('tags')} text={status.get('content')} />
 
             {emojiReactionsBar}
 

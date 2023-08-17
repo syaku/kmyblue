@@ -2,8 +2,6 @@
 
 require 'rspec/retry'
 
-RSpec::Matchers.define_negated_matcher :exclude, :include
-
 if ENV['DISABLE_SIMPLECOV'] != 'true'
   require 'simplecov'
   SimpleCov.start 'rails' do

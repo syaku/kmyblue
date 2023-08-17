@@ -10,6 +10,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import { AnimatedNumber } from 'mastodon/components/animated_number';
 import EditedTimestamp from 'mastodon/components/edited_timestamp';
+import { HashtagBar } from 'mastodon/components/hashtag_bar';
 import { Icon }  from 'mastodon/components/icon';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
 
@@ -156,6 +157,7 @@ class DetailedStatus extends ImmutablePureComponent {
     }
 
     let media           = '';
+    let isCardMediaWithSensitive = false;
     let applicationLink = '';
     let reblogLink = '';
     let reblogIcon = 'retweet';
@@ -229,8 +231,9 @@ class DetailedStatus extends ImmutablePureComponent {
           />
         );
       }
-    } else if (status.get('spoiler_text').length === 0) {
+    } else if (status.get('card')) {
       media = <Card sensitive={status.get('sensitive')} onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
+      isCardMediaWithSensitive = status.get('spoiler_text').length > 0;
     }
 
     let emojiReactionsBar = null;
@@ -387,7 +390,9 @@ class DetailedStatus extends ImmutablePureComponent {
             onTranslate={this.handleTranslate}
           />
 
-          {media}
+          {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
+
+          <HashtagBar hashtags={status.get('tags')} text={status.get('content')} />
 
           {emojiReactionsBar}
 
