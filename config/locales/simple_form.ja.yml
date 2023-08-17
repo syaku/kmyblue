@@ -4,6 +4,8 @@ ja:
       account:
         display_name: フルネーム、ハンドルネームなど
         fields: ホームページ、代名詞、年齢など何でも構いません。
+        hide_collections: People will not be able to browse through your follows and followers. People that you follow will see that you follow them regardless.
+        locked: People will request to follow you and you will be able to either accept or reject new followers.
         note: '自己紹介には #ハッシュタグ や、ほかのアカウントのユーザー名 (@user) を使用できます'
       account_alias:
         acct: 引っ越し元のユーザー名@ドメインを指定してください
@@ -133,6 +135,9 @@ ja:
       sessions:
         otp: '携帯電話のアプリで生成された二要素認証コードを入力するか、リカバリーコードを使用してください:'
         webauthn: USBキーの場合は、必ず挿入し、必要に応じてタップしてください。
+      settings:
+        indexable: Your profile page may appear in search results on Google, Bing, and others.
+        show_application: You will always be able to see which app published your post regardless.
       tag:
         name: 視認性向上などのためにアルファベット大文字小文字の変更のみ行うことができます
       user:
@@ -154,6 +159,8 @@ ja:
         fields:
           name: ラベル
           value: 内容
+        hide_collections: （仮訳）フォロー・フォロワー一覧を隠す
+        locked: （仮訳）新規フォローを承認制にする
       account_alias:
         acct: 引っ越し元のユーザー ID
       account_migration:
@@ -334,6 +341,9 @@ ja:
         trending_tag: 新しいトレンドのレビューをする必要がある時
       rule:
         text: ルール
+      settings:
+        indexable: （仮訳）プロフィールページを検索エンジンの収集対象に含める
+        show_application: （仮訳）投稿に使用したアプリを開示する
       tag:
         listable: 検索とディレクトリへの使用を許可する
         name: ハッシュタグ
