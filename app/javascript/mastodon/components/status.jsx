@@ -558,7 +558,7 @@ class Status extends ImmutablePureComponent {
           onOpenMedia={this.handleOpenMedia}
           card={status.get('card')}
           compact
-          sensitive={status.get('sensitive')}
+          sensitive={status.get('sensitive') && !status.get('spoiler_text')}
         />
       );
       isCardMediaWithSensitive = status.get('spoiler_text').length > 0;

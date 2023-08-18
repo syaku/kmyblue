@@ -232,7 +232,7 @@ class DetailedStatus extends ImmutablePureComponent {
         );
       }
     } else if (status.get('card')) {
-      media = <Card sensitive={status.get('sensitive')} onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
+      media = <Card sensitive={status.get('sensitive') && !status.get('spoiler_text')} onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
       isCardMediaWithSensitive = status.get('spoiler_text').length > 0;
     }
 
