@@ -50,6 +50,10 @@ class NavigationPanel extends Component {
     return (match || location.pathname.startsWith('/public')) && !location.pathname.endsWith('/fixed');
   };
 
+  isAntennasActive = (match, location) => {
+    return (match || location.pathname.startsWith('/antennast'));
+  };
+
   render () {
     const { intl } = this.props;
     const { signedIn, disabledAccountId } = this.context.identity;
@@ -93,7 +97,6 @@ class NavigationPanel extends Component {
 
         {signedIn && (
           <>
-            <ColumnLink transparent to='/lists' icon='list-ul' text={intl.formatMessage(messages.lists)} />
             <ListPanel />
             <hr />
           </>
@@ -101,6 +104,8 @@ class NavigationPanel extends Component {
 
         {signedIn && (
           <>
+            <ColumnLink transparent to='/lists' icon='list-ul' text={intl.formatMessage(messages.lists)} />
+            <ColumnLink transparent to='/antennasw' icon='wifi' text={intl.formatMessage(messages.antennas)} isActive={this.isAntennasActive} />
             <FollowRequestsColumnLink />
             <ColumnLink transparent to='/conversations' icon='at' text={intl.formatMessage(messages.direct)} />
           </>
@@ -110,7 +115,6 @@ class NavigationPanel extends Component {
 
         {signedIn && (
           <>
-            <ColumnLink transparent to='/antennasw' icon='wifi' text={intl.formatMessage(messages.antennas)} />
             <ColumnLink transparent to='/bookmarks' icon='bookmark' text={intl.formatMessage(messages.bookmarks)} />
             <ColumnLink transparent to='/favourites' icon='star' text={intl.formatMessage(messages.favourites)} />
             <hr />
