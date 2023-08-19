@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { setupAntennaAdder, resetAntennaAdder } from '../../actions/antennas';
+import NewAntennaForm from '../antennas/components/new_antenna_form';
+import Account from '../list_adder/components/account';
 
-import Account from './components/account';
 import Antenna from './components/antenna';
 // hack
 
@@ -60,8 +61,11 @@ class AntennaAdder extends ImmutablePureComponent {
           <Account accountId={accountId} />
         </div>
 
+        <NewAntennaForm />
+
+
         <div className='list-adder__lists'>
-          {antennaIds.map(AntennaId => <Antenna key={AntennaId} antennaId={AntennaId} />)}
+          {antennaIds.map(antennaId => <Antenna key={antennaId} antennaId={antennaId} />)}
         </div>
       </div>
     );

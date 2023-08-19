@@ -146,7 +146,7 @@ class ListTimeline extends PureComponent {
 
   handleEditAntennaClick = (e) => {
     const id = e.currentTarget.getAttribute('data-id');
-    window.open(`/antennas/${id}/edit`, '_blank');
+    this.context.router.history.push(`/antennasw/${id}/edit`);
   }
 
   handleRepliesPolicyChange = ({ target }) => {

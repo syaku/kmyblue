@@ -1023,6 +1023,8 @@ ja:
       keyword: キーワード
       tag: ハッシュタグ
     errors:
+      duplicate_domain: すでに同じドメインが登録されています
+      duplicate_keyword: すでに同じキーワードが登録されています
       empty_contexts: 絞り込み条件が1つも指定されていないため無効です（除外条件はカウントされません）
       invalid_list_owner: これはあなたのリストではありません
       over_limit: 所持できるアンテナ数 %{limit}を超えています
@@ -1041,6 +1043,7 @@ ja:
       exclude_tags_raw: 除外するハッシュタグ
       hint: 下のリストに、絞り込み条件・除外条件を入力します。条件は複数指定することができます。1行につき1つずつ入力してください。空行、コメント、重複を含めることはできません。絞り込み条件（除外条件ではない）は最低1つ設定しなければいけません。
       ignore_reblog: ブーストを含めない
+      insert_feeds: 投稿をホーム・リストに流す（投稿配置先リストの設定を有効にするには、この設定を有効にする必要があります）
       keywords_hint: キーワードは1つあたり最低2文字です。キーワードによる絞り込みを指定した場合、検索許可に対応しているサーバーからの投稿は、検索許可が「公開」以外のものは掲載されなくなります
       keywords_raw: 絞り込むキーワード
       list: 投稿配置先リスト
@@ -1579,7 +1582,17 @@ ja:
     other: その他
     posting_defaults: デフォルトの投稿設定
     public_timelines: 公開タイムライン
+  privacy:
+    hint_html: "<strong>Customize how you want your profile and your posts to be found.</strong> A variety of features in Mastodon can help you reach a wider audience when enabled. Take a moment to review these settings to make sure they fit your use case."
+    privacy: Privacy
+    privacy_hint_html: Control how much you want to disclose for the benefit of others. People discover interesting profiles and cool apps by browsing other people's follows and seeing which apps they post from, but you may prefer to keep it hidden.
+    reach: Reach
+    reach_hint_html: Control whether you want to be discovered and followed by new people. Do you want your posts to appear on the Explore screen? Do you want other people to see you in their follow recommendations? Do you want to accept all new followers automatically, or have granular control over each one?
+    search: Search
+    search_hint_html: Control how you want to be found. Do you want people to find you by what you've publicly posted about? Do you want people outside Mastodon to find your profile when searching the web? Please mind that total exclusion from all search engines cannot be guaranteed for public information.
     stop_deliver: 配送停止
+    stop_deliver_hint_html: Mastodonの投稿を、他のソフトウェアでは自由に検索することができます。Mastodon内で行ったプライバシーの設定は無視され、あなたの投稿が意図しない人に見つかるおそれがあります。ここでは、他のサーバーやソフトウェアであなたの投稿が見つからないようにする設定が可能です。ただしリスクは伴います。
+    title: Privacy and reach
   privacy_policy:
     title: プライバシーポリシー
   reactions:

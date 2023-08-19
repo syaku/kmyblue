@@ -7364,6 +7364,61 @@ noscript {
   }
 }
 
+.antenna-list-detail {
+  font-size: 12px;
+  margin-left: 24px;
+
+  .group {
+    margin-right: 16px;
+
+    i.fa {
+      color: $light-text-color;
+      margin-right: 4px;
+      font-size: 10px;
+    }
+  }
+}
+
+.antenna-setting {
+  margin: 8px 16px 32px;
+
+  h3 {
+    font-size: 16px;
+    margin: 40px 0 16px;
+    font-weight: bold;
+  }
+}
+
+.setting-text-list {
+  .add-text-form {
+    display: flex;
+    gap: 8px;
+
+    label {
+      flex: 1 1 auto;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.setting-text-list-item {
+  display: flex;
+  font-size: 14px;
+  margin: 8px 0;
+
+  i.fa {
+    color: $darker-text-color;
+  }
+
+  .label {
+    flex: 1;
+    margin: 0 8px;
+  }
+}
+
 .reaction_deck_container {
   &__row {
     display: flex;

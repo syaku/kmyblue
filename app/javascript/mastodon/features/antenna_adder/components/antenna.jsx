@@ -6,14 +6,14 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import { Icon } from 'mastodon/components/icon';
+import { Icon }  from 'mastodon/components/icon';
 
 import { removeFromAntennaAdder, addToAntennaAdder } from '../../../actions/antennas';
-import { IconButton } from '../../../components/icon_button';
+import { IconButton }  from '../../../components/icon_button';
 
 const messages = defineMessages({
-  remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },
-  add: { id: 'lists.account.add', defaultMessage: 'Add to list' },
+  remove: { id: 'antennas.account.remove', defaultMessage: 'Remove from antenna' },
+  add: { id: 'antennas.account.add', defaultMessage: 'Add to antenna' },
 });
 
 const MapStateToProps = (state, { antennaId, added }) => ({

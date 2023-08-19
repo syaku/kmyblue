@@ -48,6 +48,7 @@ import {
   StatusReferences,
   DirectTimeline,
   HashtagTimeline,
+  AntennaTimeline,
   Notifications,
   FollowRequests,
   FavouritedStatuses,
@@ -60,6 +61,8 @@ import {
   Mutes,
   PinnedStatuses,
   Lists,
+  Antennas,
+  AntennaSetting,
   Directory,
   Explore,
   ReactionDeck,
@@ -207,6 +210,8 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedRoute path={['/conversations', '/timelines/direct']} component={DirectTimeline} content={children} />
           <WrappedRoute path='/tags/:id' component={HashtagTimeline} content={children} />
           <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
+          <WrappedRoute path='/antennasw/:id' component={AntennaSetting} content={children} />
+          <WrappedRoute path='/antennast/:id' component={AntennaTimeline} content={children} />
           <WrappedRoute path='/notifications' component={Notifications} content={children} />
           <WrappedRoute path='/favourites' component={FavouritedStatuses} content={children} />
           <WrappedRoute path='/emoji_reactions' component={EmojiReactedStatuses} content={children} />
@@ -248,6 +253,7 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedRoute path='/followed_tags' component={FollowedTags} content={children} />
           <WrappedRoute path='/mutes' component={Mutes} content={children} />
           <WrappedRoute path='/lists' component={Lists} content={children} />
+          <WrappedRoute path='/antennasw' component={Antennas} content={children} />
 
           <Route component={BundleColumnError} />
         </WrappedSwitch>

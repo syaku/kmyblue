@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     /public/remote
     /conversations
     /lists/(*any)
+    /antennasw/(*any)
+    /antennast/(*any)
     /notifications
     /favourites
     /emoji_reactions

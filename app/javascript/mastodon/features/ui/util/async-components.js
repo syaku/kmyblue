@@ -34,12 +34,20 @@ export function DirectTimeline() {
   return import(/* webpackChunkName: "features/direct_timeline" */'../../direct_timeline');
 }
 
+export function AntennaTimeline () {
+  return import(/* webpackChunkName: "features/antenna_timeline" */'../../antenna_timeline');
+}
+
 export function ListTimeline () {
   return import(/* webpackChunkName: "features/list_timeline" */'../../list_timeline');
 }
 
 export function Lists () {
   return import(/* webpackChunkName: "features/lists" */'../../lists');
+}
+
+export function Antennas () {
+  return import(/* webpackChunkName: "features/antennas" */'../../antennas');
 }
 
 export function Status () {
@@ -156,6 +164,14 @@ export function ListAdder () {
 
 export function AntennaAdder () {
   return import(/*webpackChunkName: "features/antenna_adder" */'../../antenna_adder');
+}
+
+export function AntennaEditor () {
+  return import(/*webpackChunkName: "features/antenna_editor" */'../../antenna_editor');
+}
+
+export function AntennaSetting () {
+  return import(/*webpackChunkName: "features/antenna_setting" */'../../antenna_setting');
 }
 
 export function Tesseract () {

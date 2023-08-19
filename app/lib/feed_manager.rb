@@ -90,6 +90,14 @@ class FeedManager
     true
   end
 
+  def push_to_antenna(antenna, status, update: false)
+    return false unless add_to_feed(:antenna, antenna.id, status, aggregate_reblogs: antenna.account.user&.aggregates_reblogs?)
+
+    trim(:antenna, antenna.id)
+    PushUpdateWorker.perform_async(antenna.account_id, status.id, "timeline:antenna:#{antenna.id}", { 'update' => update }) if push_update_required?("timeline:antenna:#{antenna.id}")
+    true
+  end
+
   # Remove a status from a list feed and send a streaming API update
   # @param [List] list
   # @param [Status] status
@@ -99,6 +107,13 @@ class FeedManager
     return false unless remove_from_feed(:list, list.id, status, aggregate_reblogs: list.account.user&.aggregates_reblogs?)
 
     redis.publish("timeline:list:#{list.id}", Oj.dump(event: :delete, payload: status.id.to_s)) unless update
+    true
+  end
+
+  def unpush_from_antenna(antenna, status, update: false)
+    return false unless remove_from_feed(:antenna, antenna.id, status, aggregate_reblogs: antenna.account.user&.aggregates_reblogs?)
+
+    redis.publish("timeline:antenna:#{antenna.id}", Oj.dump(event: :delete, payload: status.id.to_s)) unless update
     true
   end
 

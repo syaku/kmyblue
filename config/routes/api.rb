@@ -49,6 +49,7 @@ namespace :api, format: false do
       resource :public, only: :show, controller: :public
       resources :tag, only: :show
       resources :list, only: :show
+      resources :antenna, only: :show
     end
 
     get '/streaming', to: 'streaming#index'
@@ -207,6 +208,8 @@ namespace :api, format: false do
 
     resources :antennas, only: [:index, :create, :show, :update, :destroy] do
       resource :accounts, only: [:show, :create, :destroy], controller: 'antennas/accounts'
+      resource :domains, only: [:show, :create, :destroy], controller: 'antennas/domains'
+      resource :keywords, only: [:show, :create, :destroy], controller: 'antennas/keywords'
     end
 
     namespace :featured_tags do
