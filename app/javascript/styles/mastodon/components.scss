@@ -7364,6 +7364,21 @@ noscript {
   }
 }
 
+.antenna-list-detail {
+  font-size: 12px;
+  margin-left: 24px;
+
+  .group {
+    margin-right: 16px;
+
+    i.fa {
+      color: $light-text-color;
+      margin-right: 4px;
+      font-size: 10px;
+    }
+  }
+}
+
 .antenna-setting {
   margin: 8px 16px;
 

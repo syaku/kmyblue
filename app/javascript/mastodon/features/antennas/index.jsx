@@ -12,6 +12,7 @@ import { createSelector } from 'reselect';
 import { fetchAntennas } from 'mastodon/actions/antennas';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
+import { Icon }  from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import ColumnLink from 'mastodon/features/ui/components/column_link';
@@ -75,9 +76,16 @@ class Antennas extends ImmutablePureComponent {
           prepend={<ColumnSubheading text={intl.formatMessage(messages.subheading)} />}
           bindToDocument={!multiColumn}
         >
-          {antennas.map(antenna =>
-            <ColumnLink key={antenna.get('id')} to={`/antennasw/${antenna.get('id')}`} icon='wifi' text={antenna.get('title')} />,
-          )}
+          {antennas.map(antenna => (
+            <ColumnLink key={antenna.get('id')} to={`/antennasw/${antenna.get('id')}`} icon='wifi' text={antenna.get('title')}>
+              <p className='antenna-list-detail'>
+                <span className='group'><Icon id='users' />{antenna.get('accounts_count')}</span>
+                <span className='group'><Icon id='sitemap' />{antenna.get('domains_count')}</span>
+                <span className='group'><Icon id='hashtag' />{antenna.get('tags_count')}</span>
+                <span className='group'><Icon id='paragraph' />{antenna.get('keywords_count')}</span>
+              </p>
+            </ColumnLink>
+          ))}
         </ScrollableList>
 
         <Helmet>
