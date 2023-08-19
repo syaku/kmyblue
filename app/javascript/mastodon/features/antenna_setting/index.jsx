@@ -5,13 +5,14 @@ import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
 
+import { List as ImmutableList } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
 import Select, { NonceProvider } from 'react-select';
 import Toggle from 'react-toggle';
 
-import { fetchAntenna, deleteAntenna, updateAntenna } from 'mastodon/actions/antennas';
+import { fetchAntenna, deleteAntenna, updateAntenna, addDomainToAntenna, removeDomainFromAntenna, fetchAntennaDomains, fetchAntennaKeywords, removeKeywordFromAntenna, addKeywordToAntenna } from 'mastodon/actions/antennas';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { fetchLists } from 'mastodon/actions/lists';
 import { openModal } from 'mastodon/actions/modal';
@@ -22,17 +23,25 @@ import { Icon }  from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
 
+import TextList from './components/text_list';
+
 const messages = defineMessages({
   deleteMessage: { id: 'confirmations.delete_antenna.message', defaultMessage: 'Are you sure you want to permanently delete this antenna?' },
   deleteConfirm: { id: 'confirmations.delete_antenna.confirm', defaultMessage: 'Delete' },
   editAccounts: { id: 'antennas.edit_accounts', defaultMessage: 'Edit accounts' },
   noOptions: { id: 'antennas.select.no_options_message', defaultMessage: 'Empty lists' },
   placeholder: { id: 'antennas.select.placeholder', defaultMessage: 'Select list' },
+  addDomainLabel: { id: 'antennas.add_domain_placeholder', defaultMessage: 'New domain' },
+  addKeywordLabel: { id: 'antennas.add_keyword_placeholder', defaultMessage: 'New keyword' },
+  addDomainTitle: { id: 'antennas.add_domain', defaultMessage: 'Add domain' },
+  addKeywordTitle: { id: 'antennas.add_keyword', defaultMessage: 'Add keyword' },
 });
 
 const mapStateToProps = (state, props) => ({
   antenna: state.getIn(['antennas', props.params.id]),
   lists: state.get('lists'),
+  domains: state.getIn(['antennas', props.params.id, 'domains']) || ImmutableList(),
+  keywords: state.getIn(['antennas', props.params.id, 'keywords']) || ImmutableList(),
 });
 
 class AntennaSetting extends PureComponent {
@@ -48,7 +57,14 @@ class AntennaSetting extends PureComponent {
     multiColumn: PropTypes.bool,
     antenna: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
     lists: ImmutablePropTypes.list,
+    domains: ImmutablePropTypes.list,
+    keywords: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
+  };
+
+  state = {
+    domainName: '',
+    keywordName: '',
   };
 
   handlePin = () => {
@@ -76,6 +92,8 @@ class AntennaSetting extends PureComponent {
     const { id } = this.props.params;
 
     dispatch(fetchAntenna(id));
+    dispatch(fetchAntennaDomains(id));
+    dispatch(fetchAntennaKeywords(id));
     dispatch(fetchLists());
   }
 
@@ -85,6 +103,10 @@ class AntennaSetting extends PureComponent {
 
     if (id !== this.props.params.id) {
       dispatch(fetchAntenna(id));
+      dispatch(fetchAntennaKeywords(id));
+      dispatch(fetchAntennaDomains(id));
+      dispatch(fetchAntennaKeywords(id));
+      dispatch(fetchLists());
     }
   }
 
@@ -161,8 +183,26 @@ class AntennaSetting extends PureComponent {
 
   noOptionsMessage = () => this.props.intl.formatMessage(messages.noOptions);
 
+  onDomainNameChanged = (value) => this.setState({ domainName: value });
+
+  onDomainAdd = () => {
+    this.props.dispatch(addDomainToAntenna(this.props.params.id, this.state.domainName));
+    this.setState({ domainName: '' });
+  };
+
+  onDomainRemove = (value) => this.props.dispatch(removeDomainFromAntenna(this.props.params.id, value));
+
+  onKeywordNameChanged = (value) => this.setState({ keywordName: value });
+
+  onKeywordAdd = () => {
+    this.props.dispatch(addKeywordToAntenna(this.props.params.id, this.state.keywordName));
+    this.setState({ keywordName: '' });
+  };
+
+  onKeywordRemove = (value) => this.props.dispatch(removeKeywordFromAntenna(this.props.params.id, value));
+
   render () {
-    const { columnId, multiColumn, antenna, lists, intl } = this.props;
+    const { columnId, multiColumn, antenna, lists, domains, keywords, intl } = this.props;
     const { id } = this.props.params;
     const pinned = !!columnId;
     const title  = antenna ? antenna.get('title') : id;
@@ -293,8 +333,30 @@ class AntennaSetting extends PureComponent {
               <Button text={intl.formatMessage(messages.editAccounts)} onClick={this.handleEditClick} />
 
               <h3><FormattedMessage id='antennas.domains' defaultMessage='{count} domains' values={{ count: antenna.get('domains_count') }} /></h3>
+              <TextList
+                onChange={this.onDomainNameChanged}
+                onAdd={this.onDomainAdd}
+                onRemove={this.onDomainRemove}
+                value={this.state.domainName}
+                values={domains.get('domains') || ImmutableList()}
+                icon='sitemap'
+                label={intl.formatMessage(messages.addDomainLabel)}
+                title={intl.formatMessage(messages.addDomainTitle)}
+                />
+
               <h3><FormattedMessage id='antennas.tags' defaultMessage='{count} tags' values={{ count: antenna.get('tags_count') }} /></h3>
+
               <h3><FormattedMessage id='antennas.keywords' defaultMessage='{count} keywords' values={{ count: antenna.get('keywords_count') }} /></h3>
+              <TextList
+                onChange={this.onKeywordNameChanged}
+                onAdd={this.onKeywordAdd}
+                onRemove={this.onKeywordRemove}
+                value={this.state.keywordName}
+                values={keywords.get('keywords') || ImmutableList()}
+                icon='paragraph'
+                label={intl.formatMessage(messages.addKeywordLabel)}
+                title={intl.formatMessage(messages.addKeywordTitle)}
+                />
             </>
           )}
         </div>

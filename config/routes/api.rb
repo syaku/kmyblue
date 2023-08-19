@@ -208,6 +208,8 @@ namespace :api, format: false do
 
     resources :antennas, only: [:index, :create, :show, :update, :destroy] do
       resource :accounts, only: [:show, :create, :destroy], controller: 'antennas/accounts'
+      resource :domains, only: [:show, :create, :destroy], controller: 'antennas/domains'
+      resource :keywords, only: [:show, :create, :destroy], controller: 'antennas/keywords'
     end
 
     namespace :featured_tags do

@@ -7384,7 +7384,38 @@ noscript {
 
   h3 {
     font-size: 16px;
-    margin: 24px 0 8px;
+    margin: 40px 0 16px;
+    font-weight: bold;
+  }
+}
+
+.setting-text-list {
+  .add-text-form {
+    display: flex;
+    gap: 8px;
+
+    label {
+      flex: 1 1 auto;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.setting-text-list-item {
+  display: flex;
+  font-size: 14px;
+  margin: 8px 0;
+
+  i.fa {
+    color: $darker-text-color;
+  }
+
+  .label {
+    flex: 1;
+    margin: 0 8px;
   }
 }
 

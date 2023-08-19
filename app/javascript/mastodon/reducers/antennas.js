@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import {
   ANTENNA_FETCH_SUCCESS,
@@ -9,6 +9,12 @@ import {
   ANTENNA_DELETE_SUCCESS,
   ANTENNA_EDITOR_ADD_SUCCESS,
   ANTENNA_EDITOR_REMOVE_SUCCESS,
+  ANTENNA_EDITOR_ADD_DOMAIN_SUCCESS,
+  ANTENNA_EDITOR_REMOVE_DOMAIN_SUCCESS,
+  ANTENNA_EDITOR_FETCH_DOMAINS_SUCCESS,
+  ANTENNA_EDITOR_ADD_KEYWORD_SUCCESS,
+  ANTENNA_EDITOR_REMOVE_KEYWORD_SUCCESS,
+  ANTENNA_EDITOR_FETCH_KEYWORDS_SUCCESS,
 } from '../actions/antennas';
 
 const initialState = ImmutableMap();
@@ -38,6 +44,18 @@ export default function antennas(state = initialState, action) {
     return state.setIn([action.antennaId, 'accounts_count'], state.getIn([action.antennaId, 'accounts_count']) + 1);
   case ANTENNA_EDITOR_REMOVE_SUCCESS:
     return state.setIn([action.antennaId, 'accounts_count'], state.getIn([action.antennaId, 'accounts_count']) - 1);
+  case ANTENNA_EDITOR_ADD_DOMAIN_SUCCESS:
+    return state.setIn([action.antennaId, 'domains_count'], state.getIn([action.antennaId, 'domains_count']) + 1).updateIn([action.antennaId, 'domains', 'domains'], domains => (ImmutableList(domains || [])).push(action.domain));
+  case ANTENNA_EDITOR_REMOVE_DOMAIN_SUCCESS:
+    return state.setIn([action.antennaId, 'domains_count'], state.getIn([action.antennaId, 'domains_count']) - 1).updateIn([action.antennaId, 'domains', 'domains'], domains => (ImmutableList(domains || [])).filterNot(domain => domain === action.domain));
+  case ANTENNA_EDITOR_FETCH_DOMAINS_SUCCESS:
+    return state.setIn([action.id, 'domains'], ImmutableMap(action.domains));
+  case ANTENNA_EDITOR_ADD_KEYWORD_SUCCESS:
+    return state.setIn([action.antennaId, 'keywords_count'], state.getIn([action.antennaId, 'keywords_count']) + 1).updateIn([action.antennaId, 'keywords', 'keywords'], keywords => (ImmutableList(keywords || [])).push(action.keyword));
+  case ANTENNA_EDITOR_REMOVE_KEYWORD_SUCCESS:
+    return state.setIn([action.antennaId, 'keywords_count'], state.getIn([action.antennaId, 'keywords_count']) - 1).updateIn([action.antennaId, 'keywords', 'keywords'], keywords => (ImmutableList(keywords || [])).filterNot(keyword => keyword === action.keyword));
+  case ANTENNA_EDITOR_FETCH_KEYWORDS_SUCCESS:
+    return state.setIn([action.id, 'keywords'], ImmutableMap(action.keywords));
   default:
     return state;
   }
