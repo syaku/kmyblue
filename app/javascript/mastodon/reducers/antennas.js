@@ -21,6 +21,10 @@ const initialState = ImmutableMap();
 
 const normalizeAntenna = (state, antenna) => {
   const old = state.get(antenna.id);
+  if (old === false) {
+    return state;
+  }
+  
   let s = state.set(antenna.id, fromJS(antenna));
   if (old) {
     s = s.setIn([antenna.id, 'domains'], old.get('domains'));
