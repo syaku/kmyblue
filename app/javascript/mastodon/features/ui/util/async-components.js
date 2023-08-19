@@ -42,6 +42,10 @@ export function Lists () {
   return import(/* webpackChunkName: "features/lists" */'../../lists');
 }
 
+export function Antennas () {
+  return import(/* webpackChunkName: "features/antennas" */'../../antennas');
+}
+
 export function Status () {
   return import(/* webpackChunkName: "features/status" */'../../status');
 }
@@ -156,6 +160,14 @@ export function ListAdder () {
 
 export function AntennaAdder () {
   return import(/*webpackChunkName: "features/antenna_adder" */'../../antenna_adder');
+}
+
+export function AntennaEditor () {
+  return import(/*webpackChunkName: "features/antenna_editor" */'../../antenna_editor');
+}
+
+export function AntennaSetting () {
+  return import(/*webpackChunkName: "features/antenna_setting" */'../../antenna_setting');
 }
 
 export function Tesseract () {
