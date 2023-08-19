@@ -55,6 +55,7 @@ class FanOutOnWriteService < BaseService
       deliver_to_stl_antennas!
     when :limited
       deliver_to_lists_mentioned_accounts_only!
+      deliver_to_antennas! unless @account.dissubscribable
       deliver_to_mentioned_followers!
     else
       deliver_to_mentioned_followers!
@@ -168,7 +169,8 @@ class FanOutOnWriteService < BaseService
     antennas = antennas.left_joins(:antenna_tags).where(any_tags: true).or(Antenna.left_joins(:antenna_tags).where(antenna_tags: { tag_id: tag_ids }))
 
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
-    antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login].exclude?(@status.visibility.to_sym)
+    antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login, :limited].exclude?(@status.visibility.to_sym)
+    antennas = antennas.where(account: @status.mentioned_accounts) if @status.visibility.to_sym == :limited
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
     antennas = antennas.where(ignore_reblog: false) unless @status.reblog?
     antennas = antennas.where(stl: false)
