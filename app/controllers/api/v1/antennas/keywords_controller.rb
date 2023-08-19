@@ -16,7 +16,7 @@ class Api::V1::Antennas::KeywordsController < Api::BaseController
   def create
     new_keywords = @antenna.keywords || []
     keywords.each do |keyword|
-      raise Mastodon::ValidationError, I18n.t('antennas.errors.same_keyword') if new_keywords.include?(keyword)
+      raise Mastodon::ValidationError, I18n.t('antennas.errors.duplicate_keyword') if new_keywords.include?(keyword)
 
       new_keywords << keyword
     end

@@ -1041,6 +1041,7 @@ en:
       exclude_tags_raw: Excluding hashtag list
       hint: 下のリストに、絞り込み条件・除外条件を入力します。条件は複数指定することができます。1行につき1つずつ入力してください。空行、コメント、重複を含めることはできません。
       ignore_reblog: Ignore BTs
+      insert_feeds: Insert home/list timeline (Destination list setting is NOT available if this checkbox is NOT set)
       keywords_hint: キーワードは1つあたり最低2文字です。キーワードによる絞り込みを指定した場合、検索許可に対応しているサーバーからの投稿は、検索許可が「公開」以外のものは掲載されなくなります
       keywords_raw: Keyword list
       list: Destination list

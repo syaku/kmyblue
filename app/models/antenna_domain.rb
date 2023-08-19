@@ -14,9 +14,9 @@
 class AntennaDomain < ApplicationRecord
   belongs_to :antenna
 
-  validate :same_domain
+  validate :duplicate_domain
 
-  def same_domain
-    raise Mastodon::ValidationError, I18n.t('antennas.errors.same_domain') if AntennaDomain.exists?(antenna_id: antenna_id, name: name, exclude: exclude)
+  def duplicate_domain
+    raise Mastodon::ValidationError, I18n.t('antennas.errors.duplicate_domain') if AntennaDomain.exists?(antenna_id: antenna_id, name: name, exclude: exclude)
   end
 end
