@@ -16,4 +16,8 @@ class REST::ListSerializer < ActiveModel::Serializer
   end
 
   has_many :antennas, serializer: AntennaSerializer
+
+  def antennas
+    object.antennas.where(insert_feeds: true)
+  end
 end
