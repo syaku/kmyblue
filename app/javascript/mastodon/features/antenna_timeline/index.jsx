@@ -21,11 +21,8 @@ import BundleColumnError from 'mastodon/features/ui/components/bundle_column_err
 import StatusListContainer from 'mastodon/features/ui/containers/status_list_container';
 
 const messages = defineMessages({
-  deleteMessage: { id: 'confirmations.delete_list.message', defaultMessage: 'Are you sure you want to permanently delete this list?' },
-  deleteConfirm: { id: 'confirmations.delete_list.confirm', defaultMessage: 'Delete' },
-  followed:   { id: 'lists.replies_policy.followed', defaultMessage: 'Any followed user' },
-  none:    { id: 'lists.replies_policy.none', defaultMessage: 'No one' },
-  antenna:  { id: 'lists.replies_policy.list', defaultMessage: 'Members of the list' },
+  deleteMessage: { id: 'confirmations.delete_antenna.message', defaultMessage: 'Are you sure you want to permanently delete this antenna?' },
+  deleteConfirm: { id: 'confirmations.delete_antenna.confirm', defaultMessage: 'Delete' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -172,11 +169,11 @@ class AntennaTimeline extends PureComponent {
         >
           <div className='column-settings__row column-header__links'>
             <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleEditClick}>
-              <Icon id='pencil' /> <FormattedMessage id='lists.edit' defaultMessage='Edit list' />
+              <Icon id='pencil' /> <FormattedMessage id='antennas.edit' defaultMessage='Edit antenna' />
             </button>
 
             <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleDeleteClick}>
-              <Icon id='trash' /> <FormattedMessage id='lists.delete' defaultMessage='Delete list' />
+              <Icon id='trash' /> <FormattedMessage id='antennas.delete' defaultMessage='Delete antenna' />
             </button>
           </div>
         </ColumnHeader>

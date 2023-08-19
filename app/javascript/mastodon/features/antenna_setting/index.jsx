@@ -125,6 +125,10 @@ class AntennaSetting extends PureComponent {
     }));
   };
 
+  handleTimelineClick = () => {
+    this.context.router.history.push(`/antennast/${this.props.params.id}`);
+  }
+
   onStlToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
@@ -228,11 +232,15 @@ class AntennaSetting extends PureComponent {
         >
           <div className='column-settings__row column-header__links'>
             <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleEditAntennaClick}>
-              <Icon id='pencil' /> <FormattedMessage id='anntennas.edit' defaultMessage='Edit antenna' />
+              <Icon id='pencil' /> <FormattedMessage id='antennas.edit_static' defaultMessage='Edit antenna' />
             </button>
 
             <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleDeleteClick}>
               <Icon id='trash' /> <FormattedMessage id='antennas.delete' defaultMessage='Delete antenna' />
+            </button>
+
+            <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleTimelineClick}>
+              <Icon id='wifi' /> <FormattedMessage id='antennas.go_timeline' defaultMessage='Go to antenna timeline' />
             </button>
           </div>
 
