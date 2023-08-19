@@ -486,6 +486,8 @@ const startServer = async () => {
       return 'direct';
     case '/api/v1/streaming/list':
       return 'list';
+    case '/api/v1/streaming/antenna':
+      return 'antenna';
     default:
       return undefined;
     }
@@ -1267,7 +1269,7 @@ const startServer = async () => {
     if (channelName === 'list') {
       return [channelName, params.list];
     } else if (channelName === 'antenna') {
-        return [channelName, params.antenna];
+      return [channelName, params.antenna];
     } else if (['hashtag', 'hashtag:local'].includes(channelName)) {
       return [channelName, params.tag];
     } else {

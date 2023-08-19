@@ -81,6 +81,9 @@ class RemoveStatusService < BaseService
     Antenna.availables.where(list_id: 0).select(:id, :account_id).includes(account: :user).reorder(nil).find_each do |antenna|
       FeedManager.instance.unpush_from_home(antenna.account, @status)
     end
+    Antenna.availables.select(:id, :account_id).includes(account: :user).reorder(nil).find_each do |antenna|
+      FeedManager.instance.unpush_from_antenna(antenna, @status)
+    end
   end
 
   def remove_from_mentions
