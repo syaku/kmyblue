@@ -18,7 +18,7 @@ class Api::V1::Antennas::AccountsController < Api::BaseController
     ApplicationRecord.transaction do
       antenna_accounts.each do |account|
         @antenna.antenna_accounts.create!(account: account, exclude: false)
-        @antenna.update!(any_accounts: false)
+        @antenna.update!(any_accounts: false) if @antenna.any_accounts
       end
     end
 
