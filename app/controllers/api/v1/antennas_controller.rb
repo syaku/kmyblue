@@ -42,6 +42,6 @@ class Api::V1::AntennasController < Api::BaseController
   end
 
   def antenna_params
-    params.permit(:title, :stl, :with_media_only, :ignore_reblog)
+    params.permit(:title, :list_id, :stl, :with_media_only, :ignore_reblog)
   end
 end

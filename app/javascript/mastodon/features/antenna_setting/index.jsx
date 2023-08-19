@@ -8,10 +8,12 @@ import { Helmet } from 'react-helmet';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
+import Select, { NonceProvider } from 'react-select';
 import Toggle from 'react-toggle';
 
 import { fetchAntenna, deleteAntenna, updateAntenna } from 'mastodon/actions/antennas';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
+import { fetchLists } from 'mastodon/actions/lists';
 import { openModal } from 'mastodon/actions/modal';
 import Button from 'mastodon/components/button';
 import Column from 'mastodon/components/column';
@@ -24,10 +26,13 @@ const messages = defineMessages({
   deleteMessage: { id: 'confirmations.delete_antenna.message', defaultMessage: 'Are you sure you want to permanently delete this antenna?' },
   deleteConfirm: { id: 'confirmations.delete_antenna.confirm', defaultMessage: 'Delete' },
   editAccounts: { id: 'antennas.edit_accounts', defaultMessage: 'Edit accounts' },
+  noOptions: { id: 'antennas.select.no_options_message', defaultMessage: 'Empty lists' },
+  placeholder: { id: 'antennas.select.placeholder', defaultMessage: 'Select list' },
 });
 
 const mapStateToProps = (state, props) => ({
   antenna: state.getIn(['antennas', props.params.id]),
+  lists: state.get('lists'),
 });
 
 class AntennaSetting extends PureComponent {
@@ -42,6 +47,7 @@ class AntennaSetting extends PureComponent {
     columnId: PropTypes.string,
     multiColumn: PropTypes.bool,
     antenna: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
+    lists: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
   };
 
@@ -70,6 +76,7 @@ class AntennaSetting extends PureComponent {
     const { id } = this.props.params;
 
     dispatch(fetchAntenna(id));
+    dispatch(fetchLists());
   }
 
   UNSAFE_componentWillReceiveProps (nextProps) {
@@ -121,23 +128,31 @@ class AntennaSetting extends PureComponent {
   onStlToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, target.checked, undefined, undefined));
+    dispatch(updateAntenna(id, undefined, false, undefined, target.checked, undefined, undefined));
   };
 
   onMediaOnlyToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, target.checked, undefined));
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, target.checked, undefined));
   };
 
   onIgnoreReblogToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, undefined, target.checked));
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, target.checked));
   };
 
+  onSelect = value => {
+    const { dispatch } = this.props;
+    const { id } = this.props.params;
+    dispatch(updateAntenna(id, undefined, false, value.value, undefined, undefined, undefined));
+  };
+
+  noOptionsMessage = () => this.props.intl.formatMessage(messages.noOptions);
+
   render () {
-    const { columnId, multiColumn, antenna, intl } = this.props;
+    const { columnId, multiColumn, antenna, lists, intl } = this.props;
     const { id } = this.props.params;
     const pinned = !!columnId;
     const title  = antenna ? antenna.get('title') : id;
@@ -183,11 +198,15 @@ class AntennaSetting extends PureComponent {
     let stlAlert;
     if (isStl) {
       stlAlert = (
-        <div class='antenna-setting'>
+        <div className='antenna-setting'>
           <p><FormattedMessage id='antennas.in_stl_mode' defaultMessage='This antenna is in STL mode.' /></p>
         </div>
       );
     }
+
+    const listOptions = lists.toArray().map((list) => {
+      return { value: list[1].get('id'), label: list[1].get('title') }
+    });
 
     return (
       <Column bindToDocument={!multiColumn} ref={this.setRef} label={title}>
@@ -221,27 +240,43 @@ class AntennaSetting extends PureComponent {
         </ColumnHeader>
 
         {stlAlert}
-        {!isStl && (
-          <div class='antenna-setting'>
-            {antenna.get('list') ? (
-              <p><FormattedMessage id='antennas.related_list' defaultMessage='This antenna is related to {listTitle}.' values={{ listTitle: antenna.getIn(['list', 'title']) }} /></p>
-            ) : (
-              <>
-                <p><FormattedMessage id='antennas.not_related_list' defaultMessage='This antenna is not related list. Posts will appear in home timeline. Open edit page to set list.' /></p>
-                <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleEditAntennaClick}>
-                  <Icon id='pencil' /> <FormattedMessage id='anntennas.edit' defaultMessage='Edit antenna' />
-                </button>
-              </>
-            )}
+        <div className='antenna-setting'>
+          {antenna.get('list') ? (
+            <p><FormattedMessage id='antennas.related_list' defaultMessage='This antenna is related to {listTitle}.' values={{ listTitle: antenna.getIn(['list', 'title']) }} /></p>
+          ) : (
+            <>
+              <p><FormattedMessage id='antennas.not_related_list' defaultMessage='This antenna is not related list. Posts will appear in home timeline. Open edit page to set list.' /></p>
+              <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleEditAntennaClick}>
+                <Icon id='pencil' /> <FormattedMessage id='anntennas.edit' defaultMessage='Edit antenna' />
+              </button>
+            </>
+          )}
 
-            <h3><FormattedMessage id='antennas.accounts' defaultMessage='{count} accounts' values={{ count: antenna.get('accounts_count') }} /></h3>
-            <Button text={intl.formatMessage(messages.editAccounts)} onClick={this.handleEditClick} />
+          <NonceProvider nonce={document.querySelector('meta[name=style-nonce]').content} cacheKey='lists'>
+            <Select
+              value={{ value: antenna.getIn(['list', 'id']), label: antenna.getIn(['list', 'title']) }}
+              options={listOptions}
+              noOptionsMessage={this.noOptionsMessage}
+              onChange={this.onSelect}
+              className='column-select__container'
+              classNamePrefix='column-select'
+              name='lists'
+              placeholder={this.props.intl.formatMessage(messages.placeholder)}
+              defaultOptions
+            />
+          </NonceProvider>
 
-            <h3><FormattedMessage id='antennas.domains' defaultMessage='{count} domains' values={{ count: antenna.get('domains_count') }} /></h3>
-            <h3><FormattedMessage id='antennas.tags' defaultMessage='{count} tags' values={{ count: antenna.get('tags_count') }} /></h3>
-            <h3><FormattedMessage id='antennas.keywords' defaultMessage='{count} keywords' values={{ count: antenna.get('keywords_count') }} /></h3>
-          </div>
-        )}
+          {!isStl && (
+            <>
+              <h3><FormattedMessage id='antennas.accounts' defaultMessage='{count} accounts' values={{ count: antenna.get('accounts_count') }} /></h3>
+              <Button text={intl.formatMessage(messages.editAccounts)} onClick={this.handleEditClick} />
+
+              <h3><FormattedMessage id='antennas.domains' defaultMessage='{count} domains' values={{ count: antenna.get('domains_count') }} /></h3>
+              <h3><FormattedMessage id='antennas.tags' defaultMessage='{count} tags' values={{ count: antenna.get('tags_count') }} /></h3>
+              <h3><FormattedMessage id='antennas.keywords' defaultMessage='{count} keywords' values={{ count: antenna.get('keywords_count') }} /></h3>
+            </>
+          )}
+        </div>
 
         <Helmet>
           <title>{title}</title>
