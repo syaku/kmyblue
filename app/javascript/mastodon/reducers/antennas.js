@@ -19,7 +19,18 @@ import {
 
 const initialState = ImmutableMap();
 
-const normalizeAntenna = (state, antenna) => state.set(antenna.id, fromJS(antenna));
+const normalizeAntenna = (state, antenna) => {
+  const old = state.get(antenna.id);
+  let s = state.set(antenna.id, fromJS(antenna));
+  if (old) {
+    s = s.setIn([antenna.id, 'domains'], old.get('domains'));
+    s = s.setIn([antenna.id, 'keywords'], old.get('keywords'));
+    s = s.setIn([antenna.id, 'accounts_count'], old.get('accounts_count'));
+    s = s.setIn([antenna.id, 'domains_count'], old.get('domains_count'));
+    s = s.setIn([antenna.id, 'keywords_count'], old.get('keywords_count'));
+  }
+  return s;
+};
 
 const normalizeAntennas = (state, antennas) => {
   antennas.forEach(antenna => {
