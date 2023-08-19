@@ -8,18 +8,15 @@ import { Helmet } from 'react-helmet';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
-import Toggle from 'react-toggle';
-
+import { fetchAntenna, deleteAntenna } from 'mastodon/actions/antennas';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
-import { fetchList, deleteList, updateList } from 'mastodon/actions/lists';
 import { openModal } from 'mastodon/actions/modal';
-import { connectListStream } from 'mastodon/actions/streaming';
-import { expandListTimeline } from 'mastodon/actions/timelines';
+import { connectAntennaStream } from 'mastodon/actions/streaming';
+import { expandAntennaTimeline } from 'mastodon/actions/timelines';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
 import { Icon }  from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
-import { RadioButton } from 'mastodon/components/radio_button';
 import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
 import StatusListContainer from 'mastodon/features/ui/containers/status_list_container';
 
@@ -28,15 +25,15 @@ const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete_list.confirm', defaultMessage: 'Delete' },
   followed:   { id: 'lists.replies_policy.followed', defaultMessage: 'Any followed user' },
   none:    { id: 'lists.replies_policy.none', defaultMessage: 'No one' },
-  list:  { id: 'lists.replies_policy.list', defaultMessage: 'Members of the list' },
+  antenna:  { id: 'lists.replies_policy.list', defaultMessage: 'Members of the list' },
 });
 
 const mapStateToProps = (state, props) => ({
-  list: state.getIn(['lists', props.params.id]),
-  hasUnread: state.getIn(['timelines', `list:${props.params.id}`, 'unread']) > 0,
+  antenna: state.getIn(['antennas', props.params.id]),
+  hasUnread: state.getIn(['timelines', `antenna:${props.params.id}`, 'unread']) > 0,
 });
 
-class ListTimeline extends PureComponent {
+class AntennaTimeline extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -48,7 +45,7 @@ class ListTimeline extends PureComponent {
     columnId: PropTypes.string,
     hasUnread: PropTypes.bool,
     multiColumn: PropTypes.bool,
-    list: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
+    antenna: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
     intl: PropTypes.object.isRequired,
   };
 
@@ -58,7 +55,7 @@ class ListTimeline extends PureComponent {
     if (columnId) {
       dispatch(removeColumn(columnId));
     } else {
-      dispatch(addColumn('LIST', { id: this.props.params.id }));
+      dispatch(addColumn('ANTENNA_TIMELINE', { id: this.props.params.id }));
       this.context.router.history.push('/');
     }
   };
@@ -76,10 +73,10 @@ class ListTimeline extends PureComponent {
     const { dispatch } = this.props;
     const { id } = this.props.params;
 
-    dispatch(fetchList(id));
-    dispatch(expandListTimeline(id));
+    dispatch(fetchAntenna(id));
+    dispatch(expandAntennaTimeline(id));
 
-    this.disconnect = dispatch(connectListStream(id));
+    this.disconnect = dispatch(connectAntennaStream(id));
   }
 
   UNSAFE_componentWillReceiveProps (nextProps) {
@@ -92,10 +89,10 @@ class ListTimeline extends PureComponent {
         this.disconnect = null;
       }
 
-      dispatch(fetchList(id));
-      dispatch(expandListTimeline(id));
+      dispatch(fetchAntenna(id));
+      dispatch(expandAntennaTimeline(id));
 
-      this.disconnect = dispatch(connectListStream(id));
+      this.disconnect = dispatch(connectAntennaStream(id));
     }
   }
 
@@ -112,14 +109,11 @@ class ListTimeline extends PureComponent {
 
   handleLoadMore = maxId => {
     const { id } = this.props.params;
-    this.props.dispatch(expandListTimeline(id, { maxId }));
+    this.props.dispatch(expandAntennaTimeline(id, { maxId }));
   };
 
   handleEditClick = () => {
-    this.props.dispatch(openModal({
-      modalType: 'LIST_EDITOR',
-      modalProps: { listId: this.props.params.id },
-    }));
+    this.context.router.history.push(`/antennasw/${this.props.params.id}`);
   };
 
   handleDeleteClick = () => {
@@ -132,45 +126,25 @@ class ListTimeline extends PureComponent {
         message: intl.formatMessage(messages.deleteMessage),
         confirm: intl.formatMessage(messages.deleteConfirm),
         onConfirm: () => {
-          dispatch(deleteList(id));
+          dispatch(deleteAntenna(id));
 
           if (columnId) {
             dispatch(removeColumn(columnId));
           } else {
-            this.context.router.history.push('/lists');
+            this.context.router.history.push('/antennasw');
           }
         },
       },
     }));
   };
 
-  handleEditAntennaClick = (e) => {
-    const id = e.currentTarget.getAttribute('data-id');
-    this.context.router.history.push(`/antennasw/${id}/edit`);
-  }
-
-  handleRepliesPolicyChange = ({ target }) => {
-    const { dispatch } = this.props;
-    const { id } = this.props.params;
-    dispatch(updateList(id, undefined, false, undefined, target.value));
-  };
-
-  onExclusiveToggle = ({ target }) => {
-    const { dispatch } = this.props;
-    const { id } = this.props.params;
-    dispatch(updateList(id, undefined, false, target.checked, undefined));
-  };
-
   render () {
-    const { hasUnread, columnId, multiColumn, list, intl } = this.props;
+    const { hasUnread, columnId, multiColumn, antenna } = this.props;
     const { id } = this.props.params;
     const pinned = !!columnId;
-    const title  = list ? list.get('title') : id;
-    const replies_policy = list ? list.get('replies_policy') : undefined;
-    const isExclusive = list ? list.get('exclusive') : undefined;
-    const antennas = list ? (list.get('antennas')?.toArray() || []) : [];
+    const title  = antenna ? antenna.get('title') : id;
 
-    if (typeof list === 'undefined') {
+    if (typeof antenna === 'undefined') {
       return (
         <Column>
           <div className='scrollable'>
@@ -178,7 +152,7 @@ class ListTimeline extends PureComponent {
           </div>
         </Column>
       );
-    } else if (list === false) {
+    } else if (antenna === false) {
       return (
         <BundleColumnError multiColumn={multiColumn} errorType='routing' />
       );
@@ -187,7 +161,7 @@ class ListTimeline extends PureComponent {
     return (
       <Column bindToDocument={!multiColumn} ref={this.setRef} label={title}>
         <ColumnHeader
-          icon='list-ul'
+          icon='wifi'
           active={hasUnread}
           title={title}
           onPin={this.handlePin}
@@ -205,51 +179,14 @@ class ListTimeline extends PureComponent {
               <Icon id='trash' /> <FormattedMessage id='lists.delete' defaultMessage='Delete list' />
             </button>
           </div>
-
-          <div className='setting-toggle'>
-            <Toggle id={`list-${id}-exclusive`} defaultChecked={isExclusive} onChange={this.onExclusiveToggle} />
-            <label htmlFor={`list-${id}-exclusive`} className='setting-toggle__label'>
-              <FormattedMessage id='lists.exclusive' defaultMessage='Hide these posts from home or STL' />
-            </label>
-          </div>
-
-          { replies_policy !== undefined && (
-            <div role='group' aria-labelledby={`list-${id}-replies-policy`}>
-              <span id={`list-${id}-replies-policy`} className='column-settings__section'>
-                <FormattedMessage id='lists.replies_policy.title' defaultMessage='Show replies to:' />
-              </span>
-              <div className='column-settings__row'>
-                { ['none', 'list', 'followed'].map(policy => (
-                  <RadioButton name='order' key={policy} value={policy} label={intl.formatMessage(messages[policy])} checked={replies_policy === policy} onChange={this.handleRepliesPolicyChange} />
-                ))}
-              </div>
-            </div>
-          )}
-
-          { antennas.length > 0 && (
-            <div>
-              <span className='column-settings__section column-settings__section--with-margin'>
-                <FormattedMessage id='lists.antennas' defaultMessage='Related antennas:' />
-              </span>
-              <ul className='column-settings__row'>
-                { antennas.map(antenna => (
-                  <li key={antenna.get('id')} className='column-settings__row__antenna'>
-                    <button type='button' className='text-btn column-header__setting-btn' data-id={antenna.get('id')} onClick={this.handleEditAntennaClick}>
-                      <Icon id='pencil' /> {antenna.get('title')}{antenna.get('stl') && ' [STL]'}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </ColumnHeader>
 
         <StatusListContainer
           trackScroll={!pinned}
-          scrollKey={`list_timeline-${columnId}`}
-          timelineId={`list:${id}`}
+          scrollKey={`antenna_timeline-${columnId}`}
+          timelineId={`antenna:${id}`}
           onLoadMore={this.handleLoadMore}
-          emptyMessage={<FormattedMessage id='empty_column.list' defaultMessage='There is nothing in this list yet. When members of this list post new statuses, they will appear here.' />}
+          emptyMessage={<FormattedMessage id='empty_column.antenna' defaultMessage='There is nothing in this antenna yet. When members of this list post new statuses, they will appear here.' />}
           bindToDocument={!multiColumn}
         />
 
@@ -263,4 +200,4 @@ class ListTimeline extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(injectIntl(ListTimeline));
+export default connect(mapStateToProps)(injectIntl(AntennaTimeline));

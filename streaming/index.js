@@ -702,6 +702,33 @@ const startServer = async () => {
   });
 
   /**
+   * @param {string} antennaId
+   * @param {any} req
+   * @returns {Promise.<void>}
+   */
+  const authorizeAntennaAccess = (antennaId, req) => new Promise((resolve, reject) => {
+    const { accountId } = req;
+
+    pgPool.connect((err, client, done) => {
+      if (err) {
+        reject();
+        return;
+      }
+
+      client.query('SELECT id, account_id FROM antennas WHERE id = $1 LIMIT 1', [antennaId], (err, result) => {
+        done();
+
+        if (err || result.rows.length === 0 || result.rows[0].account_id !== accountId) {
+          reject();
+          return;
+        }
+
+        resolve();
+      });
+    });
+  });
+
+  /**
    * @param {string[]} ids
    * @param {any} req
    * @param {function(string, string): void} output
@@ -1215,6 +1242,17 @@ const startServer = async () => {
       });
 
       break;
+    case 'antenna':
+      authorizeAntennaAccess(params.antenna, req).then(() => {
+        resolve({
+          channelIds: [`timeline:antenna:${params.antenna}`],
+          options: { needsFiltering: false },
+        });
+      }).catch(() => {
+        reject('Not authorized to stream this antenna');
+      });
+
+      break;
     default:
       reject('Unknown stream type');
     }
@@ -1228,6 +1266,8 @@ const startServer = async () => {
   const streamNameFromChannelName = (channelName, params) => {
     if (channelName === 'list') {
       return [channelName, params.list];
+    } else if (channelName === 'antenna') {
+        return [channelName, params.antenna];
     } else if (['hashtag', 'hashtag:local'].includes(channelName)) {
       return [channelName, params.tag];
     } else {

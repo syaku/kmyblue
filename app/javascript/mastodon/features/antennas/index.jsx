@@ -77,7 +77,7 @@ class Antennas extends ImmutablePureComponent {
           bindToDocument={!multiColumn}
         >
           {antennas.map(antenna => (
-            <ColumnLink key={antenna.get('id')} to={`/antennasw/${antenna.get('id')}`} icon='wifi' text={antenna.get('title')}>
+            <ColumnLink key={antenna.get('id')} to={`/antennast/${antenna.get('id')}`} icon='wifi' text={antenna.get('title')}>
               <p className='antenna-list-detail'>
                 <span className='group'><Icon id='users' />{antenna.get('accounts_count')}</span>
                 <span className='group'><Icon id='sitemap' />{antenna.get('domains_count')}</span>

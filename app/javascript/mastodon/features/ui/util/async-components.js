@@ -34,6 +34,10 @@ export function DirectTimeline() {
   return import(/* webpackChunkName: "features/direct_timeline" */'../../direct_timeline');
 }
 
+export function AntennaTimeline () {
+  return import(/* webpackChunkName: "features/antenna_timeline" */'../../antenna_timeline');
+}
+
 export function ListTimeline () {
   return import(/* webpackChunkName: "features/list_timeline" */'../../list_timeline');
 }

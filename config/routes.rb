@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     /conversations
     /lists/(*any)
     /antennasw/(*any)
+    /antennast/(*any)
     /notifications
     /favourites
     /emoji_reactions

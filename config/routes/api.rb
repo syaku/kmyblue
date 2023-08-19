@@ -49,6 +49,7 @@ namespace :api, format: false do
       resource :public, only: :show, controller: :public
       resources :tag, only: :show
       resources :list, only: :show
+      resources :antenna, only: :show
     end
 
     get '/streaming', to: 'streaming#index'

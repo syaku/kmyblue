@@ -51,7 +51,7 @@ class FanOutOnWriteService < BaseService
     when :public, :unlisted, :public_unlisted, :login, :private
       deliver_to_all_followers!
       deliver_to_lists!
-      deliver_to_antennas! if [:public, :public_unlisted, :login].include?(@status.visibility.to_sym) && !@account.dissubscribable
+      deliver_to_antennas! unless @account.dissubscribable
       deliver_to_stl_antennas!
     when :limited
       deliver_to_lists_mentioned_accounts_only!
@@ -159,9 +159,6 @@ class FanOutOnWriteService < BaseService
 
     antennas = Antenna.availables
     antennas = antennas.left_joins(:antenna_domains).where(any_domains: true).or(Antenna.left_joins(:antenna_domains).where(antenna_domains: { name: domain }))
-    antennas = antennas.where(with_media_only: false) unless @status.with_media?
-    antennas = antennas.where(ignore_reblog: false) unless @status.reblog?
-    antennas = antennas.where(stl: false)
 
     antennas = Antenna.where(id: antennas.select(:id))
     antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.left_joins(:antenna_accounts).where(antenna_accounts: { account: @account }))
@@ -171,13 +168,17 @@ class FanOutOnWriteService < BaseService
     antennas = antennas.left_joins(:antenna_tags).where(any_tags: true).or(Antenna.left_joins(:antenna_tags).where(antenna_tags: { tag_id: tag_ids }))
 
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
+    antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login].exclude?(@status.visibility.to_sym)
+    antennas = antennas.where(with_media_only: false) unless @status.with_media?
+    antennas = antennas.where(ignore_reblog: false) unless @status.reblog?
+    antennas = antennas.where(stl: false)
 
     collection = AntennaCollection.new(@status, @options[:update], false)
 
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next unless antenna.enabled?
-        next if antenna.keywords.any? && antenna.keywords.none? { |keyword| @status.text.include?(keyword) }
+        next if antenna.keywords&.any? && antenna.keywords&.none? { |keyword| @status.text.include?(keyword) }
         next if antenna.exclude_keywords&.any? { |keyword| @status.text.include?(keyword) }
         next if antenna.exclude_accounts&.include?(@status.account_id)
         next if antenna.exclude_domains&.include?(domain)
@@ -273,25 +274,25 @@ class FanOutOnWriteService < BaseService
 
     def push(antenna)
       if antenna.list_id.zero?
-        @home_account_ids << antenna.account_id
-      else
-        @list_ids << antenna.list_id
+        @home_account_ids << { id: antenna.account_id, antenna_id: antenna.id } if @home_account_ids.none? { |id| id.id == antenna.account_id }
+      elsif @list_ids.none? { |id| id.id == antenna.list_id }
+        @list_ids << { id: antenna.list_id, antenna_id: antenna.id }
       end
     end
 
     def deliver!
-      lists = @list_ids.uniq
-      homes = @home_account_ids.uniq
+      lists = @list_ids
+      homes = @home_account_ids
 
       if lists.any?
         FeedInsertWorker.push_bulk(lists) do |list|
-          [@status.id, list, 'list', { 'update' => @update, 'stl_home' => @stl_home || false }]
+          [@status.id, list[:id], 'list', { 'update' => @update, 'stl_home' => @stl_home || false, 'antenna_id' => list[:antenna_id] }]
         end
       end
 
       if homes.any?
         FeedInsertWorker.push_bulk(homes) do |home|
-          [@status.id, home, 'home', { 'update' => @update }]
+          [@status.id, home[:id], 'home', { 'update' => @update, 'antenna_id' => home[:antenna_id] }]
         end
       end
     end

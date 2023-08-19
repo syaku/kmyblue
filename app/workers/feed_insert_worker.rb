@@ -61,6 +61,11 @@ class FeedInsertWorker
     when :list
       FeedManager.instance.push_to_list(@list, @status, update: update?)
     end
+
+    return if @options[:antenna_id].blank?
+
+    antenna = Antenna.find(@options[:antenna_id])
+    FeedManager.instance.push_to_antenna(antenna, @status, update: update?) if antenna.present?
   end
 
   def perform_unpush
@@ -70,6 +75,11 @@ class FeedInsertWorker
     when :list
       FeedManager.instance.unpush_from_list(@list, @status, update: true)
     end
+
+    return if @options[:antenna_id].blank?
+
+    antenna = Antenna.find(@options[:antenna_id])
+    FeedManager.instance.unpush_from_antenna(antenna, @status, update: true) if antenna.present?
   end
 
   def perform_notify

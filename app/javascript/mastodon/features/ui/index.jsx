@@ -48,6 +48,7 @@ import {
   StatusReferences,
   DirectTimeline,
   HashtagTimeline,
+  AntennaTimeline,
   Notifications,
   FollowRequests,
   FavouritedStatuses,
@@ -210,6 +211,7 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedRoute path='/tags/:id' component={HashtagTimeline} content={children} />
           <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
           <WrappedRoute path='/antennasw/:id' component={AntennaSetting} content={children} />
+          <WrappedRoute path='/antennast/:id' component={AntennaTimeline} content={children} />
           <WrappedRoute path='/notifications' component={Notifications} content={children} />
           <WrappedRoute path='/favourites' component={FavouritedStatuses} content={children} />
           <WrappedRoute path='/emoji_reactions' component={EmojiReactedStatuses} content={children} />
