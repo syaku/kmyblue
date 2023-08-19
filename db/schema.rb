@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_14_223300) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_19_084858) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -308,6 +308,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_14_223300) do
     t.jsonb "exclude_tags"
     t.boolean "stl", default: false, null: false
     t.boolean "ignore_reblog", default: false, null: false
+    t.boolean "insert_feeds", default: false, null: false
     t.index ["account_id"], name: "index_antennas_on_account_id"
     t.index ["any_accounts"], name: "index_antennas_on_any_accounts"
     t.index ["any_domains"], name: "index_antennas_on_any_domains"

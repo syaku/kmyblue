@@ -128,25 +128,31 @@ class AntennaSetting extends PureComponent {
   onStlToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, target.checked, undefined, undefined));
+    dispatch(updateAntenna(id, undefined, false, undefined, target.checked, undefined, undefined, undefined));
   };
 
   onMediaOnlyToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, undefined, target.checked, undefined));
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, target.checked, undefined, undefined));
   };
 
   onIgnoreReblogToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, target.checked));
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, target.checked, undefined));
+  };
+
+  onNoInsertFeedsToggle = ({ target }) => {
+    const { dispatch } = this.props;
+    const { id } = this.props.params;
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, undefined, target.checked));
   };
 
   onSelect = value => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, value.value, undefined, undefined, undefined));
+    dispatch(updateAntenna(id, undefined, false, value.value, undefined, undefined, undefined, undefined));
   };
 
   noOptionsMessage = () => this.props.intl.formatMessage(messages.noOptions);
@@ -159,6 +165,7 @@ class AntennaSetting extends PureComponent {
     const isStl = antenna ? antenna.get('stl') : undefined;
     const isMediaOnly = antenna ? antenna.get('with_media_only') : undefined;
     const isIgnoreReblog = antenna ? antenna.get('ignore_reblog') : undefined;
+    const isInsertFeeds = antenna ? antenna.get('insert_feeds') : undefined;
 
     if (typeof antenna === 'undefined') {
       return (
@@ -236,35 +243,41 @@ class AntennaSetting extends PureComponent {
             </label>
           </div>
 
+          <div className='setting-toggle'>
+            <Toggle id={`antenna-${id}-noinsertfeeds`} defaultChecked={isInsertFeeds} onChange={this.onNoInsertFeedsToggle} />
+            <label htmlFor={`antenna-${id}-noinsertfeeds`} className='setting-toggle__label'>
+              <FormattedMessage id='antennas.insert_feeds' defaultMessage='Insert to feeds' />
+            </label>
+          </div>
+
           {columnSettings}
         </ColumnHeader>
 
         {stlAlert}
         <div className='antenna-setting'>
-          {antenna.get('list') ? (
-            <p><FormattedMessage id='antennas.related_list' defaultMessage='This antenna is related to {listTitle}.' values={{ listTitle: antenna.getIn(['list', 'title']) }} /></p>
-          ) : (
+          {isInsertFeeds && (
             <>
-              <p><FormattedMessage id='antennas.not_related_list' defaultMessage='This antenna is not related list. Posts will appear in home timeline. Open edit page to set list.' /></p>
-              <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleEditAntennaClick}>
-                <Icon id='pencil' /> <FormattedMessage id='anntennas.edit' defaultMessage='Edit antenna' />
-              </button>
+              {antenna.get('list') ? (
+                <p><FormattedMessage id='antennas.related_list' defaultMessage='This antenna is related to {listTitle}.' values={{ listTitle: antenna.getIn(['list', 'title']) }} /></p>
+              ) : (
+                <p><FormattedMessage id='antennas.not_related_list' defaultMessage='This antenna is not related list. Posts will appear in home timeline. Open edit page to set list.' /></p>
+              )}
+
+              <NonceProvider nonce={document.querySelector('meta[name=style-nonce]').content} cacheKey='lists'>
+                <Select
+                  value={{ value: antenna.getIn(['list', 'id']), label: antenna.getIn(['list', 'title']) }}
+                  options={listOptions}
+                  noOptionsMessage={this.noOptionsMessage}
+                  onChange={this.onSelect}
+                  className='column-select__container'
+                  classNamePrefix='column-select'
+                  name='lists'
+                  placeholder={this.props.intl.formatMessage(messages.placeholder)}
+                  defaultOptions
+                />
+              </NonceProvider>
             </>
           )}
-
-          <NonceProvider nonce={document.querySelector('meta[name=style-nonce]').content} cacheKey='lists'>
-            <Select
-              value={{ value: antenna.getIn(['list', 'id']), label: antenna.getIn(['list', 'title']) }}
-              options={listOptions}
-              noOptionsMessage={this.noOptionsMessage}
-              onChange={this.onSelect}
-              className='column-select__container'
-              classNamePrefix='column-select'
-              name='lists'
-              placeholder={this.props.intl.formatMessage(messages.placeholder)}
-              defaultOptions
-            />
-          </NonceProvider>
 
           {!isStl && (
             <>

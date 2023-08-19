@@ -9,6 +9,7 @@ class FeedInsertWorker
       @type      = type.to_sym
       @status    = Status.find(status_id)
       @options   = options.symbolize_keys
+      @antenna   = Antenna.find(@options[:antenna_id]) if @options[:antenna_id].present?
 
       case @type
       when :home, :tags
@@ -55,17 +56,18 @@ class FeedInsertWorker
   end
 
   def perform_push
-    case @type
-    when :home, :tags
-      FeedManager.instance.push_to_home(@follower, @status, update: update?)
-    when :list
-      FeedManager.instance.push_to_list(@list, @status, update: update?)
+    if @antenna.nil? || @antenna.insert_feeds
+      case @type
+      when :home, :tags
+        FeedManager.instance.push_to_home(@follower, @status, update: update?)
+      when :list
+        FeedManager.instance.push_to_list(@list, @status, update: update?)
+      end
     end
 
-    return if @options[:antenna_id].blank?
+    return if @antenna.nil?
 
-    antenna = Antenna.find(@options[:antenna_id])
-    FeedManager.instance.push_to_antenna(antenna, @status, update: update?) if antenna.present?
+    FeedManager.instance.push_to_antenna(@antenna, @status, update: update?)
   end
 
   def perform_unpush
@@ -76,10 +78,9 @@ class FeedInsertWorker
       FeedManager.instance.unpush_from_list(@list, @status, update: true)
     end
 
-    return if @options[:antenna_id].blank?
+    return if @antenna.nil?
 
-    antenna = Antenna.find(@options[:antenna_id])
-    FeedManager.instance.unpush_from_antenna(antenna, @status, update: true) if antenna.present?
+    FeedManager.instance.unpush_from_antenna(@antenna, @status, update: true)
   end
 
   def perform_notify
