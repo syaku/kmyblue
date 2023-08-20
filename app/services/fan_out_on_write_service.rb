@@ -172,7 +172,7 @@ class FanOutOnWriteService < BaseService
     antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login, :limited].exclude?(@status.visibility.to_sym)
     antennas = antennas.where(account: @status.mentioned_accounts) if @status.visibility.to_sym == :limited
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
-    antennas = antennas.where(ignore_reblog: false) unless @status.reblog?
+    antennas = antennas.where(ignore_reblog: false) if @status.reblog?
     antennas = antennas.where(stl: false)
 
     collection = AntennaCollection.new(@status, @options[:update], false)
