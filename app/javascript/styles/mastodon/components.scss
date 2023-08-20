@@ -4500,6 +4500,104 @@ a.status-card {
   }
 }
 
+.column-content-select {
+  &__control {
+    @include search-input;
+
+    &::placeholder {
+      color: lighten($darker-text-color, 4%);
+    }
+
+    &::-moz-focus-inner {
+      border: 0;
+    }
+
+    &::-moz-focus-inner,
+    &:focus,
+    &:active {
+      outline: 0 !important;
+    }
+
+    &:focus {
+      background: lighten($ui-base-color, 4%);
+    }
+
+    @media screen and (width <= 600px) {
+      font-size: 16px;
+    }
+  }
+
+  &__placeholder {
+    color: $dark-text-color;
+    padding-inline-start: 2px;
+    font-size: 12px;
+  }
+
+  &__value-container {
+    padding-inline-start: 6px;
+  }
+
+  &__multi-value {
+    background: lighten($ui-base-color, 8%);
+
+    &__remove {
+      cursor: pointer;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background: lighten($ui-base-color, 12%);
+        color: lighten($darker-text-color, 4%);
+      }
+    }
+  }
+
+  &__multi-value__label,
+  &__input,
+  &__input-container {
+    color: $darker-text-color;
+  }
+
+  &__clear-indicator,
+  &__dropdown-indicator {
+    cursor: pointer;
+    transition: none;
+    color: $dark-text-color;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: lighten($dark-text-color, 4%);
+    }
+  }
+
+  &__indicator-separator {
+    background-color: lighten($ui-base-color, 8%);
+  }
+
+  &__menu {
+    @include search-popout;
+
+    padding: 0;
+    background: $ui-secondary-color;
+  }
+
+  &__menu-list {
+    padding: 6px;
+  }
+
+  &__option {
+    color: $inverted-text-color;
+    border-radius: 4px;
+    font-size: 14px;
+
+    &--is-focused,
+    &--is-selected {
+      background: darken($ui-secondary-color, 10%);
+    }
+  }
+}
+
 .relationship-tag {
   color: $white;
   margin-bottom: 4px;
@@ -7386,6 +7484,32 @@ noscript {
     font-size: 16px;
     margin: 40px 0 16px;
     font-weight: bold;
+  }
+
+  .alert {
+    color: $warning-red;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+}
+
+.setting-radio-panel {
+  display: flex;
+
+  .setting-radio-panel__item {
+    font-size: 16px;
+    text-align: center;
+    flex: 1;
+    height: 40px;
+    line-height: 40px;
+    margin: 16px 0;
+    background: lighten($ui-base-color, 4%);
+    color: $secondary-text-color;
+
+    &__active {
+      color: $primary-text-color;
+      background: $ui-primary-color;
+    }
   }
 }
 

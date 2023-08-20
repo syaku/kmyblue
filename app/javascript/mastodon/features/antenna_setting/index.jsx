@@ -5,7 +5,7 @@ import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
 
-import { List as ImmutableList } from 'immutable';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
@@ -23,6 +23,7 @@ import { Icon }  from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
 
+import RadioPanel from './components/radio_panel';
 import TextList from './components/text_list';
 
 const messages = defineMessages({
@@ -35,6 +36,8 @@ const messages = defineMessages({
   addKeywordLabel: { id: 'antennas.add_keyword_placeholder', defaultMessage: 'New keyword' },
   addDomainTitle: { id: 'antennas.add_domain', defaultMessage: 'Add domain' },
   addKeywordTitle: { id: 'antennas.add_keyword', defaultMessage: 'Add keyword' },
+  accounts: { id: 'antennas.accounts', defaultMessage: '{count} accounts' },
+  domains: { id: 'antennas.domains', defaultMessage: '{count} domains' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -65,6 +68,7 @@ class AntennaSetting extends PureComponent {
   state = {
     domainName: '',
     keywordName: '',
+    rangeRadioValue: null,
   };
 
   handlePin = () => {
@@ -183,6 +187,8 @@ class AntennaSetting extends PureComponent {
 
   noOptionsMessage = () => this.props.intl.formatMessage(messages.noOptions);
 
+  onRangeRadioChanged = (value) => this.setState({ rangeRadioValue: value });
+
   onDomainNameChanged = (value) => this.setState({ domainName: value });
 
   onDomainAdd = () => {
@@ -255,6 +261,13 @@ class AntennaSetting extends PureComponent {
       );
     }
 
+    const rangeRadioValues = ImmutableList([
+      ImmutableMap({ value: 'accounts', label: intl.formatMessage(messages.accounts, { count: antenna.get('accounts_count') }) }),
+      ImmutableMap({ value: 'domains', label: intl.formatMessage(messages.domains, { count: antenna.get('domains_count') }) }),
+    ]);
+    const rangeRadioValue = ImmutableMap({ value: this.state.rangeRadioValue || (antenna.get('accounts_count') > 0 ? 'accounts' : 'domains') });
+    const rangeRadioAlert = antenna.get(rangeRadioValue.get('value') === 'accounts' ? 'domains_count' : 'accounts_count') > 0;
+
     const listOptions = lists.toArray().map((list) => {
       return { value: list[1].get('id'), label: list[1].get('title') }
     });
@@ -317,8 +330,8 @@ class AntennaSetting extends PureComponent {
                   options={listOptions}
                   noOptionsMessage={this.noOptionsMessage}
                   onChange={this.onSelect}
-                  className='column-select__container'
-                  classNamePrefix='column-select'
+                  className='column-content-select__container'
+                  classNamePrefix='column-content-select'
                   name='lists'
                   placeholder={this.props.intl.formatMessage(messages.placeholder)}
                   defaultOptions
@@ -329,20 +342,24 @@ class AntennaSetting extends PureComponent {
 
           {!isStl && (
             <>
-              <h3><FormattedMessage id='antennas.accounts' defaultMessage='{count} accounts' values={{ count: antenna.get('accounts_count') }} /></h3>
-              <Button text={intl.formatMessage(messages.editAccounts)} onClick={this.handleEditClick} />
+              <RadioPanel values={rangeRadioValues} value={rangeRadioValue} onChange={this.onRangeRadioChanged} />
 
-              <h3><FormattedMessage id='antennas.domains' defaultMessage='{count} domains' values={{ count: antenna.get('domains_count') }} /></h3>
-              <TextList
-                onChange={this.onDomainNameChanged}
-                onAdd={this.onDomainAdd}
-                onRemove={this.onDomainRemove}
-                value={this.state.domainName}
-                values={domains.get('domains') || ImmutableList()}
-                icon='sitemap'
-                label={intl.formatMessage(messages.addDomainLabel)}
-                title={intl.formatMessage(messages.addDomainTitle)}
-                />
+              {rangeRadioValue.get('value') === 'accounts' && <Button text={intl.formatMessage(messages.editAccounts)} onClick={this.handleEditClick} />}
+
+              {rangeRadioValue.get('value') === 'domains' && (
+                <TextList
+                  onChange={this.onDomainNameChanged}
+                  onAdd={this.onDomainAdd}
+                  onRemove={this.onDomainRemove}
+                  value={this.state.domainName}
+                  values={domains.get('domains') || ImmutableList()}
+                  icon='sitemap'
+                  label={intl.formatMessage(messages.addDomainLabel)}
+                  title={intl.formatMessage(messages.addDomainTitle)}
+                  />
+              )}
+
+              {rangeRadioAlert && <div className='alert'><FormattedMessage id='antennas.alert.range_radio' defaultMessage='Simultaneous account and domain designation is not recommended.' /></div>}
 
               <h3><FormattedMessage id='antennas.tags' defaultMessage='{count} tags' values={{ count: antenna.get('tags_count') }} /></h3>
 
