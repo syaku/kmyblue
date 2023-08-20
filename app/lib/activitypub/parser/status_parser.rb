@@ -8,7 +8,7 @@ class ActivityPub::Parser::StatusParser
   # @option magic_values [String] :followers_collection
   def initialize(json, magic_values = {})
     @json         = json
-    @object       = json['object'] || json
+    @object       = magic_values[:object] || json['object'] || json
     @magic_values = magic_values
   end
 
