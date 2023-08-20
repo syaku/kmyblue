@@ -30,6 +30,10 @@ class Antenna < ApplicationRecord
   include Expireable
 
   LIMIT = 30
+  DOMAINS_PER_ANTENNA_LIMIT = 20
+  ACCOUNTS_PER_ANTENNA_LIMIT = 100
+  TAGS_PER_ANTENNA_LIMIT = 50
+  KEYWORDS_PER_ANTENNA_LIMIT = 100
 
   has_many :antenna_domains, inverse_of: :antenna, dependent: :destroy
   has_many :antenna_tags, inverse_of: :antenna, dependent: :destroy

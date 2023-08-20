@@ -1027,6 +1027,11 @@ ja:
       duplicate_keyword: すでに同じキーワードが登録されています
       empty_contexts: 絞り込み条件が1つも指定されていないため無効です（除外条件はカウントされません）
       invalid_list_owner: これはあなたのリストではありません
+      limit:
+        accounts: 登録できるアカウント数の上限に達しています
+        domains: 登録できるドメイン数の上限に達しています
+        keywords: 登録できるキーワード数の上限に達しています
+        tags: 登録できるタグ数の上限に達しています
       over_limit: 所持できるアンテナ数 %{limit}を超えています
       over_stl_limit: 所持できるSTLモード付きアンテナ数 (ホーム/リストそれぞれにつき%{limit}) を超えています
       remove_list_with_antenna: アンテナが関連付けられているリストは削除できません

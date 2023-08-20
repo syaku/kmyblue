@@ -21,6 +21,8 @@ class Api::V1::Antennas::KeywordsController < Api::BaseController
       new_keywords << keyword
     end
 
+    raise Mastodon::ValidationError, I18n.t('antennas.errors.limit.keywords') if new_keywords.size > Antenna::KEYWORDS_PER_ANTENNA_LIMIT
+
     @antenna.update!(keywords: new_keywords, any_keywords: new_keywords.empty?)
 
     render_empty
