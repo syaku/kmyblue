@@ -276,8 +276,8 @@ class FanOutOnWriteService < BaseService
 
     def push(antenna)
       if antenna.list_id.zero?
-        @home_account_ids << { id: antenna.account_id, antenna_id: antenna.id } if @home_account_ids.none? { |id| id.id == antenna.account_id }
-      elsif @list_ids.none? { |id| id.id == antenna.list_id }
+        @home_account_ids << { id: antenna.account_id, antenna_id: antenna.id } if @home_account_ids.none? { |id| id[:id] == antenna.account_id }
+      elsif @list_ids.none? { |id| id[:id] == antenna.list_id }
         @list_ids << { id: antenna.list_id, antenna_id: antenna.id }
       end
     end
