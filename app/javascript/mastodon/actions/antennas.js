@@ -95,6 +95,26 @@ export const ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_REQUEST = 'ANTENNA_EDITOR_REM
 export const ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_SUCCESS = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_SUCCESS';
 export const ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_FAIL    = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_FAIL';
 
+export const ANTENNA_EDITOR_FETCH_TAGS_REQUEST = 'ANTENNA_EDITOR_FETCH_TAGS_REQUEST';
+export const ANTENNA_EDITOR_FETCH_TAGS_SUCCESS = 'ANTENNA_EDITOR_FETCH_TAGS_SUCCESS';
+export const ANTENNA_EDITOR_FETCH_TAGS_FAIL    = 'ANTENNA_EDITOR_FETCH_TAGS_FAIL';
+
+export const ANTENNA_EDITOR_ADD_TAG_REQUEST = 'ANTENNA_EDITOR_ADD_TAG_REQUEST';
+export const ANTENNA_EDITOR_ADD_TAG_SUCCESS = 'ANTENNA_EDITOR_ADD_TAG_SUCCESS';
+export const ANTENNA_EDITOR_ADD_TAG_FAIL    = 'ANTENNA_EDITOR_ADD_TAG_FAIL';
+
+export const ANTENNA_EDITOR_ADD_EXCLUDE_TAG_REQUEST = 'ANTENNA_EDITOR_ADD_EXCLUDE_TAG_REQUEST';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_TAG_SUCCESS = 'ANTENNA_EDITOR_ADD_EXCLUDE_TAG_SUCCESS';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_TAG_FAIL    = 'ANTENNA_EDITOR_ADD_EXCLUDE_TAG_FAIL';
+
+export const ANTENNA_EDITOR_REMOVE_TAG_REQUEST = 'ANTENNA_EDITOR_REMOVE_TAG_REQUEST';
+export const ANTENNA_EDITOR_REMOVE_TAG_SUCCESS = 'ANTENNA_EDITOR_REMOVE_TAG_SUCCESS';
+export const ANTENNA_EDITOR_REMOVE_TAG_FAIL    = 'ANTENNA_EDITOR_REMOVE_TAG_FAIL';
+
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_REQUEST = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_REQUEST';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_SUCCESS = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_SUCCESS';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_FAIL    = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_FAIL';
+
 export const ANTENNA_ADDER_RESET = 'ANTENNA_ADDER_RESET';
 export const ANTENNA_ADDER_SETUP = 'ANTENNA_ADDER_SETUP';
 
@@ -736,6 +756,139 @@ export const removeExcludeKeywordFromAntennaFail = (antennaId, keyword, error) =
   type: ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_FAIL,
   antennaId,
   keyword,
+  error,
+});
+
+export const fetchAntennaTags = antennaId => (dispatch, getState) => {
+  dispatch(fetchAntennaTagsRequest(antennaId));
+
+  api(getState).get(`/api/v1/antennas/${antennaId}/tags`, { params: { limit: 0 } }).then(({ data }) => {
+    dispatch(fetchAntennaTagsSuccess(antennaId, data));
+  }).catch(err => dispatch(fetchAntennaTagsFail(antennaId, err)));
+};
+
+export const fetchAntennaTagsRequest = id => ({
+  type: ANTENNA_EDITOR_FETCH_TAGS_REQUEST,
+  id,
+});
+
+export const fetchAntennaTagsSuccess = (id, tags) => ({
+  type: ANTENNA_EDITOR_FETCH_TAGS_SUCCESS,
+  id,
+  tags,
+});
+
+export const fetchAntennaTagsFail = (id, error) => ({
+  type: ANTENNA_EDITOR_FETCH_TAGS_FAIL,
+  id,
+  error,
+});
+
+export const addTagToAntenna = (antennaId, tag) => (dispatch, getState) => {
+  dispatch(addTagToAntennaRequest(antennaId, tag));
+
+  api(getState).post(`/api/v1/antennas/${antennaId}/tags`, { tags: [tag] })
+    .then(() => dispatch(addTagToAntennaSuccess(antennaId, tag)))
+    .catch(err => dispatch(addTagToAntennaFail(antennaId, tag, err)));
+};
+
+export const addTagToAntennaRequest = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_ADD_TAG_REQUEST,
+  antennaId,
+  tag,
+});
+
+export const addTagToAntennaSuccess = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_ADD_TAG_SUCCESS,
+  antennaId,
+  tag,
+});
+
+export const addTagToAntennaFail = (antennaId, tag, error) => ({
+  type: ANTENNA_EDITOR_ADD_TAG_FAIL,
+  antennaId,
+  tag,
+  error,
+});
+
+export const removeTagFromAntenna = (antennaId, tag) => (dispatch, getState) => {
+  dispatch(removeTagFromAntennaRequest(antennaId, tag));
+
+  api(getState).delete(`/api/v1/antennas/${antennaId}/tags`, { params: { tags: [tag] } })
+    .then(() => dispatch(removeTagFromAntennaSuccess(antennaId, tag)))
+    .catch(err => dispatch(removeTagFromAntennaFail(antennaId, tag, err)));
+};
+
+export const removeTagFromAntennaRequest = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_REMOVE_TAG_REQUEST,
+  antennaId,
+  tag,
+});
+
+export const removeTagFromAntennaSuccess = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_REMOVE_TAG_SUCCESS,
+  antennaId,
+  tag,
+});
+
+export const removeTagFromAntennaFail = (antennaId, tag, error) => ({
+  type: ANTENNA_EDITOR_REMOVE_TAG_FAIL,
+  antennaId,
+  tag,
+  error,
+});
+
+export const addExcludeTagToAntenna = (antennaId, tag) => (dispatch, getState) => {
+  dispatch(addExcludeTagToAntennaRequest(antennaId, tag));
+
+  api(getState).post(`/api/v1/antennas/${antennaId}/exclude_tags`, { tags: [tag] })
+    .then(() => dispatch(addExcludeTagToAntennaSuccess(antennaId, tag)))
+    .catch(err => dispatch(addExcludeTagToAntennaFail(antennaId, tag, err)));
+};
+
+export const addExcludeTagToAntennaRequest = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_TAG_REQUEST,
+  antennaId,
+  tag,
+});
+
+export const addExcludeTagToAntennaSuccess = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_TAG_SUCCESS,
+  antennaId,
+  tag,
+});
+
+export const addExcludeTagToAntennaFail = (antennaId, tag, error) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_TAG_FAIL,
+  antennaId,
+  tag,
+  error,
+});
+
+export const removeExcludeTagFromAntenna = (antennaId, tag) => (dispatch, getState) => {
+  dispatch(removeExcludeTagFromAntennaRequest(antennaId, tag));
+
+  api(getState).delete(`/api/v1/antennas/${antennaId}/exclude_tags`, { params: { tags: [tag] } })
+    .then(() => dispatch(removeExcludeTagFromAntennaSuccess(antennaId, tag)))
+    .catch(err => dispatch(removeExcludeTagFromAntennaFail(antennaId, tag, err)));
+};
+
+export const removeExcludeTagFromAntennaRequest = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_REQUEST,
+  antennaId,
+  tag,
+});
+
+export const removeExcludeTagFromAntennaSuccess = (antennaId, tag) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_SUCCESS,
+  antennaId,
+  tag,
+});
+
+export const removeExcludeTagFromAntennaFail = (antennaId, tag, error) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_FAIL,
+  antennaId,
+  tag,
   error,
 });
 

@@ -37,6 +37,7 @@ class Antenna < ApplicationRecord
 
   has_many :antenna_domains, inverse_of: :antenna, dependent: :destroy
   has_many :antenna_tags, inverse_of: :antenna, dependent: :destroy
+  has_many :tags, through: :antenna_tags
   has_many :antenna_accounts, inverse_of: :antenna, dependent: :destroy
   has_many :accounts, through: :antenna_accounts
 
