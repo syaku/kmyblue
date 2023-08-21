@@ -13,6 +13,9 @@ import antennaEditor from './antenna_editor';
 import antennas from './antennas';
 import blocks from './blocks';
 import boosts from './boosts';
+import circleAdder from './circle_adder';
+import circleEditor from './circle_editor';
+import circles from './circles';
 import compose from './compose';
 import contexts from './contexts';
 import conversations from './conversations';
@@ -83,6 +86,9 @@ const reducers = {
   antennas,
   antennaEditor,
   antennaAdder,
+  circles,
+  circleEditor,
+  circleAdder,
   filters,
   conversations,
   suggestions,

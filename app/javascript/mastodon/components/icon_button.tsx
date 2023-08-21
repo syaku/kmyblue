@@ -27,6 +27,7 @@ interface Props {
   obfuscateCount?: boolean;
   href?: string;
   ariaHidden: boolean;
+  data_id?: string;
 }
 interface States {
   activate: boolean;
@@ -108,6 +109,7 @@ export class IconButton extends PureComponent<Props, States> {
       obfuscateCount,
       href,
       ariaHidden,
+      data_id,
     } = this.props;
 
     const { activate, deactivate } = this.state;
@@ -160,6 +162,7 @@ export class IconButton extends PureComponent<Props, States> {
         style={style}
         tabIndex={tabIndex}
         disabled={disabled}
+        data-id={data_id}
       >
         {contents}
       </button>

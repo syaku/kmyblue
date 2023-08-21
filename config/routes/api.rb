@@ -215,6 +215,10 @@ namespace :api, format: false do
       resource :exclude_keywords, only: [:create, :destroy], controller: 'antennas/exclude_keywords'
     end
 
+    resources :circles, only: [:index, :create, :show, :update, :destroy] do
+      resource :accounts, only: [:show, :create, :destroy], controller: 'circles/accounts'
+    end
+
     namespace :featured_tags do
       get :suggestions, to: 'suggestions#index'
     end

@@ -3341,6 +3341,8 @@ $ui-header-height: 55px;
   white-space: nowrap;
   border: 0;
   border-left: 4px solid transparent;
+  position: relative;
+  z-index: 0;
 
   &:hover,
   &:focus,
@@ -3390,7 +3392,8 @@ $ui-header-height: 55px;
   margin-inline-end: 5px;
 }
 
-.column-link__badge {
+.column-link__badge,
+.column-link__command {
   display: inline-block;
   border-radius: 4px;
   font-size: 12px;
@@ -3399,6 +3402,12 @@ $ui-header-height: 55px;
   background: $ui-base-color;
   padding: 4px 8px;
   margin: -6px 10px;
+}
+
+.column-link__command {
+  position: absolute;
+  right: 0;
+  z-index: 1;
 }
 
 .column-subheading {
@@ -3546,6 +3555,19 @@ $ui-header-height: 55px;
 
   @media screen and (width <= 600px) {
     font-size: 16px;
+  }
+}
+
+.circle-item {
+  display: flex;
+
+  .column-link {
+    flex: 1;
+  }
+
+  .icon-button {
+    align-self: center;
+    margin: 0 8px;
   }
 }
 

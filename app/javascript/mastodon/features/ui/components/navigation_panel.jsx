@@ -28,6 +28,7 @@ const messages = defineMessages({
   bookmarks: { id: 'navigation_bar.bookmarks', defaultMessage: 'Bookmarks' },
   lists: { id: 'navigation_bar.lists', defaultMessage: 'Lists' },
   antennas: { id: 'navigation_bar.antennas', defaultMessage: 'Antennas' },
+  circles: { id: 'navigation_bar.circles', defaultMessage: 'Circles' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   followsAndFollowers: { id: 'navigation_bar.follows_and_followers', defaultMessage: 'Follows and followers' },
   about: { id: 'navigation_bar.about', defaultMessage: 'About' },
@@ -106,6 +107,7 @@ class NavigationPanel extends Component {
           <>
             <ColumnLink transparent to='/lists' icon='list-ul' text={intl.formatMessage(messages.lists)} />
             <ColumnLink transparent to='/antennasw' icon='wifi' text={intl.formatMessage(messages.antennas)} isActive={this.isAntennasActive} />
+            <ColumnLink transparent to='/circles' icon='user-circle' text={intl.formatMessage(messages.circles)} />
             <FollowRequestsColumnLink />
             <ColumnLink transparent to='/conversations' icon='at' text={intl.formatMessage(messages.direct)} />
           </>
