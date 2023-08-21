@@ -112,6 +112,7 @@
   "antennas.search": "すべてのユーザーから検索",
   "antennas.select.no_options_message": "リストがありません",
   "antennas.select.placeholder": "リストを選択",
+  "antennas.select.set_home": "リセット (ホームに関連付ける)",
   "antennas.subheading": "あなたのアンテナ",
   "antennas.stl": "STLモード",
   "antennas.tags": "{count} のタグ",

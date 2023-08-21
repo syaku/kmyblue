@@ -54,6 +54,7 @@ const messages = defineMessages({
   domains: { id: 'antennas.domains', defaultMessage: '{count} domains' },
   tags: { id: 'antennas.tags', defaultMessage: '{count} tags' },
   keywords: { id: 'antennas.keywords', defaultMessage: '{count} keywords' },
+  setHome: { id: 'antennas.select.set_home', defaultMessage: 'Set home' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -210,6 +211,8 @@ class AntennaSetting extends PureComponent {
     const { id } = this.props.params;
     dispatch(updateAntenna(id, undefined, false, value.value, undefined, undefined, undefined, undefined));
   };
+
+  onHomeSelect = () => this.onSelect({ value: '0' });
 
   noOptionsMessage = () => this.props.intl.formatMessage(messages.noOptions);
 
@@ -390,6 +393,8 @@ class AntennaSetting extends PureComponent {
                   defaultOptions
                 />
               </NonceProvider>
+
+              <Button secondary text={this.props.intl.formatMessage(messages.setHome)} onClick={this.onHomeSelect} />
             </>
           )}
 
