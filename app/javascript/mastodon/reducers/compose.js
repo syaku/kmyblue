@@ -90,6 +90,7 @@ const initialState = ImmutableMap({
   suggestion_token: null,
   suggestions: ImmutableList(),
   default_privacy: 'public',
+  stay_privacy: false,
   default_searchability: 'private',
   default_sensitive: false,
   default_language: 'en',
@@ -103,6 +104,7 @@ const initialState = ImmutableMap({
     focusY: 0,
     dirty: false,
   }),
+  posted_on_this_session: false,
 });
 
 const initialPoll = ImmutableMap({
@@ -130,15 +132,23 @@ function clearAll(state) {
     map.set('markdown', false);
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
+    if (!state.get('stay_privacy') || state.get('in_reply_to') || !state.get('posted_on_this_session')) {
+      map.set('privacy', state.get('default_privacy'));
+      map.set('circle_id', null);
+    }
+    if (state.get('stay_privacy') && !state.get('in_reply_to')) {
+      map.set('default_privacy', state.get('privacy'));
+    }
+    if (!state.get('in_reply_to')) {
+      map.set('posted_on_this_session', true);
+    }
     map.set('in_reply_to', null);
-    map.set('privacy', state.get('default_privacy'));
     map.set('searchability', state.get('default_searchability'));
     map.set('sensitive', state.get('default_sensitive'));
     map.set('language', state.get('default_language'));
     map.update('media_attachments', list => list.clear());
     map.set('poll', null);
     map.set('idempotencyKey', uuid());
-    map.set('circle_id', null);
   });
 }
 

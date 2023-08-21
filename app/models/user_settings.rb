@@ -21,6 +21,7 @@ class UserSettings
   setting :default_language, default: nil
   setting :default_sensitive, default: false
   setting :default_privacy, default: nil, in: %w(public public_unlisted login unlisted private)
+  setting :stay_privacy, default: false
   setting :default_reblog_privacy, default: nil
   setting :default_searchability, default: :direct, in: %w(public private direct limited)
   setting :disallow_unlisted_public_searchability, default: false

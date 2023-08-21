@@ -247,13 +247,14 @@ ja:
         setting_hide_network: 繋がりを隠す
         setting_hide_recent_emojis: 絵文字ピッカーで最近使用した絵文字を隠す（リアクションデッキのみを表示する）
         setting_hide_statuses_count: 投稿数を隠す
+        setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_noai: 自分のコンテンツのAI学習利用に対して不快感を表明する
-        setting_public_post_to_unlisted: サードパーティアプリから投稿するとき、公開投稿をローカル公開に変更する
         setting_reduce_motion: アニメーションの動きを減らす
         setting_reject_public_unlisted_subscription: Misskey系サーバーに「ローカル公開」投稿を「フォロワーのみ」に変換して配送する
         setting_reject_unlisted_subscription: Misskey系サーバーに「未収載」投稿を「フォロワーのみ」に変換して配送する
         setting_send_without_domain_blocks: 管理人の設定した配送停止設定を拒否する (非推奨)
         setting_show_application: 送信したアプリを開示する
+        setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_stop_emoji_reaction_streaming: スタンプのストリーミングを停止する
         setting_system_font_ui: システムのデフォルトフォントを使う
         setting_theme: サイトテーマ
