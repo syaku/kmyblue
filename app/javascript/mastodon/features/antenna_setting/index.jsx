@@ -324,7 +324,7 @@ class AntennaSetting extends PureComponent {
     const contentRadioValue = ImmutableMap({ value: this.state.contentRadioValue || (antenna.get('tags_count') > 0 ? 'tags' : 'keywords') });
     const contentRadioAlert = antenna.get(contentRadioValue.get('value') === 'tags' ? 'keywords_count' : 'tags_count') > 0;
 
-    const listOptions = lists.toArray().map((list) => {
+    const listOptions = lists.toArray().filter((list) => list.length >= 2 && list[1]).map((list) => {
       return { value: list[1].get('id'), label: list[1].get('title') }
     });
 
