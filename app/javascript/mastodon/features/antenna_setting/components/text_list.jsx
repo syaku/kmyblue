@@ -59,6 +59,11 @@ class TextList extends PureComponent {
     this.props.onAdd();
   };
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.handleAdd();
+  };
+
   render () {
     const { icon, value, values, disabled, label, title } = this.props;
 
@@ -68,7 +73,7 @@ class TextList extends PureComponent {
           <TextListItem key={val} value={val} icon={icon} onRemove={this.props.onRemove} />
         ))}
 
-        <form className='add-text-form'>
+        <form className='add-text-form' onSubmit={this.handleSubmit}>
           <label>
             <span style={{ display: 'none' }}>{label}</span>
 
