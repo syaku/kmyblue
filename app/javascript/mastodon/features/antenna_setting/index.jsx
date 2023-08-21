@@ -12,7 +12,21 @@ import { connect } from 'react-redux';
 import Select, { NonceProvider } from 'react-select';
 import Toggle from 'react-toggle';
 
-import { fetchAntenna, deleteAntenna, updateAntenna, addDomainToAntenna, removeDomainFromAntenna, fetchAntennaDomains, fetchAntennaKeywords, removeKeywordFromAntenna, addKeywordToAntenna } from 'mastodon/actions/antennas';
+import {
+  fetchAntenna,
+  deleteAntenna,
+  updateAntenna,
+  addDomainToAntenna,
+  removeDomainFromAntenna,
+  addExcludeDomainToAntenna,
+  removeExcludeDomainFromAntenna,
+  fetchAntennaDomains,
+  fetchAntennaKeywords,
+  removeKeywordFromAntenna,
+  addKeywordToAntenna,
+  removeExcludeKeywordFromAntenna,
+  addExcludeKeywordToAntenna
+} from 'mastodon/actions/antennas';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { fetchLists } from 'mastodon/actions/lists';
 import { openModal } from 'mastodon/actions/modal';
@@ -69,7 +83,9 @@ class AntennaSetting extends PureComponent {
 
   state = {
     domainName: '',
+    excludeDomainName: '',
     keywordName: '',
+    excludeKeywordName: '',
     rangeRadioValue: null,
     contentRadioValue: null,
   };
@@ -124,7 +140,14 @@ class AntennaSetting extends PureComponent {
   handleEditClick = () => {
     this.props.dispatch(openModal({
       modalType: 'ANTENNA_EDITOR',
-      modalProps: { antennaId: this.props.params.id },
+      modalProps: { antennaId: this.props.params.id, isExclude: false },
+    }));
+  };
+
+  handleExcludeEditClick = () => {
+    this.props.dispatch(openModal({
+      modalType: 'ANTENNA_EDITOR',
+      modalProps: { antennaId: this.props.params.id, isExclude: true },
     }));
   };
 
@@ -211,6 +234,24 @@ class AntennaSetting extends PureComponent {
   };
 
   onKeywordRemove = (value) => this.props.dispatch(removeKeywordFromAntenna(this.props.params.id, value));
+
+  onExcludeDomainNameChanged = (value) => this.setState({ excludeDomainName: value });
+
+  onExcludeDomainAdd = () => {
+    this.props.dispatch(addExcludeDomainToAntenna(this.props.params.id, this.state.excludeDomainName));
+    this.setState({ excludeDomainName: '' });
+  };
+
+  onExcludeDomainRemove = (value) => this.props.dispatch(removeExcludeDomainFromAntenna(this.props.params.id, value));
+
+  onExcludeKeywordNameChanged = (value) => this.setState({ excludeKeywordName: value });
+
+  onExcludeKeywordAdd = () => {
+    this.props.dispatch(addExcludeKeywordToAntenna(this.props.params.id, this.state.excludeKeywordName));
+    this.setState({ excludeKeywordName: '' });
+  };
+
+  onExcludeKeywordRemove = (value) => this.props.dispatch(removeExcludeKeywordFromAntenna(this.props.params.id, value));
 
   render () {
     const { columnId, multiColumn, antenna, lists, domains, keywords, intl } = this.props;
@@ -354,6 +395,7 @@ class AntennaSetting extends PureComponent {
 
           {!isStl && (
             <>
+              <h2><FormattedMessage id='antennas.filter' defaultMessage='Filter' /></h2>
               <RadioPanel values={rangeRadioValues} value={rangeRadioValue} onChange={this.onRangeRadioChanged} />
 
               {rangeRadioValue.get('value') === 'accounts' && <Button text={intl.formatMessage(messages.editAccounts)} onClick={this.handleEditClick} />}
@@ -389,6 +431,32 @@ class AntennaSetting extends PureComponent {
               )}
 
               {contentRadioAlert && <div className='alert'><FormattedMessage id='antennas.alert.content_radio' defaultMessage='Simultaneous keyword and tag designation is not recommended.' /></div>}
+
+              <h2><FormattedMessage id='antennas.filter_not' defaultMessage='Filter Not' /></h2>
+              <h3><FormattedMessage id='antennas.exclude_accounts' defaultMessage='Exclude accounts' /></h3>
+              <Button text={intl.formatMessage(messages.editAccounts)} onClick={this.handleExcludeEditClick} />
+              <h3><FormattedMessage id='antennas.exclude_domains' defaultMessage='Exclude domains' /></h3>
+              <TextList
+                onChange={this.onExcludeDomainNameChanged}
+                onAdd={this.onExcludeDomainAdd}
+                onRemove={this.onExcludeDomainRemove}
+                value={this.state.excludeDomainName}
+                values={domains.get('exclude_domains') || ImmutableList()}
+                icon='sitemap'
+                label={intl.formatMessage(messages.addDomainLabel)}
+                title={intl.formatMessage(messages.addDomainTitle)}
+                />
+              <h3><FormattedMessage id='antennas.exclude_keywords' defaultMessage='Exclude keywords' /></h3>
+              <TextList
+                onChange={this.onExcludeKeywordNameChanged}
+                onAdd={this.onExcludeKeywordAdd}
+                onRemove={this.onExcludeKeywordRemove}
+                value={this.state.excludeKeywordName}
+                values={keywords.get('exclude_keywords') || ImmutableList()}
+                icon='paragraph'
+                label={intl.formatMessage(messages.addKeywordLabel)}
+                title={intl.formatMessage(messages.addKeywordTitle)}
+                />
             </>
           )}
         </div>
