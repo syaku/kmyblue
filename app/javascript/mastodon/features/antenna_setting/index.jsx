@@ -413,7 +413,7 @@ class AntennaSetting extends PureComponent {
                   />
               )}
 
-              {rangeRadioAlert && <div className='alert'><FormattedMessage id='antennas.alert.range_radio' defaultMessage='Simultaneous account and domain designation is not recommended.' /></div>}
+              {rangeRadioAlert && <div className='alert'><FormattedMessage id='antennas.warnings.range_radio' defaultMessage='Simultaneous account and domain designation is not recommended.' /></div>}
 
               <RadioPanel values={contentRadioValues} value={contentRadioValue} onChange={this.onContentRadioChanged} />
 
@@ -430,7 +430,7 @@ class AntennaSetting extends PureComponent {
                   />
               )}
 
-              {contentRadioAlert && <div className='alert'><FormattedMessage id='antennas.alert.content_radio' defaultMessage='Simultaneous keyword and tag designation is not recommended.' /></div>}
+              {contentRadioAlert && <div className='alert'><FormattedMessage id='antennas.warnings.content_radio' defaultMessage='Simultaneous keyword and tag designation is not recommended.' /></div>}
 
               <h2><FormattedMessage id='antennas.filter_not' defaultMessage='Filter Not' /></h2>
               <h3><FormattedMessage id='antennas.exclude_accounts' defaultMessage='Exclude accounts' /></h3>
