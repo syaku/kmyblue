@@ -38,6 +38,8 @@ const messages = defineMessages({
   addKeywordTitle: { id: 'antennas.add_keyword', defaultMessage: 'Add keyword' },
   accounts: { id: 'antennas.accounts', defaultMessage: '{count} accounts' },
   domains: { id: 'antennas.domains', defaultMessage: '{count} domains' },
+  tags: { id: 'antennas.tags', defaultMessage: '{count} tags' },
+  keywords: { id: 'antennas.keywords', defaultMessage: '{count} keywords' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -69,6 +71,7 @@ class AntennaSetting extends PureComponent {
     domainName: '',
     keywordName: '',
     rangeRadioValue: null,
+    contentRadioValue: null,
   };
 
   handlePin = () => {
@@ -189,6 +192,8 @@ class AntennaSetting extends PureComponent {
 
   onRangeRadioChanged = (value) => this.setState({ rangeRadioValue: value });
 
+  onContentRadioChanged = (value) => this.setState({ contentRadioValue: value });
+
   onDomainNameChanged = (value) => this.setState({ domainName: value });
 
   onDomainAdd = () => {
@@ -265,8 +270,15 @@ class AntennaSetting extends PureComponent {
       ImmutableMap({ value: 'accounts', label: intl.formatMessage(messages.accounts, { count: antenna.get('accounts_count') }) }),
       ImmutableMap({ value: 'domains', label: intl.formatMessage(messages.domains, { count: antenna.get('domains_count') }) }),
     ]);
-    const rangeRadioValue = ImmutableMap({ value: this.state.rangeRadioValue || (antenna.get('accounts_count') > 0 ? 'accounts' : 'domains') });
+    const rangeRadioValue = ImmutableMap({ value: this.state.rangeRadioValue || (antenna.get('domains_count') > 0 ? 'domains' : 'accounts') });
     const rangeRadioAlert = antenna.get(rangeRadioValue.get('value') === 'accounts' ? 'domains_count' : 'accounts_count') > 0;
+
+    const contentRadioValues = ImmutableList([
+      ImmutableMap({ value: 'keywords', label: intl.formatMessage(messages.keywords, { count: antenna.get('keywords_count') }) }),
+      ImmutableMap({ value: 'tags', label: intl.formatMessage(messages.tags, { count: antenna.get('tags_count') }) }),
+    ]);
+    const contentRadioValue = ImmutableMap({ value: this.state.contentRadioValue || (antenna.get('tags_count') > 0 ? 'tags' : 'keywords') });
+    const contentRadioAlert = antenna.get(contentRadioValue.get('value') === 'tags' ? 'keywords_count' : 'tags_count') > 0;
 
     const listOptions = lists.toArray().map((list) => {
       return { value: list[1].get('id'), label: list[1].get('title') }
@@ -361,19 +373,22 @@ class AntennaSetting extends PureComponent {
 
               {rangeRadioAlert && <div className='alert'><FormattedMessage id='antennas.alert.range_radio' defaultMessage='Simultaneous account and domain designation is not recommended.' /></div>}
 
-              <h3><FormattedMessage id='antennas.tags' defaultMessage='{count} tags' values={{ count: antenna.get('tags_count') }} /></h3>
+              <RadioPanel values={contentRadioValues} value={contentRadioValue} onChange={this.onContentRadioChanged} />
 
-              <h3><FormattedMessage id='antennas.keywords' defaultMessage='{count} keywords' values={{ count: antenna.get('keywords_count') }} /></h3>
-              <TextList
-                onChange={this.onKeywordNameChanged}
-                onAdd={this.onKeywordAdd}
-                onRemove={this.onKeywordRemove}
-                value={this.state.keywordName}
-                values={keywords.get('keywords') || ImmutableList()}
-                icon='paragraph'
-                label={intl.formatMessage(messages.addKeywordLabel)}
-                title={intl.formatMessage(messages.addKeywordTitle)}
-                />
+              {contentRadioValue.get('value') === 'keywords' && (
+                <TextList
+                  onChange={this.onKeywordNameChanged}
+                  onAdd={this.onKeywordAdd}
+                  onRemove={this.onKeywordRemove}
+                  value={this.state.keywordName}
+                  values={keywords.get('keywords') || ImmutableList()}
+                  icon='paragraph'
+                  label={intl.formatMessage(messages.addKeywordLabel)}
+                  title={intl.formatMessage(messages.addKeywordTitle)}
+                  />
+              )}
+
+              {contentRadioAlert && <div className='alert'><FormattedMessage id='antennas.alert.content_radio' defaultMessage='Simultaneous keyword and tag designation is not recommended.' /></div>}
             </>
           )}
         </div>
