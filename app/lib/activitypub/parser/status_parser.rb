@@ -87,8 +87,11 @@ class ActivityPub::Parser::StatusParser
   end
 
   def limited_scope
-    if @object['limitedScope'] == 'Mutual'
+    case @object['limitedScope']
+    when 'Mutual'
       :mutual
+    when 'Circle'
+      :circle
     else
       :none
     end

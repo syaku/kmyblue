@@ -11,10 +11,10 @@ import Warning from '../components/warning';
 
 const mapStateToProps = state => ({
   needsLockWarning: state.getIn(['compose', 'privacy']) === 'private' && !state.getIn(['accounts', me, 'locked']),
-  hashtagWarning: ['public', 'public_unlisted', 'login'].indexOf(state.getIn(['compose', 'privacy'])) < 0 && state.getIn(['compose', 'searchability']) !== 'public' && HASHTAG_PATTERN_REGEX.test(state.getIn(['compose', 'text'])),
+  hashtagWarning: ['public', 'public_unlisted', 'login'].includes(state.getIn(['compose', 'privacy'])) && state.getIn(['compose', 'searchability']) !== 'public' && HASHTAG_PATTERN_REGEX.test(state.getIn(['compose', 'text'])),
   directMessageWarning: state.getIn(['compose', 'privacy']) === 'direct',
   searchabilityWarning: state.getIn(['compose', 'searchability']) === 'limited',
-  limitedPostWarning: state.getIn(['compose', 'privacy']) === 'mutual',
+  limitedPostWarning: ['mutual', 'circle'].includes(state.getIn(['compose', 'privacy'])),
 });
 
 const WarningWrapper = ({ needsLockWarning, hashtagWarning, directMessageWarning, searchabilityWarning, limitedPostWarning }) => {

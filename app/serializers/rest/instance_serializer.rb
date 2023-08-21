@@ -119,6 +119,8 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       :kmyblue_visibility_login,
       :status_reference,
       :visibility_mutual,
+      :visibility_limited,
+      :kmyblue_limited_scope,
       :kmyblue_antenna,
     ]
 

@@ -26,6 +26,8 @@ const messages = defineMessages({
   private_long: { id: 'privacy.private.long', defaultMessage: 'Visible for followers only' },
   mutual_short: { id: 'privacy.mutual.short', defaultMessage: 'Mutual' },
   mutual_long: { id: 'privacy.mutual.long', defaultMessage: 'Mutual follows only' },
+  circle_short: { id: 'privacy.circle.short', defaultMessage: 'Circle' },
+  circle_long: { id: 'privacy.circle.long', defaultMessage: 'Circle members only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
   direct_long: { id: 'privacy.direct.long', defaultMessage: 'Visible for mentioned users only' },
   change_privacy: { id: 'privacy.change', defaultMessage: 'Adjust status privacy' },
@@ -235,6 +237,7 @@ class PrivacyDropdown extends PureComponent {
       { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
       { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
       { icon: 'exchange', value: 'mutual', text: formatMessage(messages.mutual_short), meta: formatMessage(messages.mutual_long) },
+      { icon: 'user-circle', value: 'circle', text: formatMessage(messages.circle_short), meta: formatMessage(messages.circle_long) },
       { icon: 'at', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },
     ];
     this.selectableOptions = [...this.options];

@@ -8,6 +8,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 
 import { ScrollContext } from 'react-router-scroll-4';
 
+import { fetchCircles } from 'mastodon/actions/circles';
 import { fetchCustomEmojis } from 'mastodon/actions/custom_emojis';
 import { fetchReactionDeck } from 'mastodon/actions/reaction_deck';
 import { hydrateStore } from 'mastodon/actions/store';
@@ -27,6 +28,7 @@ store.dispatch(hydrateAction);
 if (initialState.meta.me) {
   store.dispatch(fetchCustomEmojis());
   store.dispatch(fetchReactionDeck());
+  store.dispatch(fetchCircles());
 }
 
 const createIdentityContext = state => ({

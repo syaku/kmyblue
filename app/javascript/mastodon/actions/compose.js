@@ -75,6 +75,8 @@ export const COMPOSE_POLL_OPTION_CHANGE   = 'COMPOSE_POLL_OPTION_CHANGE';
 export const COMPOSE_POLL_OPTION_REMOVE   = 'COMPOSE_POLL_OPTION_REMOVE';
 export const COMPOSE_POLL_SETTINGS_CHANGE = 'COMPOSE_POLL_SETTINGS_CHANGE';
 
+export const COMPOSE_CIRCLE_CHANGE = 'COMPOSE_CIRCLE_CHANGE';
+
 export const INIT_MEDIA_EDIT_MODAL = 'INIT_MEDIA_EDIT_MODAL';
 
 export const COMPOSE_CHANGE_MEDIA_DESCRIPTION = 'COMPOSE_CHANGE_MEDIA_DESCRIPTION';
@@ -211,6 +213,7 @@ export function submitCompose(routerHistory) {
         markdown: getState().getIn(['compose', 'markdown']),
         visibility: getState().getIn(['compose', 'privacy']),
         searchability: getState().getIn(['compose', 'searchability']),
+        circle_id: getState().getIn(['compose', 'circle_id']),
         poll: getState().getIn(['compose', 'poll'], null),
         language: getState().getIn(['compose', 'language']),
       },
@@ -835,5 +838,12 @@ export function changePollSettings(expiresIn, isMultiple) {
     type: COMPOSE_POLL_SETTINGS_CHANGE,
     expiresIn,
     isMultiple,
+  };
+}
+
+export function changeCircle(circleId) {
+  return {
+    type: COMPOSE_CIRCLE_CHANGE,
+    circleId,
   };
 }
