@@ -95,7 +95,7 @@ class PostStatusService < BaseService
     return unless @options[:visibility] == 'circle'
 
     @circle = @options[:circle_id].present? && Circle.find(@options[:circle_id])
-    raise ArgumentError if @circle.nil?
+    raise ArgumentError if @circle.nil? || @circle.account_id != @account.id
   end
 
   def process_sensitive_words
