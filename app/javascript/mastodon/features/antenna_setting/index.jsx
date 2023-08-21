@@ -59,8 +59,8 @@ const messages = defineMessages({
 const mapStateToProps = (state, props) => ({
   antenna: state.getIn(['antennas', props.params.id]),
   lists: state.get('lists'),
-  domains: state.getIn(['antennas', props.params.id, 'domains']) || ImmutableList(),
-  keywords: state.getIn(['antennas', props.params.id, 'keywords']) || ImmutableList(),
+  domains: state.getIn(['antennas', props.params.id, 'domains']) || ImmutableMap(),
+  keywords: state.getIn(['antennas', props.params.id, 'keywords']) || ImmutableMap(),
 });
 
 class AntennaSetting extends PureComponent {
@@ -75,9 +75,9 @@ class AntennaSetting extends PureComponent {
     columnId: PropTypes.string,
     multiColumn: PropTypes.bool,
     antenna: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
-    lists: ImmutablePropTypes.list,
-    domains: ImmutablePropTypes.list,
-    keywords: ImmutablePropTypes.list,
+    lists: ImmutablePropTypes.map,
+    domains: ImmutablePropTypes.map,
+    keywords: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
   };
 

@@ -74,7 +74,7 @@ export default function antennas(state = initialState, action) {
   case ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_SUCCESS:
     return state.updateIn([action.antennaId, 'domains', 'exclude_domains'], domains => (ImmutableList(domains || [])).filterNot(domain => domain === action.domain));
   case ANTENNA_EDITOR_FETCH_DOMAINS_SUCCESS:
-    return state.setIn([action.id, 'domains'], ImmutableMap(action.domains));
+    return state.setIn([action.id, 'domains'], ImmutableMap({ domains: ImmutableList(action.domains.domains), exclude_domains: ImmutableList(action.domains.exclude_domains) }));
   case ANTENNA_EDITOR_ADD_KEYWORD_SUCCESS:
     return state.setIn([action.antennaId, 'keywords_count'], state.getIn([action.antennaId, 'keywords_count']) + 1).updateIn([action.antennaId, 'keywords', 'keywords'], keywords => (ImmutableList(keywords || [])).push(action.keyword));
   case ANTENNA_EDITOR_REMOVE_KEYWORD_SUCCESS:
@@ -84,7 +84,7 @@ export default function antennas(state = initialState, action) {
   case ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_SUCCESS:
     return state.updateIn([action.antennaId, 'keywords', 'exclude_keywords'], keywords => (ImmutableList(keywords || [])).filterNot(keyword => keyword === action.keyword));
   case ANTENNA_EDITOR_FETCH_KEYWORDS_SUCCESS:
-    return state.setIn([action.id, 'keywords'], ImmutableMap(action.keywords));
+    return state.setIn([action.id, 'keywords'], ImmutableMap({ keywords: ImmutableList(action.keywords.keywords), exclude_keywords: ImmutableList(action.keywords.exclude_keywords) }));
   default:
     return state;
   }

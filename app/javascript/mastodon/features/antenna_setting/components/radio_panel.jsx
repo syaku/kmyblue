@@ -13,7 +13,7 @@ class RadioPanel extends PureComponent {
 
   static propTypes = {
     values: ImmutablePropTypes.list.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.object.isRequired,
     intl: PropTypes.object.isRequired,
     onChange: PropTypes.func.isRequired,
   };
