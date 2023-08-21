@@ -20,7 +20,6 @@ class RadioPanel extends PureComponent {
 
   handleChange = e => {
     const value = e.currentTarget.getAttribute('data-value');
-    console.dir(value);
 
     if (value !== this.props.value.get('value')) {
       this.props.onChange(value);

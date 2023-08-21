@@ -54,7 +54,6 @@ class Account extends ImmutablePureComponent {
 
   render () {
     const { account, intl, isExclude, onRemove, onAdd, onExcludeRemove, onExcludeAdd, added } = this.props;
-    console.dir(isExclude)
 
     let button;
 
