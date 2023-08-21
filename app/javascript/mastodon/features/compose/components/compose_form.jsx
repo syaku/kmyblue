@@ -14,6 +14,7 @@ import { Icon }  from 'mastodon/components/icon';
 import AutosuggestInput from '../../../components/autosuggest_input';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import Button from '../../../components/button';
+import CircleSelectContainer from '../containers/circle_select_container';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import ExpirationDropdownContainer from '../containers/expiration_dropdown_container';
 import LanguageDropdown from '../containers/language_dropdown_container';
@@ -76,6 +77,7 @@ class ComposeForm extends ImmutablePureComponent {
     isInReply: PropTypes.bool,
     singleColumn: PropTypes.bool,
     lang: PropTypes.string,
+    circleId: PropTypes.string,
   };
 
   static defaultProps = {
@@ -101,11 +103,11 @@ class ComposeForm extends ImmutablePureComponent {
   };
 
   canSubmit = () => {
-    const { isSubmitting, isChangingUpload, isUploading, anyMedia } = this.props;
+    const { isSubmitting, isChangingUpload, isUploading, anyMedia, privacy, circleId } = this.props;
     const fulltext = this.getFulltextForCharacterCounting();
     const isOnlyWhitespace = fulltext.length !== 0 && fulltext.trim().length === 0;
 
-    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > 500 || (isOnlyWhitespace && !anyMedia));
+    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > 500 || (isOnlyWhitespace && !anyMedia) || (privacy === 'circle' && !circleId));
   };
 
   handleSubmit = (e) => {
@@ -316,6 +318,8 @@ class ComposeForm extends ImmutablePureComponent {
             </div>
           </div>
         </div>
+
+        <CircleSelectContainer />
 
         <div className='compose-form__publish'>
           <div className='compose-form__publish-button-wrapper'>

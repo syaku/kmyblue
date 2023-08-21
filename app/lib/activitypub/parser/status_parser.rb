@@ -8,7 +8,7 @@ class ActivityPub::Parser::StatusParser
   # @option magic_values [String] :followers_collection
   def initialize(json, magic_values = {})
     @json         = json
-    @object       = json['object'] || json
+    @object       = magic_values[:object] || json['object'] || json
     @magic_values = magic_values
   end
 
@@ -87,8 +87,11 @@ class ActivityPub::Parser::StatusParser
   end
 
   def limited_scope
-    if @object['limitedScope'] == 'Mutual'
+    case @object['limitedScope']
+    when 'Mutual'
       :mutual
+    when 'Circle'
+      :circle
     else
       :none
     end

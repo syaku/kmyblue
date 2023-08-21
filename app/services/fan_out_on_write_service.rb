@@ -172,7 +172,7 @@ class FanOutOnWriteService < BaseService
     antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login, :limited].exclude?(@status.visibility.to_sym)
     antennas = antennas.where(account: @status.mentioned_accounts) if @status.visibility.to_sym == :limited
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
-    antennas = antennas.where(ignore_reblog: false) unless @status.reblog?
+    antennas = antennas.where(ignore_reblog: false) if @status.reblog?
     antennas = antennas.where(stl: false)
 
     collection = AntennaCollection.new(@status, @options[:update], false)
@@ -276,8 +276,8 @@ class FanOutOnWriteService < BaseService
 
     def push(antenna)
       if antenna.list_id.zero?
-        @home_account_ids << { id: antenna.account_id, antenna_id: antenna.id } if @home_account_ids.none? { |id| id.id == antenna.account_id }
-      elsif @list_ids.none? { |id| id.id == antenna.list_id }
+        @home_account_ids << { id: antenna.account_id, antenna_id: antenna.id } if @home_account_ids.none? { |id| id[:id] == antenna.account_id }
+      elsif @list_ids.none? { |id| id[:id] == antenna.list_id }
         @list_ids << { id: antenna.list_id, antenna_id: antenna.id }
       end
     end

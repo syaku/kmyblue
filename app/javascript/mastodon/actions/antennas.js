@@ -43,6 +43,18 @@ export const ANTENNA_EDITOR_REMOVE_REQUEST = 'ANTENNA_EDITOR_REMOVE_REQUEST';
 export const ANTENNA_EDITOR_REMOVE_SUCCESS = 'ANTENNA_EDITOR_REMOVE_SUCCESS';
 export const ANTENNA_EDITOR_REMOVE_FAIL    = 'ANTENNA_EDITOR_REMOVE_FAIL';
 
+export const ANTENNA_EXCLUDE_ACCOUNTS_FETCH_REQUEST = 'ANTENNA_EXCLUDE_ACCOUNTS_FETCH_REQUEST';
+export const ANTENNA_EXCLUDE_ACCOUNTS_FETCH_SUCCESS = 'ANTENNA_EXCLUDE_ACCOUNTS_FETCH_SUCCESS';
+export const ANTENNA_EXCLUDE_ACCOUNTS_FETCH_FAIL    = 'ANTENNA_EXCLUDE_ACCOUNTS_FETCH_FAIL';
+
+export const ANTENNA_EDITOR_ADD_EXCLUDE_REQUEST = 'ANTENNA_EDITOR_ADD_EXCLUDE_REQUEST';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_SUCCESS = 'ANTENNA_EDITOR_ADD_EXCLUDE_SUCCESS';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_FAIL    = 'ANTENNA_EDITOR_ADD_EXCLUDE_FAIL';
+
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_REQUEST = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_REQUEST';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_SUCCESS = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_SUCCESS';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_FAIL    = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_FAIL';
+
 export const ANTENNA_EDITOR_FETCH_DOMAINS_REQUEST = 'ANTENNA_EDITOR_FETCH_DOMAINS_REQUEST';
 export const ANTENNA_EDITOR_FETCH_DOMAINS_SUCCESS = 'ANTENNA_EDITOR_FETCH_DOMAINS_SUCCESS';
 export const ANTENNA_EDITOR_FETCH_DOMAINS_FAIL    = 'ANTENNA_EDITOR_FETCH_DOMAINS_FAIL';
@@ -51,9 +63,17 @@ export const ANTENNA_EDITOR_ADD_DOMAIN_REQUEST = 'ANTENNA_EDITOR_ADD_DOMAIN_REQU
 export const ANTENNA_EDITOR_ADD_DOMAIN_SUCCESS = 'ANTENNA_EDITOR_ADD_DOMAIN_SUCCESS';
 export const ANTENNA_EDITOR_ADD_DOMAIN_FAIL    = 'ANTENNA_EDITOR_ADD_DOMAIN_FAIL';
 
+export const ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_REQUEST = 'ANTENNA_EDITOR_ADD_EXCLUDEDOMAIN_REQUEST';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_SUCCESS = 'ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_SUCCESS';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_FAIL    = 'ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_FAIL';
+
 export const ANTENNA_EDITOR_REMOVE_DOMAIN_REQUEST = 'ANTENNA_EDITOR_REMOVE_DOMAIN_REQUEST';
 export const ANTENNA_EDITOR_REMOVE_DOMAIN_SUCCESS = 'ANTENNA_EDITOR_REMOVE_DOMAIN_SUCCESS';
 export const ANTENNA_EDITOR_REMOVE_DOMAIN_FAIL    = 'ANTENNA_EDITOR_REMOVE_DOMAIN_FAIL';
+
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_REQUEST = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_REQUEST';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_SUCCESS = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_SUCCESS';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_FAIL    = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_FAIL';
 
 export const ANTENNA_EDITOR_FETCH_KEYWORDS_REQUEST = 'ANTENNA_EDITOR_FETCH_KEYWORDS_REQUEST';
 export const ANTENNA_EDITOR_FETCH_KEYWORDS_SUCCESS = 'ANTENNA_EDITOR_FETCH_KEYWORDS_SUCCESS';
@@ -63,9 +83,17 @@ export const ANTENNA_EDITOR_ADD_KEYWORD_REQUEST = 'ANTENNA_EDITOR_ADD_KEYWORD_RE
 export const ANTENNA_EDITOR_ADD_KEYWORD_SUCCESS = 'ANTENNA_EDITOR_ADD_KEYWORD_SUCCESS';
 export const ANTENNA_EDITOR_ADD_KEYWORD_FAIL    = 'ANTENNA_EDITOR_ADD_KEYWORD_FAIL';
 
+export const ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_REQUEST = 'ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_REQUEST';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_SUCCESS = 'ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_SUCCESS';
+export const ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_FAIL    = 'ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_FAIL';
+
 export const ANTENNA_EDITOR_REMOVE_KEYWORD_REQUEST = 'ANTENNA_EDITOR_REMOVE_KEYWORD_REQUEST';
 export const ANTENNA_EDITOR_REMOVE_KEYWORD_SUCCESS = 'ANTENNA_EDITOR_REMOVE_KEYWORD_SUCCESS';
 export const ANTENNA_EDITOR_REMOVE_KEYWORD_FAIL    = 'ANTENNA_EDITOR_REMOVE_KEYWORD_FAIL';
+
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_REQUEST = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_REQUEST';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_SUCCESS = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_SUCCESS';
+export const ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_FAIL    = 'ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_FAIL';
 
 export const ANTENNA_ADDER_RESET = 'ANTENNA_ADDER_RESET';
 export const ANTENNA_ADDER_SETUP = 'ANTENNA_ADDER_SETUP';
@@ -142,6 +170,15 @@ export const setupAntennaEditor = antennaId => (dispatch, getState) => {
   });
 
   dispatch(fetchAntennaAccounts(antennaId));
+};
+
+export const setupExcludeAntennaEditor = antennaId => (dispatch, getState) => {
+  dispatch({
+    type: ANTENNA_EDITOR_SETUP,
+    antenna: getState().getIn(['antennas', antennaId]),
+  });
+
+  dispatch(fetchAntennaExcludeAccounts(antennaId));
 };
 
 export const changeAntennaEditorTitle = value => ({
@@ -258,6 +295,33 @@ export const fetchAntennaAccountsFail = (id, error) => ({
   error,
 });
 
+export const fetchAntennaExcludeAccounts = antennaId => (dispatch, getState) => {
+  dispatch(fetchAntennaExcludeAccountsRequest(antennaId));
+
+  api(getState).get(`/api/v1/antennas/${antennaId}/exclude_accounts`, { params: { limit: 0 } }).then(({ data }) => {
+    dispatch(importFetchedAccounts(data));
+    dispatch(fetchAntennaExcludeAccountsSuccess(antennaId, data));
+  }).catch(err => dispatch(fetchAntennaExcludeAccountsFail(antennaId, err)));
+};
+
+export const fetchAntennaExcludeAccountsRequest = id => ({
+  type: ANTENNA_EXCLUDE_ACCOUNTS_FETCH_REQUEST,
+  id,
+});
+
+export const fetchAntennaExcludeAccountsSuccess = (id, accounts, next) => ({
+  type: ANTENNA_EXCLUDE_ACCOUNTS_FETCH_SUCCESS,
+  id,
+  accounts,
+  next,
+});
+
+export const fetchAntennaExcludeAccountsFail = (id, error) => ({
+  type: ANTENNA_EXCLUDE_ACCOUNTS_FETCH_FAIL,
+  id,
+  error,
+});
+
 export const fetchAntennaSuggestions = q => (dispatch, getState) => {
   const params = {
     q,
@@ -316,6 +380,99 @@ export const addToAntennaFail = (antennaId, accountId, error) => ({
   error,
 });
 
+export const addExcludeToAntennaEditor = accountId => (dispatch, getState) => {
+  dispatch(addExcludeToAntenna(getState().getIn(['antennaEditor', 'antennaId']), accountId));
+};
+
+export const addExcludeToAntenna = (antennaId, accountId) => (dispatch, getState) => {
+  dispatch(addExcludeToAntennaRequest(antennaId, accountId));
+
+  api(getState).post(`/api/v1/antennas/${antennaId}/exclude_accounts`, { account_ids: [accountId] })
+    .then(() => dispatch(addExcludeToAntennaSuccess(antennaId, accountId)))
+    .catch(err => dispatch(addExcludeToAntennaFail(antennaId, accountId, err)));
+};
+
+export const addExcludeToAntennaRequest = (antennaId, accountId) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_REQUEST,
+  antennaId,
+  accountId,
+});
+
+export const addExcludeToAntennaSuccess = (antennaId, accountId) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_SUCCESS,
+  antennaId,
+  accountId,
+});
+
+export const addExcludeToAntennaFail = (antennaId, accountId, error) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_FAIL,
+  antennaId,
+  accountId,
+  error,
+});
+
+export const removeFromAntennaEditor = accountId => (dispatch, getState) => {
+  dispatch(removeFromAntenna(getState().getIn(['antennaEditor', 'antennaId']), accountId));
+};
+
+export const removeFromAntenna = (antennaId, accountId) => (dispatch, getState) => {
+  dispatch(removeFromAntennaRequest(antennaId, accountId));
+
+  api(getState).delete(`/api/v1/antennas/${antennaId}/accounts`, { params: { account_ids: [accountId] } })
+    .then(() => dispatch(removeFromAntennaSuccess(antennaId, accountId)))
+    .catch(err => dispatch(removeFromAntennaFail(antennaId, accountId, err)));
+};
+
+export const removeFromAntennaRequest = (antennaId, accountId) => ({
+  type: ANTENNA_EDITOR_REMOVE_REQUEST,
+  antennaId,
+  accountId,
+});
+
+export const removeFromAntennaSuccess = (antennaId, accountId) => ({
+  type: ANTENNA_EDITOR_REMOVE_SUCCESS,
+  antennaId,
+  accountId,
+});
+
+export const removeFromAntennaFail = (antennaId, accountId, error) => ({
+  type: ANTENNA_EDITOR_REMOVE_FAIL,
+  antennaId,
+  accountId,
+  error,
+});
+
+export const removeExcludeFromAntennaEditor = accountId => (dispatch, getState) => {
+  dispatch(removeExcludeFromAntenna(getState().getIn(['antennaEditor', 'antennaId']), accountId));
+};
+
+export const removeExcludeFromAntenna = (antennaId, accountId) => (dispatch, getState) => {
+  dispatch(removeExcludeFromAntennaRequest(antennaId, accountId));
+
+  api(getState).delete(`/api/v1/antennas/${antennaId}/exclude_accounts`, { params: { account_ids: [accountId] } })
+    .then(() => dispatch(removeExcludeFromAntennaSuccess(antennaId, accountId)))
+    .catch(err => dispatch(removeExcludeFromAntennaFail(antennaId, accountId, err)));
+};
+
+export const removeExcludeFromAntennaRequest = (antennaId, accountId) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_REQUEST,
+  antennaId,
+  accountId,
+});
+
+export const removeExcludeFromAntennaSuccess = (antennaId, accountId) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_SUCCESS,
+  antennaId,
+  accountId,
+});
+
+export const removeExcludeFromAntennaFail = (antennaId, accountId, error) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_FAIL,
+  antennaId,
+  accountId,
+  error,
+});
+
 export const fetchAntennaDomains = antennaId => (dispatch, getState) => {
   dispatch(fetchAntennaDomainsRequest(antennaId));
 
@@ -363,6 +520,87 @@ export const addDomainToAntennaSuccess = (antennaId, domain) => ({
 
 export const addDomainToAntennaFail = (antennaId, domain, error) => ({
   type: ANTENNA_EDITOR_ADD_DOMAIN_FAIL,
+  antennaId,
+  domain,
+  error,
+});
+
+export const removeDomainFromAntenna = (antennaId, domain) => (dispatch, getState) => {
+  dispatch(removeDomainFromAntennaRequest(antennaId, domain));
+
+  api(getState).delete(`/api/v1/antennas/${antennaId}/domains`, { params: { domains: [domain] } })
+    .then(() => dispatch(removeDomainFromAntennaSuccess(antennaId, domain)))
+    .catch(err => dispatch(removeDomainFromAntennaFail(antennaId, domain, err)));
+};
+
+export const removeDomainFromAntennaRequest = (antennaId, domain) => ({
+  type: ANTENNA_EDITOR_REMOVE_DOMAIN_REQUEST,
+  antennaId,
+  domain,
+});
+
+export const removeDomainFromAntennaSuccess = (antennaId, domain) => ({
+  type: ANTENNA_EDITOR_REMOVE_DOMAIN_SUCCESS,
+  antennaId,
+  domain,
+});
+
+export const removeDomainFromAntennaFail = (antennaId, domain, error) => ({
+  type: ANTENNA_EDITOR_REMOVE_DOMAIN_FAIL,
+  antennaId,
+  domain,
+  error,
+});
+
+export const addExcludeDomainToAntenna = (antennaId, domain) => (dispatch, getState) => {
+  dispatch(addExcludeDomainToAntennaRequest(antennaId, domain));
+
+  api(getState).post(`/api/v1/antennas/${antennaId}/exclude_domains`, { domains: [domain] })
+    .then(() => dispatch(addExcludeDomainToAntennaSuccess(antennaId, domain)))
+    .catch(err => dispatch(addExcludeDomainToAntennaFail(antennaId, domain, err)));
+};
+
+export const addExcludeDomainToAntennaRequest = (antennaId, domain) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_REQUEST,
+  antennaId,
+  domain,
+});
+
+export const addExcludeDomainToAntennaSuccess = (antennaId, domain) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_SUCCESS,
+  antennaId,
+  domain,
+});
+
+export const addExcludeDomainToAntennaFail = (antennaId, domain, error) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_DOMAIN_FAIL,
+  antennaId,
+  domain,
+  error,
+});
+
+export const removeExcludeDomainFromAntenna = (antennaId, domain) => (dispatch, getState) => {
+  dispatch(removeExcludeDomainFromAntennaRequest(antennaId, domain));
+
+  api(getState).delete(`/api/v1/antennas/${antennaId}/exclude_domains`, { params: { domains: [domain] } })
+    .then(() => dispatch(removeExcludeDomainFromAntennaSuccess(antennaId, domain)))
+    .catch(err => dispatch(removeExcludeDomainFromAntennaFail(antennaId, domain, err)));
+};
+
+export const removeExcludeDomainFromAntennaRequest = (antennaId, domain) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_REQUEST,
+  antennaId,
+  domain,
+});
+
+export const removeExcludeDomainFromAntennaSuccess = (antennaId, domain) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_SUCCESS,
+  antennaId,
+  domain,
+});
+
+export const removeExcludeDomainFromAntennaFail = (antennaId, domain, error) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_DOMAIN_FAIL,
   antennaId,
   domain,
   error,
@@ -420,64 +658,6 @@ export const addKeywordToAntennaFail = (antennaId, keyword, error) => ({
   error,
 });
 
-export const removeFromAntennaEditor = accountId => (dispatch, getState) => {
-  dispatch(removeFromAntenna(getState().getIn(['antennaEditor', 'antennaId']), accountId));
-};
-
-export const removeFromAntenna = (antennaId, accountId) => (dispatch, getState) => {
-  dispatch(removeFromAntennaRequest(antennaId, accountId));
-
-  api(getState).delete(`/api/v1/antennas/${antennaId}/accounts`, { params: { account_ids: [accountId] } })
-    .then(() => dispatch(removeFromAntennaSuccess(antennaId, accountId)))
-    .catch(err => dispatch(removeFromAntennaFail(antennaId, accountId, err)));
-};
-
-export const removeFromAntennaRequest = (antennaId, accountId) => ({
-  type: ANTENNA_EDITOR_REMOVE_REQUEST,
-  antennaId,
-  accountId,
-});
-
-export const removeFromAntennaSuccess = (antennaId, accountId) => ({
-  type: ANTENNA_EDITOR_REMOVE_SUCCESS,
-  antennaId,
-  accountId,
-});
-
-export const removeFromAntennaFail = (antennaId, accountId, error) => ({
-  type: ANTENNA_EDITOR_REMOVE_FAIL,
-  antennaId,
-  accountId,
-  error,
-});
-
-export const removeDomainFromAntenna = (antennaId, domain) => (dispatch, getState) => {
-  dispatch(removeDomainFromAntennaRequest(antennaId, domain));
-
-  api(getState).delete(`/api/v1/antennas/${antennaId}/domains`, { params: { domains: [domain] } })
-    .then(() => dispatch(removeDomainFromAntennaSuccess(antennaId, domain)))
-    .catch(err => dispatch(removeDomainFromAntennaFail(antennaId, domain, err)));
-};
-
-export const removeDomainFromAntennaRequest = (antennaId, domain) => ({
-  type: ANTENNA_EDITOR_REMOVE_DOMAIN_REQUEST,
-  antennaId,
-  domain,
-});
-
-export const removeDomainFromAntennaSuccess = (antennaId, domain) => ({
-  type: ANTENNA_EDITOR_REMOVE_DOMAIN_SUCCESS,
-  antennaId,
-  domain,
-});
-
-export const removeDomainFromAntennaFail = (antennaId, domain, error) => ({
-  type: ANTENNA_EDITOR_REMOVE_DOMAIN_FAIL,
-  antennaId,
-  domain,
-  error,
-});
-
 export const removeKeywordFromAntenna = (antennaId, keyword) => (dispatch, getState) => {
   dispatch(removeKeywordFromAntennaRequest(antennaId, keyword));
 
@@ -500,6 +680,60 @@ export const removeKeywordFromAntennaSuccess = (antennaId, keyword) => ({
 
 export const removeKeywordFromAntennaFail = (antennaId, keyword, error) => ({
   type: ANTENNA_EDITOR_REMOVE_KEYWORD_FAIL,
+  antennaId,
+  keyword,
+  error,
+});
+
+export const addExcludeKeywordToAntenna = (antennaId, keyword) => (dispatch, getState) => {
+  dispatch(addExcludeKeywordToAntennaRequest(antennaId, keyword));
+
+  api(getState).post(`/api/v1/antennas/${antennaId}/exclude_keywords`, { keywords: [keyword] })
+    .then(() => dispatch(addExcludeKeywordToAntennaSuccess(antennaId, keyword)))
+    .catch(err => dispatch(addExcludeKeywordToAntennaFail(antennaId, keyword, err)));
+};
+
+export const addExcludeKeywordToAntennaRequest = (antennaId, keyword) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_REQUEST,
+  antennaId,
+  keyword,
+});
+
+export const addExcludeKeywordToAntennaSuccess = (antennaId, keyword) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_SUCCESS,
+  antennaId,
+  keyword,
+});
+
+export const addExcludeKeywordToAntennaFail = (antennaId, keyword, error) => ({
+  type: ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_FAIL,
+  antennaId,
+  keyword,
+  error,
+});
+
+export const removeExcludeKeywordFromAntenna = (antennaId, keyword) => (dispatch, getState) => {
+  dispatch(removeExcludeKeywordFromAntennaRequest(antennaId, keyword));
+
+  api(getState).delete(`/api/v1/antennas/${antennaId}/exclude_keywords`, { params: { keywords: [keyword] } })
+    .then(() => dispatch(removeExcludeKeywordFromAntennaSuccess(antennaId, keyword)))
+    .catch(err => dispatch(removeExcludeKeywordFromAntennaFail(antennaId, keyword, err)));
+};
+
+export const removeExcludeKeywordFromAntennaRequest = (antennaId, keyword) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_REQUEST,
+  antennaId,
+  keyword,
+});
+
+export const removeExcludeKeywordFromAntennaSuccess = (antennaId, keyword) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_SUCCESS,
+  antennaId,
+  keyword,
+});
+
+export const removeExcludeKeywordFromAntennaFail = (antennaId, keyword, error) => ({
+  type: ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_FAIL,
   antennaId,
   keyword,
   error,

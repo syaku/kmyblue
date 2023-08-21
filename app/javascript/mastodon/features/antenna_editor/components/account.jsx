@@ -6,7 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
-import { removeFromAntennaEditor, addToAntennaEditor } from '../../../actions/antennas';
+import { removeFromAntennaEditor, addToAntennaEditor, removeExcludeFromAntennaEditor, addExcludeToAntennaEditor } from '../../../actions/antennas';
 import { Avatar } from '../../../components/avatar';
 import { DisplayName } from '../../../components/display_name';
 import { IconButton } from '../../../components/icon_button';
@@ -20,9 +20,9 @@ const messages = defineMessages({
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  const mapStateToProps = (state, { accountId, added }) => ({
+  const mapStateToProps = (state, { accountId, added, isExclude }) => ({
     account: getAccount(state, accountId),
-    added: typeof added === 'undefined' ? state.getIn(['antennaEditor', 'accounts', 'items']).includes(accountId) : added,
+    added: typeof added === 'undefined' ? state.getIn(['antennaEditor', isExclude ? 'excludeAccounts' : 'accounts', 'items']).includes(accountId) : added,
   });
 
   return mapStateToProps;
@@ -31,15 +31,20 @@ const makeMapStateToProps = () => {
 const mapDispatchToProps = (dispatch, { accountId }) => ({
   onRemove: () => dispatch(removeFromAntennaEditor(accountId)),
   onAdd: () => dispatch(addToAntennaEditor(accountId)),
+  onExcludeRemove: () => dispatch(removeExcludeFromAntennaEditor(accountId)),
+  onExcludeAdd: () => dispatch(addExcludeToAntennaEditor(accountId)),
 });
 
 class Account extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
+    isExclude: PropTypes.bool.isRequired,
     intl: PropTypes.object.isRequired,
     onRemove: PropTypes.func.isRequired,
     onAdd: PropTypes.func.isRequired,
+    onExcludeRemove: PropTypes.func.isRequired,
+    onExcludeAdd: PropTypes.func.isRequired,
     added: PropTypes.bool,
   };
 
@@ -48,14 +53,14 @@ class Account extends ImmutablePureComponent {
   };
 
   render () {
-    const { account, intl, onRemove, onAdd, added } = this.props;
+    const { account, intl, isExclude, onRemove, onAdd, onExcludeRemove, onExcludeAdd, added } = this.props;
 
     let button;
 
     if (added) {
-      button = <IconButton icon='times' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+      button = <IconButton icon='times' title={intl.formatMessage(messages.remove)} onClick={isExclude ? onExcludeRemove : onRemove} />;
     } else {
-      button = <IconButton icon='plus' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+      button = <IconButton icon='plus' title={intl.formatMessage(messages.add)} onClick={isExclude ? onExcludeAdd : onAdd} />;
     }
 
     return (

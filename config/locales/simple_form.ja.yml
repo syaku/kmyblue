@@ -159,8 +159,8 @@ ja:
         fields:
           name: ラベル
           value: 内容
-        hide_collections: （仮訳）フォロー・フォロワー一覧を隠す
-        locked: （仮訳）新規フォローを承認制にする
+        show_collections: （仮訳）フォロー・フォロワー一覧を公開する
+        unlocked: （仮訳）新規フォローを自動で承認する
       account_alias:
         acct: 引っ越し元のユーザー ID
       account_migration:

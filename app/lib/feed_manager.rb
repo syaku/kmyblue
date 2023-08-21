@@ -265,6 +265,28 @@ class FeedManager
     end
   end
 
+  def clear_from_antenna(antenna, target_account)
+    timeline_key        = key(:antenna, antenna.id)
+    timeline_status_ids = redis.zrange(timeline_key, 0, -1)
+    statuses            = Status.where(id: timeline_status_ids).select(:id, :reblog_of_id, :account_id).to_a
+    reblogged_ids       = Status.where(id: statuses.filter_map(&:reblog_of_id), account: target_account).pluck(:id)
+    with_mentions_ids   = Mention.active.where(status_id: statuses.flat_map { |s| [s.id, s.reblog_of_id] }.compact, account: target_account).pluck(:status_id)
+
+    target_statuses = statuses.select do |status|
+      status.account_id == target_account.id || reblogged_ids.include?(status.reblog_of_id) || with_mentions_ids.include?(status.id) || with_mentions_ids.include?(status.reblog_of_id)
+    end
+
+    target_statuses.each do |status|
+      unpush_from_antenna(antenna, status)
+    end
+  end
+
+  def clear_from_antennas(account, target_account)
+    Antenna.where(account: account).each do |antenna|
+      clear_from_antenna(antenna, target_account)
+    end
+  end
+
   # Populate home feed of account from scratch
   # @param [Account] account
   # @return [void]

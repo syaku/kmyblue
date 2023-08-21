@@ -30,6 +30,7 @@ const mapStateToProps = state => ({
   anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
   isInReply: state.getIn(['compose', 'in_reply_to']) !== null,
   lang: state.getIn(['compose', 'language']),
+  circleId: state.getIn(['compose', 'circle_id']),
 });
 
 const mapDispatchToProps = (dispatch) => ({

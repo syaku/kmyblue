@@ -33,6 +33,7 @@ const messages = defineMessages({
   private_short: { id: 'privacy.private.short', defaultMessage: 'Followers only' },
   limited_short: { id: 'privacy.limited.short', defaultMessage: 'Limited menbers only' },
   mutual_short: { id: 'privacy.mutual.short', defaultMessage: 'Mutual followers only' },
+  circle_short: { id: 'privacy.circle.short', defaultMessage: 'Circle members only' },
   direct_short: { id: 'privacy.direct.short', defaultMessage: 'Mentioned people only' },
   searchability_public_short: { id: 'searchability.public.short', defaultMessage: 'Public' },
   searchability_private_short: { id: 'searchability.unlisted.short', defaultMessage: 'Followers' },
@@ -256,6 +257,7 @@ class DetailedStatus extends ImmutablePureComponent {
       'private': { icon: 'lock', text: intl.formatMessage(messages.private_short) },
       'limited': { icon: 'get-pocket', text: intl.formatMessage(messages.limited_short) },
       'mutual': { icon: 'exchange', text: intl.formatMessage(messages.mutual_short) },
+      'circle': { icon: 'user-circle', text: intl.formatMessage(messages.circle_short) },
       'direct': { icon: 'at', text: intl.formatMessage(messages.direct_short) },
     };
 

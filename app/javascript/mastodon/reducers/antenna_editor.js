@@ -13,11 +13,16 @@ import {
   ANTENNA_ACCOUNTS_FETCH_REQUEST,
   ANTENNA_ACCOUNTS_FETCH_SUCCESS,
   ANTENNA_ACCOUNTS_FETCH_FAIL,
+  ANTENNA_EXCLUDE_ACCOUNTS_FETCH_REQUEST,
+  ANTENNA_EXCLUDE_ACCOUNTS_FETCH_SUCCESS,
+  ANTENNA_EXCLUDE_ACCOUNTS_FETCH_FAIL,
   ANTENNA_EDITOR_SUGGESTIONS_READY,
   ANTENNA_EDITOR_SUGGESTIONS_CLEAR,
   ANTENNA_EDITOR_SUGGESTIONS_CHANGE,
   ANTENNA_EDITOR_ADD_SUCCESS,
   ANTENNA_EDITOR_REMOVE_SUCCESS,
+  ANTENNA_EDITOR_ADD_EXCLUDE_SUCCESS,
+  ANTENNA_EDITOR_REMOVE_EXCLUDE_SUCCESS,
 } from '../actions/antennas';
 
 const initialState = ImmutableMap({
@@ -28,6 +33,12 @@ const initialState = ImmutableMap({
   accountsCount: 0,
 
   accounts: ImmutableMap({
+    items: ImmutableList(),
+    loaded: false,
+    isLoading: false,
+  }),
+
+  excludeAccounts: ImmutableMap({
     items: ImmutableList(),
     loaded: false,
     isLoading: false,
@@ -80,6 +91,16 @@ export default function antennaEditorReducer(state = initialState, action) {
       map.set('loaded', true);
       map.set('items', ImmutableList(action.accounts.map(item => item.id)));
     }));
+  case ANTENNA_EXCLUDE_ACCOUNTS_FETCH_REQUEST:
+    return state.setIn(['excludeAccounts', 'isLoading'], true);
+  case ANTENNA_EXCLUDE_ACCOUNTS_FETCH_FAIL:
+    return state.setIn(['excludeAccounts', 'isLoading'], false);
+  case ANTENNA_EXCLUDE_ACCOUNTS_FETCH_SUCCESS:
+    return state.update('excludeAccounts', accounts => accounts.withMutations(map => {
+      map.set('isLoading', false);
+      map.set('loaded', true);
+      map.set('items', ImmutableList(action.accounts.map(item => item.id)));
+    }));
   case ANTENNA_EDITOR_SUGGESTIONS_CHANGE:
     return state.setIn(['suggestions', 'value'], action.value);
   case ANTENNA_EDITOR_SUGGESTIONS_READY:
@@ -93,6 +114,10 @@ export default function antennaEditorReducer(state = initialState, action) {
     return state.updateIn(['accounts', 'items'], antenna => antenna.unshift(action.accountId));
   case ANTENNA_EDITOR_REMOVE_SUCCESS:
     return state.updateIn(['accounts', 'items'], antenna => antenna.filterNot(item => item === action.accountId));
+  case ANTENNA_EDITOR_ADD_EXCLUDE_SUCCESS:
+    return state.updateIn(['excludeAccounts', 'items'], antenna => antenna.unshift(action.accountId));
+  case ANTENNA_EDITOR_REMOVE_EXCLUDE_SUCCESS:
+    return state.updateIn(['excludeAccounts', 'items'], antenna => antenna.filterNot(item => item === action.accountId));
   default:
     return state;
   }

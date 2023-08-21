@@ -222,7 +222,11 @@ class ActivityPub::TagManager
   end
 
   def limited_scope(status)
-    status.mutual_limited? ? 'Mutual' : ''
+    if status.mutual_limited?
+      'Mutual'
+    else
+      status.circle_limited? ? 'Circle' : ''
+    end
   end
 
   def subscribable_by(account)

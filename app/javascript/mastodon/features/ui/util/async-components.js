@@ -50,6 +50,10 @@ export function Antennas () {
   return import(/* webpackChunkName: "features/antennas" */'../../antennas');
 }
 
+export function Circles () {
+  return import(/* webpackChunkName: "features/circles" */'../../circles');
+}
+
 export function Status () {
   return import(/* webpackChunkName: "features/status" */'../../status');
 }
@@ -168,6 +172,14 @@ export function AntennaAdder () {
 
 export function AntennaEditor () {
   return import(/*webpackChunkName: "features/antenna_editor" */'../../antenna_editor');
+}
+
+export function CircleAdder () {
+  return import(/*webpackChunkName: "features/circle_adder" */'../../circle_adder');
+}
+
+export function CircleEditor () {
+  return import(/*webpackChunkName: "features/circle_editor" */'../../circle_editor');
 }
 
 export function AntennaSetting () {

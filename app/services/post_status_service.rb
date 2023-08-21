@@ -75,18 +75,27 @@ class PostStatusService < BaseService
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
     @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
     @visibility   = :direct if @in_reply_to&.limited_visibility?
-    @visibility   = :limited if @options[:visibility] == 'mutual'
+    @visibility   = :limited if %w(mutual circle).include?(@options[:visibility])
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted || @visibility&.to_sym == :login) && @account.silenced?
     @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:force_visibility] && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
+    @limited_scope = @options[:visibility]&.to_sym if @visibility == :limited
     @searchability = searchability
     @searchability = :private if @account.silenced? && @searchability&.to_sym == :public
     @markdown     = @options[:markdown] || false
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
     @reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
+    load_circle
     process_sensitive_words
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
+  end
+
+  def load_circle
+    return unless @options[:visibility] == 'circle'
+
+    @circle = @options[:circle_id].present? && Circle.find(@options[:circle_id])
+    raise ArgumentError if @circle.nil?
   end
 
   def process_sensitive_words
@@ -115,7 +124,7 @@ class PostStatusService < BaseService
 
   def process_status!
     @status = @account.statuses.new(status_attributes)
-    process_mentions_service.call(@status, limited_type: @status.limited_visibility? ? 'mutual' : '', save_records: false)
+    process_mentions_service.call(@status, limited_type: @status.limited_visibility? ? @limited_scope : '', circle: @circle, save_records: false)
     safeguard_mentions!(@status)
 
     UpdateStatusExpirationService.new.call(@status)
@@ -248,7 +257,7 @@ class PostStatusService < BaseService
       spoiler_text: @options[:spoiler_text] || '',
       markdown: @markdown,
       visibility: @visibility,
-      limited_scope: @visibility == :limited ? :mutual : :none,
+      limited_scope: @limited_scope || :none,
       searchability: @searchability,
       language: valid_locale_cascade(@options[:language], @account.user&.preferred_posting_language, I18n.default_locale),
       application: @options[:application],
