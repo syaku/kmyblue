@@ -107,7 +107,7 @@ class Circles extends ImmutablePureComponent {
         >
           {circles.map(circle =>
             (<div key={circle.get('id')} className='circle-item'>
-              <ColumnLink to={`#`} data-id={circle.get('id')} onClick={this.handleEditClick} icon='user-circle' text={circle.get('title')} />,
+              <ColumnLink to={`#`} data-id={circle.get('id')} onClick={this.handleEditClick} icon='user-circle' text={circle.get('title')} />
               <IconButton icon='trash' data_id={circle.get('id')} onClick={this.handleRemoveClick} />
             </div>)
           )}

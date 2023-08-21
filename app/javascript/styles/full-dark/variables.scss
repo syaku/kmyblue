@@ -40,7 +40,7 @@ $error-value-color: $error-red !default;
 $ui-base-color: $classic-base-color !default; // Darkest
 $ui-base-lighter-color: #969fbc !default; // Lighter darkest
 $ui-primary-color: $classic-primary-color !default; // Lighter
-$ui-secondary-color: lighten($classic-base-color, 12%) !default; // Lightest
+$ui-secondary-color: $classic-secondary-color !default; // Lightest
 $ui-highlight-color: $classic-highlight-color !default;
 $ui-button-color: $white !default;
 $ui-button-background-color: $blurple-500 !default;
