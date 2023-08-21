@@ -32,10 +32,10 @@ class RadioPanel extends PureComponent {
     return (
       <div className='setting-radio-panel'>
         {values.map((val) => (
-          <div className={classNames('setting-radio-panel__item', {'setting-radio-panel__item__active': value.get('value') === val.get('value')})}
-               key={val.get('value')} onClick={this.handleChange} data-value={val.get('value')}>
+          <button className={classNames('setting-radio-panel__item', {'setting-radio-panel__item__active': value.get('value') === val.get('value')})}
+                  key={val.get('value')} onClick={this.handleChange} data-value={val.get('value')}>
             {val.get('label')}
-          </div>
+          </button>
         ))}
       </div>
     );
