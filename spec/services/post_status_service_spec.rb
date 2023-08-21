@@ -168,7 +168,7 @@ RSpec.describe PostStatusService, type: :service do
     status = subject.call(account, text: 'test status update')
 
     expect(ProcessMentionsService).to have_received(:new)
-    expect(mention_service).to have_received(:call).with(status, limited_type: '', save_records: false)
+    expect(mention_service).to have_received(:call).with(status, limited_type: '', circle: nil, save_records: false)
   end
 
   it 'mutual visibility' do
