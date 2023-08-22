@@ -12,7 +12,7 @@ import { Icon }  from 'mastodon/components/icon';
 import { fetchCircleSuggestions, clearCircleSuggestions, changeCircleSuggestions } from '../../../actions/circles';
 
 const messages = defineMessages({
-  search: { id: 'circles.search', defaultMessage: 'Search among people you follow' },
+  search: { id: 'circles.search', defaultMessage: 'Search among people follow you' },
 });
 
 const mapStateToProps = state => ({
