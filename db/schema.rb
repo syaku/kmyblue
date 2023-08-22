@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_21_061713) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_22_041804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -262,6 +262,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_061713) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["account_id"], name: "index_antenna_accounts_on_account_id"
+    t.index ["antenna_id", "account_id"], name: "index_antenna_accounts_on_antenna_id_and_account_id", unique: true
     t.index ["antenna_id"], name: "index_antenna_accounts_on_antenna_id"
     t.index ["exclude"], name: "index_antenna_accounts_on_exclude"
   end
@@ -272,6 +273,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_061713) do
     t.boolean "exclude", default: false, null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["antenna_id", "name"], name: "index_antenna_domains_on_antenna_id_and_name", unique: true
     t.index ["antenna_id"], name: "index_antenna_domains_on_antenna_id"
     t.index ["exclude"], name: "index_antenna_domains_on_exclude"
     t.index ["name"], name: "index_antenna_domains_on_name"
@@ -283,6 +285,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_21_061713) do
     t.boolean "exclude", default: false, null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.index ["antenna_id", "tag_id"], name: "index_antenna_tags_on_antenna_id_and_tag_id", unique: true
     t.index ["antenna_id"], name: "index_antenna_tags_on_antenna_id"
     t.index ["exclude"], name: "index_antenna_tags_on_exclude"
     t.index ["tag_id"], name: "index_antenna_tags_on_tag_id"

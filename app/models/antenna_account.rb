@@ -15,14 +15,11 @@ class AntennaAccount < ApplicationRecord
   belongs_to :antenna
   belongs_to :account
 
-  validate :duplicate_account
   validate :limit_per_antenna
 
-  private
+  validates :account_id, uniqueness: { scope: :antenna_id }
 
-  def duplicate_account
-    raise Mastodon::ValidationError, I18n.t('antennas.errors.duplicate_account') if AntennaAccount.exists?(antenna_id: antenna_id, account_id: account_id, exclude: exclude)
-  end
+  private
 
   def limit_per_antenna
     raise Mastodon::ValidationError, I18n.t('antennas.errors.limit.accounts') if AntennaAccount.where(antenna_id: antenna_id).count >= Antenna::ACCOUNTS_PER_ANTENNA_LIMIT

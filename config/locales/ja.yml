@@ -1023,8 +1023,6 @@ ja:
       keyword: キーワード
       tag: ハッシュタグ
     errors:
-      duplicate_domain: すでに同じドメインが登録されています
-      duplicate_keyword: すでに同じキーワードが登録されています
       empty_contexts: 絞り込み条件が1つも指定されていないため無効です（除外条件はカウントされません）
       invalid_list_owner: これはあなたのリストではありません
       limit:

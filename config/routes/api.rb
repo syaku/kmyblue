@@ -107,6 +107,11 @@ namespace :api, format: false do
     resources :endorsements, only: [:index]
     resources :markers, only: [:index, :create]
 
+    namespace :profile do
+      resource :avatar, only: :destroy
+      resource :header, only: :destroy
+    end
+
     namespace :apps do
       get :verify_credentials, to: 'credentials#show'
     end
@@ -175,6 +180,7 @@ namespace :api, format: false do
       resources :following, only: :index, controller: 'accounts/following_accounts'
       resources :lists, only: :index, controller: 'accounts/lists'
       resources :antennas, only: :index, controller: 'accounts/antennas'
+      resources :circles, only: :index, controller: 'accounts/circles'
       resources :identity_proofs, only: :index, controller: 'accounts/identity_proofs'
       resources :featured_tags, only: :index, controller: 'accounts/featured_tags'
 

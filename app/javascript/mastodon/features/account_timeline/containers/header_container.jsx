@@ -173,6 +173,15 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
+  onAddToCircle (account) {
+    dispatch(openModal({
+      modalType: 'CIRCLE_ADDER',
+      modalProps: {
+        accountId: account.get('id'),
+      },
+    }));
+  },
+
   onChangeLanguages (account) {
     dispatch(openModal({
       modalType: 'SUBSCRIBED_LANGUAGES',
