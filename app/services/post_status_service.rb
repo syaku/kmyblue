@@ -169,7 +169,7 @@ class PostStatusService < BaseService
   end
 
   def postprocess_status!
-    @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym)
+    @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym) && @status.visibility.to_s != @account.user&.setting_default_privacy
 
     process_hashtags_service.call(@status)
     ProcessReferencesWorker.perform_async(@status.id, @reference_ids, [])
