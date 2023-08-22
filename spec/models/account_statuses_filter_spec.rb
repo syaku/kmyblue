@@ -47,11 +47,13 @@ RSpec.describe AccountStatusesFilter do
       status!(:login)
       status!(:private)
       status!(:direct)
+      status!(:limited)
       status_with_parent!(:public)
       status_with_reblog!(:public)
       status_with_tag!(:public, tag)
       status_with_mention!(:direct)
       status_with_media_attachment!(:public)
+      status_with_mention!(:limited)
     end
 
     shared_examples 'filter params' do
@@ -123,7 +125,7 @@ RSpec.describe AccountStatusesFilter do
       let(:current_account) { account }
 
       it 'returns everything' do
-        expect(subject.results.pluck(:visibility).uniq).to match_array %w(direct private login unlisted public_unlisted public)
+        expect(subject.results.pluck(:visibility).uniq).to match_array %w(direct private login unlisted public_unlisted public limited)
       end
 
       it 'returns replies' do
@@ -161,6 +163,30 @@ RSpec.describe AccountStatusesFilter do
 
         it 'returns the direct status' do
           expect(subject.results.pluck(:id)).to include(direct_status.id)
+        end
+      end
+
+      context 'when there is a direct status mentioning other user' do
+        let!(:direct_status) { status_with_mention!(:direct) }
+
+        it 'not returns the direct status' do
+          expect(subject.results.pluck(:id)).to_not include(direct_status.id)
+        end
+      end
+
+      context 'when there is a limited status mentioning the non-follower' do
+        let!(:limited_status) { status_with_mention!(:limited, current_account) }
+
+        it 'returns the limited status' do
+          expect(subject.results.pluck(:id)).to include(limited_status.id)
+        end
+      end
+
+      context 'when there is a limited status mentioning other user' do
+        let!(:limited_status) { status_with_mention!(:limited) }
+
+        it 'not returns the limited status' do
+          expect(subject.results.pluck(:id)).to_not include(limited_status.id)
         end
       end
 
