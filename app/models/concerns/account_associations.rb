@@ -52,6 +52,10 @@ module AccountAssociations
     has_many :antenna_accounts, inverse_of: :account, dependent: :destroy
     has_many :joined_antennas, class_name: 'Antenna', through: :antenna_accounts, source: :antenna
 
+    # Circles (that the account is on, not owned by the account)
+    has_many :circle_accounts, inverse_of: :account, dependent: :destroy
+    has_many :joined_circles, class_name: 'Circle', through: :circle_accounts, source: :circle
+
     # Lists (that the account is on, not owned by the account)
     has_many :list_accounts, inverse_of: :account, dependent: :destroy
     has_many :lists, through: :list_accounts
