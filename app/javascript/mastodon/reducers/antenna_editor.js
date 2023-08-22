@@ -38,12 +38,6 @@ const initialState = ImmutableMap({
     isLoading: false,
   }),
 
-  excludeAccounts: ImmutableMap({
-    items: ImmutableList(),
-    loaded: false,
-    isLoading: false,
-  }),
-
   suggestions: ImmutableMap({
     value: '',
     items: ImmutableList(),
@@ -92,11 +86,11 @@ export default function antennaEditorReducer(state = initialState, action) {
       map.set('items', ImmutableList(action.accounts.map(item => item.id)));
     }));
   case ANTENNA_EXCLUDE_ACCOUNTS_FETCH_REQUEST:
-    return state.setIn(['excludeAccounts', 'isLoading'], true);
+    return state.setIn(['accounts', 'isLoading'], true);
   case ANTENNA_EXCLUDE_ACCOUNTS_FETCH_FAIL:
-    return state.setIn(['excludeAccounts', 'isLoading'], false);
+    return state.setIn(['accounts', 'isLoading'], false);
   case ANTENNA_EXCLUDE_ACCOUNTS_FETCH_SUCCESS:
-    return state.update('excludeAccounts', accounts => accounts.withMutations(map => {
+    return state.update('accounts', accounts => accounts.withMutations(map => {
       map.set('isLoading', false);
       map.set('loaded', true);
       map.set('items', ImmutableList(action.accounts.map(item => item.id)));
@@ -111,13 +105,11 @@ export default function antennaEditorReducer(state = initialState, action) {
       map.set('value', '');
     }));
   case ANTENNA_EDITOR_ADD_SUCCESS:
+  case ANTENNA_EDITOR_ADD_EXCLUDE_SUCCESS:
     return state.updateIn(['accounts', 'items'], antenna => antenna.unshift(action.accountId));
   case ANTENNA_EDITOR_REMOVE_SUCCESS:
-    return state.updateIn(['accounts', 'items'], antenna => antenna.filterNot(item => item === action.accountId));
-  case ANTENNA_EDITOR_ADD_EXCLUDE_SUCCESS:
-    return state.updateIn(['excludeAccounts', 'items'], antenna => antenna.unshift(action.accountId));
   case ANTENNA_EDITOR_REMOVE_EXCLUDE_SUCCESS:
-    return state.updateIn(['excludeAccounts', 'items'], antenna => antenna.filterNot(item => item === action.accountId));
+    return state.updateIn(['accounts', 'items'], antenna => antenna.filterNot(item => item === action.accountId));
   default:
     return state;
   }

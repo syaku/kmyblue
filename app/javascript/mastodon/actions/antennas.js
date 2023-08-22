@@ -122,6 +122,10 @@ export const ANTENNA_ADDER_ANTENNAS_FETCH_REQUEST = 'ANTENNA_ADDER_ANTENNAS_FETC
 export const ANTENNA_ADDER_ANTENNAS_FETCH_SUCCESS = 'ANTENNA_ADDER_ANTENNAS_FETCH_SUCCESS';
 export const ANTENNA_ADDER_ANTENNAS_FETCH_FAIL    = 'ANTENNA_ADDER_ANTENNAS_FETCH_FAIL';
 
+export const ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_REQUEST = 'ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_REQUEST';
+export const ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_SUCCESS = 'ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_SUCCESS';
+export const ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_FAIL    = 'ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_FAIL';
+
 export const fetchAntenna = id => (dispatch, getState) => {
   if (getState().getIn(['antennas', id])) {
     return;
@@ -905,6 +909,15 @@ export const setupAntennaAdder = accountId => (dispatch, getState) => {
   dispatch(fetchAccountAntennas(accountId));
 };
 
+export const setupExcludeAntennaAdder = accountId => (dispatch, getState) => {
+  dispatch({
+    type: ANTENNA_ADDER_SETUP,
+    account: getState().getIn(['accounts', accountId]),
+  });
+  dispatch(fetchAntennas());
+  dispatch(fetchExcludeAccountAntennas(accountId));
+};
+
 export const fetchAccountAntennas = accountId => (dispatch, getState) => {
   dispatch(fetchAccountAntennasRequest(accountId));
 
@@ -930,11 +943,44 @@ export const fetchAccountAntennasFail = (id, err) => ({
   err,
 });
 
+export const fetchExcludeAccountAntennas = accountId => (dispatch, getState) => {
+  dispatch(fetchExcludeAccountAntennasRequest(accountId));
+
+  api(getState).get(`/api/v1/accounts/${accountId}/exclude_antennas`)
+    .then(({ data }) => dispatch(fetchExcludeAccountAntennasSuccess(accountId, data)))
+    .catch(err => dispatch(fetchExcludeAccountAntennasFail(accountId, err)));
+};
+
+export const fetchExcludeAccountAntennasRequest = id => ({
+  type:ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_REQUEST,
+  id,
+});
+
+export const fetchExcludeAccountAntennasSuccess = (id, antennas) => ({
+  type: ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_SUCCESS,
+  id,
+  antennas,
+});
+
+export const fetchExcludeAccountAntennasFail = (id, err) => ({
+  type: ANTENNA_ADDER_EXCLUDE_ANTENNAS_FETCH_FAIL,
+  id,
+  err,
+});
+
 export const addToAntennaAdder = antennaId => (dispatch, getState) => {
   dispatch(addToAntenna(antennaId, getState().getIn(['antennaAdder', 'accountId'])));
 };
 
 export const removeFromAntennaAdder = antennaId => (dispatch, getState) => {
   dispatch(removeFromAntenna(antennaId, getState().getIn(['antennaAdder', 'accountId'])));
+};
+
+export const addExcludeToAntennaAdder = antennaId => (dispatch, getState) => {
+  dispatch(addExcludeToAntenna(antennaId, getState().getIn(['antennaAdder', 'accountId'])));
+};
+
+export const removeExcludeFromAntennaAdder = antennaId => (dispatch, getState) => {
+  dispatch(removeExcludeFromAntenna(antennaId, getState().getIn(['antennaAdder', 'accountId'])));
 };
 

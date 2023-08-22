@@ -28,6 +28,7 @@ export default class Header extends ImmutablePureComponent {
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     onAddToAntenna: PropTypes.func.isRequired,
+    onAddToExcludeAntenna: PropTypes.func.isRequired,
     onAddToCircle: PropTypes.func.isRequired,
     onChangeLanguages: PropTypes.func.isRequired,
     onInteractionModal: PropTypes.func.isRequired,
@@ -102,6 +103,10 @@ export default class Header extends ImmutablePureComponent {
     this.props.onAddToAntenna(this.props.account);
   };
 
+  handleAddToExcludeAntenna = () => {
+    this.props.onAddToExcludeAntenna(this.props.account);
+  };
+
   handleAddToCircle = () => {
     this.props.onAddToCircle(this.props.account);
   };
@@ -149,6 +154,7 @@ export default class Header extends ImmutablePureComponent {
           onEndorseToggle={this.handleEndorseToggle}
           onAddToList={this.handleAddToList}
           onAddToAntenna={this.handleAddToAntenna}
+          onAddToExcludeAntenna={this.handleAddToExcludeAntenna}
           onAddToCircle={this.handleAddToCircle}
           onEditAccountNote={this.handleEditAccountNote}
           onChangeLanguages={this.handleChangeLanguages}

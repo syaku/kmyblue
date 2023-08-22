@@ -169,6 +169,17 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       modalType: 'ANTENNA_ADDER',
       modalProps: {
         accountId: account.get('id'),
+        isExclude: false,
+      },
+    }));
+  },
+
+  onAddToExcludeAntenna (account) {
+    dispatch(openModal({
+      modalType: 'ANTENNA_ADDER',
+      modalProps: {
+        accountId: account.get('id'),
+        isExclude: true,
       },
     }));
   },
