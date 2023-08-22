@@ -25,7 +25,12 @@ import {
   removeKeywordFromAntenna,
   addKeywordToAntenna,
   removeExcludeKeywordFromAntenna,
-  addExcludeKeywordToAntenna
+  addExcludeKeywordToAntenna,
+  fetchAntennaTags,
+  removeTagFromAntenna,
+  addTagToAntenna,
+  removeExcludeTagFromAntenna,
+  addExcludeTagToAntenna,
 } from 'mastodon/actions/antennas';
 import { addColumn, removeColumn, moveColumn } from 'mastodon/actions/columns';
 import { fetchLists } from 'mastodon/actions/lists';
@@ -48,8 +53,10 @@ const messages = defineMessages({
   placeholder: { id: 'antennas.select.placeholder', defaultMessage: 'Select list' },
   addDomainLabel: { id: 'antennas.add_domain_placeholder', defaultMessage: 'New domain' },
   addKeywordLabel: { id: 'antennas.add_keyword_placeholder', defaultMessage: 'New keyword' },
+  addTagLabel: { id: 'antennas.add_tag_placeholder', defaultMessage: 'New tag' },
   addDomainTitle: { id: 'antennas.add_domain', defaultMessage: 'Add domain' },
   addKeywordTitle: { id: 'antennas.add_keyword', defaultMessage: 'Add keyword' },
+  addTagTitle: { id: 'antennas.add_tag', defaultMessage: 'Add tag' },
   accounts: { id: 'antennas.accounts', defaultMessage: '{count} accounts' },
   domains: { id: 'antennas.domains', defaultMessage: '{count} domains' },
   tags: { id: 'antennas.tags', defaultMessage: '{count} tags' },
@@ -62,6 +69,7 @@ const mapStateToProps = (state, props) => ({
   lists: state.get('lists'),
   domains: state.getIn(['antennas', props.params.id, 'domains']) || ImmutableMap(),
   keywords: state.getIn(['antennas', props.params.id, 'keywords']) || ImmutableMap(),
+  tags: state.getIn(['antennas', props.params.id, 'tags']) || ImmutableMap(),
 });
 
 class AntennaSetting extends PureComponent {
@@ -79,6 +87,7 @@ class AntennaSetting extends PureComponent {
     lists: ImmutablePropTypes.map,
     domains: ImmutablePropTypes.map,
     keywords: ImmutablePropTypes.map,
+    tags: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
   };
 
@@ -87,6 +96,8 @@ class AntennaSetting extends PureComponent {
     excludeDomainName: '',
     keywordName: '',
     excludeKeywordName: '',
+    tagName: '',
+    excludeTagName: '',
     rangeRadioValue: null,
     contentRadioValue: null,
   };
@@ -118,6 +129,7 @@ class AntennaSetting extends PureComponent {
     dispatch(fetchAntenna(id));
     dispatch(fetchAntennaDomains(id));
     dispatch(fetchAntennaKeywords(id));
+    dispatch(fetchAntennaTags(id));
     dispatch(fetchLists());
   }
 
@@ -130,6 +142,7 @@ class AntennaSetting extends PureComponent {
       dispatch(fetchAntennaKeywords(id));
       dispatch(fetchAntennaDomains(id));
       dispatch(fetchAntennaKeywords(id));
+      dispatch(fetchAntennaTags(id));
       dispatch(fetchLists());
     }
   }
@@ -238,6 +251,15 @@ class AntennaSetting extends PureComponent {
 
   onKeywordRemove = (value) => this.props.dispatch(removeKeywordFromAntenna(this.props.params.id, value));
 
+  onTagNameChanged = (value) => this.setState({ tagName: value });
+
+  onTagAdd = () => {
+    this.props.dispatch(addTagToAntenna(this.props.params.id, this.state.tagName));
+    this.setState({ tagName: '' });
+  };
+
+  onTagRemove = (value) => this.props.dispatch(removeTagFromAntenna(this.props.params.id, value));
+
   onExcludeDomainNameChanged = (value) => this.setState({ excludeDomainName: value });
 
   onExcludeDomainAdd = () => {
@@ -256,8 +278,17 @@ class AntennaSetting extends PureComponent {
 
   onExcludeKeywordRemove = (value) => this.props.dispatch(removeExcludeKeywordFromAntenna(this.props.params.id, value));
 
+  onExcludeTagNameChanged = (value) => this.setState({ excludeTagName: value });
+
+  onExcludeTagAdd = () => {
+    this.props.dispatch(addExcludeTagToAntenna(this.props.params.id, this.state.excludeTagName));
+    this.setState({ excludeTagName: '' });
+  };
+
+  onExcludeTagRemove = (value) => this.props.dispatch(removeExcludeTagFromAntenna(this.props.params.id, value));
+
   render () {
-    const { columnId, multiColumn, antenna, lists, domains, keywords, intl } = this.props;
+    const { columnId, multiColumn, antenna, lists, domains, keywords, tags, intl } = this.props;
     const { id } = this.props.params;
     const pinned = !!columnId;
     const title  = antenna ? antenna.get('title') : id;
@@ -422,6 +453,19 @@ class AntennaSetting extends PureComponent {
 
               <RadioPanel values={contentRadioValues} value={contentRadioValue} onChange={this.onContentRadioChanged} />
 
+              {contentRadioValue.get('value') === 'tags' && (
+                <TextList
+                  onChange={this.onTagNameChanged}
+                  onAdd={this.onTagAdd}
+                  onRemove={this.onTagRemove}
+                  value={this.state.tagName}
+                  values={tags.get('tags') || ImmutableList()}
+                  icon='hashtag'
+                  label={intl.formatMessage(messages.addTagLabel)}
+                  title={intl.formatMessage(messages.addTagTitle)}
+                  />
+              )}
+
               {contentRadioValue.get('value') === 'keywords' && (
                 <TextList
                   onChange={this.onKeywordNameChanged}
@@ -462,6 +506,17 @@ class AntennaSetting extends PureComponent {
                 label={intl.formatMessage(messages.addKeywordLabel)}
                 title={intl.formatMessage(messages.addKeywordTitle)}
                 />
+                <h3><FormattedMessage id='antennas.exclude_tags' defaultMessage='Exclude tags' /></h3>
+                <TextList
+                  onChange={this.onExcludeTagNameChanged}
+                  onAdd={this.onExcludeTagAdd}
+                  onRemove={this.onExcludeTagRemove}
+                  value={this.state.excludeTagName}
+                  values={tags.get('exclude_tags') || ImmutableList()}
+                  icon='hashtag'
+                  label={intl.formatMessage(messages.addTagLabel)}
+                  title={intl.formatMessage(messages.addTagTitle)}
+                  />
             </>
           )}
         </div>

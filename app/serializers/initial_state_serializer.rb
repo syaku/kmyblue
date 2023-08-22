@@ -73,6 +73,7 @@ class InitialStateSerializer < ActiveModel::Serializer
     if object.current_account
       store[:me]                    = object.current_account.id.to_s
       store[:default_privacy]       = object.visibility || object.current_account.user.setting_default_privacy
+      store[:stay_privacy]          = object.current_account.user.setting_stay_privacy
       store[:default_searchability] = object.searchability || object.current_account.user.setting_default_searchability
       store[:default_sensitive]     = object.current_account.user.setting_default_sensitive
       store[:default_language]      = object.current_account.user.preferred_posting_language

@@ -28,6 +28,9 @@
         = ff.input :default_language, collection: [nil] + filterable_languages, wrapper: :with_label, label_method: ->(locale) { locale.nil? ? I18n.t('statuses.default_language') : native_locale_name(locale) }, required: false, include_blank: false, hint: false, label: I18n.t('simple_form.labels.defaults.setting_default_language')
 
     .fields-group
+      = ff.input :stay_privacy, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_stay_privacy')
+
+    .fields-group
       = ff.input :'web.enable_login_privacy', wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_enable_login_privacy'), hint: false
 
     .fields-group

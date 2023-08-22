@@ -95,7 +95,7 @@ class PostStatusService < BaseService
     return unless @options[:visibility] == 'circle'
 
     @circle = @options[:circle_id].present? && Circle.find(@options[:circle_id])
-    raise ArgumentError if @circle.nil?
+    raise ArgumentError if @circle.nil? || @circle.account_id != @account.id
   end
 
   def process_sensitive_words
@@ -169,6 +169,8 @@ class PostStatusService < BaseService
   end
 
   def postprocess_status!
+    @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym) && @status.visibility.to_s != @account.user&.setting_default_privacy
+
     process_hashtags_service.call(@status)
     ProcessReferencesWorker.perform_async(@status.id, @reference_ids, [])
     Trends.tags.register(@status)

@@ -24,8 +24,8 @@ import NewCircleForm from './components/new_circle_form';
 const messages = defineMessages({
   heading: { id: 'column.circles', defaultMessage: 'Circles' },
   subheading: { id: 'circles.subheading', defaultMessage: 'Your circles' },
-  deleteMessage: { id: 'circles.subheading', defaultMessage: 'Your circles' },
-  deleteConfirm: { id: 'circles.subheading', defaultMessage: 'Your circles' },
+  deleteMessage: { id: 'confirmations.delete_circle.message', defaultMessage: 'Are you sure you want to permanently delete this circle?' },
+  deleteConfirm: { id: 'confirmations.delete_circle.confirm', defaultMessage: 'Delete' },
 });
 
 const getOrderedCircles = createSelector([state => state.get('circles')], circles => {

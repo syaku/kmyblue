@@ -171,6 +171,10 @@ module HasUserSettings
     settings['default_privacy'] || (account.locked? ? 'private' : 'public')
   end
 
+  def setting_stay_privacy
+    settings['stay_privacy']
+  end
+
   def setting_default_reblog_privacy
     settings['default_reblog_privacy'] || 'unset'
   end

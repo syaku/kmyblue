@@ -16,6 +16,7 @@ RSpec.describe PublicFeed do
       let!(:unlisted_status)        { Fabricate(:status, visibility: :unlisted) }
       let!(:private_status)         { Fabricate(:status, visibility: :private) }
       let!(:direct_status)          { Fabricate(:status, visibility: :direct) }
+      let!(:limited_status)         { Fabricate(:status, visibility: :limited) }
 
       it 'without user' do
         expect(subject).to include(public_status.id)
@@ -23,6 +24,7 @@ RSpec.describe PublicFeed do
         expect(subject).to_not include(unlisted_status.id)
         expect(subject).to_not include(private_status.id)
         expect(subject).to_not include(direct_status.id)
+        expect(subject).to_not include(limited_status.id)
       end
 
       context 'with user' do
@@ -34,6 +36,7 @@ RSpec.describe PublicFeed do
           expect(subject).to_not include(unlisted_status.id)
           expect(subject).to_not include(private_status.id)
           expect(subject).to_not include(direct_status.id)
+          expect(subject).to_not include(limited_status.id)
         end
       end
     end

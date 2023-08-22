@@ -19,6 +19,11 @@ import {
   ANTENNA_EDITOR_ADD_EXCLUDE_KEYWORD_SUCCESS,
   ANTENNA_EDITOR_REMOVE_EXCLUDE_KEYWORD_SUCCESS,
   ANTENNA_EDITOR_FETCH_KEYWORDS_SUCCESS,
+  ANTENNA_EDITOR_ADD_TAG_SUCCESS,
+  ANTENNA_EDITOR_REMOVE_TAG_SUCCESS,
+  ANTENNA_EDITOR_ADD_EXCLUDE_TAG_SUCCESS,
+  ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_SUCCESS,
+  ANTENNA_EDITOR_FETCH_TAGS_SUCCESS,
 } from '../actions/antennas';
 
 const initialState = ImmutableMap();
@@ -85,6 +90,16 @@ export default function antennas(state = initialState, action) {
     return state.updateIn([action.antennaId, 'keywords', 'exclude_keywords'], keywords => (ImmutableList(keywords || [])).filterNot(keyword => keyword === action.keyword));
   case ANTENNA_EDITOR_FETCH_KEYWORDS_SUCCESS:
     return state.setIn([action.id, 'keywords'], ImmutableMap({ keywords: ImmutableList(action.keywords.keywords), exclude_keywords: ImmutableList(action.keywords.exclude_keywords) }));
+  case ANTENNA_EDITOR_ADD_TAG_SUCCESS:
+    return state.setIn([action.antennaId, 'tags_count'], state.getIn([action.antennaId, 'tags_count']) + 1).updateIn([action.antennaId, 'tags', 'tags'], tags => (ImmutableList(tags || [])).push(action.tag));
+  case ANTENNA_EDITOR_REMOVE_TAG_SUCCESS:
+    return state.setIn([action.antennaId, 'tags_count'], state.getIn([action.antennaId, 'tags_count']) - 1).updateIn([action.antennaId, 'tags', 'tags'], tags => (ImmutableList(tags || [])).filterNot(tag => tag === action.tag));
+  case ANTENNA_EDITOR_ADD_EXCLUDE_TAG_SUCCESS:
+    return state.updateIn([action.antennaId, 'tags', 'exclude_tags'], tags => (ImmutableList(tags || [])).push(action.tag));
+  case ANTENNA_EDITOR_REMOVE_EXCLUDE_TAG_SUCCESS:
+    return state.updateIn([action.antennaId, 'tags', 'exclude_tags'], tags => (ImmutableList(tags || [])).filterNot(tag => tag === action.tag));
+  case ANTENNA_EDITOR_FETCH_TAGS_SUCCESS:
+    return state.setIn([action.id, 'tags'], ImmutableMap({ tags: ImmutableList(action.tags.tags), exclude_tags: ImmutableList(action.tags.exclude_tags) }));
   default:
     return state;
   }
