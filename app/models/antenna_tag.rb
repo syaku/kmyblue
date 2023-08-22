@@ -15,14 +15,11 @@ class AntennaTag < ApplicationRecord
   belongs_to :antenna
   belongs_to :tag
 
-  validate :duplicate_tag
   validate :limit_per_antenna
 
-  private
+  validates :tag_id, uniqueness: { scope: :antenna_id }
 
-  def duplicate_tag
-    raise Mastodon::ValidationError, I18n.t('antennas.errors.duplicate_tag') if AntennaTag.exists?(antenna_id: antenna_id, tag_id: tag_id, exclude: exclude)
-  end
+  private
 
   def limit_per_antenna
     raise Mastodon::ValidationError, I18n.t('antennas.errors.limit.tags') if AntennaTag.where(antenna_id: antenna_id).count >= Antenna::TAGS_PER_ANTENNA_LIMIT
