@@ -6,9 +6,12 @@ class ActivityPub::FetchInstanceInfoWorker
   include Redisable
   include Lockable
 
+  sidekiq_options queue: 'push', retry: 2
+
   class Error < StandardError; end
   class GoneError < Error; end
   class RequestError < Error; end
+  class DeadError < Error; end
 
   SUPPORTED_NOTEINFO_RELS = ['http://nodeinfo.diaspora.software/ns/schema/2.0', 'http://nodeinfo.diaspora.software/ns/schema/2.1'].freeze
 
@@ -22,6 +25,8 @@ class ActivityPub::FetchInstanceInfoWorker
 
       update_info!(link)
     end
+  rescue ActivityPub::FetchInstanceInfoWorker::DeadError
+    true
   end
 
   private
@@ -65,6 +70,8 @@ class ActivityPub::FetchInstanceInfoWorker
         body_to_json(response.body_with_limit)
       elsif response.code == 410
         raise ActivityPub::FetchInstanceInfoWorker::GoneError, "#{@instance.domain} is gone from the server"
+      elsif response.code == 404
+        raise ActivityPub::FetchInstanceInfoWorker::DeadError, "Request for #{@instance.domain} returned HTTP #{response.code}"
       else
         raise ActivityPub::FetchInstanceInfoWorker::RequestError, "Request for #{@instance.domain} returned HTTP #{response.code}"
       end
