@@ -127,6 +127,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.searchability           = searchability_from_audience
     @account.dissubscribable         = !subscribable(@account.note)
     @account.settings                = other_settings
+    @account.memorial                = @json['memorial'] || false
   end
 
   def valid_account?

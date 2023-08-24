@@ -583,6 +583,7 @@ class Status extends ImmutablePureComponent {
     }
 
     const {statusContentProps, hashtagBar} = getHashtagBarForStatus(status);
+    const expanded = !status.get('hidden')
 
     return (
       <HotKeys handlers={handlers}>
@@ -611,7 +612,7 @@ class Status extends ImmutablePureComponent {
             <StatusContent
               status={status}
               onClick={this.handleClick}
-              expanded={!status.get('hidden')}
+              expanded={expanded}
               onExpandedToggle={this.handleExpandedToggle}
               onTranslate={this.handleTranslate}
               collapsible
@@ -621,7 +622,7 @@ class Status extends ImmutablePureComponent {
 
             {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
 
-            {hashtagBar}
+            {expanded && hashtagBar}
 
             {emojiReactionsBar}
 
