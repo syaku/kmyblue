@@ -125,14 +125,13 @@ function statusToTextMentions(state, status) {
 
 function clearAll(state) {
   return state.withMutations(map => {
-    map.set('id', null);
     map.set('text', '');
     map.set('spoiler', false);
     map.set('spoiler_text', '');
     map.set('markdown', false);
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
-    if (!state.get('stay_privacy') || state.get('in_reply_to') || !state.get('posted_on_this_session')) {
+    if (!state.get('stay_privacy') || state.get('in_reply_to') || !state.get('posted_on_this_session') || state.get('id')) {
       map.set('privacy', state.get('default_privacy'));
       map.set('circle_id', null);
     }
@@ -142,6 +141,7 @@ function clearAll(state) {
     if (!state.get('in_reply_to')) {
       map.set('posted_on_this_session', true);
     }
+    map.set('id', null);
     map.set('in_reply_to', null);
     map.set('searchability', state.get('default_searchability'));
     map.set('sensitive', state.get('default_sensitive'));
