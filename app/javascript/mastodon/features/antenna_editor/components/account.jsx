@@ -20,9 +20,9 @@ const messages = defineMessages({
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  const mapStateToProps = (state, { accountId, added, isExclude }) => ({
+  const mapStateToProps = (state, { accountId, added }) => ({
     account: getAccount(state, accountId),
-    added: typeof added === 'undefined' ? state.getIn(['antennaEditor', isExclude ? 'excludeAccounts' : 'accounts', 'items']).includes(accountId) : added,
+    added: typeof added === 'undefined' ? state.getIn(['antennaEditor', 'accounts', 'items']).includes(accountId) : added,
   });
 
   return mapStateToProps;

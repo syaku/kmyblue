@@ -88,7 +88,7 @@ describe ActivityPub::FetchInstanceInfoWorker do
     end
 
     it 'performs a mastodon instance' do
-      expect { subject.perform('example.com') }.to raise_error(ActivityPub::FetchInstanceInfoWorker::RequestError, 'Request for example.com returned HTTP 404')
+      expect(subject.perform('example.com')).to be true
 
       info = InstanceInfo.find_by(domain: 'example.com')
       expect(info).to be_nil

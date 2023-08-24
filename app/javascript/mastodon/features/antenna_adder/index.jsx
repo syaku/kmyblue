@@ -7,7 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { setupAntennaAdder, resetAntennaAdder } from '../../actions/antennas';
+import { setupAntennaAdder, resetAntennaAdder, setupExcludeAntennaAdder } from '../../actions/antennas';
 import NewAntennaForm from '../antennas/components/new_antenna_form';
 import Account from '../list_adder/components/account';
 
@@ -28,6 +28,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onInitialize: accountId => dispatch(setupAntennaAdder(accountId)),
+  onExcludeInitialize: accountId => dispatch(setupExcludeAntennaAdder(accountId)),
   onReset: () => dispatch(resetAntennaAdder()),
 });
 
@@ -35,16 +36,22 @@ class AntennaAdder extends ImmutablePureComponent {
 
   static propTypes = {
     accountId: PropTypes.string.isRequired,
+    isExclude: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     onInitialize: PropTypes.func.isRequired,
+    onExcludeInitialize: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
     antennaIds: ImmutablePropTypes.list.isRequired,
   };
 
   componentDidMount () {
-    const { onInitialize, accountId } = this.props;
-    onInitialize(accountId);
+    const { isExclude, onInitialize, onExcludeInitialize, accountId } = this.props;
+    if (isExclude) {
+      onExcludeInitialize(accountId);
+    } else {
+      onInitialize(accountId);
+    }
   }
 
   componentWillUnmount () {
@@ -53,7 +60,7 @@ class AntennaAdder extends ImmutablePureComponent {
   }
 
   render () {
-    const { accountId, antennaIds } = this.props;
+    const { accountId, antennaIds, isExclude } = this.props;
 
     return (
       <div className='modal-root__modal list-adder'>
@@ -65,7 +72,7 @@ class AntennaAdder extends ImmutablePureComponent {
 
 
         <div className='list-adder__lists'>
-          {antennaIds.map(antennaId => <Antenna key={antennaId} antennaId={antennaId} />)}
+          {antennaIds.map(antennaId => <Antenna key={antennaId} antennaId={antennaId} isExclude={isExclude} />)}
         </div>
       </div>
     );

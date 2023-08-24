@@ -15,8 +15,8 @@ import Account from './components/account';
 import EditAntennaForm from './components/edit_antenna_form';
 import Search from './components/search';
 
-const mapStateToProps = (state, { isExclude }) => ({
-  accountIds: state.getIn(['antennaEditor', isExclude ? 'excludeAccounts' : 'accounts', 'items']),
+const mapStateToProps = (state) => ({
+  accountIds: state.getIn(['antennaEditor', 'accounts', 'items']),
   searchAccountIds: state.getIn(['antennaEditor', 'suggestions', 'items']),
 });
 

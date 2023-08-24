@@ -59,6 +59,7 @@ const messages = defineMessages({
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   add_or_remove_from_antenna: { id: 'account.add_or_remove_from_antenna', defaultMessage: 'Add or Remove from antennas' },
+  add_or_remove_from_exclude_antenna: { id: 'account.add_or_remove_from_exclude_antenna', defaultMessage: 'Add or Remove from antennas as exclusion' },
   add_or_remove_from_circle: { id: 'account.add_or_remove_from_circle', defaultMessage: 'Add or Remove from circles' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   admin_domain: { id: 'status.admin_domain', defaultMessage: 'Open moderation interface for {domain}' },
@@ -106,6 +107,7 @@ class Header extends ImmutablePureComponent {
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     onAddToAntenna: PropTypes.func.isRequired,
+    onAddToExcludeAntenna: PropTypes.func.isRequired,
     onAddToCircle: PropTypes.func.isRequired,
     onEditAccountNote: PropTypes.func.isRequired,
     onChangeLanguages: PropTypes.func.isRequired,
@@ -332,6 +334,7 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
       }
       menu.push({ text: intl.formatMessage(messages.add_or_remove_from_antenna), action: this.props.onAddToAntenna });
+      menu.push({ text: intl.formatMessage(messages.add_or_remove_from_exclude_antenna), action: this.props.onAddToExcludeAntenna });
       if (account.getIn(['relationship', 'followed_by'])) {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_circle), action: this.props.onAddToCircle });
       }
