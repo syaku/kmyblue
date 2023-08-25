@@ -5,7 +5,7 @@ ja:
         display_name: フルネーム、ハンドルネームなど
         fields: ホームページ、代名詞、年齢など何でも構いません。
         hide_collections: People will not be able to browse through your follows and followers. People that you follow will see that you follow them regardless.
-        indexable: 他のMastodonサーバーの人は誰でもあなたの公開投稿を検索できるようになります。kmyblue内での検索では、この設定は無視され代わりに「検索許可」が適用されます。FedibirdのようなSearchability対応サーバー、Misskey、その他個別にSearchabilityをプロフィールに設定したアカウントの投稿も同様に「検索許可」が優先されます
+        indexable: 他のMastodonサーバーの人は誰でもあなたの公開投稿を検索できるようになります。ただしkmyblue内での検索の場合、この設定は無視され代わりに「検索許可」が適用されます
         locked: People will request to follow you and you will be able to either accept or reject new followers.
         note: '自己紹介には #ハッシュタグ や、ほかのアカウントのユーザー名 (@user) を使用できます'
       account_alias:

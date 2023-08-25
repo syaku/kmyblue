@@ -6,20 +6,22 @@ RSpec.describe DeliveryAntennaService, type: :service do
   subject { described_class.new }
 
   let(:last_active_at) { Time.now.utc }
+  let(:last_active_at_tom) { Time.now.utc }
   let(:visibility) { 'public' }
   let(:searchability) { 'public' }
   let(:domain) { nil }
+  let(:spoiler_text) { '' }
   let(:tags) { Tag.find_or_create_by_names(['hoge']) }
   let(:status) do
     url = domain.present? ? 'https://example.com/status' : nil
-    status = Fabricate(:status, account: alice, visibility: visibility, searchability: searchability, text: 'Hello my body #hoge', url: url)
+    status = Fabricate(:status, account: alice, spoiler_text: spoiler_text, visibility: visibility, searchability: searchability, text: 'Hello my body #hoge', url: url)
     status.tags << tags.first if tags.present?
     status
   end
 
   let!(:alice) { Fabricate(:account, domain: domain, uri: domain ? "https://#{domain}.com/alice" : '') }
   let!(:bob)   { Fabricate(:user, current_sign_in_at: last_active_at).account }
-  let!(:tom)   { Fabricate(:user, current_sign_in_at: last_active_at).account }
+  let!(:tom)   { Fabricate(:user, current_sign_in_at: last_active_at_tom).account }
   let!(:ohagi) { Fabricate(:user, current_sign_in_at: last_active_at).account }
 
   let!(:antenna)       { nil }
@@ -89,12 +91,16 @@ RSpec.describe DeliveryAntennaService, type: :service do
   end
 
   context 'when blocked' do
-    let!(:antenna)       { antenna_with_account(bob, alice) }
     let!(:empty_antenna) { antenna_with_account(ohagi, alice) }
 
-    it 'detecting antenna' do
-      expect(antenna_feed_of(antenna)).to include status.id
+    it 'not detecting antenna' do
+      expect(antenna_feed_of(empty_antenna)).to_not include status.id
     end
+  end
+
+  context 'when non-used' do
+    let(:last_active_at_tom) { Time.now.utc.ago(1.year) }
+    let!(:empty_antenna) { antenna_with_account(tom, alice) }
 
     it 'not detecting antenna' do
       expect(antenna_feed_of(empty_antenna)).to_not include status.id
@@ -129,6 +135,34 @@ RSpec.describe DeliveryAntennaService, type: :service do
   end
 
   context 'with keyword' do
+    let!(:antenna)       { antenna_with_keyword(bob, 'body') }
+    let!(:empty_antenna) { antenna_with_keyword(tom, 'anime') }
+
+    it 'detecting antenna' do
+      expect(antenna_feed_of(antenna)).to include status.id
+    end
+
+    it 'not detecting antenna' do
+      expect(antenna_feed_of(empty_antenna)).to_not include status.id
+    end
+  end
+
+  context 'with keyword and spoiler_text' do
+    let(:spoiler_text)   { 'some self' }
+    let!(:antenna)       { antenna_with_keyword(bob, 'some') }
+    let!(:empty_antenna) { antenna_with_keyword(tom, 'anime') }
+
+    it 'detecting antenna' do
+      expect(antenna_feed_of(antenna)).to include status.id
+    end
+
+    it 'not detecting antenna' do
+      expect(antenna_feed_of(empty_antenna)).to_not include status.id
+    end
+  end
+
+  context 'with keyword and spoiler_text but pick from text' do
+    let(:spoiler_text)   { 'some self' }
     let!(:antenna)       { antenna_with_keyword(bob, 'body') }
     let!(:empty_antenna) { antenna_with_keyword(tom, 'anime') }
 

@@ -14,6 +14,10 @@ module FormattingHelper
   end
   module_function :extract_status_plain_text
 
+  def extract_status_plain_text_with_spoiler_text(status)
+    PlainTextFormatter.new("#{status.spoiler_text}\n#{status.text}", status.local?).to_s
+  end
+
   def status_content_format(status)
     html_aware_format(status.text, status.local?, markdown: status.markdown, preloaded_accounts: [status.account] + (status.respond_to?(:active_mentions) ? status.active_mentions.map(&:account) : []))
   end
