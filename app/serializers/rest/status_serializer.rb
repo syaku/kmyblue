@@ -97,6 +97,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
     ActivityPub::TagManager.instance.url_for(object)
   end
 
+  def language
+    object.language || (current_user? && current_user.locale)
+  end
+
   def status_reference_ids
     @status_reference_ids = object.reference_objects.pluck(:target_status_id)
   end
