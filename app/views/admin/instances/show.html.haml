@@ -1,6 +1,6 @@
 - content_for :page_title do
   = @instance.domain
-  
+
 - if @instance.instance_info.present?
   %p
     = "#{@instance.instance_info.software} #{@instance.instance_info.version}"
