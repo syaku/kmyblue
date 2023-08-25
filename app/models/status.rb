@@ -268,6 +268,10 @@ class Status < ApplicationRecord
     preloadable_poll.present?
   end
 
+  def with_status_reference?
+    reference_objects.any?
+  end
+
   def non_sensitive_with_media?
     !sensitive? && with_media?
   end

@@ -16,6 +16,7 @@ module StatusSearchConcern
       ids += mentions.joins(:account).merge(Account.local).active.pluck(:account_id)
       ids += favourites.joins(:account).merge(Account.local).pluck(:account_id)
       ids += emoji_reactions.joins(:account).merge(Account.local).pluck(:account_id)
+      ids += references.joins(:account).merge(Account.local).pluck(:account_id)
       ids += reblogs.joins(:account).merge(Account.local).pluck(:account_id)
       ids += bookmarks.joins(:account).merge(Account.local).pluck(:account_id)
       ids += poll.votes.joins(:account).merge(Account.local).pluck(:account_id) if poll.present?
@@ -23,6 +24,7 @@ module StatusSearchConcern
       ids += preloaded.mentions[id] || []
       ids += preloaded.favourites[id] || []
       ids += preloaded.emoji_reactions[id] || []
+      ids += preloaded.status_references[id] || []
       ids += preloaded.reblogs[id] || []
       ids += preloaded.bookmarks[id] || []
       ids += preloaded.votes[id] || []
@@ -51,6 +53,7 @@ module StatusSearchConcern
       properties << 'embed' if preview_cards.any?(&:video?)
       properties << 'sensitive' if sensitive?
       properties << 'reply' if reply?
+      properties << 'reference' if with_status_reference?
     end
   end
 end

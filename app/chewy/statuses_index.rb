@@ -53,6 +53,11 @@ class StatusesIndex < Chewy::Index
     data.each.with_object({}) { |(id, name), result| (result[id] ||= []).push(name) }
   end
 
+  crutch :status_references do |collection|
+    data = ::StatusReference.joins(:status).where(target_status_id: collection.map(&:id), status: { account: Account.local }).pluck(:status_id, :account_id)
+    data.each.with_object({}) { |(id, name), result| (result[id] ||= []).push(name) }
+  end
+
   crutch :reblogs do |collection|
     data = ::Status.where(reblog_of_id: collection.map(&:id)).where(account: Account.local).pluck(:reblog_of_id, :account_id)
     data.each.with_object({}) { |(id, name), result| (result[id] ||= []).push(name) }
@@ -75,6 +80,7 @@ class StatusesIndex < Chewy::Index
     field(:searchable_by, type: 'long', value: ->(status, crutches) { status.searchable_by(crutches) })
     field(:searchability, type: 'keyword', value: ->(status) { status.compute_searchability })
     field(:language, type: 'keyword')
+    field(:domain, type: 'keyword', value: ->(status) { status.account.domain || '' })
     field(:properties, type: 'keyword', value: ->(status) { status.searchable_properties })
     field(:created_at, type: 'date')
   end
