@@ -54,7 +54,7 @@ class StatusesIndex < Chewy::Index
   end
 
   crutch :status_references do |collection|
-    data = ::StatusReference.joins(:status).where(target_status_id: collection.map(&:id), status: { account: Account.local }).pluck(:status_id, :account_id)
+    data = ::StatusReference.joins(:status).where(target_status_id: collection.map(&:id), status: { account: Account.local }).pluck(:target_status_id, :account_id)
     data.each.with_object({}) { |(id, name), result| (result[id] ||= []).push(name) }
   end
 
