@@ -42,6 +42,7 @@ class Status < ApplicationRecord
   include StatusSnapshotConcern
   include RateLimitable
   include StatusSafeReblogInsert
+  include StatusSearchConcern
 
   rate_limit by: :account, family: :statuses
 
@@ -52,6 +53,7 @@ class Status < ApplicationRecord
   attr_accessor :override_timestamps
 
   update_index('statuses', :proper)
+  update_index('public_statuses', :proper)
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, _suffix: :visibility
   enum searchability: { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, _suffix: :searchability
@@ -183,39 +185,6 @@ class Status < ApplicationRecord
     "v3:#{super}"
   end
 
-  def searchable_by(preloaded = nil)
-    ids = []
-
-    ids << account_id if local?
-
-    if preloaded.nil?
-      ids += mentions.joins(:account).merge(Account.local).active.pluck(:account_id)
-      ids += favourites.joins(:account).merge(Account.local).pluck(:account_id)
-      ids += emoji_reactions.joins(:account).merge(Account.local).pluck(:account_id)
-      ids += reblogs.joins(:account).merge(Account.local).pluck(:account_id)
-      ids += bookmarks.joins(:account).merge(Account.local).pluck(:account_id)
-      ids += poll.votes.joins(:account).merge(Account.local).pluck(:account_id) if poll.present?
-    else
-      ids += preloaded.mentions[id] || []
-      ids += preloaded.favourites[id] || []
-      ids += preloaded.emoji_reactions[id] || []
-      ids += preloaded.reblogs[id] || []
-      ids += preloaded.bookmarks[id] || []
-      ids += preloaded.votes[id] || []
-    end
-
-    ids.uniq
-  end
-
-  def searchable_text
-    [
-      spoiler_text,
-      FormattingHelper.extract_status_plain_text(self),
-      preloadable_poll ? preloadable_poll.options.join("\n\n") : nil,
-      ordered_media_attachments.map(&:description).join("\n\n"),
-    ].compact.join("\n\n")
-  end
-
   def to_log_human_identifier
     account.acct
   end
@@ -293,6 +262,10 @@ class Status < ApplicationRecord
 
   def with_preview_card?
     preview_cards.any?
+  end
+
+  def with_poll?
+    preloadable_poll.present?
   end
 
   def non_sensitive_with_media?
