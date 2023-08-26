@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_22_041804) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_26_023400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -359,6 +359,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_041804) do
     t.string "uri"
     t.index ["account_id", "target_account_id"], name: "index_blocks_on_account_id_and_target_account_id", unique: true
     t.index ["target_account_id"], name: "index_blocks_on_target_account_id"
+  end
+
+  create_table "bookmark_categories", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.string "title", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_bookmark_categories_on_account_id"
+  end
+
+  create_table "bookmark_category_statuses", force: :cascade do |t|
+    t.bigint "bookmark_category_id", null: false
+    t.bigint "status_id", null: false
+    t.bigint "bookmark_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bookmark_category_id", "status_id"], name: "index_bc_statuses", unique: true
+    t.index ["bookmark_category_id"], name: "index_bookmark_category_statuses_on_bookmark_category_id"
+    t.index ["bookmark_id"], name: "index_bookmark_category_statuses_on_bookmark_id"
+    t.index ["status_id"], name: "index_bookmark_category_statuses_on_status_id"
   end
 
   create_table "bookmarks", force: :cascade do |t|
@@ -1359,6 +1379,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_041804) do
   add_foreign_key "backups", "users", on_delete: :nullify
   add_foreign_key "blocks", "accounts", column: "target_account_id", name: "fk_9571bfabc1", on_delete: :cascade
   add_foreign_key "blocks", "accounts", name: "fk_4269e03e65", on_delete: :cascade
+  add_foreign_key "bookmark_categories", "accounts", on_delete: :cascade
+  add_foreign_key "bookmark_category_statuses", "bookmark_categories", on_delete: :cascade
+  add_foreign_key "bookmark_category_statuses", "bookmarks", on_delete: :cascade
+  add_foreign_key "bookmark_category_statuses", "statuses", on_delete: :cascade
   add_foreign_key "bookmarks", "accounts", on_delete: :cascade
   add_foreign_key "bookmarks", "statuses", on_delete: :cascade
   add_foreign_key "bulk_import_rows", "bulk_imports", on_delete: :cascade

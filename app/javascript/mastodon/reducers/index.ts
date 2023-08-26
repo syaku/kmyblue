@@ -13,6 +13,7 @@ import antennaEditor from './antenna_editor';
 import antennas from './antennas';
 import blocks from './blocks';
 import bookmark_categories from './bookmark_categories';
+import bookmarkCategoryAdder from './bookmark_category_adder';
 import bookmarkCategoryEditor from './bookmark_category_editor';
 import boosts from './boosts';
 import circleAdder from './circle_adder';
@@ -93,6 +94,7 @@ const reducers = {
   circleAdder,
   bookmark_categories,
   bookmarkCategoryEditor,
+  bookmarkCategoryAdder,
   filters,
   conversations,
   suggestions,

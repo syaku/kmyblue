@@ -99,8 +99,8 @@ class BookmarkCategoryStatuses extends ImmutablePureComponent {
     return (
       <Column bindToDocument={!multiColumn} ref={this.setRef} label={intl.formatMessage(messages.heading)}>
         <ColumnHeader
-          icon='bookmark_ex'
-          title={intl.formatMessage(messages.heading)}
+          icon='bookmark'
+          title={bookmarkCategory.get('title')}
           onPin={this.handlePin}
           onMove={this.handleMove}
           onClick={this.handleHeaderClick}

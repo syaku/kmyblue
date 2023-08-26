@@ -14,6 +14,9 @@ import {
   BOOKMARK_CATEGORY_STATUSES_EXPAND_SUCCESS,
   BOOKMARK_CATEGORY_STATUSES_EXPAND_FAIL,
 } from '../actions/bookmark_categories';
+import {
+  UNBOOKMARK_SUCCESS,
+} from '../actions/interactions';
 
 const initialState = ImmutableMap();
 
@@ -27,8 +30,8 @@ const normalizeBookmarkCategories = (state, bookmarkCategories) => {
   return state;
 };
 
-const normalizeBookmarkCategoryStatuses = (state, bookmaryCategoryId, statuses, next) => {
-  return state.updateIn([bookmaryCategoryId, 'items'], listMap => listMap.withMutations(map => {
+const normalizeBookmarkCategoryStatuses = (state, bookmarkCategoryId, statuses, next) => {
+  return state.update(bookmarkCategoryId, listMap => listMap.withMutations(map => {
     map.set('next', next);
     map.set('loaded', true);
     map.set('isLoading', false);
@@ -37,11 +40,18 @@ const normalizeBookmarkCategoryStatuses = (state, bookmaryCategoryId, statuses, 
 };
 
 const appendToBookmarkCategoryStatuses = (state, bookmarkCategoryId, statuses, next) => {
-  return state.updateIn([bookmarkCategoryId, 'items'], listMap => listMap.withMutations(map => {
+  return state.update(bookmarkCategoryId, listMap => listMap.withMutations(map => {
     map.set('next', next);
     map.set('isLoading', false);
     map.set('items', map.get('items').union(statuses.map(item => item.id)));
   }));
+};
+
+const removeStatusFromAllBookmarkCategories = (state, status) => {
+  state.toList().forEach((bookmarkCategory) => {
+    state = state.updateIn([bookmarkCategory.get('id'), 'items'], items => items.delete(status.get('id')));
+  });
+  return state;
 };
 
 export default function bookmarkCategories(state = initialState, action) {
@@ -65,6 +75,8 @@ export default function bookmarkCategories(state = initialState, action) {
     return normalizeBookmarkCategoryStatuses(state, action.id, action.statuses, action.next);
   case BOOKMARK_CATEGORY_STATUSES_EXPAND_SUCCESS:
     return appendToBookmarkCategoryStatuses(state, action.id, action.statuses, action.next);
+  case UNBOOKMARK_SUCCESS:
+    return removeStatusFromAllBookmarkCategories(state, action.status);
   default:
     return state;
   }

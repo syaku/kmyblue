@@ -72,6 +72,7 @@ class ActionBar extends PureComponent {
     onEmojiReact: PropTypes.func.isRequired,
     onReference: PropTypes.func.isRequired,
     onBookmark: PropTypes.func.isRequired,
+    onBookmarkCategoryAdder: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
     onDirect: PropTypes.func.isRequired,

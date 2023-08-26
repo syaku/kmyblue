@@ -84,6 +84,8 @@ class Status < ApplicationRecord
   has_many :referenced_by_status_objects, foreign_key: 'target_status_id', class_name: 'StatusReference', inverse_of: :target_status, dependent: :destroy
   has_many :referenced_by_statuses, through: :referenced_by_status_objects, class_name: 'Status', source: :status
   has_many :capability_tokens, class_name: 'StatusCapabilityToken', inverse_of: :status, dependent: :destroy
+  has_many :bookmark_category_relationships, class_name: 'BookmarkCategoryStatus', inverse_of: :status, dependent: :destroy
+  has_many :joined_bookmark_categories, class_name: 'BookmarkCategory', through: :bookmark_category_relationships, source: :bookmark_category
 
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :preview_cards

@@ -17,11 +17,12 @@ import ScrollableList from 'mastodon/components/scrollable_list';
 import ColumnLink from 'mastodon/features/ui/components/column_link';
 import ColumnSubheading from 'mastodon/features/ui/components/column_subheading';
 
-import NewListForm from './components/new_list_form';
+import NewListForm from './components/new_bookmark_category_form';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmark_categories', defaultMessage: 'Bookmark categories' },
-  subheading: { id: 'bookmark_categories_ex.subheading', defaultMessage: 'Your categories' },
+  subheading: { id: 'bookmark_categories.subheading', defaultMessage: 'Your categories' },
+  allBookmarks: { id: 'bookmark_categories.all_bookmarks', defaultMessage: 'All bookmarks' },
 });
 
 const getOrderedCategories = createSelector([state => state.get('bookmark_categories')], categories => {
@@ -69,6 +70,7 @@ class BookmarkCategories extends ImmutablePureComponent {
 
         <NewListForm />
 
+        <ColumnLink to='/bookmarks' icon='bookmark' text={intl.formatMessage(messages.allBookmarks)} />,
         <ScrollableList
           scrollKey='bookmark_categories'
           emptyMessage={emptyMessage}

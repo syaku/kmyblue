@@ -13,6 +13,7 @@ namespace :api, format: false do
         resources :emoji_reactioned_by, controller: :emoji_reactioned_by_accounts, only: :index
         resources :emoji_reactioned_by_slim, controller: :emoji_reactioned_by_accounts_slim, only: :index
         resources :referred_by, controller: :referred_by_statuses, only: :index
+        resources :bookmark_categories, only: :index
         resource :reblog, only: :create
         post :unreblog, to: 'reblogs#destroy'
 
@@ -226,6 +227,10 @@ namespace :api, format: false do
 
     resources :circles, only: [:index, :create, :show, :update, :destroy] do
       resource :accounts, only: [:show, :create, :destroy], controller: 'circles/accounts'
+    end
+
+    resources :bookmark_categories, only: [:index, :create, :show, :update, :destroy] do
+      resource :statuses, only: [:show, :create, :destroy], controller: 'bookmark_categories/statuses'
     end
 
     namespace :featured_tags do

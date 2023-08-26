@@ -150,10 +150,10 @@ export const createBookmarkCategoryFail = error => ({
   error,
 });
 
-export const updateBookmarkCategory = (id, title, shouldReset, isExclusive, replies_policy) => (dispatch, getState) => {
+export const updateBookmarkCategory = (id, title, shouldReset) => (dispatch, getState) => {
   dispatch(updateBookmarkCategoryRequest(id));
 
-  api(getState).put(`/api/v1/bookmark_categories/${id}`, { title, replies_policy, exclusive: typeof isExclusive === 'undefined' ? undefined : !!isExclusive }).then(({ data }) => {
+  api(getState).put(`/api/v1/bookmark_categories/${id}`, { title }).then(({ data }) => {
     dispatch(updateBookmarkCategorySuccess(data));
 
     if (shouldReset) {

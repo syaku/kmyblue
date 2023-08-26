@@ -10,12 +10,10 @@ import {
   BOOKMARK_CATEGORY_EDITOR_RESET,
   BOOKMARK_CATEGORY_EDITOR_SETUP,
   BOOKMARK_CATEGORY_EDITOR_TITLE_CHANGE,
-  BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS,
-  BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS,
 } from '../actions/bookmark_categories';
 
 const initialState = ImmutableMap({
-  bookmaryCategoryId: null,
+  bookmarkCategoryId: null,
   isSubmitting: false,
   isChanged: false,
   title: '',
@@ -33,15 +31,15 @@ const initialState = ImmutableMap({
   }),
 });
 
-export default function bookmaryCategoryEditorReducer(state = initialState, action) {
+export default function bookmarkCategoryEditorReducer(state = initialState, action) {
   switch(action.type) {
   case BOOKMARK_CATEGORY_EDITOR_RESET:
     return initialState;
   case BOOKMARK_CATEGORY_EDITOR_SETUP:
     return state.withMutations(map => {
-      map.set('bookmaryCategoryId', action.bookmaryCategory.get('id'));
-      map.set('title', action.bookmaryCategory.get('title'));
-      map.set('isExclusive', action.bookmaryCategory.get('is_exclusive'));
+      map.set('bookmarkCategoryId', action.bookmarkCategory.get('id'));
+      map.set('title', action.bookmarkCategory.get('title'));
+      map.set('isExclusive', action.bookmarkCategory.get('is_exclusive'));
       map.set('isSubmitting', false);
     });
   case BOOKMARK_CATEGORY_EDITOR_TITLE_CHANGE:
@@ -62,12 +60,8 @@ export default function bookmaryCategoryEditorReducer(state = initialState, acti
   case BOOKMARK_CATEGORY_UPDATE_SUCCESS:
     return state.withMutations(map => {
       map.set('isSubmitting', false);
-      map.set('bookmaryCategoryId', action.bookmaryCategory.id);
+      map.set('bookmarkCategoryId', action.bookmarkCategory.id);
     });
-  case BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS:
-    return state.updateIn(['accounts', 'items'], bookmaryCategory => bookmaryCategory.unshift(action.accountId));
-  case BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS:
-    return state.updateIn(['accounts', 'items'], bookmaryCategory => bookmaryCategory.filterNot(item => item === action.accountId));
   default:
     return state;
   }
