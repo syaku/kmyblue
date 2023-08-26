@@ -54,6 +54,8 @@ import {
   FavouritedStatuses,
   EmojiReactedStatuses,
   BookmarkedStatuses,
+  BookmarkCategories,
+  BookmarkCategoryStatuses,
   FollowedTags,
   ListTimeline,
   Blocks,
@@ -218,6 +220,8 @@ class SwitchingColumnsArea extends PureComponent {
           <WrappedRoute path='/emoji_reactions' component={EmojiReactedStatuses} content={children} />
 
           <WrappedRoute path='/bookmarks' component={BookmarkedStatuses} content={children} />
+          <WrappedRoute path='/bookmark_categories/:id' component={BookmarkCategoryStatuses} content={children} />
+          <WrappedRoute path='/bookmark_categories' component={BookmarkCategories} content={children} />
           <WrappedRoute path='/pinned' component={PinnedStatuses} content={children} />
 
           <WrappedRoute path='/reaction_deck' component={ReactionDeck} content={children} />

@@ -122,6 +122,14 @@ export function BookmarkedStatuses () {
   return import(/* webpackChunkName: "features/bookmarked_statuses" */'../../bookmarked_statuses');
 }
 
+export function BookmarkCategories () {
+  return import(/* webpackChunkName: "features/bookmark_categories" */'../../bookmark_categories');
+}
+
+export function BookmarkCategoryStatuses () {
+  return import(/* webpackChunkName: "features/bookmark_category_statuses" */'../../bookmark_category_statuses');
+}
+
 export function Blocks () {
   return import(/* webpackChunkName: "features/blocks" */'../../blocks');
 }

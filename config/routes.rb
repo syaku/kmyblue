@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     /favourites
     /emoji_reactions
     /bookmarks
+    /bookmark_categories/(*any)
     /pinned
     /reaction_deck
     /start
