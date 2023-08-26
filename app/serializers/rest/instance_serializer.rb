@@ -122,6 +122,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       :visibility_limited,
       :kmyblue_limited_scope,
       :kmyblue_antenna,
+      :kmyblue_bookmark_category,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?
