@@ -63,7 +63,7 @@ import {
 import ColumnHeader from '../../components/column_header';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import StatusContainer from '../../containers/status_container';
-import { boostModal, deleteModal } from '../../initial_state';
+import { bookmarkCategoryNeeded, boostModal, deleteModal } from '../../initial_state';
 import { makeGetStatus, makeGetPictureInPicture } from '../../selectors';
 import Column from '../ui/components/column';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
@@ -367,11 +367,25 @@ class Status extends ImmutablePureComponent {
   };
 
   handleBookmarkClick = (status) => {
+    if (bookmarkCategoryNeeded) {
+      this.handleBookmarkCategoryAdderClick(status);
+      return;
+    }
+    
     if (status.get('bookmarked')) {
       this.props.dispatch(unbookmark(status));
     } else {
       this.props.dispatch(bookmark(status));
     }
+  };
+
+  handleBookmarkCategoryAdderClick = (status) => {
+    this.props.dispatch(openModal({
+      modalType: 'BOOKMARK_CATEGORY_ADDER',
+      modalProps: {
+        statusId: status.get('id'),
+      },
+    }));
   };
 
   handleDeleteClick = (status, history, withRedraft = false) => {
@@ -609,7 +623,7 @@ class Status extends ImmutablePureComponent {
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType='thread'
-        previousId={i > 0 && list.get(i - 1)}
+        previousId={i > 0 ? list.get(i - 1) : undefined}
         nextId={list.get(i + 1) || (ancestors && statusId)}
         rootId={statusId}
       />
@@ -737,6 +751,7 @@ class Status extends ImmutablePureComponent {
                   onReblogForceModal={this.handleReblogForceModalClick}
                   onReference={this.handleReference}
                   onBookmark={this.handleBookmarkClick}
+                  onBookmarkCategoryAdder={this.handleBookmarkCategoryAdderClick}
                   onDelete={this.handleDeleteClick}
                   onEdit={this.handleEditClick}
                   onDirect={this.handleDirectClick}

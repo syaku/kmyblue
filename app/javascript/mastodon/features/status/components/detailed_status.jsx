@@ -372,6 +372,7 @@ class DetailedStatus extends ImmutablePureComponent {
     }
 
     const {statusContentProps, hashtagBar} = getHashtagBarForStatus(status);
+    const expanded = !status.get('hidden')
 
     return (
       <div style={outerStyle}>
@@ -397,7 +398,7 @@ class DetailedStatus extends ImmutablePureComponent {
 
           {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
 
-          {hashtagBar}
+          {expanded && hashtagBar}
 
           {emojiReactionsBar}
 

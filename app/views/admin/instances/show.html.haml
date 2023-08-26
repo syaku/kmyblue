@@ -5,9 +5,6 @@
   %p
     = "#{@instance.instance_info.software} #{@instance.instance_info.version}"
 
-- content_for :header_tags do
-  = javascript_pack_tag 'admin', async: true, crossorigin: 'anonymous'
-
 - if current_user.can?(:view_dashboard)
   - content_for :heading_actions do
     = l(@time_period.first)

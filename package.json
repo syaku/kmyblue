@@ -59,6 +59,7 @@
     "babel-plugin-preval": "^5.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "blurhash": "^2.0.5",
+    "circular-dependency-plugin": "^5.2.2",
     "classnames": "^2.3.2",
     "cocoon-js-vanilla": "^1.3.0",
     "color-blend": "^4.0.0",
@@ -224,6 +225,7 @@
   "lint-staged": {
     "*": "prettier --ignore-unknown --write",
     "Capfile|Gemfile|*.{rb,ruby,ru,rake}": "bundle exec rubocop --force-exclusion -a",
+    "*.{haml}": "bundle exec haml-lint",
     "*.{js,jsx,ts,tsx}": "eslint --fix",
     "*.{css,scss}": "stylelint --fix"
   }

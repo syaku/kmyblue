@@ -142,6 +142,15 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
     }
   },
 
+  onBookmarkCategoryAdder (status) {
+    dispatch(openModal({
+      modalType: 'BOOKMARK_CATEGORY_ADDER',
+      modalProps: {
+        statusId: status.get('id'),
+      },
+    }));
+  },
+
   onPin (status) {
     if (status.get('pinned')) {
       dispatch(unpin(status));

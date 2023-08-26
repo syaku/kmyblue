@@ -42,6 +42,7 @@ class UserSettings
     setting :use_blurhash, default: true
     setting :use_pending_items, default: false
     setting :use_system_font, default: false
+    setting :bookmark_category_needed, default: false
     setting :disable_swiping, default: false
     setting :delete_modal, default: true
     setting :enable_login_privacy, default: false

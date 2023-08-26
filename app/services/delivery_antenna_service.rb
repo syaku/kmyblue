@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class DeliveryAntennaService
+  include FormattingHelper
+
   def call(status, update, stl_home)
     @status = status
     @account = @status.account
@@ -37,12 +39,13 @@ class DeliveryAntennaService
     antennas = antennas.where(stl: false)
 
     collection = AntennaCollection.new(@status, @update, false)
+    content = extract_status_plain_text_with_spoiler_text(@status)
 
     antennas.in_batches do |ans|
       ans.each do |antenna|
         next unless antenna.enabled?
-        next if antenna.keywords&.any? && antenna.keywords&.none? { |keyword| @status.text.include?(keyword) }
-        next if antenna.exclude_keywords&.any? { |keyword| @status.text.include?(keyword) }
+        next if antenna.keywords&.any? && antenna.keywords&.none? { |keyword| content.include?(keyword) }
+        next if antenna.exclude_keywords&.any? { |keyword| content.include?(keyword) }
         next if antenna.exclude_accounts&.include?(@status.account_id)
         next if antenna.exclude_domains&.include?(domain)
         next if antenna.exclude_tags&.any? { |tag_id| tag_ids.include?(tag_id) }

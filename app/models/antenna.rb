@@ -121,7 +121,7 @@ class Antenna < ApplicationRecord
   end
 
   def tags_raw
-    antenna_tags.where(exclude: false).map(&:tag).map(&:name).join("\n")
+    antenna_tags.where(exclude: false).map { |tag| tag.tag.name }.join("\n")
   end
 
   def tags_raw=(raw)

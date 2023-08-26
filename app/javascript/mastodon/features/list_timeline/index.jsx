@@ -147,7 +147,7 @@ class ListTimeline extends PureComponent {
   handleEditAntennaClick = (e) => {
     const id = e.currentTarget.getAttribute('data-id');
     this.context.router.history.push(`/antennasw/${id}/edit`);
-  }
+  };
 
   handleRepliesPolicyChange = ({ target }) => {
     const { dispatch } = this.props;

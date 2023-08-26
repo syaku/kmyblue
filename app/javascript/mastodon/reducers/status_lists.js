@@ -5,6 +5,9 @@ import {
   ACCOUNT_MUTE_SUCCESS,
 } from '../actions/accounts';
 import {
+  BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS,
+} from '../actions/bookmark_categories';
+import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
   BOOKMARKED_STATUSES_FETCH_SUCCESS,
   BOOKMARKED_STATUSES_FETCH_FAIL,
@@ -98,11 +101,15 @@ const appendToList = (state, listType, statuses, next) => {
 };
 
 const prependOneToList = (state, listType, status) => {
+  return prependOneToListById(state, listType, status.get('id'));
+};
+
+const prependOneToListById = (state, listType, statusId) => {
   return state.updateIn([listType, 'items'], (list) => {
-    if (list.includes(status.get('id'))) {
+    if (list.includes(statusId)) {
       return list;
     } else {
-      return ImmutableOrderedSet([status.get('id')]).union(list);
+      return ImmutableOrderedSet([statusId]).union(list);
     }
   });
 };
@@ -163,6 +170,8 @@ export default function statusLists(state = initialState, action) {
     return removeOneFromList(state, 'emoji_reactions', action.status);
   case BOOKMARK_SUCCESS:
     return prependOneToList(state, 'bookmarks', action.status);
+  case BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS:
+    return prependOneToListById(state, 'bookmarks', action.statusId);
   case UNBOOKMARK_SUCCESS:
     return removeOneFromList(state, 'bookmarks', action.status);
   case PINNED_STATUSES_FETCH_SUCCESS:

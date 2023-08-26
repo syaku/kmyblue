@@ -12,7 +12,7 @@ import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/
 
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import EmojiPickerDropdown from '../features/compose/containers/emoji_picker_dropdown_container';
-import { me } from '../initial_state';
+import { bookmarkCategoryNeeded, me } from '../initial_state';
 
 import { IconButton } from './icon_button';
 
@@ -37,6 +37,7 @@ const messages = defineMessages({
   favourite: { id: 'status.favourite', defaultMessage: 'Favorite' },
   emojiReaction: { id: 'status.emoji_reaction', defaultMessage: 'Stamp' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
+  bookmarkCategory: { id: 'status.bookmark_category', defaultMessage: 'Bookmark category' },
   removeBookmark: { id: 'status.remove_bookmark', defaultMessage: 'Remove bookmark' },
   open: { id: 'status.open', defaultMessage: 'Expand this status' },
   report: { id: 'status.report', defaultMessage: 'Report @{name}' },
@@ -92,6 +93,7 @@ class StatusActionBar extends ImmutablePureComponent {
     onMuteConversation: PropTypes.func,
     onPin: PropTypes.func,
     onBookmark: PropTypes.func,
+    onBookmarkCategoryAdder: PropTypes.func,
     onFilter: PropTypes.func,
     onAddFilter: PropTypes.func,
     onInteractionModal: PropTypes.func,
@@ -164,6 +166,18 @@ class StatusActionBar extends ImmutablePureComponent {
   };
 
   handleBookmarkClick = () => {
+    if (bookmarkCategoryNeeded) {
+      this.handleBookmarkCategoryAdderClick();
+    } else {
+      this.props.onBookmark(this.props.status);
+    }
+  };
+
+  handleBookmarkCategoryAdderClick = () => {
+    this.props.onBookmarkCategoryAdder(this.props.status);
+  };
+
+  handleBookmarkClickOriginal = () => {
     this.props.onBookmark(this.props.status);
   };
 
@@ -299,7 +313,8 @@ class StatusActionBar extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
       }
 
-      menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark), action: this.handleBookmarkClick });
+      menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark), action: this.handleBookmarkClickOriginal });
+      menu.push({ text: intl.formatMessage(messages.bookmarkCategory), action: this.handleBookmarkCategoryAdderClick });
 
       if (writtenByMe && pinnableStatus) {
         menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
