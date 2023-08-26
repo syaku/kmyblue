@@ -24,7 +24,7 @@ class StatusesSearchService < BaseService
     definition_should << searchability_private if %i(public private).include?(@searchability)
 
     definition = parsed_query.apply(
-      StatusesIndex.filter(
+      Chewy::Search::Request.new(StatusesIndex, PublicStatusesIndex).filter(
         bool: {
           should: definition_should,
           minimum_should_match: 1,
@@ -32,10 +32,7 @@ class StatusesSearchService < BaseService
       )
     )
 
-    # This is the best way to submit identical queries to multi-indexes though chewy
-    definition.instance_variable_get(:@parameters)[:indices].value[:indices] << PublicStatusesIndex
-
-    results             = definition.collapse(field: :id).order(_id: { order: :desc }).limit(@limit).offset(@offset).objects.compact
+    results             = definition.collapse(field: :id).order(id: { order: :desc }).limit(@limit).offset(@offset).objects.compact
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)
     preloaded_relations = @account.relations_map(account_ids, account_domains)
@@ -47,13 +44,7 @@ class StatusesSearchService < BaseService
 
   def publicly_searchable
     {
-      bool: {
-        must_not: {
-          exists: {
-            field: 'searchable_by',
-          },
-        },
-      },
+      term: { _index: PublicStatusesIndex.index_name },
     }
   end
 
@@ -62,9 +53,7 @@ class StatusesSearchService < BaseService
       bool: {
         must: [
           {
-            exists: {
-              field: 'searchable_by',
-            },
+            term: { _index: StatusesIndex.index_name },
           },
           {
             exists: {
