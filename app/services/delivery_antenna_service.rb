@@ -6,7 +6,7 @@ class DeliveryAntennaService
   def call(status, update, stl_home)
     @status = status
     @account = @status.account
-    @update = update || true
+    @update = update
 
     if stl_home
       delivery_stl!
