@@ -39,7 +39,6 @@ export default function bookmarkCategoryEditorReducer(state = initialState, acti
     return state.withMutations(map => {
       map.set('bookmarkCategoryId', action.bookmarkCategory.get('id'));
       map.set('title', action.bookmarkCategory.get('title'));
-      map.set('isExclusive', action.bookmarkCategory.get('is_exclusive'));
       map.set('isSubmitting', false);
     });
   case BOOKMARK_CATEGORY_EDITOR_TITLE_CHANGE:

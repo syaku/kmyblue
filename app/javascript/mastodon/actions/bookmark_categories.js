@@ -113,7 +113,7 @@ export const submitBookmarkCategoryEditor = shouldReset => (dispatch, getState) 
 export const setupBookmarkCategoryEditor = bookmarkCategoryId => (dispatch, getState) => {
   dispatch({
     type: BOOKMARK_CATEGORY_EDITOR_SETUP,
-    bookmarkCategory: getState().getIn(['bookmarkCategories', bookmarkCategoryId]),
+    bookmarkCategory: getState().getIn(['bookmark_categories', bookmarkCategoryId]),
   });
 
   dispatch(fetchBookmarkCategoryStatuses(bookmarkCategoryId));

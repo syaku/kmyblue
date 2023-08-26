@@ -49,7 +49,9 @@ const appendToBookmarkCategoryStatuses = (state, bookmarkCategoryId, statuses, n
 
 const removeStatusFromAllBookmarkCategories = (state, status) => {
   state.toList().forEach((bookmarkCategory) => {
-    state = state.updateIn([bookmarkCategory.get('id'), 'items'], items => items.delete(status.get('id')));
+    if (state.getIn([bookmarkCategory.get('id'), 'items'])) {
+      state = state.updateIn([bookmarkCategory.get('id'), 'items'], items => items.delete(status.get('id')));
+    }
   });
   return state;
 };
@@ -58,8 +60,9 @@ export default function bookmarkCategories(state = initialState, action) {
   switch(action.type) {
   case BOOKMARK_CATEGORY_FETCH_SUCCESS:
   case BOOKMARK_CATEGORY_CREATE_SUCCESS:
-  case BOOKMARK_CATEGORY_UPDATE_SUCCESS:
     return normalizeBookmarkCategory(state, action.bookmarkCategory);
+  case BOOKMARK_CATEGORY_UPDATE_SUCCESS:
+    return state.setIn([action.bookmarkCategory.id, 'title'], action.bookmarkCategory.title);
   case BOOKMARK_CATEGORIES_FETCH_SUCCESS:
     return normalizeBookmarkCategories(state, action.bookmarkCategories);
   case BOOKMARK_CATEGORY_DELETE_SUCCESS:
