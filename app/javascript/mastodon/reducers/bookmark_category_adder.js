@@ -9,6 +9,9 @@ import {
   BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS,
   BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS,
 } from '../actions/bookmark_categories';
+import {
+  UNBOOKMARK_SUCCESS,
+} from '../actions/interactions';
 
 const initialState = ImmutableMap({
   statusId: null,
@@ -42,6 +45,8 @@ export default function bookmarkCategoryAdderReducer(state = initialState, actio
     return state.updateIn(['bookmarkCategories', 'items'], bookmarkCategory => bookmarkCategory.unshift(action.bookmarkCategoryId));
   case BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS:
     return state.updateIn(['bookmarkCategories', 'items'], bookmarkCategory => bookmarkCategory.filterNot(item => item === action.bookmarkCategoryId));
+  case UNBOOKMARK_SUCCESS:
+    return action.status.get('id') === state.get('statusId') ? state.setIn(['bookmarkCategories', 'items'], ImmutableList()) : state;
   default:
     return state;
   }

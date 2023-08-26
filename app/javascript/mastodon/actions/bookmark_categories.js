@@ -1,6 +1,10 @@
+import { bookmarkCategoryNeeded } from 'mastodon/initial_state';
+import { makeGetStatus } from 'mastodon/selectors';
+
 import api, { getLinks } from '../api';
 
 import { importFetchedStatuses } from './importer';
+import { unbookmark } from './interactions';
 
 export const BOOKMARK_CATEGORY_FETCH_REQUEST = 'BOOKMARK_CATEGORY_FETCH_REQUEST';
 export const BOOKMARK_CATEGORY_FETCH_SUCCESS = 'BOOKMARK_CATEGORY_FETCH_SUCCESS';
@@ -330,7 +334,17 @@ export const addToBookmarkCategoryAdder = bookmarkCategoryId => (dispatch, getSt
 };
 
 export const removeFromBookmarkCategoryAdder = bookmarkCategoryId => (dispatch, getState) => {
-  dispatch(removeFromBookmarkCategory(bookmarkCategoryId, getState().getIn(['bookmarkCategoryAdder', 'statusId'])));
+  if (bookmarkCategoryNeeded) {
+    const categories = getState().getIn(['bookmarkCategoryAdder', 'bookmarkCategories', 'items']);
+    if (categories && categories.count() <= 1) {
+      const status = makeGetStatus()(getState(), { id: getState().getIn(['bookmarkCategoryAdder', 'statusId']) });
+      dispatch(unbookmark(status));
+    } else {
+      dispatch(removeFromBookmarkCategory(bookmarkCategoryId, getState().getIn(['bookmarkCategoryAdder', 'statusId'])));
+    }
+  } else {
+    dispatch(removeFromBookmarkCategory(bookmarkCategoryId, getState().getIn(['bookmarkCategoryAdder', 'statusId'])));
+  }
 };
 
 export function expandBookmarkCategoryStatuses(bookmarkCategoryId) {

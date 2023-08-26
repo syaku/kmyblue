@@ -12,7 +12,7 @@ import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/
 
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import EmojiPickerDropdown from '../features/compose/containers/emoji_picker_dropdown_container';
-import { me } from '../initial_state';
+import { bookmarkCategoryNeeded, me } from '../initial_state';
 
 import { IconButton } from './icon_button';
 
@@ -166,11 +166,19 @@ class StatusActionBar extends ImmutablePureComponent {
   };
 
   handleBookmarkClick = () => {
-    this.props.onBookmark(this.props.status);
+    if (bookmarkCategoryNeeded) {
+      this.handleBookmarkCategoryAdderClick();
+    } else {
+      this.props.onBookmark(this.props.status);
+    }
   };
 
   handleBookmarkCategoryAdderClick = () => {
     this.props.onBookmarkCategoryAdder(this.props.status);
+  };
+
+  handleBookmarkClickOriginal = () => {
+    this.props.onBookmark(this.props.status);
   };
 
   handleDeleteClick = () => {
@@ -305,7 +313,7 @@ class StatusActionBar extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
       }
 
-      menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark), action: this.handleBookmarkClick });
+      menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark), action: this.handleBookmarkClickOriginal });
       menu.push({ text: intl.formatMessage(messages.bookmarkCategory), action: this.handleBookmarkCategoryAdderClick });
 
       if (writtenByMe && pinnableStatus) {

@@ -12,7 +12,7 @@ import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/
 
 import { IconButton } from '../../../components/icon_button';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
-import { me } from '../../../initial_state';
+import { bookmarkCategoryNeeded, me } from '../../../initial_state';
 import EmojiPickerDropdown from '../../compose/containers/emoji_picker_dropdown_container';
 
 const messages = defineMessages({
@@ -107,7 +107,11 @@ class ActionBar extends PureComponent {
   };
 
   handleBookmarkClick = (e) => {
-    this.props.onBookmark(this.props.status, e);
+    if (bookmarkCategoryNeeded) {
+      this.props.onBookmarkCategoryAdder(this.props.status);
+    } else {
+      this.props.onBookmark(this.props.status, e);
+    }
   };
 
   handleDeleteClick = () => {

@@ -31,6 +31,10 @@ module HasUserSettings
     settings['web.enable_login_privacy']
   end
 
+  def setting_bookmark_category_needed
+    settings['web.bookmark_category_needed']
+  end
+
   def setting_hide_recent_emojis
     settings['web.hide_recent_emojis']
   end

@@ -20,7 +20,14 @@ import {
 
 const initialState = ImmutableMap();
 
-const normalizeBookmarkCategory = (state, category) => state.set(category.id, fromJS(category));
+const normalizeBookmarkCategory = (state, category) => {
+  const old = state.get(category.id);
+  state = state.set(category.id, fromJS(category));
+  if (old) {
+    state = state.setIn([category.id, 'items'], old.get('items'));
+  }
+  return state;
+};
 
 const normalizeBookmarkCategories = (state, bookmarkCategories) => {
   bookmarkCategories.forEach(bookmarkCategory => {
