@@ -206,7 +206,7 @@
   "compose_form.direct_message_warning_learn_more": "もっと詳しく",
   "compose_form.encryption_warning": "Mastodonの投稿はエンドツーエンド暗号化に対応していません。安全に送受信されるべき情報をMastodonで共有しないでください。",
   "compose_form.hashtag_warning": "この投稿は公開設定ではないのでハッシュタグの一覧に表示されません。公開投稿だけがハッシュタグで検索できます。",
-  "compose_form.limited_post_warning": "限定投稿は現状、ごく一部のMastodonサーバーにしか届きませんがいずれ改善されるでしょう（2023年8月時点でFedibirdとkmyblueのみです）",
+  "compose_form.limited_post_warning": "限定投稿は現状、ごく一部のMastodonサーバーにしか届きません（2023年8月時点でFedibird、kmyblue、Pawooなど一部のみです）",
   "compose_form.lock_disclaimer": "あなたのアカウントは{locked}になっていません。誰でもあなたをフォローすることができ、フォロワー限定の投稿を見ることができます。",
   "compose_form.lock_disclaimer.lock": "承認制",
   "compose_form.markdown.marked": "Markdown有効",
