@@ -13,6 +13,8 @@ import {
   BOOKMARK_CATEGORY_STATUSES_EXPAND_REQUEST,
   BOOKMARK_CATEGORY_STATUSES_EXPAND_SUCCESS,
   BOOKMARK_CATEGORY_STATUSES_EXPAND_FAIL,
+  BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS,
+  BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS,
 } from '../actions/bookmark_categories';
 import {
   UNBOOKMARK_SUCCESS,
@@ -47,17 +49,33 @@ const normalizeBookmarkCategoryStatuses = (state, bookmarkCategoryId, statuses, 
 };
 
 const appendToBookmarkCategoryStatuses = (state, bookmarkCategoryId, statuses, next) => {
+  return appendToBookmarkCategoryStatusesById(state, bookmarkCategoryId, statuses.map(item => item.id), next);
+};
+
+const appendToBookmarkCategoryStatusesById = (state, bookmarkCategoryId, statuses, next) => {
   return state.update(bookmarkCategoryId, listMap => listMap.withMutations(map => {
-    map.set('next', next);
+    if (typeof next !== 'undefined') {
+      map.set('next', next);
+    }
     map.set('isLoading', false);
-    map.set('items', map.get('items').union(statuses.map(item => item.id)));
+    if (map.get('items')) {
+      map.set('items', map.get('items').union(statuses));
+    }
   }));
 };
 
+const removeStatusFromBookmarkCategoryById = (state, bookmarkCategoryId, status) => {
+  return state.updateIn([bookmarkCategoryId, 'items'], items => items.delete(status));
+};
+
 const removeStatusFromAllBookmarkCategories = (state, status) => {
+  return removeStatusFromAllBookmarkCategoriesById(state, status.get('id'));
+};
+
+const removeStatusFromAllBookmarkCategoriesById = (state, status) => {
   state.toList().forEach((bookmarkCategory) => {
     if (state.getIn([bookmarkCategory.get('id'), 'items'])) {
-      state = state.updateIn([bookmarkCategory.get('id'), 'items'], items => items.delete(status.get('id')));
+      state = state.updateIn([bookmarkCategory.get('id'), 'items'], items => items.delete(status));
     }
   });
   return state;
@@ -85,6 +103,10 @@ export default function bookmarkCategories(state = initialState, action) {
     return normalizeBookmarkCategoryStatuses(state, action.id, action.statuses, action.next);
   case BOOKMARK_CATEGORY_STATUSES_EXPAND_SUCCESS:
     return appendToBookmarkCategoryStatuses(state, action.id, action.statuses, action.next);
+  case BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS:
+    return appendToBookmarkCategoryStatusesById(state, action.bookmarkCategoryId, action.statusId, undefined);
+  case BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS:
+    return removeStatusFromBookmarkCategoryById(state, action.bookmarkCategoryId, action.statusId);
   case UNBOOKMARK_SUCCESS:
     return removeStatusFromAllBookmarkCategories(state, action.status);
   default:
