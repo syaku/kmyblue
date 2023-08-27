@@ -25,7 +25,7 @@ import EditBookmarkCategoryForm from './components/edit_bookmark_category_form';
 
 
 const messages = defineMessages({
-  deleteMessage: { id: 'confirmations.delete_bookmary_category.message', defaultMessage: 'Are you sure you want to permanently delete this category?' },
+  deleteMessage: { id: 'confirmations.delete_bookmark_category.message', defaultMessage: 'Are you sure you want to permanently delete this category?' },
   deleteConfirm: { id: 'confirmations.delete_bookmark_category.confirm', defaultMessage: 'Delete' },
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
 });
