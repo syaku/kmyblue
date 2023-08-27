@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StatusesIndex < Chewy::Index
-  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: {
+  DEVELOPMENT_SETTINGS = {
     filter: {
       english_stop: {
         type: 'stop',
@@ -18,7 +18,6 @@ class StatusesIndex < Chewy::Index
         language: 'possessive_english',
       },
     },
-
     analyzer: {
       content: {
         tokenizer: 'uax_url_email',
@@ -32,7 +31,54 @@ class StatusesIndex < Chewy::Index
         ),
       },
     },
-  }
+  }.freeze
+
+  PRODUCTION_SETTINGS = {
+    filter: {
+      english_stop: {
+        type: 'stop',
+        stopwords: '_english_',
+      },
+
+      english_stemmer: {
+        type: 'stemmer',
+        language: 'english',
+      },
+
+      english_possessive_stemmer: {
+        type: 'stemmer',
+        language: 'possessive_english',
+      },
+    },
+    analyzer: {
+      content: {
+        tokenizer: 'uax_url_email',
+        filter: %w(
+          english_possessive_stemmer
+          lowercase
+          asciifolding
+          cjk_width
+          english_stop
+          english_stemmer
+        ),
+      },
+      sudachi_analyzer: {
+        filter: [],
+        type: 'custom',
+        tokenizer: 'sudachi_tokenizer',
+      },
+    },
+    tokenizer: {
+      sudachi_tokenizer: {
+        resources_path: '/etc/elasticsearch/sudachi',
+        split_mode: 'C',
+        type: 'sudachi_tokenizer',
+        discard_punctuation: 'true',
+      },
+    },
+  }.freeze
+
+  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: Rails.env.development? ? DEVELOPMENT_SETTINGS : PRODUCTION_SETTINGS
 
   # We do not use delete_if option here because it would call a method that we
   # expect to be called with crutches without crutches, causing n+1 queries
