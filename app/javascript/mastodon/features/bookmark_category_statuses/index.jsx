@@ -68,7 +68,8 @@ class BookmarkCategoryStatuses extends ImmutablePureComponent {
     if (columnId) {
       dispatch(removeColumn(columnId));
     } else {
-      dispatch(addColumn('BOOKMARKS_EX', {}));
+      dispatch(addColumn('BOOKMARKS_EX', { id: this.props.params.id }));
+      this.context.router.history.push('/');
     }
   };
 

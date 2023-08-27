@@ -30,7 +30,7 @@ const getOrderedCategories = createSelector([state => state.get('bookmark_catego
     return categories;
   }
 
-  return categories.toList().filter(item => !!item).sort((a, b) => a.get('title').localeCompare(b.get('title')));
+  return categories.toList().filter(item => !!item && typeof item.get('title') !== 'undefined' && item.get('title') !== null).sort((a, b) => a.get('title').localeCompare(b.get('title')));
 });
 
 const mapStateToProps = state => ({
