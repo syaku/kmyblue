@@ -29,7 +29,12 @@ export default class ColumnSettings extends PureComponent {
   };
 
   onPushChange = (path, checked) => {
-    this.props.onChange(['push', ...path], checked);
+    const { pushSettings } = this.props;
+    const showPushSettings = pushSettings.get('browserSupport') && pushSettings.get('isSubscribed');
+
+    if (showPushSettings) {
+      this.props.onChange(['push', ...path], checked);
+    }
   };
 
   render () {
