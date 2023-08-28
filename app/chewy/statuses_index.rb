@@ -71,14 +71,14 @@ class StatusesIndex < Chewy::Index
     tokenizer: {
       sudachi_tokenizer: {
         resources_path: '/etc/elasticsearch/sudachi',
-        split_mode: 'C',
+        split_mode: 'A',
         type: 'sudachi_tokenizer',
         discard_punctuation: 'true',
       },
     },
   }.freeze
 
-  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: Rails.env.development? ? DEVELOPMENT_SETTINGS : PRODUCTION_SETTINGS
+  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: PRODUCTION_SETTINGS
 
   # We do not use delete_if option here because it would call a method that we
   # expect to be called with crutches without crutches, causing n+1 queries
@@ -122,7 +122,7 @@ class StatusesIndex < Chewy::Index
   root date_detection: false do
     field(:id, type: 'keyword')
     field(:account_id, type: 'long')
-    field(:text, type: 'text', analyzer: 'whitespace', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
+    field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
     field(:searchable_by, type: 'long', value: ->(status, crutches) { status.searchable_by(crutches) })
     field(:searchability, type: 'keyword', value: ->(status) { status.compute_searchability })
     field(:language, type: 'keyword')

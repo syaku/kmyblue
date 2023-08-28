@@ -73,14 +73,14 @@ class PublicStatusesIndex < Chewy::Index
     tokenizer: {
       sudachi_tokenizer: {
         resources_path: '/etc/elasticsearch/sudachi',
-        split_mode: 'C',
+        split_mode: 'A',
         type: 'sudachi_tokenizer',
         discard_punctuation: 'true',
       },
     },
   }.freeze
 
-  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: Rails.env.development? ? DEVELOPMENT_SETTINGS : PRODUCTION_SETTINGS
+  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: PRODUCTION_SETTINGS
 
   index_scope ::Status.unscoped
                       .kept
@@ -90,7 +90,7 @@ class PublicStatusesIndex < Chewy::Index
   root date_detection: false do
     field(:id, type: 'keyword')
     field(:account_id, type: 'long')
-    field(:text, type: 'text', analyzer: 'whitespace', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
+    field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
     field(:language, type: 'keyword')
     field(:domain, type: 'keyword', value: ->(status) { status.account.domain || '' })
     field(:properties, type: 'keyword', value: ->(status) { status.searchable_properties })
