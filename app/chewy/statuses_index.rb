@@ -49,6 +49,16 @@ class StatusesIndex < Chewy::Index
         type: 'stemmer',
         language: 'possessive_english',
       },
+
+      my_posfilter: {
+        type: 'sudachi_part_of_speech',
+        stoptags: [
+          '助詞',
+          '助動詞',
+          '補助記号,句点',
+          '補助記号,読点',
+        ],
+      },
     },
     analyzer: {
       content: {
@@ -63,7 +73,10 @@ class StatusesIndex < Chewy::Index
         ),
       },
       sudachi_analyzer: {
-        filter: [],
+        filter: %w(
+          my_posfilter
+          sudachi_normalizedform
+        ),
         type: 'custom',
         tokenizer: 'sudachi_tokenizer',
       },
