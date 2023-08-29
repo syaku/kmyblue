@@ -31,12 +31,13 @@ class AccountsIndex < Chewy::Index
 
     analyzer: {
       natural: {
-        tokenizer: 'uax_url_email',
+        tokenizer: 'standard',
         filter: %w(
-          english_possessive_stemmer
           lowercase
           asciifolding
           cjk_width
+          elision
+          english_possessive_stemmer
           english_stop
           english_stemmer
         ),
@@ -52,7 +53,7 @@ class AccountsIndex < Chewy::Index
       },
 
       verbatim: {
-        tokenizer: 'standard',
+        tokenizer: 'uax_url_email',
         filter: %w(lowercase asciifolding cjk_width),
       },
 
