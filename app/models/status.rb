@@ -87,6 +87,14 @@ class Status < ApplicationRecord
   has_many :bookmark_category_relationships, class_name: 'BookmarkCategoryStatus', inverse_of: :status, dependent: :destroy
   has_many :joined_bookmark_categories, class_name: 'BookmarkCategory', through: :bookmark_category_relationships, source: :bookmark_category
 
+  # Those associations are used for the private search index
+  has_many :local_mentioned, -> { merge(Account.local) }, through: :active_mentions, source: :account
+  has_many :local_favorited, -> { merge(Account.local) }, through: :favourites, source: :account
+  has_many :local_reblogged, -> { merge(Account.local) }, through: :reblogs, source: :account
+  has_many :local_bookmarked, -> { merge(Account.local) }, through: :bookmarks, source: :account
+  has_many :local_emoji_reacted, -> { merge(Account.local) }, through: :emoji_reactions, source: :account
+  has_many :local_referenced, -> { merge(Account.local) }, through: :referenced_by_statuses, source: :account
+
   has_and_belongs_to_many :tags
   has_and_belongs_to_many :preview_cards
 

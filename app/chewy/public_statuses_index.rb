@@ -80,13 +80,20 @@ class PublicStatusesIndex < Chewy::Index
           english_stemmer
         ),
       },
+
       sudachi_analyzer: {
+        tokenizer: 'sudachi_tokenizer',
+        type: 'custom',
         filter: %w(
+          english_possessive_stemmer
+          lowercase
+          asciifolding
+          cjk_width
+          english_stop
+          english_stemmer
           my_posfilter
           sudachi_normalizedform
         ),
-        type: 'custom',
-        tokenizer: 'sudachi_tokenizer',
       },
     },
     tokenizer: {
