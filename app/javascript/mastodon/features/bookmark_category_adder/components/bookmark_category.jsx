@@ -55,7 +55,7 @@ class BookmarkCategory extends ImmutablePureComponent {
       <div className='list'>
         <div className='list__wrapper'>
           <div className='list__display-name'>
-            <Icon id='user-bookmarkCategory' className='column-link__icon' fixedWidth />
+            <Icon id='bookmark' className='column-link__icon' fixedWidth />
             {bookmarkCategory.get('title')}
           </div>
 
