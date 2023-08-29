@@ -12,7 +12,6 @@ import { createSelector } from 'reselect';
 import { fetchAntennas } from 'mastodon/actions/antennas';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
-import { Icon }  from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import ScrollableList from 'mastodon/components/scrollable_list';
 import ColumnLink from 'mastodon/features/ui/components/column_link';
@@ -23,6 +22,8 @@ import NewAntennaForm from './components/new_antenna_form';
 const messages = defineMessages({
   heading: { id: 'column.antennas', defaultMessage: 'Antennas' },
   subheading: { id: 'antennas.subheading', defaultMessage: 'Your antennas' },
+  insert_list: { id: 'antennas.insert_list', defaultMessage: 'List' },
+  insert_home: { id: 'antennas.insert_home', defaultMessage: 'Home' },
 });
 
 const getOrderedAntennas = createSelector([state => state.get('antennas')], antennas => {
@@ -77,14 +78,8 @@ class Antennas extends ImmutablePureComponent {
           bindToDocument={!multiColumn}
         >
           {antennas.map(antenna => (
-            <ColumnLink key={antenna.get('id')} to={`/antennast/${antenna.get('id')}`} icon='wifi' text={antenna.get('title')}>
-              <span className='antenna-list-detail'>
-                <span className='group'><Icon id='users' />{antenna.get('accounts_count')}</span>
-                <span className='group'><Icon id='sitemap' />{antenna.get('domains_count')}</span>
-                <span className='group'><Icon id='hashtag' />{antenna.get('tags_count')}</span>
-                <span className='group'><Icon id='paragraph' />{antenna.get('keywords_count')}</span>
-              </span>
-            </ColumnLink>
+            <ColumnLink key={antenna.get('id')} to={`/antennast/${antenna.get('id')}`} icon='wifi' text={antenna.get('title')}
+                        badge={antenna.get('insert_feeds') ? intl.formatMessage(antenna.get('list') ? messages.insert_list : messages.insert_home) : undefined} />
           ))}
         </ScrollableList>
 
