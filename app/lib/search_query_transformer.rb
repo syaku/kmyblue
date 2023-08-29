@@ -103,6 +103,10 @@ class SearchQueryTransformer < Parslet::Transform
         @filter = :account_id
         @type = :term
         @term = account_id_from_term(term)
+      when 'domain'
+        @filter = :domain
+        @type = :term
+        @term = domain_from_term(term)
       when 'before'
         @filter = :created_at
         @type = :range
@@ -136,6 +140,12 @@ class SearchQueryTransformer < Parslet::Transform
       # If the account is not found, we want to return empty results, so return
       # an ID that does not exist
       account&.id || -1
+    end
+
+    def domain_from_term(term)
+      return '' if %w(local me).include?(term)
+
+      term
     end
   end
 
