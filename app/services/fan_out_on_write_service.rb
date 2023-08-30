@@ -195,7 +195,7 @@ class FanOutOnWriteService < BaseService
   end
 
   def rendered_status
-    @rendered_status ||= InlineRenderer.render(@status, nil, :status)
+    @rendered_status ||= InlineRenderer.render(@status, nil, :status_internal)
   end
 
   def update?
