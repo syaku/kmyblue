@@ -95,6 +95,7 @@ class PostStatusService < BaseService
     return unless @options[:visibility] == 'circle' || (@options[:visibility] == 'limited' && @options[:circle_id].present?)
 
     @circle = @options[:circle_id].present? && Circle.find(@options[:circle_id])
+    @limited_scope = :circle
     raise ArgumentError if @circle.nil? || @circle.account_id != @account.id
   end
 
