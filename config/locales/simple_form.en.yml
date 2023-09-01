@@ -253,6 +253,7 @@ en:
         setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font
         setting_theme: Site theme
+        setting_translatable_private: Allow other users translation of your private posts
         setting_trends: Show today's trends
         setting_unfollow_modal: Show confirmation dialog before unfollowing someone
         setting_unsafe_limited_distribution: Send limit posts with unsafe way to other servers

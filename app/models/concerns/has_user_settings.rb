@@ -99,6 +99,10 @@ module HasUserSettings
     settings['noai']
   end
 
+  def setting_translatable_private
+    settings['translatable_private']
+  end
+
   def setting_hide_statuses_count
     settings['hide_statuses_count']
   end

@@ -319,6 +319,10 @@ class Account < ApplicationRecord
     user&.setting_noai || (settings.present? && settings['noai']) || false
   end
 
+  def translatable_private?
+    user&.setting_translatable_private || (settings.present? && settings['translatable_private']) || false
+  end
+
   def public_statuses_count
     hide_statuses_count? ? 0 : statuses_count
   end
@@ -387,6 +391,7 @@ class Account < ApplicationRecord
       'emoji_reaction_must_following' => emoji_reactions_must_following?,
       'emoji_reaction_must_follower' => emoji_reactions_must_follower?,
       'emoji_reaction_deny_from_all' => emoji_reactions_deny_from_all?,
+      'translatable_private' => translatable_private?,
     }
     config = config.merge(settings) if settings.present?
     config

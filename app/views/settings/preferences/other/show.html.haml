@@ -11,6 +11,12 @@
     .fields-group
       = ff.input :aggregate_reblogs, wrapper: :with_label, recommended: true, label: I18n.t('simple_form.labels.defaults.setting_aggregate_reblogs'), hint: I18n.t('simple_form.hints.defaults.setting_aggregate_reblogs')
 
+    .fields-group
+      = ff.input :noai, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_noai'), hint: I18n.t('simple_form.hints.defaults.setting_noai')
+
+    .fields-group
+      = ff.input :translatable_private, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_translatable_private')
+
     %h4= t 'preferences.posting_defaults'
 
     .fields-row
