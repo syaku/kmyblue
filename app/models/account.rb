@@ -388,11 +388,15 @@ class Account < ApplicationRecord
       'hide_statuses_count' => hide_statuses_count?,
       'hide_following_count' => hide_following_count?,
       'hide_followers_count' => hide_followers_count?,
-      'emoji_reaction_must_following' => emoji_reactions_must_following?,
-      'emoji_reaction_must_follower' => emoji_reactions_must_follower?,
-      'emoji_reaction_deny_from_all' => emoji_reactions_deny_from_all?,
       'translatable_private' => translatable_private?,
     }
+    if Setting.enable_block_emoji_reaction_settings
+      config = config.merge({
+        'emoji_reaction_must_following' => emoji_reactions_must_following?,
+        'emoji_reaction_must_follower' => emoji_reactions_must_follower?,
+        'emoji_reaction_deny_from_all' => emoji_reactions_deny_from_all?,
+      })
+    end
     config = config.merge(settings) if settings.present?
     config
   end
