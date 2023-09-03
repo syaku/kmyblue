@@ -65,11 +65,12 @@ ja:
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
         setting_disallow_unlisted_public_searchability: この設定を有効にすると、未収載投稿と検索範囲「全て」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
+        setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大16個まで表示します。kmyblueからアップロードはできません
         setting_display_media_hide_all: メディアを常に隠す
         setting_display_media_show_all: メディアを常に表示する
         setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、スタンプ機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
-        setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大16個まで表示します。kmyblueからアップロードはできません
+        setting_link_preview: プレビュー生成を停止することは、センシティブなサイトへのリンクを頻繁に投稿する人にも有効かもしれません
         setting_noai: AI学習への利用を禁止するメタタグをプロフィールページに追加します。ただし実効性があるとは限りません
         setting_public_post_to_unlisted: 未対応のサードパーティアプリからもローカル公開で投稿できますが、公開投稿はWeb以外できなくなります
         setting_reject_unlisted_subscription: Misskeyやそのフォーク(Calckeyなど)は、フォローしていないアカウントの「未収載」投稿を **購読・検索** することができます。これはkmyblueの挙動と異なります。そのようなサーバーに、指定した公開範囲の投稿を「フォロワーのみ」として配送します。ただし構造上、完璧な対応は困難でたまに未収載として配信されること、ご理解ください
