@@ -68,7 +68,7 @@ module HasUserSettings
   end
 
   def setting_emoji_reaction_streaming_notify_impl2
-    settings['emoji_reaction_streaming_notify_impl2']
+    false
   end
 
   def setting_unfollow_modal
