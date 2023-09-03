@@ -66,3 +66,7 @@
       cron: '0 0 * * *'
       class: Scheduler::UpdateInstanceInfoScheduler
       queue: scheduler
+    software_update_check_scheduler:
+      interval: 30 minutes
+      class: Scheduler::SoftwareUpdateCheckScheduler
+      queue: scheduler
