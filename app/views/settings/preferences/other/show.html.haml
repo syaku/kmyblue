@@ -11,15 +11,6 @@
     .fields-group
       = ff.input :aggregate_reblogs, wrapper: :with_label, recommended: true, label: I18n.t('simple_form.labels.defaults.setting_aggregate_reblogs'), hint: I18n.t('simple_form.hints.defaults.setting_aggregate_reblogs')
 
-    .fields-group
-      = ff.input :noai, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_noai'), hint: I18n.t('simple_form.hints.defaults.setting_noai')
-
-    .fields-group
-      = ff.input :translatable_private, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_translatable_private')
-
-    .fields-group
-      = ff.input :link_preview, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_link_preview')
-
     %h4= t 'preferences.posting_defaults'
 
     .fields-row
@@ -40,16 +31,16 @@
       = ff.input :stay_privacy, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_stay_privacy')
 
     .fields-group
-      = ff.input :'web.enable_login_privacy', wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_enable_login_privacy'), hint: false
+      = ff.input :public_post_to_unlisted, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_public_post_to_unlisted'), hint: I18n.t('simple_form.hints.defaults.setting_public_post_to_unlisted')
 
     .fields-group
       = ff.input :disallow_unlisted_public_searchability, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_disallow_unlisted_public_searchability'), hint: I18n.t('simple_form.hints.defaults.setting_disallow_unlisted_public_searchability')
 
     .fields-group
-      = ff.input :public_post_to_unlisted, wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_public_post_to_unlisted'), hint: I18n.t('simple_form.hints.defaults.setting_public_post_to_unlisted')
+      = ff.input :default_sensitive, wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_default_sensitive'), hint: I18n.t('simple_form.hints.defaults.setting_default_sensitive')
 
     .fields-group
-      = ff.input :default_sensitive, wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_default_sensitive'), hint: I18n.t('simple_form.hints.defaults.setting_default_sensitive')
+      = ff.input :'web.enable_login_privacy', wrapper: :with_label, kmyblue: true, label: I18n.t('simple_form.labels.defaults.setting_enable_login_privacy'), hint: false
 
   %h4= t 'preferences.public_timelines'
 
