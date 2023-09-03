@@ -20,13 +20,19 @@ class PublicStatusesIndex < Chewy::Index
     },
 
     analyzer: {
-      content: {
+      verbatim: {
         tokenizer: 'uax_url_email',
+        filter: %w(lowercase),
+      },
+
+      content: {
+        tokenizer: 'standard',
         filter: %w(
-          english_possessive_stemmer
           lowercase
           asciifolding
           cjk_width
+          elision
+          english_possessive_stemmer
           english_stop
           english_stemmer
         ),
@@ -74,13 +80,20 @@ class PublicStatusesIndex < Chewy::Index
           english_stemmer
         ),
       },
+
       sudachi_analyzer: {
+        tokenizer: 'sudachi_tokenizer',
+        type: 'custom',
         filter: %w(
+          english_possessive_stemmer
+          lowercase
+          asciifolding
+          cjk_width
+          english_stop
+          english_stemmer
           my_posfilter
           sudachi_normalizedform
         ),
-        type: 'custom',
-        tokenizer: 'sudachi_tokenizer',
       },
     },
     tokenizer: {
@@ -101,7 +114,7 @@ class PublicStatusesIndex < Chewy::Index
                       .includes(:media_attachments, :preloadable_poll, :preview_cards)
 
   root date_detection: false do
-    field(:id, type: 'keyword')
+    field(:id, type: 'long')
     field(:account_id, type: 'long')
     field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
     field(:language, type: 'keyword')

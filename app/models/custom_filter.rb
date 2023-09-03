@@ -101,7 +101,10 @@ class CustomFilter < ApplicationRecord
       next if filter.exclude_follows && following
       next if filter.exclude_localusers && status.account.local?
 
-      match = rules[:keywords].match(status.proper.searchable_text) if rules[:keywords].present?
+      if rules[:keywords].present?
+        match = rules[:keywords].match(status.proper.searchable_text)
+        match = rules[:keywords].match(status.proper.references.pluck(:text).join("\n\n")) if match.nil? && status.proper.references.exists?
+      end
       keyword_matches = [match.to_s] unless match.nil?
 
       status_matches = [status.id, status.reblog_of_id].compact & rules[:status_ids] if rules[:status_ids].present?

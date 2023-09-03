@@ -763,6 +763,11 @@ const startServer = async () => {
     const listener = message => {
       const { event, payload } = message;
 
+      // reference_texts property is not working if ProcessReferencesWorker is
+      // used on PostStatusService and so on. (Asynchronous processing)
+      const reference_texts = payload.reference_texts || [];
+      delete payload.reference_texts;
+
       // Streaming only needs to apply filtering to some channels and only to
       // some events. This is because majority of the filtering happens on the
       // Ruby on Rails side when producing the event for streaming.
@@ -908,7 +913,7 @@ const startServer = async () => {
           if (req.cachedFilters) {
             const status = payload;
             // TODO: Calculate searchableContent in Ruby on Rails:
-            const searchableContent = ([status.spoiler_text || '', status.content].concat((status.poll && status.poll.options) ? status.poll.options.map(option => option.title) : [])).concat(status.media_attachments.map(att => att.description)).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+            const searchableContent = ([status.spoiler_text || '', status.content, ...(reference_texts || [])].concat((status.poll && status.poll.options) ? status.poll.options.map(option => option.title) : [])).concat(status.media_attachments.map(att => att.description)).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
             const searchableTextContent = JSDOM.fragment(searchableContent).textContent;
 
             const now = new Date();

@@ -68,7 +68,7 @@ module HasUserSettings
   end
 
   def setting_emoji_reaction_streaming_notify_impl2
-    settings['emoji_reaction_streaming_notify_impl2']
+    false
   end
 
   def setting_unfollow_modal
@@ -97,6 +97,14 @@ module HasUserSettings
 
   def setting_noai
     settings['noai']
+  end
+
+  def setting_translatable_private
+    settings['translatable_private']
+  end
+
+  def setting_link_preview
+    settings['link_preview']
   end
 
   def setting_hide_statuses_count

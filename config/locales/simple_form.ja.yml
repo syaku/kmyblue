@@ -251,6 +251,7 @@ ja:
         setting_hide_network: 繋がりを隠す
         setting_hide_recent_emojis: 絵文字ピッカーで最近使用した絵文字を隠す（リアクションデッキのみを表示する）
         setting_hide_statuses_count: 投稿数を隠す
+        setting_link_preview: リンクのプレビューを生成する
         setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_noai: 自分のコンテンツのAI学習利用に対して不快感を表明する
         setting_public_post_to_unlisted: サードパーティから公開範囲「公開」で投稿した場合、「ローカル公開」に変更する
@@ -263,6 +264,7 @@ ja:
         setting_stop_emoji_reaction_streaming: スタンプのストリーミングを停止する
         setting_system_font_ui: システムのデフォルトフォントを使う
         setting_theme: サイトテーマ
+        setting_translatable_private: 非公開投稿の翻訳を許可する
         setting_trends: 本日のトレンドタグを表示する
         setting_unfollow_modal: フォローを解除する前に確認ダイアログを表示する
         setting_unsafe_limited_distribution: 安全でない方法で限定投稿を他サーバーに配信する (非推奨)

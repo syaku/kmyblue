@@ -242,6 +242,7 @@ en:
         setting_hide_network: Hide your social graph
         setting_hide_recent_emojis: Hide recent emojis
         setting_hide_statuses_count: Hide statuses count
+        setting_link_preview: Generate post link preview card
         setting_noai: Set noai meta tags
         setting_public_post_to_unlisted: Convert public post to public unlisted if not using Web app
         setting_reduce_motion: Reduce motion in animations
@@ -253,6 +254,7 @@ en:
         setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font
         setting_theme: Site theme
+        setting_translatable_private: Allow other users translation of your private posts
         setting_trends: Show today's trends
         setting_unfollow_modal: Show confirmation dialog before unfollowing someone
         setting_unsafe_limited_distribution: Send limit posts with unsafe way to other servers

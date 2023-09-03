@@ -1619,6 +1619,13 @@ en:
     search_hint_html: Control how you want to be found. Do you want people to find you by what you've publicly posted about? Do you want people outside Mastodon to find your profile when searching the web? Please mind that total exclusion from all search engines cannot be guaranteed for public information.
     stop_deliver: Stop delivering
     title: Privacy and reach
+  privacy_extra:
+    hint_html: These settings are kmyblue original. You will receive additional privacy benefits by doing this setting.
+    post_processing_hint_html: 投稿された情報に対して、システムが追加で行うことができる操作を制御します。これらには、第三者のサイトへあなたの投稿に関する情報の送信を伴う設定も含まれます。
+    post_processing: 投稿の処理
+    stop_deliver: 配送停止
+    stop_deliver_hint_html: Mastodonの投稿を、他のソフトウェアでは自由に検索することができます。Mastodon内で行ったプライバシーの設定は無視され、あなたの投稿が意図しない人に見つかるおそれがあります。ここでは、他のサーバーやソフトウェアであなたの投稿が見つからないようにする設定が可能です。ただしリスクは伴います。
+    title: Privacy extra settings
   privacy_policy:
     title: Privacy Policy
   reactions:
@@ -1844,6 +1851,10 @@ en:
       default: "%b %d, %Y, %H:%M"
       month: "%b %Y"
       time: "%H:%M"
+  translation:
+    errors:
+      quota_exceeded: The server-wide usage quota for the translation service has been exceeded.
+      too_many_requests: There have been too many requests to the translation service recently.
   two_factor_authentication:
     add: Add
     disable: Disable 2FA

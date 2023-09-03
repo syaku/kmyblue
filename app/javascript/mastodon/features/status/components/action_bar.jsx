@@ -23,11 +23,13 @@ const messages = defineMessages({
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
   reply: { id: 'status.reply', defaultMessage: 'Reply' },
   reblog: { id: 'status.reblog', defaultMessage: 'Boost' },
+  cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Unboost' },
   reblog_private: { id: 'status.reblog_private', defaultMessage: 'Boost with original visibility' },
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Unboost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be boosted' },
   favourite: { id: 'status.favourite', defaultMessage: 'Favorite' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
+  bookmark_category: { id: 'status.bookmark_category', defaultMessage: 'Bookmark category' },
   more: { id: 'status.more', defaultMessage: 'More' },
   mute: { id: 'status.mute', defaultMessage: 'Mute @{name}' },
   muteConversation: { id: 'status.mute_conversation', defaultMessage: 'Mute conversation' },
@@ -112,6 +114,10 @@ class ActionBar extends PureComponent {
     } else {
       this.props.onBookmark(this.props.status, e);
     }
+  };
+
+  handleBookmarkCategoryAdderClick = () => {
+    this.props.onBookmarkCategoryAdder(this.props.status);
   };
 
   handleDeleteClick = () => {
@@ -237,11 +243,12 @@ class ActionBar extends PureComponent {
 
     if (signedIn) {
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.reblog), action: this.handleReblogForceModalClick });
+      menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog : messages.reblog), action: this.handleReblogForceModalClick });
 
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
       }
+      menu.push({ text: intl.formatMessage(messages.bookmark_category), action: this.handleBookmarkCategoryAdderClick });
 
       if (writtenByMe) {
         if (pinnableStatus) {
