@@ -103,6 +103,10 @@ module HasUserSettings
     settings['translatable_private']
   end
 
+  def setting_link_preview
+    settings['link_preview']
+  end
+
   def setting_hide_statuses_count
     settings['hide_statuses_count']
   end
