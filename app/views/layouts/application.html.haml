@@ -38,15 +38,6 @@
 
     = yield :header_tags
 
-    %script{ 'src' => "https://www.googletagmanager.com/gtag/js?id=AW-11130587137", 'async' => true }
-
-    :javascript
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'AW-11130587137');
-
   %body{ class: body_classes }
     = content_for?(:content) ? yield(:content) : yield
 
