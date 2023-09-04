@@ -48,8 +48,6 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def create_status
     return reject_payload! if unsupported_object_type? || non_matching_uri_hosts?(@account.uri, object_uri) || tombstone_exists? || !related_to_local_activity?
-    return reject_payload! if (reply_to_local? || reply_to_local_account?) && reject_reply_to_local?
-    return reject_payload! if (!reply_to_local_account_following? || !reply_to_local_status_following?) && reject_reply_exclude_followers?
 
     with_redis_lock("create:#{object_uri}") do
       return if delete_arrived_first?(object_uri) || poll_vote?
@@ -63,7 +61,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       end
     end
 
-    @status
+    @status || reject_payload!
   end
 
   def audience_to
@@ -90,7 +88,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     process_tags
     process_audience
 
-    return unless valid_status?
+    return nil unless valid_status?
+    return nil if (reply_to_local? || reply_to_local_account? || reply_to_local_from_tags?) && reject_reply_to_local?
+    return nil if (!reply_to_local_account_following? || !reply_to_local_status_following? || !reply_to_local_from_tags_following?) && reject_reply_exclude_followers?
 
     ApplicationRecord.transaction do
       @status = Status.create!(@params)
@@ -146,14 +146,6 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def valid_status?
     !Admin::NgWord.reject?("#{@params[:spoiler_text]}\n#{@params[:text]}") && !Admin::NgWord.hashtag_reject?(@tags.size)
-  end
-
-  def reply_to_local_account?
-    accounts_in_audience.any?(&:local?)
-  end
-
-  def reply_to_local_account_following?
-    !reply_to_local_account? || accounts_in_audience.none? { |account| account.local? && !account.following?(@account) }
   end
 
   def accounts_in_audience
@@ -418,6 +410,22 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     return @skip_download if defined?(@skip_download)
 
     @skip_download ||= DomainBlock.reject_media?(@account.domain)
+  end
+
+  def reply_to_local_account?
+    accounts_in_audience.any?(&:local?)
+  end
+
+  def reply_to_local_account_following?
+    !reply_to_local_account? || accounts_in_audience.none? { |account| account.local? && !account.following?(@account) }
+  end
+
+  def reply_to_local_from_tags?
+    (@mentions.nil? || @mentions.any? { |m| m.account.local? })
+  end
+
+  def reply_to_local_from_tags_following?
+    (@mentions.nil? || @mentions.none? { |m| m.account.local? && !m.account.following?(@account) })
   end
 
   def reply_to_local?

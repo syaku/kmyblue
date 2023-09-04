@@ -29,10 +29,11 @@ RSpec.describe ActivityPub::Activity::Create do
       subject { described_class.new(json, sender) }
 
       let(:sender_software) { 'mastodon' }
+      let(:custom_before) { false }
 
       before do
         Fabricate(:instance_info, domain: 'example.com', software: sender_software)
-        subject.perform
+        subject.perform unless custom_before
       end
 
       context 'when object has been edited' do
@@ -645,6 +646,80 @@ RSpec.describe ActivityPub::Activity::Create do
         it 'creates status' do
           status = sender.statuses.first
           expect(status).to_not be_nil
+        end
+      end
+
+      context 'with mentions domain block reject_reply' do
+        before do
+          Fabricate(:domain_block, domain: 'example.com', severity: :noop, reject_reply: true)
+          subject.perform
+        end
+
+        let(:custom_before) { true }
+        let(:recipient) { Fabricate(:account) }
+
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            tag: [
+              {
+                type: 'Mention',
+                href: ActivityPub::TagManager.instance.uri_for(recipient),
+              },
+            ],
+          }
+        end
+
+        it 'creates status' do
+          status = sender.statuses.first
+
+          expect(status).to be_nil
+        end
+      end
+
+      context 'with mentions domain block reject_reply_exclude_followers' do
+        before do
+          Fabricate(:domain_block, domain: 'example.com', severity: :noop, reject_reply_exclude_followers: true)
+          recipient.follow!(sender) if follow
+          subject.perform
+        end
+
+        let(:custom_before) { true }
+        let(:follow) { false }
+        let(:recipient) { Fabricate(:account) }
+
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            tag: [
+              {
+                type: 'Mention',
+                href: ActivityPub::TagManager.instance.uri_for(recipient),
+              },
+            ],
+          }
+        end
+
+        context 'when follower' do
+          let(:follow) { true }
+
+          it 'creates status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+          end
+        end
+
+        context 'when not follower' do
+          it 'creates status' do
+            status = sender.statuses.first
+
+            expect(status).to be_nil
+          end
         end
       end
 
