@@ -53,8 +53,12 @@ class SearchQueryTransformer < Parslet::Transform
     end
 
     def to_query
-      # { multi_match: { type: 'most_fields', query: @term, fields: ['text', 'text.stemmed'], operator: 'and' } }
-      { match_phrase: { text: { query: @term } } }
+      if @term.start_with?('#')
+        { match: { tags: { query: @term } } }
+      else
+        # { multi_match: { type: 'most_fields', query: @term, fields: ['text', 'text.stemmed'], operator: 'and' } }
+        { match_phrase: { text: { query: @term } } }
+      end
     end
   end
 
@@ -100,15 +104,15 @@ class SearchQueryTransformer < Parslet::Transform
       when 'before'
         @filter = :created_at
         @type = :range
-        @term = { lt: term, time_zone: @options[:current_account]&.user_time_zone || 'UTC' }
+        @term = { lt: term, time_zone: @options[:current_account]&.user_time_zone.presence || 'UTC' }
       when 'after'
         @filter = :created_at
         @type = :range
-        @term = { gt: term, time_zone: @options[:current_account]&.user_time_zone || 'UTC' }
+        @term = { gt: term, time_zone: @options[:current_account]&.user_time_zone.presence || 'UTC' }
       when 'during'
         @filter = :created_at
         @type = :range
-        @term = { gte: term, lte: term, time_zone: @options[:current_account]&.user_time_zone || 'UTC' }
+        @term = { gte: term, lte: term, time_zone: @options[:current_account]&.user_time_zone.presence || 'UTC' }
       else
         raise "Unknown prefix: #{prefix}"
       end
