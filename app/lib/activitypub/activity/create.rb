@@ -421,11 +421,11 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def reply_to_local_from_tags?
-    (@mentions.nil? || @mentions.any? { |m| m.account.local? })
+    (@mentions.present? && @mentions.any? { |m| m.account.local? })
   end
 
   def reply_to_local_from_tags_following?
-    (@mentions.nil? || @mentions.none? { |m| m.account.local? && !m.account.following?(@account) })
+    (@mentions.present? && @mentions.none? { |m| m.account.local? && !m.account.following?(@account) })
   end
 
   def reply_to_local?
