@@ -277,17 +277,50 @@ RSpec.describe DeliveryAntennaService, type: :service do
     end
   end
 
-  context 'with keyword and unlisted visibility/public searchability by not following' do
+  context 'with keyword and unlisted visibility by not following' do
     let!(:antenna)       { antenna_with_keyword(tom, 'body') }
     let!(:empty_antenna) { antenna_with_account(tom, alice) }
     let(:visibility)     { :unlisted }
 
-    it 'detecting antenna' do
-      expect(antenna_feed_of(antenna)).to include status.id
+    context 'when public searchability' do
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+      end
+
+      it 'not detecting antenna' do
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
     end
 
-    it 'not detecting antenna' do
-      expect(antenna_feed_of(empty_antenna)).to_not include status.id
+    context 'when private searchability' do
+      let(:searchability) { :private }
+
+      it 'not detecting antenna' do
+        expect(antenna_feed_of(antenna)).to_not include status.id
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+  end
+
+  context 'with keyword and unlisted visibility by following' do
+    let!(:antenna)       { antenna_with_keyword(bob, 'body') }
+    let!(:empty_antenna) { antenna_with_account(bob, alice) }
+    let(:visibility)     { :unlisted }
+
+    context 'when public searchability' do
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to include status.id
+      end
+    end
+
+    context 'when private searchability' do
+      let(:searchability) { :private }
+
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to include status.id
+      end
     end
   end
 end
