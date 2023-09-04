@@ -54,4 +54,17 @@ RSpec.describe ActivityPub::Activity::Like do
       expect(sender.favourited?(status)).to be false
     end
   end
+
+  describe '#perform when account domain_block' do
+    subject { described_class.new(json, sender) }
+
+    before do
+      Fabricate(:account_domain_block, account: recipient, domain: 'example.com')
+      subject.perform
+    end
+
+    it 'does not create a favourite from sender to status', pending: 'considering spec' do
+      expect(sender.favourited?(status)).to be false
+    end
+  end
 end
