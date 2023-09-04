@@ -17,6 +17,9 @@ class FeedInsertWorker
       when :list
         @list     = List.find(id)
         @follower = @list.account
+      when :antenna
+        @antenna  = Antenna.find(id)
+        @follower = @antenna.account
       end
     end
 
@@ -40,7 +43,7 @@ class FeedInsertWorker
 
   def feed_filtered?
     case @type
-    when :home
+    when :home, :antenna
       FeedManager.instance.filter?(:home, @status, @follower)
     when :tags
       FeedManager.instance.filter?(:tags, @status, @follower)

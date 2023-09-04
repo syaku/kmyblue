@@ -1073,11 +1073,16 @@ en:
       keyword: Keywords
       tag: Tags
     errors:
+      duplicate_account: Duplicate account
+      duplicate_domain: Duplicate domain
+      duplicate_keyword: Duplicate keyword
+      duplicate_tag: Duplicate tag
       limit:
         accounts: 登録できるアカウント数の上限に達しています
         domains: 登録できるドメイン数の上限に達しています
         keywords: 登録できるキーワード数の上限に達しています
         tags: 登録できるタグ数の上限に達しています
+      too_short_keyword: Too short keyword! must 2 and more letters
     edit:
       accounts_hint: \@askyq or @askyq@example.com
       accounts_raw: Account list

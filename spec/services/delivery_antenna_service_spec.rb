@@ -7,8 +7,8 @@ RSpec.describe DeliveryAntennaService, type: :service do
 
   let(:last_active_at) { Time.now.utc }
   let(:last_active_at_tom) { Time.now.utc }
-  let(:visibility) { 'public' }
-  let(:searchability) { 'public' }
+  let(:visibility) { :public }
+  let(:searchability) { :public }
   let(:domain) { nil }
   let(:spoiler_text) { '' }
   let(:tags) { Tag.find_or_create_by_names(['hoge']) }
@@ -35,7 +35,7 @@ RSpec.describe DeliveryAntennaService, type: :service do
 
     allow(redis).to receive(:publish)
 
-    subject.call(status, true, stl_home)
+    subject.call(status, false, stl_home)
   end
 
   def home_feed_of(account)
@@ -241,6 +241,18 @@ RSpec.describe DeliveryAntennaService, type: :service do
     end
   end
 
+  context 'when multiple antennas from same owner with keyword' do
+    let!(:antenna)       { antenna_with_keyword(tom, 'body') }
+    let!(:empty_antenna) { antenna_with_keyword(tom, 'body') }
+
+    [1, 2, 3, 4, 5].each do |_|
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to include status.id
+      end
+    end
+  end
+
   context 'when multiple antennas insert home with keyword' do
     let!(:antenna)       { antenna_with_keyword(bob, 'body', insert_feeds: true) }
     let!(:empty_antenna) { antenna_with_keyword(tom, 'body', insert_feeds: true) }
@@ -262,6 +274,53 @@ RSpec.describe DeliveryAntennaService, type: :service do
       expect(list_feed_of(antenna.list)).to include status.id
       expect(antenna_feed_of(empty_antenna)).to include status.id
       expect(list_feed_of(empty_antenna.list)).to include status.id
+    end
+  end
+
+  context 'with keyword and unlisted visibility by not following' do
+    let!(:antenna)       { antenna_with_keyword(tom, 'body') }
+    let!(:empty_antenna) { antenna_with_account(tom, alice) }
+    let(:visibility)     { :unlisted }
+
+    context 'when public searchability' do
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+      end
+
+      it 'not detecting antenna' do
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+
+    context 'when private searchability' do
+      let(:searchability) { :private }
+
+      it 'not detecting antenna' do
+        expect(antenna_feed_of(antenna)).to_not include status.id
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+  end
+
+  context 'with keyword and unlisted visibility by following' do
+    let!(:antenna)       { antenna_with_keyword(bob, 'body') }
+    let!(:empty_antenna) { antenna_with_account(bob, alice) }
+    let(:visibility)     { :unlisted }
+
+    context 'when public searchability' do
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to include status.id
+      end
+    end
+
+    context 'when private searchability' do
+      let(:searchability) { :private }
+
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to include status.id
+      end
     end
   end
 end

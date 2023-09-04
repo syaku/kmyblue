@@ -54,7 +54,7 @@ class SearchQueryTransformer < Parslet::Transform
 
     def to_query
       # { multi_match: { type: 'most_fields', query: @term, fields: ['text', 'text.stemmed'], operator: 'and' } }
-      { match_phrase: { text: { query: @phrase } } }
+      { match_phrase: { text: { query: @term } } }
     end
   end
 

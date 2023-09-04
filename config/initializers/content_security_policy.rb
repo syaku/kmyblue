@@ -19,13 +19,6 @@ media_host ||= host_to_url(ENV['AZURE_ALIAS_HOST'])
 media_host ||= host_to_url(ENV['S3_HOSTNAME']) if ENV['S3_ENABLED'] == 'true'
 media_host ||= assets_host
 
-google_host = 'https://www.googletagmanager.com'
-google_host2 = 'https://googleads.g.doubleclick.net'
-google_host3 = 'https://www.googleadservices.com'
-google_host4 = 'https://www.google.co.jp'
-google_host5 = 'https://www.google.com'
-google_tag_script_hash = "'sha256-CS1WvLDd3zJOdxpEk+N+VigcWMa6V345p2HS0WYiFWE='"
-
 Rails.application.config.content_security_policy do |p|
   p.base_uri        :none
   p.default_src     :none
@@ -45,10 +38,10 @@ Rails.application.config.content_security_policy do |p|
     webpacker_urls = %w(ws http).map { |protocol| "#{protocol}#{Webpacker.dev_server.https? ? 's' : ''}://#{webpacker_public_host}" }
 
     p.connect_src :self, :data, :blob, assets_host, media_host, Rails.configuration.x.streaming_api_base_url, *webpacker_urls
-    p.script_src  :self, :unsafe_inline, :unsafe_eval, assets_host, google_host, google_host2, google_host3
+    p.script_src  :self, :unsafe_inline, :unsafe_eval, assets_host
   else
     p.connect_src :self, :data, :blob, assets_host, media_host, Rails.configuration.x.streaming_api_base_url
-    p.script_src  :self, assets_host, "'wasm-unsafe-eval'", google_host, google_host2, google_host3, google_host4, google_host5, google_tag_script_hash
+    p.script_src  :self, assets_host, "'wasm-unsafe-eval'"
   end
 end
 

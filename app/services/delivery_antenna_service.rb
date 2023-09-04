@@ -20,6 +20,7 @@ class DeliveryAntennaService
   def delivery!
     tag_ids = @status.tags.pluck(:id)
     domain = @account.domain || Rails.configuration.x.local_domain
+    follower_ids = @status.unlisted_visibility? ? @status.account.followers.pluck(:id) : []
 
     antennas = Antenna.availables
     antennas = antennas.left_joins(:antenna_domains).where(any_domains: true).or(Antenna.left_joins(:antenna_domains).where(antenna_domains: { name: domain }))
@@ -32,7 +33,7 @@ class DeliveryAntennaService
     antennas = antennas.left_joins(:antenna_tags).where(any_tags: true).or(Antenna.left_joins(:antenna_tags).where(antenna_tags: { tag_id: tag_ids }))
 
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
-    antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login, :limited].exclude?(@status.visibility.to_sym)
+    antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login, :limited].exclude?(@status.visibility.to_sym) && !@status.public_searchability?
     antennas = antennas.where(account: @status.mentioned_accounts) if @status.visibility.to_sym == :limited
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
     antennas = antennas.where(ignore_reblog: false) if @status.reblog?
@@ -49,6 +50,8 @@ class DeliveryAntennaService
         next if antenna.exclude_accounts&.include?(@status.account_id)
         next if antenna.exclude_domains&.include?(domain)
         next if antenna.exclude_tags&.any? { |tag_id| tag_ids.include?(tag_id) }
+        next if @status.unlisted_visibility? && !@status.public_searchability? && follower_ids.exclude?(antenna.account_id)
+        next if @status.unlisted_visibility? && @status.public_searchability? && follower_ids.exclude?(antenna.account_id) && antenna.any_keywords && antenna.any_tags
 
         collection.push(antenna)
       end
@@ -84,10 +87,13 @@ class DeliveryAntennaService
       @stl_home = stl_home
       @home_account_ids = []
       @list_ids = []
+      @antenna_timeline_ids = []
     end
 
     def push(antenna)
-      if antenna.list_id.zero?
+      if !antenna.insert_feeds?
+        @antenna_timeline_ids << { id: antenna.id, antenna_id: antenna.id }
+      elsif antenna.list_id.zero?
         @home_account_ids << { id: antenna.account_id, antenna_id: antenna.id } if @home_account_ids.none? { |id| id[:id] == antenna.account_id }
       elsif @list_ids.none? { |id| id[:id] == antenna.list_id }
         @list_ids << { id: antenna.list_id, antenna_id: antenna.id }
@@ -97,6 +103,7 @@ class DeliveryAntennaService
     def deliver!
       lists = @list_ids
       homes = @home_account_ids
+      timelines = @antenna_timeline_ids
 
       if lists.any?
         FeedInsertWorker.push_bulk(lists) do |list|
@@ -104,10 +111,16 @@ class DeliveryAntennaService
         end
       end
 
-      return unless homes.any?
+      if homes.any?
+        FeedInsertWorker.push_bulk(homes) do |home|
+          [@status.id, home[:id], 'home', { 'update' => @update, 'antenna_id' => home[:antenna_id] }]
+        end
+      end
 
-      FeedInsertWorker.push_bulk(homes) do |home|
-        [@status.id, home[:id], 'home', { 'update' => @update, 'antenna_id' => home[:antenna_id] }]
+      return unless timelines.any?
+
+      FeedInsertWorker.push_bulk(timelines) do |antenna|
+        [@status.id, antenna[:id], 'antenna', { 'update' => @update }]
       end
     end
   end
