@@ -31,6 +31,10 @@ module HasUserSettings
     settings['web.enable_login_privacy']
   end
 
+  def setting_enable_dtl_menu
+    settings['web.enable_dtl_menu']
+  end
+
   def setting_bookmark_category_needed
     settings['web.bookmark_category_needed']
   end

@@ -59,6 +59,7 @@
  * @property {boolean} display_media_expand
  * @property {string} domain
  * @property {boolean} enable_login_privacy
+ * @property {boolean} enable_dtl_menu
  * @property {boolean=} expand_spoilers
  * @property {boolean} hide_recent_emojis
  * @property {boolean} limited_federation_mode
@@ -123,6 +124,7 @@ export const displayMedia = getMeta('display_media');
 export const displayMediaExpand = getMeta('display_media_expand');
 export const domain = getMeta('domain');
 export const enableLoginPrivacy = getMeta('enable_login_privacy');
+export const enableDtlMenu = getMeta('enable_dtl_menu');
 export const expandSpoilers = getMeta('expand_spoilers');
 export const forceSingleColumn = !getMeta('advanced_layout');
 export const hideRecentEmojis = getMeta('hide_recent_emojis');

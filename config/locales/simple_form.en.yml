@@ -68,6 +68,7 @@ en:
         setting_display_media_show_all: Always show media
         setting_dtl_force_subscribable: Your post can be detected local user's antenna to subscribe deep timeline
         setting_dtl_force_with_tag: "With using #kmyblue tag, your post settings will be changed forcibly"
+        setting_dtl_menu: Show DTL menu on web
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed
         username: You can use letters, numbers, and underscores

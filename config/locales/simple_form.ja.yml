@@ -248,6 +248,7 @@ ja:
         setting_display_media_show_all: 表示
         setting_dtl_force_subscribable: ディープタイムライン用のハッシュタグを購読するアンテナに限り、購読拒否設定を無視する
         setting_dtl_force_with_tag: DTL参加時の投稿設定
+        setting_dtl_menu: Webクライアントのメニューにディープタイムラインを追加する
         setting_enable_login_privacy: 公開範囲「ログインユーザーのみ」をWeb UIで選択可能にする
         setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換のスタンプ機能を有効にする
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する

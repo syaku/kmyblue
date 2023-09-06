@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { WordmarkLogo } from 'mastodon/components/logo';
 import NavigationPortal from 'mastodon/components/navigation_portal';
-import { timelinePreview, trendsEnabled } from 'mastodon/initial_state';
+import { enableDtlMenu, timelinePreview, trendsEnabled } from 'mastodon/initial_state';
 import { transientSingleColumn } from 'mastodon/is_mobile';
 
 import ColumnLink from './column_link';
@@ -22,6 +22,7 @@ const messages = defineMessages({
   notifications: { id: 'tabs_bar.notifications', defaultMessage: 'Notifications' },
   explore: { id: 'explore.title', defaultMessage: 'Explore' },
   local: { id: 'column.local', defaultMessage: 'Local' },
+  deepLocal: { id: 'column.deep_local', defaultMessage: 'Deep' },
   firehose: { id: 'column.firehose', defaultMessage: 'Live feeds' },
   direct: { id: 'navigation_bar.direct', defaultMessage: 'Private mentions' },
   favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favorites' },
@@ -90,6 +91,10 @@ class NavigationPanel extends Component {
             <ColumnLink transparent to='/notifications' icon={<NotificationsCounterIcon className='column-link__icon' />} text={intl.formatMessage(messages.notifications)} />
             <ColumnLink transparent to='/public/local/fixed' icon='users' text={intl.formatMessage(messages.local)} />
           </>
+        )}
+
+        {signedIn && enableDtlMenu && (
+          <ColumnLink transparent to='/tags/kmyblue' icon='users' text={intl.formatMessage(messages.deepLocal)} />
         )}
 
         {!signedIn && explorer}
