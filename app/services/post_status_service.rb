@@ -73,7 +73,7 @@ class PostStatusService < BaseService
                        @options[:sensitive]
                      end) || @options[:spoiler_text].present?
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
-    @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
+    @visibility   = @options[:visibility]&.to_sym || @account.user&.setting_default_privacy&.to_sym
     @visibility   = :direct if @in_reply_to&.limited_visibility?
     @visibility   = :limited if %w(mutual circle).include?(@options[:visibility])
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted || @visibility&.to_sym == :login) && @account.silenced?
