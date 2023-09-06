@@ -18,6 +18,7 @@ class SearchQueryTransformer < Parslet::Transform
 
       @clauses = clauses
       @options = options
+      @searchability = options[:searchability]&.to_sym || :public
 
       flags_from_clauses!
     end
@@ -64,33 +65,128 @@ class SearchQueryTransformer < Parslet::Transform
     end
 
     def default_filter
+      definition_should = [
+        default_should1,
+        default_should2,
+        non_publicly_searchable,
+        searchability_limited,
+      ]
+      definition_should << searchability_public if %i(public).include?(@searchability)
+      definition_should << searchability_private if %i(public private).include?(@searchability)
+
       {
         bool: {
-          should: [
+          should: definition_should,
+          minimum_should_match: 1,
+        },
+      }
+    end
+
+    def default_should1
+      {
+        term: {
+          _index: PublicStatusesIndex.index_name,
+        },
+      }
+    end
+
+    def default_should2
+      {
+        bool: {
+          must: [
             {
               term: {
-                _index: PublicStatusesIndex.index_name,
+                _index: StatusesIndex.index_name,
               },
             },
             {
-              bool: {
-                must: [
-                  {
-                    term: {
-                      _index: StatusesIndex.index_name,
-                    },
-                  },
-                  {
-                    term: {
-                      searchable_by: @options[:current_account].id,
-                    },
-                  },
-                ],
+              term: {
+                searchable_by: @options[:current_account].id,
               },
             },
           ],
+        },
+      }
+    end
 
-          minimum_should_match: 1,
+    def non_publicly_searchable
+      {
+        bool: {
+          must: [
+            {
+              term: { _index: StatusesIndex.index_name },
+            },
+            {
+              exists: {
+                field: 'searchability',
+              },
+            },
+            {
+              term: { searchable_by: @account.id },
+            },
+          ],
+          must_not: [
+            {
+              term: { searchability: 'limited' },
+            },
+          ],
+        },
+      }
+    end
+
+    def searchability_public
+      {
+        bool: {
+          must: [
+            {
+              exists: {
+                field: 'searchability',
+              },
+            },
+            {
+              term: { searchability: 'public' },
+            },
+          ],
+        },
+      }
+    end
+
+    def searchability_private
+      {
+        bool: {
+          must: [
+            {
+              exists: {
+                field: 'searchability',
+              },
+            },
+            {
+              term: { searchability: 'private' },
+            },
+            {
+              terms: { account_id: following_account_ids },
+            },
+          ],
+        },
+      }
+    end
+
+    def searchability_limited
+      {
+        bool: {
+          must: [
+            {
+              exists: {
+                field: 'searchability',
+              },
+            },
+            {
+              term: { searchability: 'limited' },
+            },
+            {
+              term: { account_id: @account.id },
+            },
+          ],
         },
       }
     end
