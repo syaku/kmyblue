@@ -147,7 +147,7 @@ class StatusesIndex < Chewy::Index
                            if status.searchability == 'direct'
                              status.searchable_by.empty?
                            else
-                             status.searchability == 'limited' ? status.domain.present? : false
+                             status.searchability == 'limited' ? status.account.domain.present? : false
                            end
                          }
 
