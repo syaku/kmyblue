@@ -103,6 +103,7 @@ class PostStatusService < BaseService
   def overwrite_dtl_post
     raw_tags = Extractor.extract_hashtags(@text)
     return if raw_tags.exclude?('kmyblue')
+    return unless %i(public public_unlisted unlisted).include?(@visibility)
 
     @visibility = :unlisted if @account.user&.setting_dtl_force_with_tag == :full
     @searchability = :public if %i(full searchability).include?(@account.user&.setting_dtl_force_with_tag)
