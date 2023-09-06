@@ -107,6 +107,14 @@ module HasUserSettings
     settings['link_preview']
   end
 
+  def setting_dtl_force_with_tag
+    settings['dtl_force_with_tag']&.to_sym || :none
+  end
+
+  def setting_dtl_force_subscribable
+    settings['dtl_force_subscribable']
+  end
+
   def setting_hide_statuses_count
     settings['hide_statuses_count']
   end

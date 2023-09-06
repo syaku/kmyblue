@@ -86,6 +86,7 @@ class PostStatusService < BaseService
     @scheduled_at = nil if scheduled_in_the_past?
     @reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
     load_circle
+    overwrite_dtl_post
     process_sensitive_words
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
@@ -97,6 +98,15 @@ class PostStatusService < BaseService
     @circle = @options[:circle_id].present? && Circle.find(@options[:circle_id])
     @limited_scope = :circle
     raise ArgumentError if @circle.nil? || @circle.account_id != @account.id
+  end
+
+  def overwrite_dtl_post
+    raw_tags = Extractor.extract_hashtags(@text)
+    return if raw_tags.exclude?('kmyblue')
+
+    @visibility = :unlisted if @account.user&.setting_dtl_force_with_tag == :full
+    @searchability = :public if %i(full searchability).include?(@account.user&.setting_dtl_force_with_tag)
+    @dtl = true
   end
 
   def process_sensitive_words
@@ -170,7 +180,7 @@ class PostStatusService < BaseService
   end
 
   def postprocess_status!
-    @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym) && @status.visibility.to_s != @account.user&.setting_default_privacy
+    @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym) && @status.visibility.to_s != @account.user&.setting_default_privacy && !@dtl
 
     process_hashtags_service.call(@status)
     ProcessReferencesWorker.perform_async(@status.id, @reference_ids, [])

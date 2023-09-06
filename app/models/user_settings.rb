@@ -35,6 +35,8 @@ class UserSettings
   setting :stop_emoji_reaction_streaming, default: false
   setting :emoji_reaction_streaming_notify_impl2, default: false
   setting :unsafe_limited_distribution, default: false
+  setting :dtl_force_with_tag, default: :none, in: %w(full searchability none)
+  setting :dtl_force_subscribable, default: false
 
   setting_inverse_alias :indexable, :noindex
 

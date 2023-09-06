@@ -1611,6 +1611,8 @@ en:
       too_few_options: must have more than one item
       too_many_options: can't contain more than %{max} items
   preferences:
+    dtl: Deep timeline
+    dtl_hint: "You can join deep timeline with #kmyblue tag. Following settings make convenient to use deep timeline."
     other: Other
     posting_defaults: Posting defaults
     public_timelines: Public timelines
