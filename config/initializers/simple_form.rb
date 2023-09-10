@@ -117,7 +117,18 @@ SimpleForm.setup do |config|
 
   config.wrappers :with_floating_label, class: [:input, :with_floating_label], hint_class: :field_with_hint, error_class: :field_with_errors do |b|
     b.use :html5
-    b.use :label_input, wrap_with: { tag: :div, class: :label_input }
+
+    b.wrapper tag: :div, class: :label_input do |ba|
+      ba.optional :recommended
+      ba.optional :kmyblue
+      ba.use :label
+
+      ba.wrapper tag: :div, class: :label_input__wrapper do |bb|
+        bb.use :input
+        bb.optional :append, wrap_with: { tag: :div, class: 'label_input__append' }
+      end
+    end
+
     b.use :hint,  wrap_with: { tag: :span, class: :hint }
     b.use :error, wrap_with: { tag: :span, class: :error }
   end

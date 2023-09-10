@@ -31,6 +31,10 @@ module HasUserSettings
     settings['web.enable_login_privacy']
   end
 
+  def setting_enable_dtl_menu
+    settings['web.enable_dtl_menu']
+  end
+
   def setting_bookmark_category_needed
     settings['web.bookmark_category_needed']
   end
@@ -105,6 +109,14 @@ module HasUserSettings
 
   def setting_link_preview
     settings['link_preview']
+  end
+
+  def setting_dtl_force_with_tag
+    settings['dtl_force_with_tag']&.to_sym || :none
+  end
+
+  def setting_dtl_force_subscribable
+    settings['dtl_force_subscribable']
   end
 
   def setting_hide_statuses_count

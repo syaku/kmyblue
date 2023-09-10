@@ -18,6 +18,7 @@ class DeliveryAntennaService
   private
 
   def delivery!
+    must_dtl_tag = @account.dissubscribable
     tag_ids = @status.tags.pluck(:id)
     domain = @account.domain || Rails.configuration.x.local_domain
     follower_ids = @status.unlisted_visibility? ? @status.account.followers.pluck(:id) : []
@@ -28,9 +29,15 @@ class DeliveryAntennaService
     antennas = Antenna.where(id: antennas.select(:id))
     antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.left_joins(:antenna_accounts).where(antenna_accounts: { account: @account }))
 
-    tag_ids = @status.tags.pluck(:id)
     antennas = Antenna.where(id: antennas.select(:id))
-    antennas = antennas.left_joins(:antenna_tags).where(any_tags: true).or(Antenna.left_joins(:antenna_tags).where(antenna_tags: { tag_id: tag_ids }))
+    if must_dtl_tag
+      dtl_tag = Tag.find_or_create_by_names('kmyblue').first
+      return if !dtl_tag || tag_ids.exclude?(dtl_tag.id)
+
+      antennas = antennas.left_joins(:antenna_tags).where(antenna_tags: { tag_id: dtl_tag.id })
+    else
+      antennas = antennas.left_joins(:antenna_tags).where(any_tags: true).or(Antenna.left_joins(:antenna_tags).where(antenna_tags: { tag_id: tag_ids }))
+    end
 
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
     antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login, :limited].exclude?(@status.visibility.to_sym) && !@status.public_searchability?

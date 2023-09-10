@@ -35,6 +35,14 @@ class EmojiReaction < ApplicationRecord
   after_destroy :refresh_cache
   after_destroy :invalidate_cleanup_info
 
+  def custom_emoji?
+    custom_emoji.present?
+  end
+
+  def remote_custom_emoji?
+    custom_emoji? && !custom_emoji.local?
+  end
+
   private
 
   def refresh_cache

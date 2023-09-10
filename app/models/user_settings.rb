@@ -35,6 +35,8 @@ class UserSettings
   setting :stop_emoji_reaction_streaming, default: false
   setting :emoji_reaction_streaming_notify_impl2, default: false
   setting :unsafe_limited_distribution, default: false
+  setting :dtl_force_with_tag, default: :none, in: %w(full searchability none)
+  setting :dtl_force_subscribable, default: false
 
   setting_inverse_alias :indexable, :noindex
 
@@ -48,6 +50,7 @@ class UserSettings
     setting :disable_swiping, default: false
     setting :delete_modal, default: true
     setting :enable_login_privacy, default: false
+    setting :enable_dtl_menu, default: false
     setting :hide_recent_emojis, default: false
     setting :reblog_modal, default: false
     setting :unfollow_modal, default: true

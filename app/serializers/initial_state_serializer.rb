@@ -47,6 +47,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:display_media_expand] = object.current_account.user.setting_display_media_expand
       store[:expand_spoilers] = object.current_account.user.setting_expand_spoilers
       store[:enable_login_privacy] = object.current_account.user.setting_enable_login_privacy
+      store[:enable_dtl_menu] = object.current_account.user.setting_enable_dtl_menu
       store[:hide_recent_emojis] = object.current_account.user.setting_hide_recent_emojis
       store[:reduce_motion]     = object.current_account.user.setting_reduce_motion
       store[:disable_swiping]   = object.current_account.user.setting_disable_swiping

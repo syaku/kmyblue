@@ -73,7 +73,7 @@ class PostStatusService < BaseService
                        @options[:sensitive]
                      end) || @options[:spoiler_text].present?
     @text         = @options.delete(:spoiler_text) if @text.blank? && @options[:spoiler_text].present?
-    @visibility   = @options[:visibility] || @account.user&.setting_default_privacy
+    @visibility   = @options[:visibility]&.to_sym || @account.user&.setting_default_privacy&.to_sym
     @visibility   = :direct if @in_reply_to&.limited_visibility?
     @visibility   = :limited if %w(mutual circle).include?(@options[:visibility])
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted || @visibility&.to_sym == :login) && @account.silenced?
@@ -86,6 +86,7 @@ class PostStatusService < BaseService
     @scheduled_at = nil if scheduled_in_the_past?
     @reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
     load_circle
+    overwrite_dtl_post
     process_sensitive_words
   rescue ArgumentError
     raise ActiveRecord::RecordInvalid
@@ -97,6 +98,16 @@ class PostStatusService < BaseService
     @circle = @options[:circle_id].present? && Circle.find(@options[:circle_id])
     @limited_scope = :circle
     raise ArgumentError if @circle.nil? || @circle.account_id != @account.id
+  end
+
+  def overwrite_dtl_post
+    raw_tags = Extractor.extract_hashtags(@text)
+    return if raw_tags.exclude?('kmyblue')
+    return unless %i(public public_unlisted unlisted).include?(@visibility)
+
+    @visibility = :unlisted if @account.user&.setting_dtl_force_with_tag == :full
+    @searchability = :public if %i(full searchability).include?(@account.user&.setting_dtl_force_with_tag)
+    @dtl = true
   end
 
   def process_sensitive_words
@@ -170,7 +181,7 @@ class PostStatusService < BaseService
   end
 
   def postprocess_status!
-    @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym) && @status.visibility.to_s != @account.user&.setting_default_privacy
+    @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym) && @status.visibility.to_s != @account.user&.setting_default_privacy && !@dtl
 
     process_hashtags_service.call(@status)
     ProcessReferencesWorker.perform_async(@status.id, @reference_ids, [])

@@ -290,6 +290,10 @@ class Status < ApplicationRecord
     @reported ||= Report.where(target_account: account).unresolved.where('? = ANY(status_ids)', id).exists?
   end
 
+  def dtl?
+    tags.where(name: 'kmyblue').exists?
+  end
+
   def emojis
     return @emojis if defined?(@emojis)
 
