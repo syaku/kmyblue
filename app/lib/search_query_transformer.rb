@@ -10,6 +10,7 @@ class SearchQueryTransformer < Parslet::Transform
     after
     during
     in
+    domain
   ).freeze
 
   class Query
@@ -72,7 +73,7 @@ class SearchQueryTransformer < Parslet::Transform
         searchability_limited,
       ]
       definition_should << searchability_public if %i(public).include?(@searchability)
-      definition_should << searchability_private if %i(public private).include?(@searchability)
+      definition_should << searchability_private if %i(public unlisted private).include?(@searchability)
 
       {
         bool: {
@@ -95,9 +96,7 @@ class SearchQueryTransformer < Parslet::Transform
         bool: {
           must: [
             {
-              term: {
-                _index: StatusesIndex.index_name,
-              },
+              term: { _index: StatusesIndex.index_name },
             },
             {
               term: {
@@ -117,12 +116,7 @@ class SearchQueryTransformer < Parslet::Transform
               term: { _index: StatusesIndex.index_name },
             },
             {
-              exists: {
-                field: 'searchability',
-              },
-            },
-            {
-              term: { searchable_by: @account.id },
+              term: { searchable_by: @options[:current_account].id },
             },
           ],
           must_not: [
@@ -139,9 +133,7 @@ class SearchQueryTransformer < Parslet::Transform
         bool: {
           must: [
             {
-              exists: {
-                field: 'searchability',
-              },
+              term: { _index: StatusesIndex.index_name },
             },
             {
               term: { searchability: 'public' },
@@ -156,9 +148,7 @@ class SearchQueryTransformer < Parslet::Transform
         bool: {
           must: [
             {
-              exists: {
-                field: 'searchability',
-              },
+              term: { _index: StatusesIndex.index_name },
             },
             {
               term: { searchability: 'private' },
@@ -176,19 +166,26 @@ class SearchQueryTransformer < Parslet::Transform
         bool: {
           must: [
             {
-              exists: {
-                field: 'searchability',
-              },
+              term: { _index: StatusesIndex.index_name },
             },
             {
               term: { searchability: 'limited' },
             },
             {
-              term: { account_id: @account.id },
+              term: { account_id: @options[:current_account].id },
             },
           ],
         },
       }
+    end
+
+    def following_account_ids
+      return @following_account_ids if defined?(@following_account_ids)
+
+      account_exists_sql     = Account.where('accounts.id = follows.target_account_id').where(searchability: %w(public private)).reorder(nil).select(1).to_sql
+      status_exists_sql      = Status.where('statuses.account_id = follows.target_account_id').where(reblog_of_id: nil).where(searchability: %w(public private)).reorder(nil).select(1).to_sql
+      following_accounts     = Follow.where(account_id: @options[:current_account].id).merge(Account.where("EXISTS (#{account_exists_sql})").or(Account.where("EXISTS (#{status_exists_sql})")))
+      @following_account_ids = following_accounts.pluck(:target_account_id)
     end
   end
 
@@ -217,7 +214,7 @@ class SearchQueryTransformer < Parslet::Transform
 
     def to_query
       if @term.start_with?('#')
-        { match: { tags: { query: @term } } }
+        { match: { tags: { query: @term, operator: 'and' } } }
       else
         # { multi_match: { type: 'most_fields', query: @term, fields: ['text', 'text.stemmed'], operator: 'and' } }
         { match_phrase: { text: { query: @term } } }
@@ -332,17 +329,16 @@ class SearchQueryTransformer < Parslet::Transform
   rule(clause: subtree(:clause)) do
     prefix   = clause[:prefix][:term].to_s if clause[:prefix]
     operator = clause[:operator]&.to_s
+    term     = clause[:phrase] ? clause[:phrase].map { |term| term[:term].to_s }.join(' ') : clause[:term].to_s
 
     if clause[:prefix] && SUPPORTED_PREFIXES.include?(prefix)
-      PrefixClause.new(prefix, operator, clause[:term].to_s, current_account: current_account)
+      PrefixClause.new(prefix, operator, term, current_account: current_account)
     elsif clause[:prefix]
-      TermClause.new(operator, "#{prefix} #{clause[:term]}")
+      TermClause.new(operator, "#{prefix} #{term}")
     elsif clause[:term]
-      TermClause.new(operator, clause[:term].to_s)
-    elsif clause[:shortcode]
-      TermClause.new(operator, ":#{clause[:term]}:")
+      TermClause.new(operator, term)
     elsif clause[:phrase]
-      PhraseClause.new(operator, clause[:phrase].is_a?(Array) ? clause[:phrase].map { |p| p[:term].to_s }.join(' ') : clause[:phrase].to_s)
+      PhraseClause.new(operator, term)
     else
       raise "Unexpected clause type: #{clause}"
     end

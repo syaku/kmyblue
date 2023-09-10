@@ -9,6 +9,7 @@ class StatusesSearchService < BaseService
     @offset  = options[:offset].to_i
     @searchability = options[:searchability]&.to_sym
 
+    convert_deprecated_options!
     status_search_results
   end
 
@@ -26,16 +27,28 @@ class StatusesSearchService < BaseService
     []
   end
 
-  def following_account_ids
-    return @following_account_ids if defined?(@following_account_ids)
-
-    account_exists_sql     = Account.where('accounts.id = follows.target_account_id').where(searchability: %w(public private)).reorder(nil).select(1).to_sql
-    status_exists_sql      = Status.where('statuses.account_id = follows.target_account_id').where(reblog_of_id: nil).where(searchability: %w(public private)).reorder(nil).select(1).to_sql
-    following_accounts     = Follow.where(account_id: @account.id).merge(Account.where("EXISTS (#{account_exists_sql})").or(Account.where("EXISTS (#{status_exists_sql})")))
-    @following_account_ids = following_accounts.pluck(:target_account_id)
-  end
-
   def parsed_query
     SearchQueryTransformer.new.apply(SearchQueryParser.new.parse(@query), current_account: @account, searchability: @searchability)
+  end
+
+  def convert_deprecated_options!
+    syntax_options = []
+
+    if @options[:account_id]
+      username = Account.select(:username, :domain).find(@options[:account_id]).acct
+      syntax_options << "from:@#{username}"
+    end
+
+    if @options[:min_id]
+      timestamp = Mastodon::Snowflake.to_time(@options[:min_id])
+      syntax_options << "after:\"#{timestamp.iso8601}\""
+    end
+
+    if @options[:max_id]
+      timestamp = Mastodon::Snowflake.to_time(@options[:max_id])
+      syntax_options << "before:\"#{timestamp.iso8601}\""
+    end
+
+    @query = "#{@query} #{syntax_options.join(' ')}".strip if syntax_options.any?
   end
 end
