@@ -282,19 +282,6 @@ jobs:
         ports:
           - 6379:6379
 
-      elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
-        env:
-          discovery.type: single-node
-          xpack.security.enabled: false
-        options: >-
-          --health-cmd "curl http://localhost:9200/_cluster/health"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-        ports:
-          - 9200:9200
-
     env:
       DB_HOST: localhost
       DB_USER: postgres
