@@ -23,7 +23,7 @@ class Admin::StatusBatchAction
   private
 
   def statuses
-    Status.with_discarded.where(id: status_ids)
+    Status.with_discarded.where(id: status_ids).reorder(nil)
   end
 
   def process_action!
@@ -183,6 +183,6 @@ class Admin::StatusBatchAction
   end
 
   def allowed_status_ids
-    AccountStatusesFilter.new(@report.target_account, current_account).results.with_discarded.where(id: status_ids).pluck(:id)
+    Admin::AccountStatusesFilter.new(@report.target_account, current_account).results.with_discarded.where(id: status_ids).pluck(:id)
   end
 end

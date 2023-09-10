@@ -101,7 +101,7 @@ class ProcessMentionsService < BaseService
   def process_mutual!
     mentioned_account_ids = @current_mentions.map(&:account_id)
 
-    @status.account.mutuals.find_each do |target_account|
+    @status.account.mutuals.reorder(nil).find_each do |target_account|
       @current_mentions << @status.mentions.new(silent: true, account: target_account) unless mentioned_account_ids.include?(target_account.id)
     end
   end

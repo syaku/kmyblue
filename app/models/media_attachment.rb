@@ -107,6 +107,7 @@ class MediaAttachment < ApplicationRecord
         'preset' => 'veryfast',
         'movflags' => 'faststart', # Move metadata to start of file so playback can begin before download finishes
         'pix_fmt' => 'yuv420p', # Ensure color space for cross-browser compatibility
+        'vf' => 'crop=floor(iw/2)*2:floor(ih/2)*2', # h264 requires width and height to be even. Crop instead of scale to avoid blurring
         'c:v' => 'h264',
         'c:a' => 'aac',
         'b:a' => '192k',
@@ -175,7 +176,7 @@ class MediaAttachment < ApplicationRecord
   DEFAULT_STYLES = [:original].freeze
 
   GLOBAL_CONVERT_OPTIONS = {
-    all: '-quality 90 +profile "!icc,*" +set modify-date +set create-date',
+    all: '-quality 90 +profile "!icc,*" +set modify-date -define jpeg:dct-method=float +set create-date',
   }.freeze
 
   belongs_to :account,          inverse_of: :media_attachments, optional: true

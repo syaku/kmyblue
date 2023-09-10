@@ -9,23 +9,183 @@ class SearchQueryTransformer < Parslet::Transform
     before
     after
     during
+    in
+    domain
   ).freeze
 
   class Query
-    attr_reader :must_not_clauses, :must_clauses, :filter_clauses
+    def initialize(clauses, options = {})
+      raise ArgumentError if options[:current_account].nil?
 
-    def initialize(clauses)
-      grouped = clauses.compact.chunk(&:operator).to_h
-      @must_not_clauses = grouped.fetch(:must_not, [])
-      @must_clauses = grouped.fetch(:must, [])
-      @filter_clauses = grouped.fetch(:filter, [])
+      @clauses = clauses
+      @options = options
+      @searchability = options[:searchability]&.to_sym || :public
+
+      flags_from_clauses!
     end
 
-    def apply(search)
+    def request
+      search = Chewy::Search::Request.new(*indexes).filter(default_filter)
+
       must_clauses.each { |clause| search = search.query.must(clause.to_query) }
       must_not_clauses.each { |clause| search = search.query.must_not(clause.to_query) }
       filter_clauses.each { |clause| search = search.filter(**clause.to_query) }
-      search.query.minimum_should_match(1)
+
+      search
+    end
+
+    private
+
+    def clauses_by_operator
+      @clauses_by_operator ||= @clauses.compact.chunk(&:operator).to_h
+    end
+
+    def flags_from_clauses!
+      @flags = clauses_by_operator.fetch(:flag, []).to_h { |clause| [clause.prefix, clause.term] }
+    end
+
+    def must_clauses
+      clauses_by_operator.fetch(:must, [])
+    end
+
+    def must_not_clauses
+      clauses_by_operator.fetch(:must_not, [])
+    end
+
+    def filter_clauses
+      clauses_by_operator.fetch(:filter, [])
+    end
+
+    def indexes
+      case @flags['in']
+      when 'library'
+        [StatusesIndex]
+      else
+        [PublicStatusesIndex, StatusesIndex]
+      end
+    end
+
+    def default_filter
+      definition_should = [
+        default_should1,
+        default_should2,
+        non_publicly_searchable,
+        searchability_limited,
+      ]
+      definition_should << searchability_public if %i(public).include?(@searchability)
+      definition_should << searchability_private if %i(public unlisted private).include?(@searchability)
+
+      {
+        bool: {
+          should: definition_should,
+          minimum_should_match: 1,
+        },
+      }
+    end
+
+    def default_should1
+      {
+        term: {
+          _index: PublicStatusesIndex.index_name,
+        },
+      }
+    end
+
+    def default_should2
+      {
+        bool: {
+          must: [
+            {
+              term: { _index: StatusesIndex.index_name },
+            },
+            {
+              term: {
+                searchable_by: @options[:current_account].id,
+              },
+            },
+          ],
+        },
+      }
+    end
+
+    def non_publicly_searchable
+      {
+        bool: {
+          must: [
+            {
+              term: { _index: StatusesIndex.index_name },
+            },
+            {
+              term: { searchable_by: @options[:current_account].id },
+            },
+          ],
+          must_not: [
+            {
+              term: { searchability: 'limited' },
+            },
+          ],
+        },
+      }
+    end
+
+    def searchability_public
+      {
+        bool: {
+          must: [
+            {
+              term: { _index: StatusesIndex.index_name },
+            },
+            {
+              term: { searchability: 'public' },
+            },
+          ],
+        },
+      }
+    end
+
+    def searchability_private
+      {
+        bool: {
+          must: [
+            {
+              term: { _index: StatusesIndex.index_name },
+            },
+            {
+              term: { searchability: 'private' },
+            },
+            {
+              terms: { account_id: following_account_ids },
+            },
+          ],
+        },
+      }
+    end
+
+    def searchability_limited
+      {
+        bool: {
+          must: [
+            {
+              term: { _index: StatusesIndex.index_name },
+            },
+            {
+              term: { searchability: 'limited' },
+            },
+            {
+              term: { account_id: @options[:current_account].id },
+            },
+          ],
+        },
+      }
+    end
+
+    def following_account_ids
+      return @following_account_ids if defined?(@following_account_ids)
+
+      account_exists_sql     = Account.where('accounts.id = follows.target_account_id').where(searchability: %w(public private)).reorder(nil).select(1).to_sql
+      status_exists_sql      = Status.where('statuses.account_id = follows.target_account_id').where(reblog_of_id: nil).where(searchability: %w(public private)).reorder(nil).select(1).to_sql
+      following_accounts     = Follow.where(account_id: @options[:current_account].id).merge(Account.where("EXISTS (#{account_exists_sql})").or(Account.where("EXISTS (#{status_exists_sql})")))
+      @following_account_ids = following_accounts.pluck(:target_account_id)
     end
   end
 
@@ -53,8 +213,12 @@ class SearchQueryTransformer < Parslet::Transform
     end
 
     def to_query
-      # { multi_match: { type: 'most_fields', query: @term, fields: ['text', 'text.stemmed'], operator: 'and' } }
-      { match_phrase: { text: { query: @term } } }
+      if @term.start_with?('#')
+        { match: { tags: { query: @term, operator: 'and' } } }
+      else
+        # { multi_match: { type: 'most_fields', query: @term, fields: ['text', 'text.stemmed'], operator: 'and' } }
+        { match_phrase: { text: { query: @term } } }
+      end
     end
   end
 
@@ -100,15 +264,18 @@ class SearchQueryTransformer < Parslet::Transform
       when 'before'
         @filter = :created_at
         @type = :range
-        @term = { lt: term, time_zone: @options[:current_account]&.user_time_zone || 'UTC' }
+        @term = { lt: term, time_zone: @options[:current_account]&.user_time_zone.presence || 'UTC' }
       when 'after'
         @filter = :created_at
         @type = :range
-        @term = { gt: term, time_zone: @options[:current_account]&.user_time_zone || 'UTC' }
+        @term = { gt: term, time_zone: @options[:current_account]&.user_time_zone.presence || 'UTC' }
       when 'during'
         @filter = :created_at
         @type = :range
-        @term = { gte: term, lte: term, time_zone: @options[:current_account]&.user_time_zone || 'UTC' }
+        @term = { gte: term, lte: term, time_zone: @options[:current_account]&.user_time_zone.presence || 'UTC' }
+      when 'in'
+        @operator = :flag
+        @term = term
       else
         raise "Unknown prefix: #{prefix}"
       end
@@ -162,17 +329,16 @@ class SearchQueryTransformer < Parslet::Transform
   rule(clause: subtree(:clause)) do
     prefix   = clause[:prefix][:term].to_s if clause[:prefix]
     operator = clause[:operator]&.to_s
+    term     = clause[:phrase] ? clause[:phrase].map { |term| term[:term].to_s }.join(' ') : clause[:term].to_s
 
     if clause[:prefix] && SUPPORTED_PREFIXES.include?(prefix)
-      PrefixClause.new(prefix, operator, clause[:term].to_s, current_account: current_account)
+      PrefixClause.new(prefix, operator, term, current_account: current_account)
     elsif clause[:prefix]
-      TermClause.new(operator, "#{prefix} #{clause[:term]}")
+      TermClause.new(operator, "#{prefix} #{term}")
     elsif clause[:term]
-      TermClause.new(operator, clause[:term].to_s)
-    elsif clause[:shortcode]
-      TermClause.new(operator, ":#{clause[:term]}:")
+      TermClause.new(operator, term)
     elsif clause[:phrase]
-      PhraseClause.new(operator, clause[:phrase].is_a?(Array) ? clause[:phrase].map { |p| p[:term].to_s }.join(' ') : clause[:phrase].to_s)
+      PhraseClause.new(operator, term)
     else
       raise "Unexpected clause type: #{clause}"
     end
@@ -183,6 +349,6 @@ class SearchQueryTransformer < Parslet::Transform
   end
 
   rule(query: sequence(:clauses)) do
-    Query.new(clauses)
+    Query.new(clauses, current_account: current_account)
   end
 end

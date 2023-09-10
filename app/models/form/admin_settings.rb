@@ -3,6 +3,8 @@
 class Form::AdminSettings
   include ActiveModel::Model
 
+  include AuthorizedFetchHelper
+
   KEYS = %i(
     site_contact_username
     site_contact_email
@@ -40,6 +42,7 @@ class Form::AdminSettings
     post_hash_tags_max
     sensitive_words
     sensitive_words_for_full
+    authorized_fetch
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -63,12 +66,17 @@ class Form::AdminSettings
     captcha_enabled
     enable_block_emoji_reaction_settings
     hide_local_users_for_anonymous
+    authorized_fetch
   ).freeze
 
   UPLOAD_KEYS = %i(
     thumbnail
     mascot
   ).freeze
+
+  OVERRIDEN_SETTINGS = {
+    authorized_fetch: :authorized_fetch_mode?,
+  }.freeze
 
   STRING_ARRAY_KEYS = %i(
     ng_words
@@ -97,6 +105,8 @@ class Form::AdminSettings
                        SiteUpload.where(var: key).first_or_initialize(var: key)
                      elsif STRING_ARRAY_KEYS.include?(key)
                        Setting.public_send(key)&.join("\n") || ''
+                     elsif OVERRIDEN_SETTINGS.include?(key)
+                       public_send(OVERRIDEN_SETTINGS[key])
                      else
                        Setting.public_send(key)
                      end

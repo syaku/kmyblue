@@ -36,6 +36,16 @@ class StatusesIndex < Chewy::Index
           english_stemmer
         ),
       },
+
+      hashtag: {
+        tokenizer: 'keyword',
+        filter: %w(
+          word_delimiter_graph
+          lowercase
+          asciifolding
+          cjk_width
+        ),
+      },
     },
   }.freeze
 
@@ -84,6 +94,16 @@ class StatusesIndex < Chewy::Index
         ),
       },
 
+      hashtag: {
+        tokenizer: 'keyword',
+        filter: %w(
+          word_delimiter_graph
+          lowercase
+          asciifolding
+          cjk_width
+        ),
+      },
+
       sudachi_analyzer: {
         tokenizer: 'sudachi_tokenizer',
         type: 'custom',
@@ -119,6 +139,7 @@ class StatusesIndex < Chewy::Index
     :local_reblogged,
     :local_bookmarked,
     :local_emoji_reacted,
+    :tags,
     :local_referenced,
     preloadable_poll: :local_voters
   ),
@@ -134,6 +155,7 @@ class StatusesIndex < Chewy::Index
     field(:id, type: 'long')
     field(:account_id, type: 'long')
     field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'sudachi_analyzer') }
+    field(:tags, type: 'text', analyzer: 'hashtag', value: ->(status) { status.tags.map(&:display_name) })
     field(:searchable_by, type: 'long', value: ->(status) { status.searchable_by })
     field(:searchability, type: 'keyword', value: ->(status) { status.compute_searchability })
     field(:language, type: 'keyword')

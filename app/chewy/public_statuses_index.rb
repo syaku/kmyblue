@@ -37,6 +37,16 @@ class PublicStatusesIndex < Chewy::Index
           english_stemmer
         ),
       },
+
+      hashtag: {
+        tokenizer: 'keyword',
+        filter: %w(
+          word_delimiter_graph
+          lowercase
+          asciifolding
+          cjk_width
+        ),
+      },
     },
   }.freeze
 
@@ -81,6 +91,16 @@ class PublicStatusesIndex < Chewy::Index
         ),
       },
 
+      hashtag: {
+        tokenizer: 'keyword',
+        filter: %w(
+          word_delimiter_graph
+          lowercase
+          asciifolding
+          cjk_width
+        ),
+      },
+
       sudachi_analyzer: {
         tokenizer: 'sudachi_tokenizer',
         type: 'custom',
@@ -111,12 +131,13 @@ class PublicStatusesIndex < Chewy::Index
   index_scope ::Status.unscoped
                       .kept
                       .indexable
-                      .includes(:media_attachments, :preloadable_poll, :preview_cards)
+                      .includes(:media_attachments, :preloadable_poll, :preview_cards, :tags)
 
   root date_detection: false do
     field(:id, type: 'long')
     field(:account_id, type: 'long')
-    field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'content') }
+    field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'sudachi_analyzer') }
+    field(:tags, type: 'text', analyzer: 'hashtag', value: ->(status) { status.tags.map(&:display_name) })
     field(:language, type: 'keyword')
     field(:domain, type: 'keyword', value: ->(status) { status.account.domain || '' })
     field(:properties, type: 'keyword', value: ->(status) { status.searchable_properties })

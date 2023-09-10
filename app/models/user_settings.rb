@@ -72,6 +72,7 @@ class UserSettings
     setting :trends, default: true
     setting :appeal, default: true
     setting :warning, default: true
+    setting :software_updates, default: 'critical', in: %w(none critical patch all)
   end
 
   namespace :interactions do
