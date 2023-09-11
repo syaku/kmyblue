@@ -1110,7 +1110,7 @@ ja:
       help_html: CAPTCHAの解決に問題がある場合は、 %{email} までお問い合わせください。お手伝いいたします。
       hint_html: もう一つだけ！あなたが人間であることを確認する必要があります(スパムを防ぐためです！)。 以下のCAPTCHAを解き、「続ける」をクリックします。
       title: セキュリティチェック
-    cloudflare_with_registering: 登録時にCloudflareの画面が表示されます。登録できないときは tt@kmycode.net までご連絡ください
+    cloudflare_with_registering: 登録時にCloudflareの画面が表示されます。登録できないときは管理者へご連絡ください
     confirmations:
       wrong_email_hint: メールアドレスが正しくない場合は、アカウント設定で変更できます。
     delete_account: アカウントの削除
