@@ -188,6 +188,24 @@ RSpec.describe PostStatusService, type: :service do
     expect(status.mentioned_accounts.first.id).to eq mutual_account.id
   end
 
+  it 'circle visibility' do
+    account = Fabricate(:account)
+    circle_account = Fabricate(:account)
+    other_account = Fabricate(:account)
+    circle = Fabricate(:circle, account: account)
+    text = 'This is an English text.'
+
+    circle_account.follow!(account)
+    other_account.follow!(account)
+    circle.accounts << circle_account
+    status = subject.call(account, text: text, visibility: 'circle', circle_id: circle.id)
+
+    expect(status.visibility).to eq 'limited'
+    expect(status.limited_scope).to eq 'circle'
+    expect(status.mentioned_accounts.count).to eq 1
+    expect(status.mentioned_accounts.first.id).to eq circle_account.id
+  end
+
   it 'safeguards mentions' do
     account = Fabricate(:account)
     mentioned_account = Fabricate(:account, username: 'alice')
