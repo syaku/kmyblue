@@ -173,12 +173,19 @@ RSpec.describe PostStatusService, type: :service do
 
   it 'mutual visibility' do
     account = Fabricate(:account)
+    mutual_account = Fabricate(:account)
+    other_account = Fabricate(:account)
     text = 'This is an English text.'
 
+    mutual_account.follow!(account)
+    account.follow!(mutual_account)
+    other_account.follow!(account)
     status = subject.call(account, text: text, visibility: 'mutual')
 
     expect(status.visibility).to eq 'limited'
     expect(status.limited_scope).to eq 'mutual'
+    expect(status.mentioned_accounts.count).to eq 1
+    expect(status.mentioned_accounts.first.id).to eq mutual_account.id
   end
 
   it 'safeguards mentions' do
