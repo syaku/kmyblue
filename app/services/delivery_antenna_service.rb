@@ -95,6 +95,7 @@ class DeliveryAntennaService
   def delivery_ltl!
     return if %i(public public_unlisted login).exclude?(@status.visibility.to_sym)
     return unless @account.local?
+    return if @status.reblog?
 
     antennas = Antenna.available_ltls
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
