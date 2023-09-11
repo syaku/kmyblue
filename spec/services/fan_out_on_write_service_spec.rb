@@ -56,6 +56,10 @@ RSpec.describe FanOutOnWriteService, type: :service do
     antenna
   end
 
+  def antenna_with_options(owner, **options)
+    Fabricate(:antenna, account: owner, **options)
+  end
+
   context 'when status is public' do
     let(:visibility) { 'public' }
 
@@ -91,6 +95,26 @@ RSpec.describe FanOutOnWriteService, type: :service do
     context 'with antenna' do
       let!(:antenna) { antenna_with_account(bob, alice) }
       let!(:empty_antenna) { antenna_with_account(tom, bob) }
+
+      it 'is added to the antenna feed of antenna follower' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+
+    context 'with STL antenna' do
+      let!(:antenna) { antenna_with_options(bob, stl: true) }
+      let!(:empty_antenna) { antenna_with_options(tom) }
+
+      it 'is added to the antenna feed of antenna follower' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+
+    context 'with LTL antenna' do
+      let!(:antenna) { antenna_with_options(bob, ltl: true) }
+      let!(:empty_antenna) { antenna_with_options(tom) }
 
       it 'is added to the antenna feed of antenna follower' do
         expect(antenna_feed_of(antenna)).to include status.id
@@ -176,6 +200,24 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
     end
+
+    context 'with STL antenna' do
+      let!(:antenna) { antenna_with_options(bob, stl: true) }
+      let!(:empty_antenna) { antenna_with_options(ohagi, stl: true) }
+
+      it 'is added to the antenna feed of antenna follower' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+
+    context 'with LTL antenna' do
+      let!(:empty_antenna) { antenna_with_options(bob, ltl: true) }
+
+      it 'is added to the antenna feed of antenna follower' do
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
   end
 
   context 'when status is unlisted' do
@@ -211,6 +253,24 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
       it 'is added to the list feed of list follower' do
         expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+
+    context 'with STL antenna' do
+      let!(:antenna) { antenna_with_options(bob, stl: true) }
+      let!(:empty_antenna) { antenna_with_options(ohagi, stl: true) }
+
+      it 'is added to the antenna feed of antenna follower' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+    end
+
+    context 'with LTL antenna' do
+      let!(:empty_antenna) { antenna_with_options(bob, ltl: true) }
+
+      it 'is added to the antenna feed of antenna follower' do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
     end

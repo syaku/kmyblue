@@ -53,6 +53,7 @@ class FanOutOnWriteService < BaseService
       deliver_to_lists!
       deliver_to_antennas! if !@account.dissubscribable || (@status.dtl? && @account.user&.setting_dtl_force_subscribable && @status.tags.exists?(name: 'kmyblue'))
       deliver_to_stl_antennas!
+      deliver_to_ltl_antennas!
     when :limited
       deliver_to_lists_mentioned_accounts_only!
       deliver_to_antennas! unless @account.dissubscribable
@@ -135,11 +136,15 @@ class FanOutOnWriteService < BaseService
   end
 
   def deliver_to_stl_antennas!
-    DeliveryAntennaService.new.call(@status, @options[:update], true)
+    DeliveryAntennaService.new.call(@status, @options[:update], mode: :stl)
+  end
+
+  def deliver_to_ltl_antennas!
+    DeliveryAntennaService.new.call(@status, @options[:update], mode: :ltl)
   end
 
   def deliver_to_antennas!
-    DeliveryAntennaService.new.call(@status, @options[:update], false)
+    DeliveryAntennaService.new.call(@status, @options[:update], mode: :home)
   end
 
   def deliver_to_mentioned_followers!

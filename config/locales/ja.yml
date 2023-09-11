@@ -1032,6 +1032,7 @@ ja:
         keywords: 登録できるキーワード数の上限に達しています
         tags: 登録できるタグ数の上限に達しています
       over_limit: 所持できるアンテナ数 %{limit}を超えています
+      over_ltl_limit: 所持できるLTLモード付きアンテナ数 (ホーム/リストそれぞれにつき%{limit}) を超えています
       over_stl_limit: 所持できるSTLモード付きアンテナ数 (ホーム/リストそれぞれにつき%{limit}) を超えています
       too_short_keyword: キーワードが短すぎます
     edit:

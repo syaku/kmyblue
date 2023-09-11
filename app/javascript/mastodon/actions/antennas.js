@@ -236,10 +236,10 @@ export const createAntennaFail = error => ({
   error,
 });
 
-export const updateAntenna = (id, title, shouldReset, list_id, stl, with_media_only, ignore_reblog, insert_feeds) => (dispatch, getState) => {
+export const updateAntenna = (id, title, shouldReset, list_id, stl, ltl, with_media_only, ignore_reblog, insert_feeds) => (dispatch, getState) => {
   dispatch(updateAntennaRequest(id));
 
-  api(getState).put(`/api/v1/antennas/${id}`, { title, list_id, stl, with_media_only, ignore_reblog, insert_feeds }).then(({ data }) => {
+  api(getState).put(`/api/v1/antennas/${id}`, { title, list_id, stl, ltl, with_media_only, ignore_reblog, insert_feeds }).then(({ data }) => {
     dispatch(updateAntennaSuccess(data));
 
     if (shouldReset) {
