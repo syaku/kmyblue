@@ -76,7 +76,8 @@ class DeliveryAntennaService
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
 
     home_post = !@account.domain.nil? || @status.reblog? || [:public, :public_unlisted, :login].exclude?(@status.visibility.to_sym)
-    antennas = antennas.where(account: @account.followers).or(antennas.where(account: @account)).where('insert_feeds IS FALSE OR list_id > 0') if home_post
+    antennas = antennas.where(account: @account.followers).or(antennas.where(account: @account)).where('insert_feeds IS FALSE OR list_id > 0') if home_post && !@status.limited_visibility?
+    antennas = antennas.where(account: @status.mentioned_accounts).or(antennas.where(account: @account)).where('insert_feeds IS FALSE OR list_id > 0') if @status.limited_visibility?
 
     collection = AntennaCollection.new(@status, @update, home_post)
 

@@ -57,6 +57,7 @@ class FanOutOnWriteService < BaseService
     when :limited
       deliver_to_lists_mentioned_accounts_only!
       deliver_to_antennas! unless @account.dissubscribable
+      deliver_to_stl_antennas!
       deliver_to_mentioned_followers!
     else
       deliver_to_mentioned_followers!

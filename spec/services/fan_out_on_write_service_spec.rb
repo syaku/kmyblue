@@ -165,7 +165,7 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
     context 'with STL antenna' do
       let!(:antenna) { antenna_with_options(bob, stl: true) }
-      let!(:empty_antenna) { antenna_with_options(ohagi, stl: true) }
+      let!(:empty_antenna) { antenna_with_options(tom, stl: true) }
 
       it 'is added to the antenna feed of antenna follower' do
         expect(antenna_feed_of(antenna)).to include status.id
