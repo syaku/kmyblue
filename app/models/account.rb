@@ -364,7 +364,7 @@ class Account < ApplicationRecord
   end
 
   def emoji_reactions_must_following?
-    return false unless Setting.enable_block_emoji_reaction_settings
+    return false unless Setting.enable_block_emoji_reaction_settings || !local?
     return user&.settings&.[]('emoji_reactions.must_be_following') || false if user.present?
     return settings['emoji_reactions_must_be_following'] || false if settings.present?
 
@@ -372,7 +372,7 @@ class Account < ApplicationRecord
   end
 
   def emoji_reactions_must_follower?
-    return false unless Setting.enable_block_emoji_reaction_settings
+    return false unless Setting.enable_block_emoji_reaction_settings || !local?
     return user&.settings&.[]('emoji_reactions.must_be_follower') || false if user.present?
     return settings['emoji_reaction_must_be_follower'] || false if settings.present?
 
@@ -380,7 +380,7 @@ class Account < ApplicationRecord
   end
 
   def emoji_reactions_deny_from_all?
-    return false unless Setting.enable_block_emoji_reaction_settings
+    return false unless Setting.enable_block_emoji_reaction_settings || !local?
     return user&.settings&.[]('emoji_reactions.deny_from_all') || false if user.present?
     return settings['emoji_reaction_deny_from_all'] || false if settings.present?
 
