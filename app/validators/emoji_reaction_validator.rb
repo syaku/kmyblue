@@ -30,14 +30,14 @@ class EmojiReactionValidator < ActiveModel::Validator
   end
 
   def deny_from_all?(emoji_reaction)
-    emoji_reaction.status.account.user.settings['emoji_reactions.deny_from_all']
+    emoji_reaction.status.account.emoji_reactions_deny_from_all?
   end
 
   def non_following?(emoji_reaction)
-    emoji_reaction.status.account.user.settings['emoji_reactions.must_be_following'] && !emoji_reaction.status.account.following?(emoji_reaction.account)
+    emoji_reaction.status.account.emoji_reactions_must_following? && !emoji_reaction.status.account.following?(emoji_reaction.account)
   end
 
   def non_follower?(emoji_reaction)
-    emoji_reaction.status.account.user.settings['emoji_reactions.must_be_follower'] && !emoji_reaction.account.following?(emoji_reaction.status.account)
+    emoji_reaction.status.account.emoji_reactions_must_follower? && !emoji_reaction.account.following?(emoji_reaction.status.account)
   end
 end
