@@ -43,6 +43,7 @@ class Status < ApplicationRecord
   include RateLimitable
   include StatusSafeReblogInsert
   include StatusSearchConcern
+  include DtlHelper
 
   rate_limit by: :account, family: :statuses
 
@@ -291,7 +292,7 @@ class Status < ApplicationRecord
   end
 
   def dtl?
-    tags.where(name: 'kmyblue').exists?
+    tags.where(name: DTL_TAG).exists?
   end
 
   def emojis

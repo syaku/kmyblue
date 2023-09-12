@@ -58,6 +58,7 @@
  * @property {string} display_media
  * @property {boolean} display_media_expand
  * @property {string} domain
+ * @property {string} dtl_tag
  * @property {boolean} enable_login_privacy
  * @property {boolean} enable_dtl_menu
  * @property {boolean=} expand_spoilers
@@ -124,6 +125,7 @@ export const disabledAccountId = getMeta('disabled_account_id');
 export const displayMedia = getMeta('display_media');
 export const displayMediaExpand = getMeta('display_media_expand');
 export const domain = getMeta('domain');
+export const dtlTag = getMeta('dtl_tag');
 export const enableLoginPrivacy = getMeta('enable_login_privacy');
 export const enableDtlMenu = getMeta('enable_dtl_menu');
 export const expandSpoilers = getMeta('expand_spoilers');

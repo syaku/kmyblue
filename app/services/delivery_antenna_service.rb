@@ -2,6 +2,7 @@
 
 class DeliveryAntennaService
   include FormattingHelper
+  include DtlHelper
 
   def call(status, update, **options)
     @status = status
@@ -23,6 +24,8 @@ class DeliveryAntennaService
 
   def delivery!
     must_dtl_tag = @account.dissubscribable
+    return if must_dtl_tag && !DTL_ENABLED
+
     tag_ids = @status.tags.pluck(:id)
     domain = @account.domain || Rails.configuration.x.local_domain
     follower_ids = @status.unlisted_visibility? ? @status.account.followers.pluck(:id) : []
@@ -35,7 +38,7 @@ class DeliveryAntennaService
 
     antennas = Antenna.where(id: antennas.select(:id))
     if must_dtl_tag
-      dtl_tag = Tag.find_or_create_by_names('kmyblue').first
+      dtl_tag = Tag.find_or_create_by_names(DTL_TAG).first
       return if !dtl_tag || tag_ids.exclude?(dtl_tag.id)
 
       antennas = antennas.left_joins(:antenna_tags).where(antenna_tags: { tag_id: dtl_tag.id })

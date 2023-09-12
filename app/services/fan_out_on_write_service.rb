@@ -2,6 +2,7 @@
 
 class FanOutOnWriteService < BaseService
   include Redisable
+  include DtlHelper
 
   # Push a status into home and mentions feeds
   # @param [Status] status
@@ -51,7 +52,7 @@ class FanOutOnWriteService < BaseService
     when :public, :unlisted, :public_unlisted, :login, :private
       deliver_to_all_followers!
       deliver_to_lists!
-      deliver_to_antennas! if !@account.dissubscribable || (@status.dtl? && @account.user&.setting_dtl_force_subscribable && @status.tags.exists?(name: 'kmyblue'))
+      deliver_to_antennas! if !@account.dissubscribable || (@status.dtl? && DTL_ENABLED && @account.user&.setting_dtl_force_subscribable && @status.tags.exists?(name: DTL_TAG))
       deliver_to_stl_antennas!
       deliver_to_ltl_antennas!
     when :limited
