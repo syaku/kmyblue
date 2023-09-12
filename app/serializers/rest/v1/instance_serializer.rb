@@ -6,7 +6,7 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
   attributes :uri, :title, :short_description, :description, :email,
              :version, :urls, :stats, :thumbnail,
              :languages, :registrations, :approval_required, :invites_enabled,
-             :configuration, :fedibird_capabilities
+             :configuration, :fedibird_capabilities, :kmyblue_capabilities
 
   has_one :contact_account, serializer: REST::AccountSerializer
 
@@ -137,6 +137,20 @@ class REST::V1::InstanceSerializer < ActiveModel::Serializer
     capabilities << :profile_search unless Chewy.enabled?
 
     capabilities
+  end
+
+  def kmyblue_capabilities
+    %i(
+      visibility_public_unlisted
+      searchability
+      markdown
+      reaction_deck
+      visibility_login
+      limited_scope
+      antenna
+      bookmark_category
+      status_expiration
+    )
   end
 
   private
