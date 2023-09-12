@@ -400,7 +400,7 @@ class DetailedStatus extends ImmutablePureComponent {
 
           {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
 
-          {expanded && hashtagBar}
+          {(!status.get('spoiler_text') || expanded) && hashtagBar}
 
           {emojiReactionsBar}
 
