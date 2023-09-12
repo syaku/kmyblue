@@ -262,7 +262,7 @@ ja:
           mutuals_only: 相互のみ許可
           outside_only: フォロー中、またはフォロワーのみに許可
         setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換のスタンプ機能を有効にする
-        setting_enable_emoji_reaction: 自分の画面に絵文字リアクションを表示する
+        setting_enable_emoji_reaction: スタンプ機能を使用する
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
         setting_hide_followers_count: フォロワー数を隠す
         setting_hide_following_count: フォロー数を隠す
@@ -278,6 +278,7 @@ ja:
         setting_reject_unlisted_subscription: Misskey系サーバーに「未収載」投稿を「フォロワーのみ」に変換して配送する
         setting_send_without_domain_blocks: 管理人の設定した配送停止設定を拒否する (非推奨)
         setting_show_application: 送信したアプリを開示する
+        setting_show_emoji_reaction_on_timeline: タイムライン上にスタンプを表示する
         setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_stop_emoji_reaction_streaming: スタンプのストリーミングを停止する
         setting_system_font_ui: システムのデフォルトフォントを使う

@@ -56,6 +56,7 @@ class UserSettings
     setting :enable_dtl_menu, default: false
     setting :hide_recent_emojis, default: false
     setting :enable_emoji_reaction, default: true
+    setting :show_emoji_reaction_on_timeline, default: true
     setting :reblog_modal, default: false
     setting :unfollow_modal, default: true
     setting :reduce_motion, default: false

@@ -242,7 +242,7 @@ en:
         setting_dtl_force_subscribable: Ignore your dissubscribable setting when using the DTL tag
         setting_dtl_force_with_tag: Post with DTL tag
         setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
-        setting_enable_emoji_reaction: Show emoji reaction on your display
+        setting_enable_emoji_reaction: Use stamp function
         setting_enable_login_privacy: Enable login visibility
         setting_emoji_reaction_policy: Stamp receive/display policy
         setting_emoji_reaction_policy_items:
@@ -267,6 +267,7 @@ en:
         setting_reject_unlisted_subscription: Reject sending unlisted posts to Misskey, Calckey
         setting_send_without_domain_blocks: Send your post to all server with administrator set as rejecting-post-server for protect you [DEPRECATED]
         setting_show_application: Disclose application used to send posts
+        setting_show_emoji_reaction_on_timeline: Show stamps on timeline
         setting_stay_privacy: Not change privacy after post
         setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font

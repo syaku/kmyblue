@@ -18,7 +18,7 @@ import Card from '../features/status/components/card';
 // to use the progress bar to show download progress
 import Bundle from '../features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { displayMedia, enableEmojiReaction } from '../initial_state';
+import { displayMedia, enableEmojiReaction, showEmojiReactionOnTimeline } from '../initial_state';
 
 import { Avatar } from './avatar';
 import { AvatarOverlay } from './avatar_overlay';
@@ -577,8 +577,7 @@ class Status extends ImmutablePureComponent {
     let emojiReactionsBar = null;
     if (!this.props.withoutEmojiReactions && status.get('emoji_reactions')) {
       const emojiReactions = status.get('emoji_reactions');
-      const emojiReactionPolicy = status.getIn(['account', 'other_settings', 'emoji_reaction_policy']) || 'allow';
-      if (emojiReactions.size > 0 && enableEmojiReaction && emojiReactionPolicy !== 'block_and_hide') {
+      if (emojiReactions.size > 0 && enableEmojiReaction && showEmojiReactionOnTimeline) {
         emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
       }
     }
