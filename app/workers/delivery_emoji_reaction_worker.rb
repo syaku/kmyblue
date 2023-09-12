@@ -6,9 +6,9 @@ class DeliveryEmojiReactionWorker
   include Lockable
   include AccountScope
 
-  def perform(payload_json, emoji_reaction_id, status_id, _my_account_id = nil)
-    emoji_reaction = emoji_reaction_id ? EmojiReaction.find(emoji_reaction_id) : nil
+  def perform(payload_json, status_id, reacted_account_id)
     status = Status.find(status_id)
+    reacted_account = Account.find(reacted_account_id)
 
     if status.present?
       scope = scope_status(status)
@@ -19,7 +19,7 @@ class DeliveryEmojiReactionWorker
       scope.includes(:user).find_each do |account|
         next if account.user.present? && (account.user.setting_stop_emoji_reaction_streaming || !account.user.setting_enable_emoji_reaction)
         next unless redis.exists?("subscribed:timeline:#{account.id}")
-        next if emoji_reaction.present? && account.excluded_from_timeline_domains.include?(emoji_reaction.account.domain)
+        next if account.excluded_from_timeline_domains.include?(reacted_account.domain)
         next if policy != :allow && !status.account.show_emoji_reaction?(account)
 
         redis.publish("timeline:#{account.id}", payload_json)
