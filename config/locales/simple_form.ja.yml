@@ -252,11 +252,11 @@ ja:
         setting_dtl_force_with_tag: DTL参加時の投稿設定
         setting_dtl_menu: Webクライアントのメニューにディープタイムラインを追加する
         setting_enable_login_privacy: 公開範囲「ログインユーザーのみ」をWeb UIで選択可能にする
-        setting_emoji_reaction_policy: スタンプ受け入れ設定
+        setting_emoji_reaction_policy: スタンプ受け入れと表示設定
         setting_emoji_reaction_policy_items:
           allow: 全員に許可
-          block: 全員禁止
-          block_and_hide: 全員禁止し、既存のスタンプも非表示にする
+          block: 全員禁止するが、既存のスタンプは表示する
+          block_and_hide: 全員禁止
           followees_only: フォロー中の相手のみ許可
           followers_only: フォロワーのみ許可
           mutuals_only: 相互のみ許可

@@ -350,7 +350,7 @@ class Status < ApplicationRecord
   end
 
   def emoji_reactions_grouped_by_name(account = nil)
-    return [] if self.account.emoji_reaction_policy == :block_and_hide
+    return [] if account.present? && !self.account.show_emoji_reaction?(account)
 
     (Oj.load(status_stat&.emoji_reactions || '', mode: :strict) || []).tap do |emoji_reactions|
       if account.present?

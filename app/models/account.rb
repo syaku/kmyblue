@@ -370,6 +370,34 @@ class Account < ApplicationRecord
     user.settings&.[]('emoji_reaction_policy')&.to_sym
   end
 
+  def show_emoji_reaction?(account)
+    case emoji_reaction_policy
+    when :block_and_hide
+      false
+    when :followees_only
+      account.present? && (id == account.id || following?(account))
+    when :followers_only
+      account.present? && (id == account.id || followed_by?(account))
+    when :mutuals_only
+      account.present? && (id == account.id || mutual?(account))
+    when :outside_only
+      account.present? && (id == account.id || following?(account) || followed_by?(account))
+    else
+      true
+    end
+  end
+
+  def allow_emoji_reaction?(account)
+    return false if account.nil?
+
+    case emoji_reaction_policy
+    when :block
+      false
+    else
+      show_emoji_reaction?(account)
+    end
+  end
+
   def public_settings
     config = {
       'noindex' => noindex?,

@@ -244,11 +244,11 @@ en:
         setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
         setting_enable_emoji_reaction: Show emoji reaction on your display
         setting_enable_login_privacy: Enable login visibility
-        setting_emoji_reaction_policy: Stamp policy
+        setting_emoji_reaction_policy: Stamp receive/display policy
         setting_emoji_reaction_policy_items:
           allow: Allow all
-          block: Block all
-          block_and_hide: Block and hide
+          block: Block all but show existing reactions
+          block_and_hide: Block
           followees_only: Followings only
           followers_only: Followers only
           mutuals_only: Mutuals only
