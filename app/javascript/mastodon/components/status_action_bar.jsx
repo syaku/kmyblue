@@ -419,7 +419,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const emojiPickerButton = (
       <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.emojiReaction)} icon='smile-o' onClick={this.handleEmojiPickInnerButton} />
     );
-    const emojiPickerDropdown = enableEmojiReaction && (writtenByMe || (denyFromAll && following && followed && mutual && outside)) && (
+    const emojiPickerDropdown = enableEmojiReaction && denyFromAll && (writtenByMe || (following && followed && mutual && outside)) && (
       <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} />
     );
 

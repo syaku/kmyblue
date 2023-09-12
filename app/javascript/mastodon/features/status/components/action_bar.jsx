@@ -335,7 +335,7 @@ class ActionBar extends PureComponent {
     const emojiPickerButton = (
       <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} title={intl.formatMessage(messages.pickEmoji)} />
     );
-    const emojiPickerDropdown = enableEmojiReaction && (writtenByMe || (denyFromAll && following && followed && mutual && outside)) && (
+    const emojiPickerDropdown = enableEmojiReaction && denyFromAll && (writtenByMe || (following && followed && mutual && outside)) && (
       <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} /></div>
     );
 
