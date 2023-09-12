@@ -69,6 +69,7 @@ en:
         setting_dtl_force_subscribable: Your post can be detected local user's antenna to subscribe deep timeline
         setting_dtl_force_with_tag: "With using #%{tag} tag, your post settings will be changed forcibly"
         setting_dtl_menu: Show DTL menu on web
+        setting_emoji_reaction_policy: This setting will compromise usability from third-party apps. If you simply want to remove the stamp from your own screen, you can disable it from the appearance settings
         setting_enable_emoji_reaction: If turn off, other users still can react your posts
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed

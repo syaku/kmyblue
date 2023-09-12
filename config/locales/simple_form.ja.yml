@@ -70,6 +70,7 @@ ja:
         setting_display_media_show_all: メディアを常に表示する
         setting_dtl_force_subscribable: 購読拒否設定に関係なく、ディープタイムラインに向けた投稿はアンテナに掲載されます。ディープタイムラインをアンテナ経由で閲覧している人にあなたの発言が届きます
         setting_dtl_force_with_tag: "ハッシュタグ #%{tag} をつけて投稿するとき、公開範囲と検索許可を強制的に置き換えるかを設定します"
+        setting_emoji_reaction_policy: この設定はサードパーティアプリからのユーザビリティを損ないます。単にあなた自身の画面からスタンプを除去したいだけなら、外観設定からスタンプを無効にすることができます
         setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、スタンプ機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
         setting_enable_emoji_reaction: この機能を無効にしても、他の人はあなたの投稿にスタンプをつけられます
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
