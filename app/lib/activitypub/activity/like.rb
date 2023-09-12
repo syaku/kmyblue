@@ -7,7 +7,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   def perform
     @original_status = status_from_uri(object_uri)
 
-    return if @original_status.nil? || !@original_status.account.local? || delete_arrived_first?(@json['id']) || reject_favourite?
+    return if @original_status.nil? || delete_arrived_first?(@json['id']) || reject_favourite?
 
     if shortcode.nil?
       process_favourite
@@ -32,6 +32,8 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   end
 
   def process_emoji_reaction
+    return if !@original_status.account.local? && !Setting.receive_other_servers_emoji_reaction
+
     if emoji_tag.present?
       return if emoji_tag['id'].blank? || emoji_tag['name'].blank? || emoji_tag['icon'].blank? || emoji_tag['icon']['url'].blank?
 

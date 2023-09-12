@@ -29,6 +29,9 @@
   .fields-group
     = f.input :noindex, as: :boolean, wrapper: :with_label, label: t('admin.settings.default_noindex.title'), hint: t('admin.settings.default_noindex.desc_html')
 
+  .fields-group
+    = f.input :receive_other_servers_emoji_reaction, as: :boolean, wrapper: :with_label, kmyblue: true
+
   %h4= t('admin.settings.discovery.publish_statistics')
 
   .fields-group
