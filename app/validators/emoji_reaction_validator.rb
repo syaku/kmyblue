@@ -24,20 +24,29 @@ class EmojiReactionValidator < ActiveModel::Validator
   def deny_emoji_reactions?(emoji_reaction)
     return false unless Setting.enable_block_emoji_reaction_settings
     return false if emoji_reaction.status.account.user.nil?
-    return false if emoji_reaction.status.account_id == emoji_reaction.account_id
+    return deny_from_all?(emoji_reaction) if emoji_reaction.status.account_id == emoji_reaction.account_id
+    return false if emoji_reaction.status.account.emoji_reaction_policy == :allow
 
-    deny_from_all?(emoji_reaction) || non_follower?(emoji_reaction) || non_following?(emoji_reaction)
+    deny_from_all?(emoji_reaction) || non_outside?(emoji_reaction) || non_follower?(emoji_reaction) || non_following?(emoji_reaction) || non_mutual?(emoji_reaction)
   end
 
   def deny_from_all?(emoji_reaction)
-    emoji_reaction.status.account.emoji_reactions_deny_from_all?
+    %i(block block_and_hide).include?(emoji_reaction.status.account.emoji_reaction_policy)
   end
 
   def non_following?(emoji_reaction)
-    emoji_reaction.status.account.emoji_reactions_must_following? && !emoji_reaction.status.account.following?(emoji_reaction.account)
+    emoji_reaction.status.account.emoji_reaction_policy == :followees_only && !emoji_reaction.status.account.following?(emoji_reaction.account)
   end
 
   def non_follower?(emoji_reaction)
-    emoji_reaction.status.account.emoji_reactions_must_follower? && !emoji_reaction.account.following?(emoji_reaction.status.account)
+    emoji_reaction.status.account.emoji_reaction_policy == :followers_only && !emoji_reaction.account.following?(emoji_reaction.status.account)
+  end
+
+  def non_outside?(emoji_reaction)
+    emoji_reaction.status.account.emoji_reaction_policy == :outside_only && !emoji_reaction.account.following?(emoji_reaction.status.account) && !emoji_reaction.status.account.following?(emoji_reaction.account)
+  end
+
+  def non_mutual?(emoji_reaction)
+    emoji_reaction.status.account.emoji_reaction_policy == :mutuals_only && !emoji_reaction.status.account.mutual?(emoji_reaction.account)
   end
 end

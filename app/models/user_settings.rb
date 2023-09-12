@@ -36,6 +36,7 @@ class UserSettings
   setting :reaction_deck, default: nil
   setting :stop_emoji_reaction_streaming, default: false
   setting :emoji_reaction_streaming_notify_impl2, default: false
+  setting :emoji_reaction_policy, default: :allow, in: %w(allow outside_only followers_only followees_only mutuals_only block block_and_hide)
   setting :unsafe_limited_distribution, default: false
   setting :dtl_force_with_tag, default: :none, in: %w(full searchability none)
   setting :dtl_force_subscribable, default: false
@@ -82,12 +83,6 @@ class UserSettings
     setting :must_be_follower, default: false
     setting :must_be_following, default: false
     setting :must_be_following_dm, default: false
-  end
-
-  namespace :emoji_reactions do
-    setting :must_be_follower, default: false
-    setting :must_be_following, default: false
-    setting :deny_from_all, default: false
   end
 
   def initialize(original_hash)

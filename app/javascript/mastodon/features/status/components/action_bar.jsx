@@ -326,13 +326,16 @@ class ActionBar extends PureComponent {
       reblogTitle = intl.formatMessage(messages.cannot_reblog);
     }
 
-    const following = !account.getIn(['other_settings', 'emoji_reaction_must_follower']) || (relationship && relationship.get('following'));
-    const followed = !account.getIn(['other_settings', 'emoji_reaction_must_following']) || (relationship && relationship.get('followed_by'));
-    const denyFromAll = !account.getIn(['other_settings', 'emoji_reaction_deny_from_all']);
+    const emojiReactionPolicy = account.getIn(['other_settings', 'emoji_reaction_policy']) || 'allow';
+    const following = emojiReactionPolicy !== 'followees_only' || (relationship && relationship.get('following'));
+    const followed = emojiReactionPolicy !== 'followers_only' || (relationship && relationship.get('followed_by'));
+    const mutual = emojiReactionPolicy !== 'mutuals_only' || (relationship && relationship.get('following') && relationship.get('followed_by'));
+    const outside = emojiReactionPolicy !== 'outside_only' || (relationship && (relationship.get('following') || relationship.get('followed_by')));
+    const denyFromAll = emojiReactionPolicy !== 'block' && emojiReactionPolicy !== 'block_and_hide';
     const emojiPickerButton = (
       <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} title={intl.formatMessage(messages.pickEmoji)} />
     );
-    const emojiPickerDropdown = enableEmojiReaction && (writtenByMe || ((denyFromAll) && (following) && (followed))) && (
+    const emojiPickerDropdown = enableEmojiReaction && (writtenByMe || (denyFromAll && following && followed && mutual && outside)) && (
       <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} /></div>
     );
 

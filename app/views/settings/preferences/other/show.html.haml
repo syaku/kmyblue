@@ -20,6 +20,9 @@
     .fields-group
       = ff.input :default_sensitive, wrapper: :with_label, label: I18n.t('simple_form.labels.defaults.setting_default_sensitive'), hint: I18n.t('simple_form.hints.defaults.setting_default_sensitive')
 
+    - if Setting.enable_block_emoji_reaction_settings
+      = ff.input :emoji_reaction_policy, kmyblue: true, collection: ['allow', 'outside_only', 'followers_only', 'followees_only', 'mutuals_only', 'block', 'block_and_hide'], label_method: lambda { |item| safe_join([t("simple_form.labels.defaults.setting_emoji_reaction_policy_items.#{item}")]) }, as: :radio_buttons, collection_wrapper_tag: 'ul', item_wrapper_tag: 'li', wrapper: :with_floating_label, label: I18n.t('simple_form.labels.defaults.setting_emoji_reaction_policy')
+
     - if @dtl_enabled
 
       %h4= t 'preferences.dtl'

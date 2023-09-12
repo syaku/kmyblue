@@ -363,28 +363,12 @@ class Account < ApplicationRecord
     false
   end
 
-  def emoji_reactions_must_following?
-    return false unless Setting.enable_block_emoji_reaction_settings || !local?
-    return user&.settings&.[]('emoji_reactions.must_be_following') || false if user.present?
-    return settings['emoji_reactions_must_be_following'] || false if settings.present?
+  def emoji_reaction_policy
+    return :allow unless Setting.enable_block_emoji_reaction_settings || !local?
+    return settings['emoji_reaction_policy']&.to_sym || :allow if settings.present?
+    return :allow if user.nil?
 
-    false
-  end
-
-  def emoji_reactions_must_follower?
-    return false unless Setting.enable_block_emoji_reaction_settings || !local?
-    return user&.settings&.[]('emoji_reactions.must_be_follower') || false if user.present?
-    return settings['emoji_reaction_must_be_follower'] || false if settings.present?
-
-    false
-  end
-
-  def emoji_reactions_deny_from_all?
-    return false unless Setting.enable_block_emoji_reaction_settings || !local?
-    return user&.settings&.[]('emoji_reactions.deny_from_all') || false if user.present?
-    return settings['emoji_reaction_deny_from_all'] || false if settings.present?
-
-    false
+    user.settings&.[]('emoji_reaction_policy')&.to_sym
   end
 
   def public_settings
@@ -400,9 +384,7 @@ class Account < ApplicationRecord
     }
     if Setting.enable_block_emoji_reaction_settings
       config = config.merge({
-        'emoji_reaction_must_following' => emoji_reactions_must_following?,
-        'emoji_reaction_must_follower' => emoji_reactions_must_follower?,
-        'emoji_reaction_deny_from_all' => emoji_reactions_deny_from_all?,
+        'emoji_reaction_policy' => user&.setting_emoji_reaction_policy,
       })
     end
     config = config.merge(settings) if settings.present?

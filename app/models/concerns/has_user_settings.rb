@@ -79,6 +79,10 @@ module HasUserSettings
     false
   end
 
+  def setting_emoji_reaction_policy
+    settings['emoji_reaction_policy']
+  end
+
   def setting_unfollow_modal
     settings['web.unfollow_modal']
   end

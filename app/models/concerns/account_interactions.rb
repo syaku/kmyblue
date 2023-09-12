@@ -211,6 +211,10 @@ module AccountInteractions
     other_account.following?(self)
   end
 
+  def mutual?(other_account)
+    following?(other_account) && followed_by?(other_account)
+  end
+
   def blocking?(other_account)
     block_relationships.where(target_account: other_account).exists?
   end
