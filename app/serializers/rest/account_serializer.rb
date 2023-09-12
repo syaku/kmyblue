@@ -168,6 +168,6 @@ class REST::AccountSerializer < ActiveModel::Serializer
   end
 
   def other_settings
-    object.suspended? ? {} : object.public_settings
+    object.suspended? ? {} : object.public_settings_for_local
   end
 end

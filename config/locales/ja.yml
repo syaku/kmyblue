@@ -800,6 +800,7 @@ ja:
         desc_html: この設定を自分で変更していない全ユーザーに影響します
         title: デフォルトで検索エンジンによるインデックスを拒否する
       discovery:
+        emoji_reactions: スタンプ
         follow_recommendations: おすすめフォロー
         preamble: Mastodon を知らないユーザーを取り込むには、興味深いコンテンツを浮上させることが重要です。サーバー上で様々なディスカバリー機能がどのように機能するかを制御します。
         profile_directory: ディレクトリ

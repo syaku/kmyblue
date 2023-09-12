@@ -325,6 +325,7 @@ ja:
         closed_registrations_message: アカウント作成を停止している時のカスタムメッセージ
         content_cache_retention_period: コンテンツキャッシュの保持期間
         custom_css: カスタムCSS
+        enable_emoji_reaction: スタンプ機能を有効にする
         mascot: カスタムマスコット（レガシー）
         media_cache_retention_period: メディアキャッシュの保持期間
         peers_api_enabled: 発見したサーバーのリストをAPIで公開する

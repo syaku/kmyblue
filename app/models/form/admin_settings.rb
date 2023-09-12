@@ -43,6 +43,7 @@ class Form::AdminSettings
     sensitive_words_for_full
     authorized_fetch
     receive_other_servers_emoji_reaction
+    enable_emoji_reaction
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -67,6 +68,7 @@ class Form::AdminSettings
     hide_local_users_for_anonymous
     authorized_fetch
     receive_other_servers_emoji_reaction
+    enable_emoji_reaction
   ).freeze
 
   UPLOAD_KEYS = %i(

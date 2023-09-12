@@ -314,6 +314,7 @@ en:
         closed_registrations_message: Custom message when sign-ups are not available
         content_cache_retention_period: Content cache retention period
         custom_css: Custom CSS
+        enable_emoji_reaction: Enable stamp function
         mascot: Custom mascot (legacy)
         media_cache_retention_period: Media cache retention period
         peers_api_enabled: Publish list of discovered servers in the API

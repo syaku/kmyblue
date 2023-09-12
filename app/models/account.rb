@@ -364,13 +364,16 @@ class Account < ApplicationRecord
   end
 
   def emoji_reaction_policy
-    return settings['emoji_reaction_policy']&.to_sym || :allow if settings.present?
+    return settings['emoji_reaction_policy']&.to_sym || :allow if settings.present? && user.nil?
     return :allow if user.nil?
+    return :block_and_hide if local? && !Setting.enable_emoji_reaction
 
-    user.settings&.[]('emoji_reaction_policy')&.to_sym
+    user.setting_emoji_reaction_policy&.to_sym
   end
 
   def show_emoji_reaction?(account)
+    return false unless Setting.enable_emoji_reaction
+
     case emoji_reaction_policy
     when :block_and_hide
       false
@@ -390,12 +393,7 @@ class Account < ApplicationRecord
   def allow_emoji_reaction?(account)
     return false if account.nil?
 
-    case emoji_reaction_policy
-    when :block
-      false
-    else
-      show_emoji_reaction?(account)
-    end
+    show_emoji_reaction?(account)
   end
 
   def public_settings
@@ -408,9 +406,25 @@ class Account < ApplicationRecord
       'hide_followers_count' => hide_followers_count?,
       'translatable_private' => translatable_private?,
       'link_preview' => link_preview?,
-      'emoji_reaction_policy' => user&.setting_emoji_reaction_policy,
     }
+    if Setting.enable_emoji_reaction
+      config = config.merge({
+        'emoji_reaction_policy' => emoji_reaction_policy,
+      })
+    end
     config = config.merge(settings) if settings.present?
+    config
+  end
+
+  def public_settings_for_local
+    config = public_settings
+
+    unless Setting.enable_emoji_reaction
+      config = config.merge({
+        'emoji_reaction_policy' => :block_and_hide,
+      })
+    end
+
     config
   end
 
