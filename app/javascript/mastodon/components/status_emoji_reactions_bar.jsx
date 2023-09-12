@@ -60,6 +60,7 @@ class StatusEmojiReactionsBar extends PureComponent {
     status: ImmutablePropTypes.map,
     onEmojiReact: PropTypes.func,
     onUnEmojiReact: PropTypes.func,
+    myReactionOnly: PropTypes.bool,
   };
 
   onEmojiReact = (name) => {
@@ -73,20 +74,23 @@ class StatusEmojiReactionsBar extends PureComponent {
   };
 
   render () {
-    const { emojiReactions } = this.props;
+    const { emojiReactions, myReactionOnly } = this.props;
 
-    const emojiButtons = Array.from(emojiReactions).filter(emoji => emoji.get('count') !== 0).map((emoji, index) => (
-      <EmojiReactionButton
-        key={index}
-        name={emoji.get('name')}
-        count={emoji.get('count')}
-        me={emoji.get('me')}
-        url={emoji.get('url')}
-        staticUrl={emoji.get('static_url')}
-        domain={emoji.get('domain')}
-        onEmojiReact={this.onEmojiReact}
-        onUnEmojiReact={this.onUnEmojiReact}
-      />));
+    const emojiButtons = Array.from(emojiReactions)
+      .filter(emoji => emoji.get('count') !== 0)
+      .filter(emoji => !myReactionOnly || emoji.get('me'))
+      .map((emoji, index) => (
+        <EmojiReactionButton
+          key={index}
+          name={emoji.get('name')}
+          count={myReactionOnly ? 1 : emoji.get('count')}
+          me={emoji.get('me')}
+          url={emoji.get('url')}
+          staticUrl={emoji.get('static_url')}
+          domain={emoji.get('domain')}
+          onEmojiReact={this.onEmojiReact}
+          onUnEmojiReact={this.onUnEmojiReact}
+        />));
 
     return (
       <div className='status__emoji-reactions-bar'>

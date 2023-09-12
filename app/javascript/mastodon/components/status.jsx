@@ -577,8 +577,8 @@ class Status extends ImmutablePureComponent {
     let emojiReactionsBar = null;
     if (!this.props.withoutEmojiReactions && status.get('emoji_reactions')) {
       const emojiReactions = status.get('emoji_reactions');
-      if (emojiReactions.size > 0 && enableEmojiReaction && showEmojiReactionOnTimeline) {
-        emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
+      if (emojiReactions.size > 0 && enableEmojiReaction) {
+        emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} myReactionOnly={!showEmojiReactionOnTimeline} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
       }
     }
 
