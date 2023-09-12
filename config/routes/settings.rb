@@ -10,6 +10,7 @@ namespace :settings do
   namespace :preferences do
     resource :appearance, only: [:show, :update], controller: :appearance
     resource :notifications, only: [:show, :update]
+    resource :reaching, only: [:show, :update], controller: :reaching
     resource :other, only: [:show, :update], controller: :other
   end
 

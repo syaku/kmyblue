@@ -227,7 +227,8 @@ en:
         setting_default_language: Posting language
         setting_default_privacy: Posting privacy
         setting_default_reblog_privacy: Reblogging privacy
-        setting_default_searchability: Searchability
+        setting_default_searchability: Searchability of your own post
+        setting_default_searchability_of_search: Your search setting
         setting_default_sensitive: Always mark media as sensitive
         setting_delete_modal: Show confirmation dialog before deleting a post
         setting_disable_swiping: Disable swiping motions
@@ -265,6 +266,7 @@ en:
         setting_unsafe_limited_distribution: Send limit posts with unsafe way to other servers
         setting_use_blurhash: Show colorful gradients for hidden media
         setting_use_pending_items: Slow mode
+        setting_use_public_index: Include permitted accounts post to results of search
         severity: Severity
         sign_in_token_attempt: Security code
         title: Title

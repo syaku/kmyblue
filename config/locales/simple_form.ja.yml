@@ -236,7 +236,8 @@ ja:
         setting_default_language: 投稿する言語
         setting_default_privacy: 投稿の公開範囲
         setting_default_reblog_privacy: BTの公開範囲
-        setting_default_searchability: 投稿の検索を許可する範囲
+        setting_default_searchability: 自分の投稿の検索を許可する範囲
+        setting_default_searchability_of_search: 自分が検索するときの検索許可設定
         setting_default_sensitive: メディアを常に閲覧注意としてマークする
         setting_delete_modal: 投稿を削除する前に確認ダイアログを表示する
         setting_disable_swiping: スワイプでの切り替えを無効にする
@@ -276,6 +277,7 @@ ja:
         setting_unsafe_limited_distribution: 安全でない方法で限定投稿を他サーバーに配信する (非推奨)
         setting_use_blurhash: 非表示のメディアを色付きのぼかしで表示する
         setting_use_pending_items: 手動更新モード
+        setting_use_public_index: Mastodonの標準設定によって検索が許可されたアカウントの公開投稿を検索結果に含める
         severity: 重大性
         sign_in_token_attempt: セキュリティコード
         title: タイトル

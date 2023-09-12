@@ -1589,6 +1589,10 @@ ja:
     other: その他
     posting_defaults: デフォルトの投稿設定
     public_timelines: 公開タイムライン
+    reaching: 公開範囲と検索
+    search: 検索
+    searchability: あなたの投稿の検索許可
+    visibility: 公開範囲
   privacy:
     hint_html: "<strong>Customize how you want your profile and your posts to be found.</strong> A variety of features in Mastodon can help you reach a wider audience when enabled. Take a moment to review these settings to make sure they fit your use case."
     privacy: Privacy
@@ -1750,12 +1754,16 @@ ja:
     searchabilities:
       direct: 反応者
       direct_long: この投稿に反応した人しか検索できません
+      direct_search_long: あなたが反応した投稿のみが検索されます
       limited: 自分のみ
       limited_long: この投稿はあなたしか検索できません
+      limited_search_long: あなたの投稿のみが検索されます
       private: フォロワーと反応者
       private_long: この投稿はフォロワーと反応者のみが検索できます
+      private_search_long: あなたのフォロー相手またはあなたが反応した投稿のみが検索されます
       public: 全て
       public_long: この投稿は誰でも検索できます
+      public_search_long: 検索が許可された全ての投稿が検索できます
     show_more: もっと見る
     show_newer: 新しいものを表示
     show_older: 古いものを表示

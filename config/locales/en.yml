@@ -1649,6 +1649,10 @@ en:
     other: Other
     posting_defaults: Posting defaults
     public_timelines: Public timelines
+    reaching: Visibility and search
+    search: Search
+    searchability: Searchability of your post
+    visibility: Visibility
   privacy:
     hint_html: "<strong>Customize how you want your profile and your posts to be found.</strong> A variety of features in Mastodon can help you reach a wider audience when enabled. Take a moment to review these settings to make sure they fit your use case."
     privacy: Privacy
@@ -1817,12 +1821,16 @@ en:
     searchabilities:
       direct: Reactionners
       direct_long: Reacter of this post can find
+      direct_search_long: You can search you reacted posts only
       limited: Self only
       limited_long: Nobody can find, but you can
+      limited_search_long: You can search your posts only
       private: Followers and reactionners
       private_long: Your followers and reactionners can find
+      private_search_long: You can search you are following or reacted posts only
       public: Public
       public_long: Anyone can find
+      public_search_long: You can search all posts permitted to search
     show_more: Show more
     show_newer: Show newer
     show_older: Show older

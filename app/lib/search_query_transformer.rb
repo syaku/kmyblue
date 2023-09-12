@@ -61,19 +61,19 @@ class SearchQueryTransformer < Parslet::Transform
       when 'library'
         [StatusesIndex]
       else
-        [PublicStatusesIndex, StatusesIndex]
+        @options[:current_account].user&.setting_use_public_index ? [PublicStatusesIndex, StatusesIndex] : [StatusesIndex]
       end
     end
 
     def default_filter
       definition_should = [
-        default_should1,
-        default_should2,
-        non_publicly_searchable,
+        public_index,
         searchability_limited,
       ]
       definition_should << searchability_public if %i(public).include?(@searchability)
       definition_should << searchability_private if %i(public unlisted private).include?(@searchability)
+      definition_should << searchable_by_me if %i(public unlisted private direct).include?(@searchability)
+      definition_should << self_posts if %i(public unlisted private direct).exclude?(@searchability)
 
       {
         bool: {
@@ -83,7 +83,7 @@ class SearchQueryTransformer < Parslet::Transform
       }
     end
 
-    def default_should1
+    def public_index
       {
         term: {
           _index: PublicStatusesIndex.index_name,
@@ -91,24 +91,7 @@ class SearchQueryTransformer < Parslet::Transform
       }
     end
 
-    def default_should2
-      {
-        bool: {
-          must: [
-            {
-              term: { _index: StatusesIndex.index_name },
-            },
-            {
-              term: {
-                searchable_by: @options[:current_account].id,
-              },
-            },
-          ],
-        },
-      }
-    end
-
-    def non_publicly_searchable
+    def searchable_by_me
       {
         bool: {
           must: [
@@ -122,6 +105,21 @@ class SearchQueryTransformer < Parslet::Transform
           must_not: [
             {
               term: { searchability: 'limited' },
+            },
+          ],
+        },
+      }
+    end
+
+    def self_posts
+      {
+        bool: {
+          must: [
+            {
+              term: { _index: StatusesIndex.index_name },
+            },
+            {
+              term: { account_id: @options[:current_account].id },
             },
           ],
         },
@@ -349,6 +347,6 @@ class SearchQueryTransformer < Parslet::Transform
   end
 
   rule(query: sequence(:clauses)) do
-    Query.new(clauses, current_account: current_account)
+    Query.new(clauses, current_account: current_account, searchability: searchability)
   end
 end

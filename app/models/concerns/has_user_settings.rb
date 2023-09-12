@@ -204,7 +204,15 @@ module HasUserSettings
   end
 
   def setting_default_searchability
-    settings['default_searchability'] || 'private'
+    settings['default_searchability'] || 'direct'
+  end
+
+  def setting_default_searchability_of_search
+    settings['default_searchability_of_search']
+  end
+
+  def setting_use_public_index
+    settings['use_public_index']
   end
 
   def setting_disallow_unlisted_public_searchability
