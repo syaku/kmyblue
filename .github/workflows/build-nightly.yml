@@ -27,8 +27,8 @@ jobs:
       platforms: linux/amd64,linux/arm64
       use_native_arm64_builder: true
       push_to_images: |
-        tootsuite/mastodon
-        ghcr.io/mastodon/mastodon
+        kmycode/mastodon
+        ghcr.io/kmycode/mastodon
       version_prerelease: ${{ needs.compute-suffix.outputs.prerelease }}
       labels: |
         org.opencontainers.image.description=Nightly build image used for testing purposes
