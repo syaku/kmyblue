@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { WordmarkLogo } from 'mastodon/components/logo';
 import NavigationPortal from 'mastodon/components/navigation_portal';
-import { enableDtlMenu, timelinePreview, trendsEnabled } from 'mastodon/initial_state';
+import { enableDtlMenu, timelinePreview, trendsEnabled, dtlTag } from 'mastodon/initial_state';
 import { transientSingleColumn } from 'mastodon/is_mobile';
 
 import ColumnLink from './column_link';
@@ -93,8 +93,8 @@ class NavigationPanel extends Component {
           </>
         )}
 
-        {signedIn && enableDtlMenu && (
-          <ColumnLink transparent to='/tags/kmyblue' icon='users' text={intl.formatMessage(messages.deepLocal)} />
+        {signedIn && enableDtlMenu && dtlTag && (
+          <ColumnLink transparent to={`/tags/${dtlTag}`} icon='users' text={intl.formatMessage(messages.deepLocal)} />
         )}
 
         {!signedIn && explorer}

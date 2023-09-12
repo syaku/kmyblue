@@ -37,6 +37,19 @@ class StatusesIndex < Chewy::Index
         ),
       },
 
+      sudachi_analyzer: {
+        tokenizer: 'standard',
+        filter: %w(
+          lowercase
+          asciifolding
+          cjk_width
+          elision
+          english_possessive_stemmer
+          english_stop
+          english_stemmer
+        ),
+      },
+
       hashtag: {
         tokenizer: 'keyword',
         filter: %w(
@@ -129,7 +142,7 @@ class StatusesIndex < Chewy::Index
     },
   }.freeze
 
-  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: PRODUCTION_SETTINGS
+  settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: Rails.env.test? ? DEVELOPMENT_SETTINGS : PRODUCTION_SETTINGS
 
   index_scope ::Status.unscoped.kept.without_reblogs.includes(
     :media_attachments,

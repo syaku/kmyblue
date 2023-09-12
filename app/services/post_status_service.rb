@@ -3,6 +3,7 @@
 class PostStatusService < BaseService
   include Redisable
   include LanguagesHelper
+  include DtlHelper
 
   MIN_SCHEDULE_OFFSET = 5.minutes.freeze
 
@@ -101,8 +102,10 @@ class PostStatusService < BaseService
   end
 
   def overwrite_dtl_post
+    return unless DTL_ENABLED
+
     raw_tags = Extractor.extract_hashtags(@text)
-    return if raw_tags.exclude?('kmyblue')
+    return if raw_tags.exclude?(DTL_TAG)
     return unless %i(public public_unlisted unlisted).include?(@visibility)
 
     @visibility = :unlisted if @account.user&.setting_dtl_force_with_tag == :full

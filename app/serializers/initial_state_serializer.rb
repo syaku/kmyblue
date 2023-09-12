@@ -2,6 +2,7 @@
 
 class InitialStateSerializer < ActiveModel::Serializer
   include RoutingHelper
+  include DtlHelper
 
   attributes :meta, :compose, :accounts,
              :media_attachments, :settings,
@@ -35,6 +36,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       trends_as_landing_page: Setting.trends_as_landing_page,
       status_page_url: Setting.status_page_url,
       sso_redirect: sso_redirect,
+      dtl_tag: DTL_ENABLED ? DTL_TAG : nil,
     }
 
     if object.current_account

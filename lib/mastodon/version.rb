@@ -4,6 +4,14 @@ module Mastodon
   module Version
     module_function
 
+    def kmyblue_major
+      3
+    end
+
+    def kmyblue_minor
+      0
+    end
+
     def major
       4
     end
@@ -24,8 +32,17 @@ module Mastodon
       ENV['MASTODON_VERSION_PRERELEASE'].presence || default_prerelease
     end
 
+    def to_a_of_kmyblue
+      [kmyblue_major, kmyblue_minor].compact
+    end
+
+    def to_s_of_kmyblue
+      components = [to_a_of_kmyblue.join('.')]
+      components.join
+    end
+
     def build_metadata
-      ENV.fetch('MASTODON_VERSION_METADATA', nil)
+      ['kmyblue', to_s_of_kmyblue, ENV.fetch('MASTODON_VERSION_METADATA', nil)].compact.join('.')
     end
 
     def to_a

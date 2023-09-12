@@ -69,7 +69,7 @@ ja:
         setting_display_media_hide_all: メディアを常に隠す
         setting_display_media_show_all: メディアを常に表示する
         setting_dtl_force_subscribable: 購読拒否設定に関係なく、ディープタイムラインに向けた投稿はアンテナに掲載されます。ディープタイムラインをアンテナ経由で閲覧している人にあなたの発言が届きます
-        setting_dtl_force_with_tag: "ハッシュタグ #kmyblue をつけて投稿するとき、公開範囲と検索許可を強制的に置き換えるかを設定します"
+        setting_dtl_force_with_tag: "ハッシュタグ #%{tag} をつけて投稿するとき、公開範囲と検索許可を強制的に置き換えるかを設定します"
         setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、スタンプ機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
         setting_link_preview: プレビュー生成を停止することは、センシティブなサイトへのリンクを頻繁に投稿する人にも有効かもしれません

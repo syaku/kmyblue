@@ -25,6 +25,7 @@
 #  stl              :boolean          default(FALSE), not null
 #  ignore_reblog    :boolean          default(FALSE), not null
 #  insert_feeds     :boolean          default(FALSE), not null
+#  ltl              :boolean          default(FALSE), not null
 #
 class Antenna < ApplicationRecord
   include Expireable
@@ -45,16 +46,19 @@ class Antenna < ApplicationRecord
   belongs_to :list, optional: true
 
   scope :stls, -> { where(stl: true) }
+  scope :ltls, -> { where(ltl: true) }
   scope :all_keywords, -> { where(any_keywords: true) }
   scope :all_domains, -> { where(any_domains: true) }
   scope :all_accounts, -> { where(any_accounts: true) }
   scope :all_tags, -> { where(any_tags: true) }
   scope :availables, -> { where(available: true).where(Arel.sql('any_keywords = FALSE OR any_domains = FALSE OR any_accounts = FALSE OR any_tags = FALSE')) }
   scope :available_stls, -> { where(available: true, stl: true) }
+  scope :available_ltls, -> { where(available: true, stl: false, ltl: true) }
 
   validate :list_owner
   validate :validate_limit
   validate :validate_stl_limit
+  validate :validate_ltl_limit
 
   def list_owner
     raise Mastodon::ValidationError, I18n.t('antennas.errors.invalid_list_owner') if !list_id.zero? && list.present? && list.account != account
@@ -235,6 +239,22 @@ class Antenna < ApplicationRecord
 
     stls = account.antennas.where(stl: true).where.not(id: id)
 
-    errors.add(:base, I18n.t('antennas.errors.over_stl_limit', limit: 1)) if list_id.zero? ? stls.any? { |tl| tl.list_id.zero? } : stls.any? { |tl| tl.list_id != 0 }
+    errors.add(:base, I18n.t('antennas.errors.over_stl_limit', limit: 1)) if if insert_feeds
+                                                                               list_id.zero? ? stls.any? { |tl| tl.list_id.zero? } : stls.any? { |tl| tl.list_id != 0 }
+                                                                             else
+                                                                               stls.any? { |tl| !tl.insert_feeds }
+                                                                             end
+  end
+
+  def validate_ltl_limit
+    return unless ltl
+
+    ltls = account.antennas.where(ltl: true).where.not(id: id)
+
+    errors.add(:base, I18n.t('antennas.errors.over_ltl_limit', limit: 1)) if if insert_feeds
+                                                                               list_id.zero? ? ltls.any? { |tl| tl.list_id.zero? } : ltls.any? { |tl| tl.list_id != 0 }
+                                                                             else
+                                                                               ltls.any? { |tl| !tl.insert_feeds }
+                                                                             end
   end
 end

@@ -198,31 +198,37 @@ class AntennaSetting extends PureComponent {
   onStlToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, target.checked, undefined, undefined, undefined));
+    dispatch(updateAntenna(id, undefined, false, undefined, target.checked, undefined, undefined, undefined, undefined));
+  };
+
+  onLtlToggle = ({ target }) => {
+    const { dispatch } = this.props;
+    const { id } = this.props.params;
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, target.checked, undefined, undefined, undefined));
   };
 
   onMediaOnlyToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, undefined, target.checked, undefined, undefined));
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, target.checked, undefined, undefined));
   };
 
   onIgnoreReblogToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, target.checked, undefined));
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, undefined, target.checked, undefined));
   };
 
   onNoInsertFeedsToggle = ({ target }) => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, undefined, target.checked));
+    dispatch(updateAntenna(id, undefined, false, undefined, undefined, undefined, undefined, undefined, target.checked));
   };
 
   onSelect = value => {
     const { dispatch } = this.props;
     const { id } = this.props.params;
-    dispatch(updateAntenna(id, undefined, false, value.value, undefined, undefined, undefined, undefined));
+    dispatch(updateAntenna(id, undefined, false, value.value, undefined, undefined, undefined, undefined, undefined));
   };
 
   onHomeSelect = () => this.onSelect({ value: '0' });
@@ -293,6 +299,7 @@ class AntennaSetting extends PureComponent {
     const pinned = !!columnId;
     const title  = antenna ? antenna.get('title') : id;
     const isStl = antenna ? antenna.get('stl') : undefined;
+    const isLtl = antenna ? antenna.get('ltl') : undefined;
     const isMediaOnly = antenna ? antenna.get('with_media_only') : undefined;
     const isIgnoreReblog = antenna ? antenna.get('ignore_reblog') : undefined;
     const isInsertFeeds = antenna ? antenna.get('insert_feeds') : undefined;
@@ -312,7 +319,7 @@ class AntennaSetting extends PureComponent {
     }
 
     let columnSettings;
-    if (!isStl) {
+    if (!isStl && !isLtl) {
       columnSettings = (
         <>
           <div className='setting-toggle'>
@@ -337,6 +344,12 @@ class AntennaSetting extends PureComponent {
       stlAlert = (
         <div className='antenna-setting'>
           <p><FormattedMessage id='antennas.in_stl_mode' defaultMessage='This antenna is in STL mode.' /></p>
+        </div>
+      );
+    } else if (isLtl) {
+      stlAlert = (
+        <div className='antenna-setting'>
+          <p><FormattedMessage id='antennas.in_ltl_mode' defaultMessage='This antenna is in LTL mode.' /></p>
         </div>
       );
     }
@@ -384,12 +397,23 @@ class AntennaSetting extends PureComponent {
             </button>
           </div>
 
-          <div className='setting-toggle'>
-            <Toggle id={`antenna-${id}-stl`} defaultChecked={isStl} onChange={this.onStlToggle} />
-            <label htmlFor={`antenna-${id}-stl`} className='setting-toggle__label'>
-              <FormattedMessage id='antennas.stl' defaultMessage='STL mode' />
-            </label>
-          </div>
+          {!isLtl && (
+            <div className='setting-toggle'>
+              <Toggle id={`antenna-${id}-stl`} defaultChecked={isStl} onChange={this.onStlToggle} />
+              <label htmlFor={`antenna-${id}-stl`} className='setting-toggle__label'>
+                <FormattedMessage id='antennas.stl' defaultMessage='STL mode' />
+              </label>
+            </div>
+          )}
+
+          {!isStl && (
+            <div className='setting-toggle'>
+              <Toggle id={`antenna-${id}-ltl`} defaultChecked={isLtl} onChange={this.onLtlToggle} />
+              <label htmlFor={`antenna-${id}-ltl`} className='setting-toggle__label'>
+                <FormattedMessage id='antennas.ltl' defaultMessage='LTL mode' />
+              </label>
+            </div>
+          )}
 
           <div className='setting-toggle'>
             <Toggle id={`antenna-${id}-noinsertfeeds`} defaultChecked={isInsertFeeds} onChange={this.onNoInsertFeedsToggle} />
@@ -429,7 +453,7 @@ class AntennaSetting extends PureComponent {
             </>
           )}
 
-          {!isStl && (
+          {!isStl && !isLtl && (
             <>
               <h2><FormattedMessage id='antennas.filter' defaultMessage='Filter' /></h2>
               <RadioPanel values={rangeRadioValues} value={rangeRadioValue} onChange={this.onRangeRadioChanged} />

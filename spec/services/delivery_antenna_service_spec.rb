@@ -27,7 +27,7 @@ RSpec.describe DeliveryAntennaService, type: :service do
   let!(:antenna)       { nil }
   let!(:empty_antenna) { nil }
 
-  let(:stl_home) { false }
+  let(:mode) { :home }
 
   before do
     bob.follow!(alice)
@@ -35,7 +35,7 @@ RSpec.describe DeliveryAntennaService, type: :service do
 
     allow(redis).to receive(:publish)
 
-    subject.call(status, false, stl_home)
+    subject.call(status, false, mode: mode)
   end
 
   def home_feed_of(account)
@@ -321,6 +321,42 @@ RSpec.describe DeliveryAntennaService, type: :service do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to include status.id
       end
+    end
+  end
+
+  context 'when stl mode keyword is not working' do
+    let(:mode)           { :stl }
+    let!(:antenna)       { antenna_with_keyword(bob, 'anime', stl: true) }
+
+    it 'detecting antenna' do
+      expect(antenna_feed_of(antenna)).to include status.id
+    end
+  end
+
+  context 'when ltl mode keyword is not working' do
+    let(:mode)           { :ltl }
+    let!(:antenna)       { antenna_with_keyword(bob, 'anime', ltl: true) }
+
+    it 'detecting antenna' do
+      expect(antenna_feed_of(antenna)).to include status.id
+    end
+  end
+
+  context 'when stl mode exclude_keyword is not working' do
+    let(:mode)           { :stl }
+    let!(:antenna)       { antenna_with_keyword(bob, 'anime', exclude_keywords: ['body'], stl: true) }
+
+    it 'detecting antenna' do
+      expect(antenna_feed_of(antenna)).to include status.id
+    end
+  end
+
+  context 'when ltl mode exclude_keyword is not working' do
+    let(:mode)           { :ltl }
+    let!(:antenna)       { antenna_with_keyword(bob, 'anime', exclude_keywords: ['body'], ltl: true) }
+
+    it 'detecting antenna' do
+      expect(antenna_feed_of(antenna)).to include status.id
     end
   end
 end
