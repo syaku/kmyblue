@@ -9,6 +9,8 @@ class NotifyService < BaseService
     update
     poll
     emoji_reaction
+    status
+    warning
   ).freeze
 
   def call(recipient, type, activity)
