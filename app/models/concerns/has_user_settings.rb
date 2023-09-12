@@ -43,6 +43,10 @@ module HasUserSettings
     settings['web.hide_recent_emojis']
   end
 
+  def setting_enable_emoji_reaction
+    settings['web.enable_emoji_reaction']
+  end
+
   def setting_default_sensitive
     settings['default_sensitive']
   end

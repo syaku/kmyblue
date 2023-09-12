@@ -71,6 +71,7 @@ ja:
         setting_dtl_force_subscribable: 購読拒否設定に関係なく、ディープタイムラインに向けた投稿はアンテナに掲載されます。ディープタイムラインをアンテナ経由で閲覧している人にあなたの発言が届きます
         setting_dtl_force_with_tag: "ハッシュタグ #%{tag} をつけて投稿するとき、公開範囲と検索許可を強制的に置き換えるかを設定します"
         setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、スタンプ機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
+        setting_enable_emoji_reaction: この機能を無効にしても、他の人はあなたの投稿にスタンプをつけられます
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
         setting_link_preview: プレビュー生成を停止することは、センシティブなサイトへのリンクを頻繁に投稿する人にも有効かもしれません
         setting_noai: AI学習への利用を禁止するメタタグをプロフィールページに追加します。ただし実効性があるとは限りません
@@ -252,6 +253,7 @@ ja:
         setting_dtl_menu: Webクライアントのメニューにディープタイムラインを追加する
         setting_enable_login_privacy: 公開範囲「ログインユーザーのみ」をWeb UIで選択可能にする
         setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換のスタンプ機能を有効にする
+        setting_enable_emoji_reaction: 自分の画面に絵文字リアクションを表示する
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
         setting_hide_followers_count: フォロワー数を隠す
         setting_hide_following_count: フォロー数を隠す

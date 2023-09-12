@@ -69,6 +69,7 @@ en:
         setting_dtl_force_subscribable: Your post can be detected local user's antenna to subscribe deep timeline
         setting_dtl_force_with_tag: "With using #%{tag} tag, your post settings will be changed forcibly"
         setting_dtl_menu: Show DTL menu on web
+        setting_enable_emoji_reaction: If turn off, other users still can react your posts
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed
         username: You can use letters, numbers, and underscores
@@ -241,6 +242,7 @@ en:
         setting_dtl_force_subscribable: Ignore your dissubscribable setting when using the DTL tag
         setting_dtl_force_with_tag: Post with DTL tag
         setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
+        setting_enable_emoji_reaction: Show emoji reaction on your display
         setting_enable_login_privacy: Enable login visibility
         setting_expand_spoilers: Always expand posts marked with content warnings
         setting_hide_followers_count: Hide followers count

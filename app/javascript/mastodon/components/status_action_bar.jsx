@@ -10,9 +10,10 @@ import { connect } from 'react-redux';
 
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
 
+
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import EmojiPickerDropdown from '../features/compose/containers/emoji_picker_dropdown_container';
-import { bookmarkCategoryNeeded, me } from '../initial_state';
+import { enableEmojiReaction , bookmarkCategoryNeeded, me } from '../initial_state';
 
 import { IconButton } from './icon_button';
 
@@ -415,7 +416,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const emojiPickerButton = (
       <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.emojiReaction)} icon='smile-o' onClick={this.handleEmojiPickInnerButton} />
     );
-    const emojiPickerDropdown = (writtenByMe || ((denyFromAll) && (following) && (followed))) && (
+    const emojiPickerDropdown = enableEmojiReaction && (writtenByMe || ((denyFromAll) && (following) && (followed))) && (
       <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} />
     );
 

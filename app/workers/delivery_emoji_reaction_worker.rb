@@ -11,7 +11,7 @@ class DeliveryEmojiReactionWorker
 
     if status.present?
       scope_status(status).includes(:user).find_each do |account|
-        redis.publish("timeline:#{account.id}", payload_json) if (account.user.nil? || !account.user&.setting_stop_emoji_reaction_streaming) && redis.exists?("subscribed:timeline:#{account.id}")
+        redis.publish("timeline:#{account.id}", payload_json) if (account.user.nil? || (!account.user&.setting_stop_emoji_reaction_streaming && !account.user&.setting_enable_emoji_reaction)) && redis.exists?("subscribed:timeline:#{account.id}")
       end
     end
 

@@ -10,9 +10,10 @@ import { connect } from 'react-redux';
 
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
 
+
 import { IconButton } from '../../../components/icon_button';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
-import { bookmarkCategoryNeeded, me } from '../../../initial_state';
+import { enableEmojiReaction , bookmarkCategoryNeeded, me } from '../../../initial_state';
 import EmojiPickerDropdown from '../../compose/containers/emoji_picker_dropdown_container';
 
 const messages = defineMessages({
@@ -305,10 +306,6 @@ class ActionBar extends PureComponent {
       }
     }
 
-    const emojiPickerButton = (
-      <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} title={intl.formatMessage(messages.pickEmoji)} />
-    );
-
     let replyIcon;
     if (status.get('in_reply_to_id', null) === null) {
       replyIcon = 'reply';
@@ -329,13 +326,23 @@ class ActionBar extends PureComponent {
       reblogTitle = intl.formatMessage(messages.cannot_reblog);
     }
 
+    const following = !account.getIn(['other_settings', 'emoji_reaction_must_follower']) || (relationship && relationship.get('following'));
+    const followed = !account.getIn(['other_settings', 'emoji_reaction_must_following']) || (relationship && relationship.get('followed_by'));
+    const denyFromAll = !account.getIn(['other_settings', 'emoji_reaction_deny_from_all']);
+    const emojiPickerButton = (
+      <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} title={intl.formatMessage(messages.pickEmoji)} />
+    );
+    const emojiPickerDropdown = enableEmojiReaction && (writtenByMe || ((denyFromAll) && (following) && (followed))) && (
+      <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} /></div>
+    );
+
     return (
       <div className='detailed-status__action-bar'>
         <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.reply)} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} onClick={this.handleReplyClick} /></div>
         <div className='detailed-status__button'><IconButton className={classNames({ reblogPrivate })} disabled={!publicStatus && !reblogPrivate} active={status.get('reblogged')} title={reblogTitle} icon='retweet' onClick={this.handleReblogClick} /></div>
         <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} /></div>
         <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} /></div>
-        <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} /></div>
+        {emojiPickerDropdown}
 
         <div className='detailed-status__action-bar-dropdown'>
           <DropdownMenuContainer size={18} icon='ellipsis-h' status={status} items={menu} direction='left' title={intl.formatMessage(messages.more)} />

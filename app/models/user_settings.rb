@@ -54,6 +54,7 @@ class UserSettings
     setting :enable_login_privacy, default: false
     setting :enable_dtl_menu, default: false
     setting :hide_recent_emojis, default: false
+    setting :enable_emoji_reaction, default: true
     setting :reblog_modal, default: false
     setting :unfollow_modal, default: true
     setting :reduce_motion, default: false
