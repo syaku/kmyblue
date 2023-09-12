@@ -22,7 +22,6 @@ class EmojiReactionValidator < ActiveModel::Validator
   end
 
   def deny_emoji_reactions?(emoji_reaction)
-    return false unless Setting.enable_block_emoji_reaction_settings
     return false if emoji_reaction.status.account.user.nil?
     return deny_from_all?(emoji_reaction) if emoji_reaction.status.account_id == emoji_reaction.account_id
     return false if emoji_reaction.status.account.emoji_reaction_policy == :allow

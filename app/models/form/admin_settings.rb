@@ -37,7 +37,6 @@ class Form::AdminSettings
     status_page_url
     captcha_enabled
     ng_words
-    enable_block_emoji_reaction_settings
     hide_local_users_for_anonymous
     post_hash_tags_max
     sensitive_words
@@ -64,7 +63,6 @@ class Form::AdminSettings
     noindex
     require_invite_text
     captcha_enabled
-    enable_block_emoji_reaction_settings
     hide_local_users_for_anonymous
     authorized_fetch
   ).freeze

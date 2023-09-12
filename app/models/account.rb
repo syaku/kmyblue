@@ -364,7 +364,6 @@ class Account < ApplicationRecord
   end
 
   def emoji_reaction_policy
-    return :allow unless Setting.enable_block_emoji_reaction_settings || !local?
     return settings['emoji_reaction_policy']&.to_sym || :allow if settings.present?
     return :allow if user.nil?
 
@@ -381,12 +380,8 @@ class Account < ApplicationRecord
       'hide_followers_count' => hide_followers_count?,
       'translatable_private' => translatable_private?,
       'link_preview' => link_preview?,
+      'emoji_reaction_policy' => user&.setting_emoji_reaction_policy,
     }
-    if Setting.enable_block_emoji_reaction_settings
-      config = config.merge({
-        'emoji_reaction_policy' => user&.setting_emoji_reaction_policy,
-      })
-    end
     config = config.merge(settings) if settings.present?
     config
   end

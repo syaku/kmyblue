@@ -597,7 +597,6 @@ en:
     media_attachments:
       title: Media attachments
     ng_words:
-      enable_block_emoji_reaction_settings: Enable block emoji reactions settings for users
       hide_local_users_for_anonymous: Hide timeline local user posts from anonymous
       keywords: Reject keywords
       keywords_hint: The first character of the line is "?". to use regular expressions
