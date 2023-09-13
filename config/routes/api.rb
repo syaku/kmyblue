@@ -314,6 +314,8 @@ namespace :api, format: false do
           post :test
         end
       end
+
+      resources :tags, only: [:index, :show, :update]
     end
   end
 
