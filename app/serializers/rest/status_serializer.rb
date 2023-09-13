@@ -127,7 +127,9 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   def emoji_reactions_count
     if current_user&.account.nil?
-      Setting.enable_emoji_reaction ? object.emoji_reactions_count : 0
+      return 0 unless Setting.enable_emoji_reaction
+
+      object.account.emoji_reaction_policy == :allow ? object.emoji_reactions_count : 0
     else
       object.account.show_emoji_reaction?(current_user.account) ? object.emoji_reactions_count : 0
     end

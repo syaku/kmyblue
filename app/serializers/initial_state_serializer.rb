@@ -65,6 +65,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:display_media] = Setting.display_media
       store[:reduce_motion] = Setting.reduce_motion
       store[:use_blurhash]  = Setting.use_blurhash
+      store[:enable_emoji_reaction] = Setting.enable_emoji_reaction
     end
 
     store[:disabled_account_id] = object.disabled_account.id.to_s if object.disabled_account
