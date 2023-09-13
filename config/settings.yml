@@ -39,6 +39,7 @@ defaults: &defaults
   backups_retention_period: 7
   captcha_enabled: false
   receive_other_servers_emoji_reaction: false
+  streaming_other_servers_emoji_reaction: false
   enable_emoji_reaction: true
 
 development:
