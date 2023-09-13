@@ -78,9 +78,8 @@ RAILS_ENV=production bin/rails db:migrate
 
 # プリコンパイル
 # うまくいかない場合（エラーは出ないのにWeb表示が崩れる）はclobberしてからprecompile
-# それでもうまくいかない場合はsudo systemctl stop mastodon-web
-# それでもうまくいかない場合はサーバーOSを再起動する
-# それでもうまくいかない場合はおはぎになる
+# それでもうまくいかない場合はsudo systemctl stop mastodon-webしてから試す
+# それでもうまくいかない場合はサーバーOSを再起動してから試す
 RAILS_ENV=production bin/rails assets:clobber # プリコンパイルがうまくいかない場合
 RAILS_ENV=production bin/rails assets:precompile
 
