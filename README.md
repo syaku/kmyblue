@@ -19,6 +19,20 @@ INSTALL.mdを参照してください。
 
 CONTRIBUTING.mdを参照してください。
 
+## テスト
+
+```
+# デバッグ実行（以下のいずれか）
+foreman start
+DB_USER=postgres DB_PASS=password foreman start
+
+# 一部を除く全てのテストを行う
+RAILS_ENV=test bundle exec rspec spec
+
+# ElasticSearch連携テストを行う
+RAILS_ENV=test ES_ENABLED=true RUN_SEARCH_SPECS=true bundle exec rspec spec/search
+```
+
 ## kmyblueの強み
 
 ### 本家Mastodonへの積極的追従

@@ -10,9 +10,10 @@ import { connect } from 'react-redux';
 
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
 
+
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import EmojiPickerDropdown from '../features/compose/containers/emoji_picker_dropdown_container';
-import { bookmarkCategoryNeeded, me } from '../initial_state';
+import { enableEmojiReaction , bookmarkCategoryNeeded, me } from '../initial_state';
 
 import { IconButton } from './icon_button';
 
@@ -409,13 +410,16 @@ class StatusActionBar extends ImmutablePureComponent {
       <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.hide)} icon='eye' onClick={this.handleHideClick} />
     );
 
-    const following = !account.getIn(['other_settings', 'emoji_reaction_must_follower']) || (relationship && relationship.get('following'));
-    const followed = !account.getIn(['other_settings', 'emoji_reaction_must_following']) || (relationship && relationship.get('followed_by'));
-    const denyFromAll = !account.getIn(['other_settings', 'emoji_reaction_deny_from_all']);
+    const emojiReactionPolicy = account.getIn(['other_settings', 'emoji_reaction_policy']) || 'allow';
+    const following = emojiReactionPolicy !== 'following_only' || (relationship && relationship.get('following'));
+    const followed = emojiReactionPolicy !== 'followers_only' || (relationship && relationship.get('followed_by'));
+    const mutual = emojiReactionPolicy !== 'mutuals_only' || (relationship && relationship.get('following') && relationship.get('followed_by'));
+    const outside = emojiReactionPolicy !== 'outside_only' || (relationship && (relationship.get('following') || relationship.get('followed_by')));
+    const denyFromAll = emojiReactionPolicy !== 'block' && emojiReactionPolicy !== 'block';
     const emojiPickerButton = (
       <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.emojiReaction)} icon='smile-o' onClick={this.handleEmojiPickInnerButton} />
     );
-    const emojiPickerDropdown = (writtenByMe || ((denyFromAll) && (following) && (followed))) && (
+    const emojiPickerDropdown = enableEmojiReaction && denyFromAll && (writtenByMe || (following && followed && mutual && outside)) && (
       <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} />
     );
 

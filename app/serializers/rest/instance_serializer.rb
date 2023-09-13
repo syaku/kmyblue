@@ -108,7 +108,6 @@ class REST::InstanceSerializer < ActiveModel::Serializer
   # for third party apps
   def fedibird_capabilities
     capabilities = [
-      :emoji_reaction,
       :kmyblue_visibility_public_unlisted,
       :enable_wide_emoji,
       :enable_wide_emoji_reaction,
@@ -126,6 +125,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
     ]
 
     capabilities << :profile_search unless Chewy.enabled?
+    capabilities << :emoji_reaction if Setting.enable_emoji_reaction
 
     capabilities
   end

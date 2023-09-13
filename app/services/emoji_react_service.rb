@@ -46,8 +46,10 @@ class EmojiReactService < BaseService
     status = emoji_reaction.status
 
     if status.account.local?
-      LocalNotificationWorker.perform_async(status.account_id, emoji_reaction.id, 'EmojiReaction', 'reaction') if status.account.user&.setting_emoji_reaction_streaming_notify_impl2
-      LocalNotificationWorker.perform_async(status.account_id, emoji_reaction.id, 'EmojiReaction', 'emoji_reaction')
+      if status.account.user&.setting_enable_emoji_reaction
+        LocalNotificationWorker.perform_async(status.account_id, emoji_reaction.id, 'EmojiReaction', 'reaction') if status.account.user&.setting_emoji_reaction_streaming_notify_impl2
+        LocalNotificationWorker.perform_async(status.account_id, emoji_reaction.id, 'EmojiReaction', 'emoji_reaction')
+      end
     elsif status.account.activitypub?
       ActivityPub::DeliveryWorker.perform_async(build_json(emoji_reaction), emoji_reaction.account_id, status.account.inbox_url)
     end
@@ -63,7 +65,7 @@ class EmojiReactService < BaseService
   end
 
   def write_stream(emoji_reaction)
-    emoji_group = emoji_reaction.status.emoji_reactions_grouped_by_name
+    emoji_group = emoji_reaction.status.emoji_reactions_grouped_by_name(nil, force: true)
                                 .find { |reaction_group| reaction_group['name'] == emoji_reaction.name && (!reaction_group.key?(:domain) || reaction_group['domain'] == emoji_reaction.custom_emoji&.domain) }
     emoji_group['status_id'] = emoji_reaction.status_id.to_s
     DeliveryEmojiReactionWorker.perform_async(render_emoji_reaction(emoji_group), emoji_reaction.status_id, emoji_reaction.account_id)

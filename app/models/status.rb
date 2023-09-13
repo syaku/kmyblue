@@ -349,14 +349,25 @@ class Status < ApplicationRecord
     update_status_stat!(status_referred_by_count: [public_send(:status_referred_by_count) + diff, 0].max)
   end
 
-  def emoji_reactions_grouped_by_name(account = nil)
+  def emoji_reactions_grouped_by_name(account = nil, **options)
+    return [] if account.present? && !self.account.show_emoji_reaction?(account)
+    return [] if account.nil? && !options[:force] && self.account.emoji_reaction_policy != :allow
+
     (Oj.load(status_stat&.emoji_reactions || '', mode: :strict) || []).tap do |emoji_reactions|
       if account.present?
+        remove_emoji_reactions = []
         emoji_reactions.each do |emoji_reaction|
           emoji_reaction['me'] = emoji_reaction['account_ids'].include?(account.id.to_s)
           emoji_reaction['account_ids'] -= account.excluded_from_timeline_account_ids.map(&:to_s)
+
+          accounts = Account.where(id: emoji_reaction['account_ids'], silenced_at: nil, suspended_at: nil)
+          accounts = accounts.where('domain IS NULL OR domain NOT IN (?)', account.excluded_from_timeline_domains) if account.excluded_from_timeline_domains.size.positive?
+          emoji_reaction['account_ids'] = accounts.pluck(:id).map(&:to_s)
+
           emoji_reaction['count'] = emoji_reaction['account_ids'].size
+          remove_emoji_reactions << emoji_reaction if emoji_reaction['count'] <= 0
         end
+        emoji_reactions - remove_emoji_reactions
       end
     end
   end

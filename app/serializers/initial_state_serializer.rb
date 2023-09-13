@@ -48,6 +48,8 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:display_media]     = object.current_account.user.setting_display_media
       store[:display_media_expand] = object.current_account.user.setting_display_media_expand
       store[:expand_spoilers] = object.current_account.user.setting_expand_spoilers
+      store[:enable_emoji_reaction] = object.current_account.user.setting_enable_emoji_reaction
+      store[:show_emoji_reaction_on_timeline] = object.current_account.user.setting_show_emoji_reaction_on_timeline
       store[:enable_login_privacy] = object.current_account.user.setting_enable_login_privacy
       store[:enable_dtl_menu] = object.current_account.user.setting_enable_dtl_menu
       store[:hide_recent_emojis] = object.current_account.user.setting_hide_recent_emojis
@@ -63,6 +65,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:display_media] = Setting.display_media
       store[:reduce_motion] = Setting.reduce_motion
       store[:use_blurhash]  = Setting.use_blurhash
+      store[:enable_emoji_reaction] = Setting.enable_emoji_reaction
     end
 
     store[:disabled_account_id] = object.disabled_account.id.to_s if object.disabled_account

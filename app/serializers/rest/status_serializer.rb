@@ -125,6 +125,16 @@ class REST::StatusSerializer < ActiveModel::Serializer
     object.emoji_reactions_grouped_by_name(current_user&.account)
   end
 
+  def emoji_reactions_count
+    if current_user&.account.nil?
+      return 0 unless Setting.enable_emoji_reaction
+
+      object.account.emoji_reaction_policy == :allow ? object.emoji_reactions_count : 0
+    else
+      object.account.show_emoji_reaction?(current_user.account) ? object.emoji_reactions_count : 0
+    end
+  end
+
   def reactions
     emoji_reactions.tap do |rs|
       rs.each do |emoji_reaction|

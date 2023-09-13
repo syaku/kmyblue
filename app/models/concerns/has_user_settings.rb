@@ -43,6 +43,14 @@ module HasUserSettings
     settings['web.hide_recent_emojis']
   end
 
+  def setting_enable_emoji_reaction
+    settings['web.enable_emoji_reaction']
+  end
+
+  def setting_show_emoji_reaction_on_timeline
+    settings['web.show_emoji_reaction_on_timeline']
+  end
+
   def setting_default_sensitive
     settings['default_sensitive']
   end
@@ -73,6 +81,10 @@ module HasUserSettings
 
   def setting_emoji_reaction_streaming_notify_impl2
     false
+  end
+
+  def setting_emoji_reaction_policy
+    settings['emoji_reaction_policy']
   end
 
   def setting_unfollow_modal
@@ -204,7 +216,15 @@ module HasUserSettings
   end
 
   def setting_default_searchability
-    settings['default_searchability'] || 'private'
+    settings['default_searchability'] || 'direct'
+  end
+
+  def setting_default_searchability_of_search
+    settings['default_searchability_of_search']
+  end
+
+  def setting_use_public_index
+    settings['use_public_index']
   end
 
   def setting_disallow_unlisted_public_searchability

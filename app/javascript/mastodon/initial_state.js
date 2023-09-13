@@ -59,6 +59,7 @@
  * @property {boolean} display_media_expand
  * @property {string} domain
  * @property {string} dtl_tag
+ * @property {boolean} enable_emoji_reaction
  * @property {boolean} enable_login_privacy
  * @property {boolean} enable_dtl_menu
  * @property {boolean=} expand_spoilers
@@ -75,6 +76,7 @@
  * @property {string} repository
  * @property {boolean} search_enabled
  * @property {boolean} trends_enabled
+ * @property {boolean} show_emoji_reaction_on_timeline
  * @property {boolean} single_user_mode
  * @property {string} source_url
  * @property {string} streaming_api_base_url
@@ -126,6 +128,7 @@ export const displayMedia = getMeta('display_media');
 export const displayMediaExpand = getMeta('display_media_expand');
 export const domain = getMeta('domain');
 export const dtlTag = getMeta('dtl_tag');
+export const enableEmojiReaction = getMeta('enable_emoji_reaction');
 export const enableLoginPrivacy = getMeta('enable_login_privacy');
 export const enableDtlMenu = getMeta('enable_dtl_menu');
 export const expandSpoilers = getMeta('expand_spoilers');
@@ -142,6 +145,7 @@ export const registrationsOpen = getMeta('registrations_open');
 export const repository = getMeta('repository');
 export const searchEnabled = getMeta('search_enabled');
 export const trendsEnabled = getMeta('trends_enabled');
+export const showEmojiReactionOnTimeline = getMeta('show_emoji_reaction_on_timeline');
 export const showTrends = getMeta('show_trends');
 export const singleUserMode = getMeta('single_user_mode');
 export const source_url = getMeta('source_url');

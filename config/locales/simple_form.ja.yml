@@ -70,7 +70,9 @@ ja:
         setting_display_media_show_all: メディアを常に表示する
         setting_dtl_force_subscribable: 購読拒否設定に関係なく、ディープタイムラインに向けた投稿はアンテナに掲載されます。ディープタイムラインをアンテナ経由で閲覧している人にあなたの発言が届きます
         setting_dtl_force_with_tag: "ハッシュタグ #%{tag} をつけて投稿するとき、公開範囲と検索許可を強制的に置き換えるかを設定します"
+        setting_emoji_reaction_policy: この設定をしても他のサーバーのユーザーはその投稿に自由にスタンプをつけ、同じサーバーの中で共有できます。単にあなた自身の画面からスタンプを除去したいだけなら、外観設定からスタンプを無効にすることができます
         setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、スタンプ機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
+        setting_enable_emoji_reaction: この機能を無効にしても、他の人はあなたの投稿にスタンプをつけられます
         setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
         setting_link_preview: プレビュー生成を停止することは、センシティブなサイトへのリンクを頻繁に投稿する人にも有効かもしれません
         setting_noai: AI学習への利用を禁止するメタタグをプロフィールページに追加します。ただし実効性があるとは限りません
@@ -106,6 +108,7 @@ ja:
         media_cache_retention_period: 正の値に設定されている場合、ダウンロードされたメディアファイルは指定された日数の後に削除され、リクエストに応じて再ダウンロードされます。
         peers_api_enabled: このサーバーが Fediverse で遭遇したドメイン名のリストです。このサーバーが知っているだけで、特定のサーバーと連合しているかのデータは含まれません。これは一般的に Fediverse に関する統計情報を収集するサービスによって使用されます。
         profile_directory: ディレクトリには、掲載する設定をしたすべてのユーザーが一覧表示されます。
+        receive_other_servers_emoji_reaction: 負荷の原因になります。人が少ない場合にのみ有効にすることをおすすめします。
         require_invite_text: アカウント登録が承認制の場合、登録の際の申請事由の入力を必須にします
         site_contact_email: 法律またはサポートに関する問い合わせ先
         site_contact_username: マストドンでの連絡方法
@@ -114,6 +117,7 @@ ja:
         site_terms: 独自のプライバシーポリシーを使用するか空白にしてデフォルトのプライバシーポリシーを使用します。Markdownが使えます。
         site_title: ドメイン名以外でサーバーを参照する方法
         status_page_url: 障害発生時などにユーザーがサーバーの状態を確認できるページのURL
+        streaming_other_servers_emoji_reaction: ストリーミングサーバーの通信許容量、および各ユーザーの通信容量を必ず確認してください。大量のデータが配信されます。
         theme: ログインしていない人と新規ユーザーに表示されるテーマ。
         thumbnail: サーバー情報と共に表示される、アスペクト比が約 2:1 の画像。
         timeline_preview: ログインしていないユーザーがサーバー上の最新の公開投稿を閲覧できるようにします。
@@ -236,7 +240,8 @@ ja:
         setting_default_language: 投稿する言語
         setting_default_privacy: 投稿の公開範囲
         setting_default_reblog_privacy: BTの公開範囲
-        setting_default_searchability: 投稿の検索を許可する範囲
+        setting_default_searchability: 自分の投稿の検索を許可する範囲
+        setting_default_searchability_of_search: 自分が検索するときの検索許可設定
         setting_default_sensitive: メディアを常に閲覧注意としてマークする
         setting_delete_modal: 投稿を削除する前に確認ダイアログを表示する
         setting_disable_swiping: スワイプでの切り替えを無効にする
@@ -250,7 +255,16 @@ ja:
         setting_dtl_force_with_tag: DTL参加時の投稿設定
         setting_dtl_menu: Webクライアントのメニューにディープタイムラインを追加する
         setting_enable_login_privacy: 公開範囲「ログインユーザーのみ」をWeb UIで選択可能にする
+        setting_emoji_reaction_policy: スタンプ受け入れと表示設定
+        setting_emoji_reaction_policy_items:
+          allow: 全員に許可
+          block: 全員禁止
+          followers_only: フォロワーのみ許可
+          following_only: フォロー中の相手のみ許可
+          mutuals_only: 相互のみ許可
+          outside_only: フォロー中、またはフォロワーのみに許可
         setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換のスタンプ機能を有効にする
+        setting_enable_emoji_reaction: スタンプ機能を使用する
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
         setting_hide_followers_count: フォロワー数を隠す
         setting_hide_following_count: フォロー数を隠す
@@ -266,6 +280,7 @@ ja:
         setting_reject_unlisted_subscription: Misskey系サーバーに「未収載」投稿を「フォロワーのみ」に変換して配送する
         setting_send_without_domain_blocks: 管理人の設定した配送停止設定を拒否する (非推奨)
         setting_show_application: 送信したアプリを開示する
+        setting_show_emoji_reaction_on_timeline: タイムライン上に他の人のつけたスタンプを表示する
         setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_stop_emoji_reaction_streaming: スタンプのストリーミングを停止する
         setting_system_font_ui: システムのデフォルトフォントを使う
@@ -276,6 +291,7 @@ ja:
         setting_unsafe_limited_distribution: 安全でない方法で限定投稿を他サーバーに配信する (非推奨)
         setting_use_blurhash: 非表示のメディアを色付きのぼかしで表示する
         setting_use_pending_items: 手動更新モード
+        setting_use_public_index: Mastodonの標準設定によって検索が許可されたアカウントの公開投稿を検索結果に含める
         severity: 重大性
         sign_in_token_attempt: セキュリティコード
         title: タイトル
@@ -309,10 +325,12 @@ ja:
         closed_registrations_message: アカウント作成を停止している時のカスタムメッセージ
         content_cache_retention_period: コンテンツキャッシュの保持期間
         custom_css: カスタムCSS
+        enable_emoji_reaction: スタンプ機能を有効にする
         mascot: カスタムマスコット（レガシー）
         media_cache_retention_period: メディアキャッシュの保持期間
         peers_api_enabled: 発見したサーバーのリストをAPIで公開する
         profile_directory: ディレクトリを有効にする
+        receive_other_servers_emoji_reaction: 他のサーバーのユーザーが他のサーバーの投稿につけたスタンプを受け入れる
         registrations_mode: 新規登録が可能な人
         require_invite_text: 申請事由の入力を必須にする
         show_domain_blocks: ドメインブロックを表示
@@ -324,6 +342,7 @@ ja:
         site_terms: プライバシーポリシー
         site_title: サーバーの名前
         status_page_url: ステータスページのURL
+        streaming_other_servers_emoji_reaction: 他のサーバーのユーザーが他のサーバーの投稿につけたスタンプをストリーミングする
         theme: デフォルトテーマ
         thumbnail: サーバーのサムネイル
         timeline_preview: 公開タイムラインへの未認証のアクセスを許可する

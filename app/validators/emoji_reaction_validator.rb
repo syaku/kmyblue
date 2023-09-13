@@ -22,22 +22,6 @@ class EmojiReactionValidator < ActiveModel::Validator
   end
 
   def deny_emoji_reactions?(emoji_reaction)
-    return false unless Setting.enable_block_emoji_reaction_settings
-    return false if emoji_reaction.status.account.user.nil?
-    return false if emoji_reaction.status.account_id == emoji_reaction.account_id
-
-    deny_from_all?(emoji_reaction) || non_follower?(emoji_reaction) || non_following?(emoji_reaction)
-  end
-
-  def deny_from_all?(emoji_reaction)
-    emoji_reaction.status.account.user.settings['emoji_reactions.deny_from_all']
-  end
-
-  def non_following?(emoji_reaction)
-    emoji_reaction.status.account.user.settings['emoji_reactions.must_be_following'] && !emoji_reaction.status.account.following?(emoji_reaction.account)
-  end
-
-  def non_follower?(emoji_reaction)
-    emoji_reaction.status.account.user.settings['emoji_reactions.must_be_follower'] && !emoji_reaction.account.following?(emoji_reaction.status.account)
+    !emoji_reaction.status.account.allow_emoji_reaction?(emoji_reaction.account)
   end
 end

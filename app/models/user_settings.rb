@@ -26,6 +26,8 @@ class UserSettings
   setting :stay_privacy, default: false
   setting :default_reblog_privacy, default: nil
   setting :default_searchability, default: :direct, in: %w(public private direct limited)
+  setting :default_searchability_of_search, default: :public, in: %w(public private direct limited)
+  setting :use_public_index, default: true
   setting :disallow_unlisted_public_searchability, default: false
   setting :public_post_to_unlisted, default: false
   setting :reject_public_unlisted_subscription, default: false
@@ -34,6 +36,7 @@ class UserSettings
   setting :reaction_deck, default: nil
   setting :stop_emoji_reaction_streaming, default: false
   setting :emoji_reaction_streaming_notify_impl2, default: false
+  setting :emoji_reaction_policy, default: :allow, in: %w(allow outside_only followers_only following_only mutuals_only block)
   setting :unsafe_limited_distribution, default: false
   setting :dtl_force_with_tag, default: :none, in: %w(full searchability none)
   setting :dtl_force_subscribable, default: false
@@ -52,6 +55,8 @@ class UserSettings
     setting :enable_login_privacy, default: false
     setting :enable_dtl_menu, default: false
     setting :hide_recent_emojis, default: false
+    setting :enable_emoji_reaction, default: true
+    setting :show_emoji_reaction_on_timeline, default: true
     setting :reblog_modal, default: false
     setting :unfollow_modal, default: true
     setting :reduce_motion, default: false
@@ -78,12 +83,6 @@ class UserSettings
     setting :must_be_follower, default: false
     setting :must_be_following, default: false
     setting :must_be_following_dm, default: false
-  end
-
-  namespace :emoji_reactions do
-    setting :must_be_follower, default: false
-    setting :must_be_following, default: false
-    setting :deny_from_all, default: false
   end
 
   def initialize(original_hash)

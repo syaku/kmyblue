@@ -595,7 +595,6 @@ ja:
     media_attachments:
       title: 投稿された画像
     ng_words:
-      enable_block_emoji_reaction_settings: 各ユーザーにスタンプ機能のブロック設定項目を解放する
       hide_local_users_for_anonymous: ログインしていない状態でローカルユーザーの投稿をタイムラインから取得できないようにする
       keywords: 投稿できないキーワード
       keywords_hint: 行を「?」で始めると、正規表現が使えます
@@ -801,6 +800,7 @@ ja:
         desc_html: この設定を自分で変更していない全ユーザーに影響します
         title: デフォルトで検索エンジンによるインデックスを拒否する
       discovery:
+        emoji_reactions: スタンプ
         follow_recommendations: おすすめフォロー
         preamble: Mastodon を知らないユーザーを取り込むには、興味深いコンテンツを浮上させることが重要です。サーバー上で様々なディスカバリー機能がどのように機能するかを制御します。
         profile_directory: ディレクトリ
@@ -1017,7 +1017,6 @@ ja:
     hint_html: 他のアカウントからこのアカウントにフォロワーを引き継いで引っ越したい場合、ここでエイリアスを作成しておく必要があります。エイリアス自体は<strong>無害で、取り消す</strong>ことができます。<strong>引っ越しは以前のアカウント側から開始する必要があります</strong>。
     remove: エイリアスを削除
   antennas:
-    beta: アンテナ機能はベータ版です。今後、予告なく全データリセット・機能削除を行う場合があります。
     contexts:
       account: アカウント
       domain: ドメイン
@@ -1589,6 +1588,10 @@ ja:
     other: その他
     posting_defaults: デフォルトの投稿設定
     public_timelines: 公開タイムライン
+    reaching: 公開範囲と検索
+    search: 検索
+    searchability: あなたの投稿の検索許可
+    visibility: 公開範囲
   privacy:
     hint_html: "<strong>Customize how you want your profile and your posts to be found.</strong> A variety of features in Mastodon can help you reach a wider audience when enabled. Take a moment to review these settings to make sure they fit your use case."
     privacy: Privacy
@@ -1610,6 +1613,7 @@ ja:
   reactions:
     errors:
       banned: 指定ユーザーからのリアクションは禁止されています
+      disabled: このサーバーではスタンプ機能は無効になっています
       duplication: 同じリアクションを複数行おうとしました
       limit_reached: リアクションの種類が上限に達しました
       unrecognized_emoji: は絵文字として認識されていません
@@ -1750,12 +1754,16 @@ ja:
     searchabilities:
       direct: 反応者
       direct_long: この投稿に反応した人しか検索できません
+      direct_search_long: あなたが反応した投稿のみが検索されます
       limited: 自分のみ
       limited_long: この投稿はあなたしか検索できません
+      limited_search_long: あなたの投稿のみが検索されます
       private: フォロワーと反応者
       private_long: この投稿はフォロワーと反応者のみが検索できます
+      private_search_long: あなたのフォロー相手またはあなたが反応した投稿のみが検索されます
       public: 全て
       public_long: この投稿は誰でも検索できます
+      public_search_long: 検索が許可された全ての投稿が検索できます
     show_more: もっと見る
     show_newer: 新しいものを表示
     show_older: 古いものを表示

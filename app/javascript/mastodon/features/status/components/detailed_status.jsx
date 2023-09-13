@@ -13,6 +13,7 @@ import EditedTimestamp from 'mastodon/components/edited_timestamp';
 import { getHashtagBarForStatus } from 'mastodon/components/hashtag_bar';
 import { Icon }  from 'mastodon/components/icon';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
+import { enableEmojiReaction } from 'mastodon/initial_state';
 
 import { Avatar } from '../../../components/avatar';
 import { DisplayName } from '../../../components/display_name';
@@ -240,7 +241,8 @@ class DetailedStatus extends ImmutablePureComponent {
     let emojiReactionsBar = null;
     if (status.get('emoji_reactions')) {
       const emojiReactions = status.get('emoji_reactions');
-      if (emojiReactions.size > 0) {
+      const emojiReactionPolicy = status.getIn(['account', 'other_settings', 'emoji_reaction_policy']) || 'allow';
+      if (emojiReactions.size > 0 && enableEmojiReaction && emojiReactionPolicy !== 'block') {
         emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
       }
     }
@@ -398,7 +400,7 @@ class DetailedStatus extends ImmutablePureComponent {
 
           {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
 
-          {expanded && hashtagBar}
+          {(!status.get('spoiler_text') || expanded) && hashtagBar}
 
           {emojiReactionsBar}
 

@@ -69,6 +69,8 @@ en:
         setting_dtl_force_subscribable: Your post can be detected local user's antenna to subscribe deep timeline
         setting_dtl_force_with_tag: "With using #%{tag} tag, your post settings will be changed forcibly"
         setting_dtl_menu: Show DTL menu on web
+        setting_emoji_reaction_policy: Even with this setting, users on other servers are free to put their stamp on the post and share it within the same server. If you simply want to remove the stamp from your own screen, you can disable it from the appearance settings
+        setting_enable_emoji_reaction: If turn off, other users still can react your posts
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed
         username: You can use letters, numbers, and underscores
@@ -96,6 +98,7 @@ en:
         media_cache_retention_period: Downloaded media files will be deleted after the specified number of days when set to a positive value, and re-downloaded on demand.
         peers_api_enabled: A list of domain names this server has encountered in the fediverse. No data is included here about whether you federate with a given server, just that your server knows about it. This is used by services that collect statistics on federation in a general sense.
         profile_directory: The profile directory lists all users who have opted-in to be discoverable.
+        receive_other_servers_emoji_reaction: It can cause load. It is recommended to enable it only when there are few people.
         require_invite_text: When sign-ups require manual approval, make the “Why do you want to join?” text input mandatory rather than optional
         site_contact_email: How people can reach you for legal or support inquiries.
         site_contact_username: How people can reach you on Mastodon.
@@ -104,6 +107,7 @@ en:
         site_terms: Use your own privacy policy or leave blank to use the default. Can be structured with Markdown syntax.
         site_title: How people may refer to your server besides its domain name.
         status_page_url: URL of a page where people can see the status of this server during an outage
+        streaming_other_servers_emoji_reaction: Check your server network capacity. A lot of data streaming.
         theme: Theme that logged out visitors and new users see.
         thumbnail: A roughly 2:1 image displayed alongside your server information.
         timeline_preview: Logged out visitors will be able to browse the most recent public posts available on the server.
@@ -227,7 +231,8 @@ en:
         setting_default_language: Posting language
         setting_default_privacy: Posting privacy
         setting_default_reblog_privacy: Reblogging privacy
-        setting_default_searchability: Searchability
+        setting_default_searchability: Searchability of your own post
+        setting_default_searchability_of_search: Your search setting
         setting_default_sensitive: Always mark media as sensitive
         setting_delete_modal: Show confirmation dialog before deleting a post
         setting_disable_swiping: Disable swiping motions
@@ -240,7 +245,16 @@ en:
         setting_dtl_force_subscribable: Ignore your dissubscribable setting when using the DTL tag
         setting_dtl_force_with_tag: Post with DTL tag
         setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
+        setting_enable_emoji_reaction: Use stamp function
         setting_enable_login_privacy: Enable login visibility
+        setting_emoji_reaction_policy: Stamp receive/display policy
+        setting_emoji_reaction_policy_items:
+          allow: Allow all
+          block: Block
+          followers_only: Followers only
+          following_only: Followings only
+          mutuals_only: Mutuals only
+          outside_only: Followings or followers only
         setting_expand_spoilers: Always expand posts marked with content warnings
         setting_hide_followers_count: Hide followers count
         setting_hide_following_count: Hide following count
@@ -255,6 +269,7 @@ en:
         setting_reject_unlisted_subscription: Reject sending unlisted posts to Misskey, Calckey
         setting_send_without_domain_blocks: Send your post to all server with administrator set as rejecting-post-server for protect you [DEPRECATED]
         setting_show_application: Disclose application used to send posts
+        setting_show_emoji_reaction_on_timeline: Show all stamps on timeline
         setting_stay_privacy: Not change privacy after post
         setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font
@@ -265,6 +280,7 @@ en:
         setting_unsafe_limited_distribution: Send limit posts with unsafe way to other servers
         setting_use_blurhash: Show colorful gradients for hidden media
         setting_use_pending_items: Slow mode
+        setting_use_public_index: Include permitted accounts post to results of search
         severity: Severity
         sign_in_token_attempt: Security code
         title: Title
@@ -298,10 +314,12 @@ en:
         closed_registrations_message: Custom message when sign-ups are not available
         content_cache_retention_period: Content cache retention period
         custom_css: Custom CSS
+        enable_emoji_reaction: Enable stamp function
         mascot: Custom mascot (legacy)
         media_cache_retention_period: Media cache retention period
         peers_api_enabled: Publish list of discovered servers in the API
         profile_directory: Enable profile directory
+        receive_other_servers_emoji_reaction: Receive stamp between other server users
         registrations_mode: Who can sign-up
         require_invite_text: Require a reason to join
         show_domain_blocks: Show domain blocks
@@ -313,6 +331,7 @@ en:
         site_terms: Privacy Policy
         site_title: Server name
         status_page_url: Status page URL
+        streaming_other_servers_emoji_reaction: Streaming stamp between other server users
         theme: Default theme
         thumbnail: Server thumbnail
         timeline_preview: Allow unauthenticated access to public timelines

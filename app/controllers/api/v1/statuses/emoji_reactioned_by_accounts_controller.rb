@@ -15,6 +15,10 @@ class Api::V1::Statuses::EmojiReactionedByAccountsController < Api::BaseControll
   private
 
   def load_accounts
+    return [] unless Setting.enable_emoji_reaction
+    return [] if current_account.nil? && @status.account.emoji_reaction_policy != :allow
+    return [] if current_account.present? && !@status.account.show_emoji_reaction?(current_account)
+
     scope = default_accounts
     scope = scope.where.not(account_id: current_account.excluded_from_timeline_account_ids) unless current_account.nil?
     scope.merge(paginated_emoji_reactions).to_a
