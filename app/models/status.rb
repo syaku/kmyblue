@@ -349,9 +349,9 @@ class Status < ApplicationRecord
     update_status_stat!(status_referred_by_count: [public_send(:status_referred_by_count) + diff, 0].max)
   end
 
-  def emoji_reactions_grouped_by_name(account = nil)
+  def emoji_reactions_grouped_by_name(account = nil, **options)
     return [] if account.present? && !self.account.show_emoji_reaction?(account)
-    return [] if account.nil? && self.account.emoji_reaction_policy != :allow
+    return [] if account.nil? && !options[:force] && self.account.emoji_reaction_policy != :allow
 
     (Oj.load(status_stat&.emoji_reactions || '', mode: :strict) || []).tap do |emoji_reactions|
       if account.present?
