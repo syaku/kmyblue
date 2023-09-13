@@ -14,6 +14,8 @@ kmyblueは頻繁にバージョンアップを行います。
 - バグが含まれていることがあります
 - 特に最新コミットでは、デバッグ用コードや、`kmy.blue`本番サーバーで動作確認を行うためのコードが含まれている場合があります。ブランチの最新コミットではなく最新タグを取り込むことを強くおすすめします
 
+Mastodonの最新バージョンでは、`dist`フォルダに`mastodon-streaming@.service`が追加されています。これは現在の一般的な手順書には存在しません。各サービスファイルをコピーするとき、`mastodon-streaming@.service`をコピーし忘れないようにしてください。
+
 ### ElasticSearchを使用する場合
 
 kmyblueでは、sudachiの使用を前提としています。
@@ -57,5 +59,5 @@ RAILS_ENV=production bin/rails assets:precompile
 RAILS_ENV=production bin/tootctl search deploy
 
 RAILS_ENV=production bin/tootctl cache clear
-sudo systemctl start mastodon-web mastodon-streaming@4000 mastodon-sidekiq
+sudo systemctl start mastodon-web mastodon-streaming mastodon-sidekiq
 ```
