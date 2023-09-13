@@ -61,3 +61,31 @@ RAILS_ENV=production bin/tootctl search deploy
 RAILS_ENV=production bin/tootctl cache clear
 sudo systemctl start mastodon-web mastodon-streaming mastodon-sidekiq
 ```
+
+## kmyblueのバージョンをアップデートする
+
+リリースノートを参照して、自分に必要な作業を特定してください。面倒な場合は毎回全部実行してしまっても問題ありません。（プリコンパイルが失敗する可能性があるのでご注意ください）
+
+```
+# Rubyパッケージアップデート
+bundle intall
+
+# JSパッケージアップデート
+yarn install
+
+# DBマイグレーション
+RAILS_ENV=production bin/rails db:migrate
+
+# プリコンパイル
+# うまくいかない場合（エラーは出ないのにWeb表示が崩れる）はclobberしてからprecompile
+# それでもうまくいかない場合はsudo systemctl stop mastodon-web
+# それでもうまくいかない場合はサーバーOSを再起動する
+# それでもうまくいかない場合はおはぎになる
+RAILS_ENV=production bin/rails assets:clobber # プリコンパイルがうまくいかない場合
+RAILS_ENV=production bin/rails assets:precompile
+
+# サーバー再起動
+sudo systemctl restart mastodon-web
+sudo systemctl restart mastodon-streaming
+sudo systemctl restart mastodon-sidekiq
+```
