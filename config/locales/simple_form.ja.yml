@@ -258,8 +258,8 @@ ja:
         setting_emoji_reaction_policy_items:
           allow: 全員に許可
           block: 全員禁止
-          followees_only: フォロー中の相手のみ許可
           followers_only: フォロワーのみ許可
+          following_only: フォロー中の相手のみ許可
           mutuals_only: 相互のみ許可
           outside_only: フォロー中、またはフォロワーのみに許可
         setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換のスタンプ機能を有効にする

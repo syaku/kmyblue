@@ -36,7 +36,7 @@ class DeliveryEmojiReactionWorker
       Account.where(id: 0)
     when :mutuals_only
       account.mutuals.local.or(Account.where(id: account))
-    when :followees_only
+    when :following_only
       account.following.local.or(Account.where(id: account))
     when :followers_only
       account.followers.local.or(Account.where(id: account))

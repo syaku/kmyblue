@@ -377,7 +377,7 @@ class Account < ApplicationRecord
     case emoji_reaction_policy
     when :block
       false
-    when :followees_only
+    when :following_only
       account.present? && (id == account.id || following?(account))
     when :followers_only
       account.present? && (id == account.id || followed_by?(account))

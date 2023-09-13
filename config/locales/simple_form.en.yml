@@ -250,8 +250,8 @@ en:
         setting_emoji_reaction_policy_items:
           allow: Allow all
           block: Block
-          followees_only: Followings only
           followers_only: Followers only
+          following_only: Followings only
           mutuals_only: Mutuals only
           outside_only: Followings or followers only
         setting_expand_spoilers: Always expand posts marked with content warnings
