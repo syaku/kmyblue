@@ -56,5 +56,6 @@ RAILS_ENV=production bin/rails assets:precompile
 # ElasticSearchを使用する場合
 RAILS_ENV=production bin/tootctl search deploy
 
+RAILS_ENV=production bin/tootctl cache clear
 sudo systemctl start mastodon-web mastodon-streaming@4000 mastodon-sidekiq
 ```
