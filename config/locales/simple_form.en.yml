@@ -249,8 +249,7 @@ en:
         setting_emoji_reaction_policy: Stamp receive/display policy
         setting_emoji_reaction_policy_items:
           allow: Allow all
-          block: Block all but show existing reactions
-          block_and_hide: Block
+          block: Block
           followees_only: Followings only
           followers_only: Followers only
           mutuals_only: Mutuals only

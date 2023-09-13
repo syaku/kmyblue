@@ -242,7 +242,7 @@ class DetailedStatus extends ImmutablePureComponent {
     if (status.get('emoji_reactions')) {
       const emojiReactions = status.get('emoji_reactions');
       const emojiReactionPolicy = status.getIn(['account', 'other_settings', 'emoji_reaction_policy']) || 'allow';
-      if (emojiReactions.size > 0 && enableEmojiReaction && emojiReactionPolicy !== 'block_and_hide') {
+      if (emojiReactions.size > 0 && enableEmojiReaction && emojiReactionPolicy !== 'block') {
         emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
       }
     }

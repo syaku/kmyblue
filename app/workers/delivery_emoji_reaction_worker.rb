@@ -14,7 +14,7 @@ class DeliveryEmojiReactionWorker
       scope = scope_status(status)
 
       policy = status.account.emoji_reaction_policy
-      return if policy == :block_and_hide
+      return if policy == :block
 
       scope.select(:id).merge(policy_scope(status.account, policy)).includes(:user).find_each do |account|
         next if account.user.present? && (account.user.setting_stop_emoji_reaction_streaming || !account.user.setting_enable_emoji_reaction)
@@ -32,7 +32,7 @@ class DeliveryEmojiReactionWorker
 
   def policy_scope(account, policy)
     case policy
-    when :block_and_hide
+    when :block
       Account.where(id: 0)
     when :mutuals_only
       account.mutuals.local.or(Account.where(id: account))

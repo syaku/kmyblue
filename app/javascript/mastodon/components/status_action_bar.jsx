@@ -415,7 +415,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const followed = emojiReactionPolicy !== 'followers_only' || (relationship && relationship.get('followed_by'));
     const mutual = emojiReactionPolicy !== 'mutuals_only' || (relationship && relationship.get('following') && relationship.get('followed_by'));
     const outside = emojiReactionPolicy !== 'outside_only' || (relationship && (relationship.get('following') || relationship.get('followed_by')));
-    const denyFromAll = emojiReactionPolicy !== 'block' && emojiReactionPolicy !== 'block_and_hide';
+    const denyFromAll = emojiReactionPolicy !== 'block' && emojiReactionPolicy !== 'block';
     const emojiPickerButton = (
       <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.emojiReaction)} icon='smile-o' onClick={this.handleEmojiPickInnerButton} />
     );

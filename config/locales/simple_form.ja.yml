@@ -257,8 +257,7 @@ ja:
         setting_emoji_reaction_policy: スタンプ受け入れと表示設定
         setting_emoji_reaction_policy_items:
           allow: 全員に許可
-          block: 全員禁止するが、既存のスタンプは表示する
-          block_and_hide: 全員禁止
+          block: 全員禁止
           followees_only: フォロー中の相手のみ許可
           followers_only: フォロワーのみ許可
           mutuals_only: 相互のみ許可
