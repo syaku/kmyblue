@@ -35,7 +35,7 @@ class StatusCacheHydrator
       payload[:reblog][:bookmarked] = Bookmark.where(account_id: account_id, status_id: @status.reblog_of_id).exists?
       payload[:reblog][:pinned]     = StatusPin.where(account_id: account_id, status_id: @status.reblog_of_id).exists? if @status.reblog.account_id == account_id
       payload[:reblog][:filtered]   = payload[:filtered]
-      payload[:reblog][:emoji_reactions] = @status.emoji_reactions_grouped_by_name(account)
+      payload[:reblog][:emoji_reactions] = @status.reblog.emoji_reactions_grouped_by_name(account)
 
       if payload[:reblog][:poll]
         if @status.reblog.account_id == account_id
