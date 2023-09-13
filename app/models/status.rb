@@ -361,7 +361,7 @@ class Status < ApplicationRecord
           emoji_reaction['account_ids'] -= account.excluded_from_timeline_account_ids.map(&:to_s)
 
           accounts = Account.where(id: emoji_reaction['account_ids'], silenced_at: nil, suspended_at: nil)
-          accounts = accounts.where.not(domain: account.excluded_from_timeline_domains) if account.excluded_from_timeline_domains.size.positive?
+          accounts = accounts.where('domain IS NULL OR domain NOT IN (?)', account.excluded_from_timeline_domains) if account.excluded_from_timeline_domains.size.positive?
           emoji_reaction['account_ids'] = accounts.pluck(:id).map(&:to_s)
 
           emoji_reaction['count'] = emoji_reaction['account_ids'].size
