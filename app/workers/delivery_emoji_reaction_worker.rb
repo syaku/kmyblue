@@ -7,6 +7,8 @@ class DeliveryEmojiReactionWorker
   include AccountScope
 
   def perform(payload_json, status_id, reacted_account_id)
+    return unless Setting.enable_emoji_reaction
+
     status = Status.find(status_id)
     reacted_account = Account.find(reacted_account_id)
 

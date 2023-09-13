@@ -1674,6 +1674,7 @@ en:
   reactions:
     errors:
       banned: Banned reaction from the user
+      disabled: Stamp is disabled on this server
       duplication: Cannot react same things
       limit_reached: Limit of different reactions reached
       unrecognized_emoji: is not a recognized emoji

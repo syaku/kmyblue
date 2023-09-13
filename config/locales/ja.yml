@@ -1613,6 +1613,7 @@ ja:
   reactions:
     errors:
       banned: 指定ユーザーからのリアクションは禁止されています
+      disabled: このサーバーではスタンプ機能は無効になっています
       duplication: 同じリアクションを複数行おうとしました
       limit_reached: リアクションの種類が上限に達しました
       unrecognized_emoji: は絵文字として認識されていません
