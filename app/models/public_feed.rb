@@ -28,7 +28,8 @@ class PublicFeed
     scope.merge!(account_filters_scope) if account?
     scope.merge!(media_only_scope) if media_only?
     scope.merge!(language_scope) if account&.chosen_languages.present?
-    scope.merge!(anonymous_scope) unless account?
+    # scope.merge!(anonymous_scope) unless account?
+    scope = to_anonymous_scope(scope) unless account?
 
     scope.cache_ids.to_a_paginated_by_id(limit, max_id: max_id, since_id: since_id, min_id: min_id)
   end
@@ -103,6 +104,10 @@ class PublicFeed
 
   def anonymous_scope
     local_only? ? Status.where(visibility: [:public, :public_unlisted]) : Status.where(visibility: :public)
+  end
+
+  def to_anonymous_scope(scope)
+    scope.where.not(visibility: :login)
   end
 
   def account_filters_scope
