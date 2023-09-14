@@ -5,7 +5,7 @@ module Mastodon
     module_function
 
     def kmyblue_major
-      3
+      4
     end
 
     def kmyblue_minor
