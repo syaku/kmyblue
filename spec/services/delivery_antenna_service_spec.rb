@@ -266,8 +266,8 @@ RSpec.describe DeliveryAntennaService, type: :service do
   end
 
   context 'when multiple antennas insert list with keyword' do
-    let!(:antenna)       { antenna_with_keyword(bob, 'body', insert_feeds: true, list: list(bob).id) }
-    let!(:empty_antenna) { antenna_with_keyword(tom, 'body', insert_feeds: true, list: list(tom).id) }
+    let!(:antenna)       { antenna_with_keyword(bob, 'body', insert_feeds: true, list: list(bob)) }
+    let!(:empty_antenna) { antenna_with_keyword(tom, 'body', insert_feeds: true, list: list(tom)) }
 
     it 'detecting antenna' do
       expect(antenna_feed_of(antenna)).to include status.id
