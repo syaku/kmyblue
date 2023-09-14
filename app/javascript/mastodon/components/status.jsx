@@ -585,6 +585,10 @@ class Status extends ImmutablePureComponent {
     const {statusContentProps, hashtagBar} = getHashtagBarForStatus(status);
     const expanded = !status.get('hidden')
 
+    const withLimited = status.get('visibility_ex') === 'limited' && status.get('limited_scope') ? <span className='status__visibility-icon'><Icon id='get-pocket' title='Limited' /></span> : null;
+    const withReference = status.get('status_references_count') > 0 ? <span className='status__visibility-icon'><Icon id='link' title='Reference' /></span> : null;
+    const withExpiration = status.get('expires_at') ? <span className='status__visibility-icon'><Icon id='clock-o' title='Expiration' /></span> : null;
+
     return (
       <HotKeys handlers={handlers}>
         <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility_ex')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), unread, focusable: !this.props.muted })} tabIndex={this.props.muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef} data-nosnippet={status.getIn(['account', 'noindex'], true) || undefined}>
@@ -596,6 +600,9 @@ class Status extends ImmutablePureComponent {
             {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
             <div onClick={this.handleClick} className='status__info'>
               <a href={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}`} className='status__relative-time' target='_blank' rel='noopener noreferrer'>
+                {withReference}
+                {withExpiration}
+                {withLimited}
                 <span className='status__visibility-icon'><Icon id={visibilityIcon.icon} title={visibilityIcon.text} /></span>
                 <RelativeTimestamp timestamp={status.get('created_at')} />{status.get('edited_at') && <abbr title={intl.formatMessage(messages.edited, { date: intl.formatDate(status.get('edited_at'), { hour12: false, year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' }) })}> *</abbr>}
               </a>
