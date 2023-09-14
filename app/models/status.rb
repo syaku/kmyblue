@@ -173,6 +173,8 @@ class Status < ApplicationRecord
                    :tags,
                    :preview_cards,
                    :preloadable_poll,
+                   :reference_objects,
+                   :scheduled_expiration_status,
                    account: [:account_stat, user: :role],
                    active_mentions: { account: :account_stat },
                    reblog: [
@@ -183,6 +185,8 @@ class Status < ApplicationRecord
                      :conversation,
                      :status_stat,
                      :preloadable_poll,
+                     :reference_objects,
+                     :scheduled_expiration_status,
                      account: [:account_stat, user: :role],
                      active_mentions: { account: :account_stat },
                    ],
