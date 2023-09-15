@@ -20,7 +20,7 @@ module Mastodon::CLI
     option :import, type: :boolean, default: true, desc: 'Import data from the database to the index'
     option :clean, type: :boolean, default: true, desc: 'Remove outdated documents from the index'
     option :reset_chewy, type: :boolean, default: false, desc: "Reset Chewy's internal index"
-    option :full, type: :boolean, default: true, desc: 'Import full data over Mastodon default importer'
+    option :full, type: :boolean, default: false, desc: 'Import full data over Mastodon default importer'
     desc 'deploy', 'Create or upgrade Elasticsearch indices and populate them'
     long_desc <<~LONG_DESC
       If Elasticsearch is empty, this command will create the necessary indices
