@@ -141,7 +141,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
       relationships.emoji_reaction_allows_map[object.account_id] || false
     else
-      object.account.show_emoji_reaction?(current_user.account)
+      object.account.show_emoji_reaction?(current_user&.account)
     end
   end
 
