@@ -4,6 +4,7 @@ class SearchQueryTransformer < Parslet::Transform
   SUPPORTED_PREFIXES = %w(
     has
     is
+    my
     language
     from
     before
@@ -11,6 +12,7 @@ class SearchQueryTransformer < Parslet::Transform
     during
     in
     domain
+    order
   ).freeze
 
   class Query
@@ -34,6 +36,18 @@ class SearchQueryTransformer < Parslet::Transform
       search
     end
 
+    def order_by
+      return @order_by if @order_by
+
+      @order_by = 'desc'
+      order_clauses.each { |clause| @order_by = clause.term }
+      @order_by
+    end
+
+    def valid
+      must_clauses.any? || must_not_clauses.any? || filter_clauses.any?
+    end
+
     private
 
     def clauses_by_operator
@@ -54,6 +68,10 @@ class SearchQueryTransformer < Parslet::Transform
 
     def filter_clauses
       clauses_by_operator.fetch(:filter, [])
+    end
+
+    def order_clauses
+      clauses_by_operator.fetch(:order, [])
     end
 
     def indexes
@@ -214,6 +232,7 @@ class SearchQueryTransformer < Parslet::Transform
       if @term.start_with?('#')
         { match: { tags: { query: @term, operator: 'and' } } }
       else
+        # Memo for checking when manually merge
         # { multi_match: { type: 'most_fields', query: @term, fields: ['text', 'text.stemmed'], operator: 'and' } }
         { match_phrase: { text: { query: @term } } }
       end
@@ -236,7 +255,7 @@ class SearchQueryTransformer < Parslet::Transform
   class PrefixClause
     attr_reader :operator, :prefix, :term
 
-    def initialize(prefix, operator, term, options = {})
+    def initialize(prefix, operator, term, options = {}) # rubocop:disable Metrics/CyclomaticComplexity
       @prefix = prefix
       @negated = operator == '-'
       @options = options
@@ -274,6 +293,39 @@ class SearchQueryTransformer < Parslet::Transform
       when 'in'
         @operator = :flag
         @term = term
+      when 'my'
+        @type = :term
+        @term = @options[:current_account]&.id
+        case term
+        when 'favourited', 'favorited', 'fav'
+          @filter = :favourited_by
+        when 'boosted', 'bt'
+          @filter = :reblogged_by
+        when 'replied', 'mentioned', 're'
+          @filter = :mentioned_by
+        when 'referenced', 'ref'
+          @filter = :referenced_by
+        when 'emoji_reacted', 'stamped', 'stamp'
+          @filter = :emoji_reacted_by
+        when 'bookmarked', 'bm'
+          @filter = :bookmarked_by
+        when 'categoried', 'bmc'
+          @filter = :bookmark_categoried_by
+        when 'voted', 'vote'
+          @filter = :voted_by
+        when 'interacted', 'act'
+          @filter = :searchable_by
+        else
+          raise "Unknown prefix: my:#{term}"
+        end
+      when 'order'
+        @operator = :order
+        @term = case term
+                when 'asc'
+                  term
+                else
+                  'desc'
+                end
       else
         raise "Unknown prefix: #{prefix}"
       end
@@ -302,7 +354,7 @@ class SearchQueryTransformer < Parslet::Transform
     end
 
     def domain_from_term(term)
-      return '' if %w(local me).include?(term)
+      return '' if ['local', 'me', Rails.configuration.x.local_domain].include?(term)
 
       term
     end
