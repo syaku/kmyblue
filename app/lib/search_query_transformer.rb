@@ -260,6 +260,7 @@ class SearchQueryTransformer < Parslet::Transform
       @negated = operator == '-'
       @options = options
       @operator = :filter
+      @statuses_index_only = false
 
       case prefix
       when 'has', 'is'
@@ -296,6 +297,7 @@ class SearchQueryTransformer < Parslet::Transform
       when 'my'
         @type = :term
         @term = @options[:current_account]&.id
+        @statuses_index_only = true
         case term
         when 'favourited', 'favorited', 'fav'
           @filter = :favourited_by
@@ -326,13 +328,33 @@ class SearchQueryTransformer < Parslet::Transform
                 else
                   'desc'
                 end
+      when 'searchability'
+        @filter = :searchablity
+        @type = :terms
+        @statuses_index_only = true
+        @term = case term
+                when 'public'
+                  %w(public private direct limited)
+                when 'private'
+                  %w(private direct limited)
+                when 'direct'
+                  %w(direct limited)
+                else
+                  %w(limited)
+                end
       else
         raise "Unknown prefix: #{prefix}"
       end
     end
 
     def to_query
-      if @negated
+      if @statuses_index_only
+        if @negated
+          { bool: { must_not: [_index => StatusesIndex.index_name, @type => { @filter => @term }] } }
+        else
+          { bool: { must: [_index => StatusesIndex.index_name, @type => { @filter => @term }] } }
+        end
+      elsif @negated
         { bool: { must_not: { @type => { @filter => @term } } } }
       else
         { @type => { @filter => @term } }
