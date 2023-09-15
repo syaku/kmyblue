@@ -5274,6 +5274,11 @@ a.status-card {
           font-weight: 700;
           color: $primary-text-color;
         }
+
+        span {
+          overflow: inherit;
+          text-overflow: inherit;
+        }
       }
     }
   }
