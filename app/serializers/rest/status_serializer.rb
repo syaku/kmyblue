@@ -123,7 +123,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   end
 
   def emoji_reactions
-    object.emoji_reactions_grouped_by_name(current_user&.account)
+    show_emoji_reaction? ? object.emoji_reactions_grouped_by_name(current_user&.account, permitted_account_ids: emoji_reaction_permitted_account_ids) : []
   end
 
   def emoji_reactions_count
@@ -132,7 +132,17 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
       object.account.emoji_reaction_policy == :allow ? object.emoji_reactions_count : 0
     else
-      object.account.show_emoji_reaction?(current_user.account) ? object.emoji_reactions_count : 0
+      show_emoji_reaction? ? object.emoji_reactions_count : 0
+    end
+  end
+
+  def show_emoji_reaction?
+    if relationships
+      return true if relationships.emoji_reaction_allows_map.nil?
+
+      relationships.emoji_reaction_allows_map[object.account_id] || false
+    else
+      object.account.show_emoji_reaction?(current_user.account)
     end
   end
 
@@ -218,6 +228,10 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   def relationships
     instance_options && instance_options[:relationships]
+  end
+
+  def emoji_reaction_permitted_account_ids
+    current_user.present? && instance_options && instance_options[:emoji_reaction_permitted_account_ids]&.permitted_account_ids
   end
 
   class ApplicationSerializer < ActiveModel::Serializer

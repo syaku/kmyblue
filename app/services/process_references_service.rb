@@ -5,13 +5,14 @@ class ProcessReferencesService < BaseService
 
   DOMAIN = ENV['WEB_DOMAIN'] || ENV.fetch('LOCAL_DOMAIN', nil)
   REFURL_EXP = /(RT|QT|BT|RN|RE)((:|;)?\s+|:|;)(#{URI::DEFAULT_PARSER.make_regexp(%w(http https))})/
+  MAX_REFERENCES = 5
 
   def call(status, reference_parameters, urls: nil)
     @status = status
     @reference_parameters = reference_parameters || []
     @urls = urls || []
 
-    old_references
+    @references_count = old_references.size
 
     return unless added_references.size.positive? || removed_references.size.positive?
 
@@ -63,6 +64,9 @@ class ProcessReferencesService < BaseService
     statuses.each do |status|
       @added_objects << @status.reference_objects.new(target_status: status)
       status.increment_count!(:status_referred_by_count)
+      @references_count += 1
+
+      break if @references_count >= MAX_REFERENCES
     end
   end
 
@@ -85,6 +89,7 @@ class ProcessReferencesService < BaseService
     @status.reference_objects.where(target_status: statuses).destroy_all
     statuses.each do |status|
       status.decrement_count!(:status_referred_by_count)
+      @references_count -= 1
     end
   end
 end

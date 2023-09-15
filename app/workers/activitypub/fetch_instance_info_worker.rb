@@ -9,7 +9,6 @@ class ActivityPub::FetchInstanceInfoWorker
   sidekiq_options queue: 'push', retry: 2
 
   class Error < StandardError; end
-  class GoneError < Error; end
   class RequestError < Error; end
   class DeadError < Error; end
 
@@ -68,9 +67,7 @@ class ActivityPub::FetchInstanceInfoWorker
         raise Mastodon::UnexpectedResponseError, response unless response_successful?(response) || response_error_unsalvageable?(response)
 
         body_to_json(response.body_with_limit)
-      elsif response.code == 410
-        raise ActivityPub::FetchInstanceInfoWorker::GoneError, "#{@instance.domain} is gone from the server"
-      elsif response.code == 404
+      elsif [400, 401, 403, 404, 410].include?(response.code)
         raise ActivityPub::FetchInstanceInfoWorker::DeadError, "Request for #{@instance.domain} returned HTTP #{response.code}"
       else
         raise ActivityPub::FetchInstanceInfoWorker::RequestError, "Request for #{@instance.domain} returned HTTP #{response.code}"
