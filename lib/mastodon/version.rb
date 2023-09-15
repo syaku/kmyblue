@@ -9,7 +9,7 @@ module Mastodon
     end
 
     def kmyblue_minor
-      1
+      0
     end
 
     def major
