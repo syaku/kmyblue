@@ -65,7 +65,7 @@ class ProcessReferencesService < BaseService
 
   def fetch_statuses!(urls)
     (urls + @urls)
-      .map { |url| ResolveURLService.new.call(url) }
+      .map { |url| ResolveURLService.new.call(url, on_behalf_of: @status.account) }
       .filter { |status| status }
   end
 
