@@ -5,6 +5,7 @@ module StatusSearchConcern
 
   included do
     scope :indexable, -> { without_reblogs.where(visibility: [:public, :login], searchability: nil).joins(:account).where(account: { indexable: true }) }
+    scope :remote_dynamic_searchability, -> { remote.where(searchability: [:public, :private]) }
   end
 
   def searchable_by
@@ -39,6 +40,10 @@ module StatusSearchConcern
 
   def bookmarked_by
     @bookmarked_by ||= local_bookmarked.pluck(:id)
+  end
+
+  def bookmark_categoried_by
+    @bookmark_categoried_by ||= local_bookmark_categoried.pluck(:id).uniq
   end
 
   def emoji_reacted_by

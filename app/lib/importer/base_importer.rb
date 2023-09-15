@@ -3,9 +3,10 @@
 class Importer::BaseImporter
   # @param [Integer] batch_size
   # @param [Concurrent::ThreadPoolExecutor] executor
-  def initialize(batch_size:, executor:)
+  def initialize(batch_size:, executor:, full: true)
     @batch_size = batch_size
     @executor   = executor
+    @full       = full
     @wait_for   = Concurrent::Set.new
   end
 
