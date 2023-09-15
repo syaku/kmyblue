@@ -21,6 +21,19 @@ describe Api::V1::CirclesController do
         expect(response).to have_http_status(200)
       end
     end
+
+    describe 'GET #index' do
+      it 'returns http success' do
+        circle_id = circle.id.to_s
+        Fabricate(:circle)
+        get :index
+        expect(response).to have_http_status(200)
+
+        circle_ids = body_as_json.pluck(:id)
+        expect(circle_ids.size).to eq 1
+        expect(circle_ids).to include circle_id
+      end
+    end
   end
 
   context 'with the wrong user context' do
