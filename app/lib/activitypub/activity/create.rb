@@ -493,6 +493,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     references = @object['references'].nil? ? [] : ActivityPub::FetchReferencesService.new.call(@status, @object['references'])
     quote = @object['quote'] || @object['quoteUrl'] || @object['quoteURL'] || @object['_misskey_quote']
     references << quote if quote
+
+    return unless ProcessReferencesService.need_process?(@status, [], references)
+
+    Rails.cache.write("status_reference:#{@status.id}", true, expires_in: 10.minutes)
     ProcessReferencesWorker.perform_async(@status.id, [], references)
   end
 
