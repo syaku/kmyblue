@@ -255,10 +255,7 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
     quote = @json['quote'] || @json['quoteUrl'] || @json['quoteURL'] || @json['_misskey_quote']
     references << quote if quote
 
-    return unless ProcessReferencesService.need_process?(@status, [], references)
-
-    Rails.cache.write("status_reference:#{@status.id}", true, expires_in: 10.minutes)
-    ProcessReferencesWorker.perform_async(@status.id, [], references)
+    ProcessReferencesService.perform_worker_async(@status, [], references)
   end
 
   def expected_type?

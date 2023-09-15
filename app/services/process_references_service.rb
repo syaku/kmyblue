@@ -33,6 +33,13 @@ class ProcessReferencesService < BaseService
     reference_parameters.any? || (urls || []).any? || FormattingHelper.extract_status_plain_text(status).scan(REFURL_EXP).pluck(3).uniq.any?
   end
 
+  def self.perform_worker_async(status, reference_parameters, urls)
+    return unless need_process?(status, reference_parameters, urls)
+
+    Rails.cache.write("status_reference:#{status.id}", true, expires_in: 10.minutes)
+    ProcessReferencesWorker.perform_async(status.id, reference_parameters, urls)
+  end
+
   private
 
   def references

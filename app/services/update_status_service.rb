@@ -162,10 +162,7 @@ class UpdateStatusService < BaseService
   def update_references!
     reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
 
-    return unless ProcessReferencesService.need_process?(@status, reference_ids, [])
-
-    Rails.cache.write("status_reference:#{@status.id}", true, expires_in: 10.minutes)
-    ProcessReferencesWorker.perform_async(@status.id, reference_ids, [])
+    ProcessReferencesService.perform_worker_async(@status, reference_ids, [])
   end
 
   def update_metadata!
