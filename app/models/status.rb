@@ -173,6 +173,8 @@ class Status < ApplicationRecord
                    :tags,
                    :preview_cards,
                    :preloadable_poll,
+                   :reference_objects,
+                   :scheduled_expiration_status,
                    account: [:account_stat, user: :role],
                    active_mentions: { account: :account_stat },
                    reblog: [
@@ -183,6 +185,8 @@ class Status < ApplicationRecord
                      :conversation,
                      :status_stat,
                      :preloadable_poll,
+                     :reference_objects,
+                     :scheduled_expiration_status,
                      account: [:account_stat, user: :role],
                      active_mentions: { account: :account_stat },
                    ],
@@ -353,21 +357,30 @@ class Status < ApplicationRecord
     return [] if account.present? && !self.account.show_emoji_reaction?(account)
     return [] if account.nil? && !options[:force] && self.account.emoji_reaction_policy != :allow
 
+    permitted_account_ids = options[:permitted_account_ids]
+
     (Oj.load(status_stat&.emoji_reactions || '', mode: :strict) || []).tap do |emoji_reactions|
       if account.present?
-        remove_emoji_reactions = []
+        public_emoji_reactions = []
+
         emoji_reactions.each do |emoji_reaction|
           emoji_reaction['me'] = emoji_reaction['account_ids'].include?(account.id.to_s)
           emoji_reaction['account_ids'] -= account.excluded_from_timeline_account_ids.map(&:to_s)
 
-          accounts = Account.where(id: emoji_reaction['account_ids'], silenced_at: nil, suspended_at: nil)
-          accounts = accounts.where('domain IS NULL OR domain NOT IN (?)', account.excluded_from_timeline_domains) if account.excluded_from_timeline_domains.size.positive?
-          emoji_reaction['account_ids'] = accounts.pluck(:id).map(&:to_s)
+          accounts = []
+          if permitted_account_ids
+            emoji_reaction['account_ids'] = emoji_reaction['account_ids'] & permitted_account_ids.map(&:to_s)
+          else
+            accounts = Account.where(id: emoji_reaction['account_ids'], silenced_at: nil, suspended_at: nil)
+            accounts = accounts.where('domain IS NULL OR domain NOT IN (?)', account.excluded_from_timeline_domains) if account.excluded_from_timeline_domains.size.positive?
+            emoji_reaction['account_ids'] = accounts.pluck(:id).map(&:to_s)
+          end
 
           emoji_reaction['count'] = emoji_reaction['account_ids'].size
-          remove_emoji_reactions << emoji_reaction if emoji_reaction['count'] <= 0
+          public_emoji_reactions << emoji_reaction if (emoji_reaction['count']).positive?
         end
-        emoji_reactions - remove_emoji_reactions
+
+        public_emoji_reactions
       end
     end
   end
@@ -457,6 +470,11 @@ class Status < ApplicationRecord
 
     def emoji_reactions_map(status_ids, account_id)
       EmojiReaction.select('status_id').where(status_id: status_ids).where(account_id: account_id).each_with_object({}) { |e, h| h[e.status_id] = true }
+    end
+
+    def emoji_reaction_allows_map(status_ids, account_id)
+      my_account = Account.find_by(id: account_id)
+      Status.where(id: status_ids).pluck(:account_id).uniq.index_with { |a| Account.find_by(id: a).show_emoji_reaction?(my_account) }
     end
 
     def reload_stale_associations!(cached_items)
