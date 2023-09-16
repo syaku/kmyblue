@@ -24,16 +24,6 @@ corepack enable
 yarn set version classic
 
 adduser --disabled-login mastodon
-su - mastodon << EOF
-
-git clone https://github.com/rbenv/rbenv.git /home/mastodon/.rbenv
-cd /home/mastodon/.rbenv && src/configure && make -C src
-echo 'export PATH="/home/mastodon/.rbenv/bin:$PATH"' >> /home/mastodon/.bashrc
-echo 'eval "\$(rbenv init -)"' >> /home/mastodon/.bashrc
-exec bash
-git clone https://github.com/rbenv/ruby-build.git /home/mastodon/.rbenv/plugins/ruby-build
-
-EOF
 
 sudo -u postgres psql << EOF
   CREATE USER mastodon WITH PASSWORD 'ohagi' CREATEDB;
@@ -43,13 +33,6 @@ su - mastodon <<EOF
 
 git clone https://github.com/kmycode/mastodon.git live && cd live
 git checkout $(git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)
-yarn install --pure-lockfile
-
-chmod 0777 install/setup2.sh
-chmod 0777 install/update.sh
-
-ln -s install/setup2.sh /home/mastodon/setup2
-ln -s install/update.sh /home/mastodon/update
 EOF
 
 chmod o+x /home/mastodon
@@ -65,6 +48,7 @@ echo << EOF
 Input this command to continue setup:
   sudo su - mastodon
   cd live
+  chmod +x install/setup2.sh
   install/setup2.sh
 
 EOF
