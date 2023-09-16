@@ -29,14 +29,9 @@ su - mastodon << EOF
 git clone https://github.com/rbenv/rbenv.git /home/mastodon/.rbenv
 cd /home/mastodon/.rbenv && src/configure && make -C src
 echo 'export PATH="/home/mastodon/.rbenv/bin:$PATH"' >> /home/mastodon/.bashrc
-echo 'eval "$(rbenv init -)"' >> /home/mastodon/.bashrc
+echo 'eval "\$(rbenv init -)"' >> /home/mastodon/.bashrc
 exec bash
 git clone https://github.com/rbenv/ruby-build.git /home/mastodon/.rbenv/plugins/ruby-build
-
-RUBY_CONFIGURE_OPTS=--with-jemalloc rbenv install 3.2.2
-rbenv global 3.2.2
-
-gem install bundler --no-document
 
 EOF
 
@@ -50,9 +45,26 @@ git clone https://github.com/kmycode/mastodon.git live && cd live
 git checkout $(git tag -l | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)
 yarn install --pure-lockfile
 
+chmod 0777 install/setup2.sh
+chmod 0777 install/update.sh
+
+ln -s install/setup2.sh /home/mastodon/setup2
+ln -s install/update.sh /home/mastodon/update
 EOF
 
+chmod o+x /home/mastodon
 cp /home/mastodon/live/dist/nginx.conf /etc/nginx/sites-available/mastodon
 ln -s /etc/nginx/sites-available/mastodon /etc/nginx/sites-enabled/mastodon
 cp /home/mastodon/live/dist/mastodon-*.service /etc/systemd/system/
 systemctl daemon-reload
+
+echo << EOF
+
+============== [kmyblue setup script 1 completed] ================
+
+Input this command to continue setup:
+  sudo su - mastodon
+  cd live
+  install/setup2.sh
+
+EOF
