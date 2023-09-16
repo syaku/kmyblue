@@ -5,7 +5,7 @@ rbenv global 3.2.2
 
 gem install bundler --no-document
 
-cd live
+cd ~/live
 
 yarn install --pure-lockfile
 
