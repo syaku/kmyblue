@@ -41,7 +41,7 @@ ln -s /etc/nginx/sites-available/mastodon /etc/nginx/sites-enabled/mastodon
 cp /home/mastodon/live/dist/mastodon-*.service /etc/systemd/system/
 systemctl daemon-reload
 
-echo << EOF
+cat << EOF
 
 ============== [kmyblue setup script 1 completed] ================
 
