@@ -13,6 +13,7 @@ class SearchQueryTransformer < Parslet::Transform
     in
     domain
     order
+    searchability
   ).freeze
 
   class Query
