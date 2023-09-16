@@ -145,6 +145,7 @@ class StatusesIndex < Chewy::Index
   settings index: index_preset(refresh_interval: '30s', number_of_shards: 5), analysis: Rails.env.test? ? DEVELOPMENT_SETTINGS : PRODUCTION_SETTINGS
 
   index_scope ::Status.unscoped.kept.without_reblogs.includes(
+    :account,
     :media_attachments,
     :preview_cards,
     :local_mentioned,

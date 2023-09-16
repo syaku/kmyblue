@@ -144,7 +144,7 @@ class PublicStatusesIndex < Chewy::Index
   index_scope ::Status.unscoped
                       .kept
                       .indexable
-                      .includes(:media_attachments, :preloadable_poll, :preview_cards, :tags)
+                      .includes(:media_attachments, :preloadable_poll, :preview_cards, :tags, :account)
 
   root date_detection: false do
     field(:id, type: 'long')
