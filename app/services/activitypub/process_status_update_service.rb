@@ -254,7 +254,8 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
     references = @json['references'].nil? ? [] : ActivityPub::FetchReferencesService.new.call(@status, @json['references'])
     quote = @json['quote'] || @json['quoteUrl'] || @json['quoteURL'] || @json['_misskey_quote']
     references << quote if quote
-    ProcessReferencesWorker.perform_async(@status.id, [], references)
+
+    ProcessReferencesService.perform_worker_async(@status, [], references)
   end
 
   def expected_type?

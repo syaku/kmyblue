@@ -187,8 +187,8 @@ class PostStatusService < BaseService
     @account.user.update!(settings_attributes: { default_privacy: @options[:visibility] }) if @account.user&.setting_stay_privacy && !@status.reply? && %i(public public_unlisted login unlisted private).include?(@status.visibility.to_sym) && @status.visibility.to_s != @account.user&.setting_default_privacy && !@dtl
 
     process_hashtags_service.call(@status)
-    ProcessReferencesWorker.perform_async(@status.id, @reference_ids, [])
     Trends.tags.register(@status)
+    ProcessReferencesService.perform_worker_async(@status, @reference_ids, [])
     LinkCrawlWorker.perform_async(@status.id)
     DistributionWorker.perform_async(@status.id)
     ActivityPub::DistributionWorker.perform_async(@status.id)

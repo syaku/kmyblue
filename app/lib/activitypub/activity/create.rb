@@ -493,7 +493,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     references = @object['references'].nil? ? [] : ActivityPub::FetchReferencesService.new.call(@status, @object['references'])
     quote = @object['quote'] || @object['quoteUrl'] || @object['quoteURL'] || @object['_misskey_quote']
     references << quote if quote
-    ProcessReferencesWorker.perform_async(@status.id, [], references)
+
+    ProcessReferencesService.perform_worker_async(@status, [], references)
   end
 
   def join_group!

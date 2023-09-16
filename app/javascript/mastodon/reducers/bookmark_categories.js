@@ -65,7 +65,10 @@ const appendToBookmarkCategoryStatusesById = (state, bookmarkCategoryId, statuse
 };
 
 const removeStatusFromBookmarkCategoryById = (state, bookmarkCategoryId, status) => {
-  return state.updateIn([bookmarkCategoryId, 'items'], items => items.delete(status));
+  if (state.getIn([bookmarkCategoryId, 'items'])) {
+    return state.updateIn([bookmarkCategoryId, 'items'], items => items.delete(status));
+  }
+  return state;
 };
 
 const removeStatusFromAllBookmarkCategories = (state, status) => {

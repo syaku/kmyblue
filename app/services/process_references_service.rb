@@ -2,6 +2,7 @@
 
 class ProcessReferencesService < BaseService
   include Payloadable
+  include FormattingHelper
 
   DOMAIN = ENV['WEB_DOMAIN'] || ENV.fetch('LOCAL_DOMAIN', nil)
   REFURL_EXP = /(RT|QT|BT|RN|RE)((:|;)?\s+|:|;)(#{URI::DEFAULT_PARSER.make_regexp(%w(http https))})/
@@ -23,7 +24,20 @@ class ProcessReferencesService < BaseService
       @status.save!
     end
 
+    Rails.cache.delete("status_reference:#{@status.id}")
+
     create_notifications!
+  end
+
+  def self.need_process?(status, reference_parameters, urls)
+    reference_parameters.any? || (urls || []).any? || FormattingHelper.extract_status_plain_text(status).scan(REFURL_EXP).pluck(3).uniq.any?
+  end
+
+  def self.perform_worker_async(status, reference_parameters, urls)
+    return unless need_process?(status, reference_parameters, urls)
+
+    Rails.cache.write("status_reference:#{status.id}", true, expires_in: 10.minutes)
+    ProcessReferencesWorker.perform_async(status.id, reference_parameters, urls)
   end
 
   private
@@ -51,7 +65,7 @@ class ProcessReferencesService < BaseService
 
   def fetch_statuses!(urls)
     (urls + @urls)
-      .map { |url| ResolveURLService.new.call(url) }
+      .map { |url| ResolveURLService.new.call(url, on_behalf_of: @status.account) }
       .filter { |status| status }
   end
 

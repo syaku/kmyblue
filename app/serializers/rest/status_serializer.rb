@@ -103,7 +103,9 @@ class REST::StatusSerializer < ActiveModel::Serializer
   end
 
   def status_references_count
-    status_reference_ids.size
+    return status_reference_ids.size if status_reference_ids.any?
+
+    Rails.cache.exist?("status_reference:#{object.id}") ? 1 : 0
   end
 
   def reblogs_count

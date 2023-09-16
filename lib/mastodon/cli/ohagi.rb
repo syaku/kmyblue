@@ -25,8 +25,8 @@ module Mastodon::CLI
       say('Let the WAR begin.', :red)
     end
 
-    desc 'kokuraan', 'Ohagi is kokuraan'
-    def kokuraan
+    desc 'oguraan', 'Ohagi is oguraan'
+    def oguraan
       say('I hate you.', :yellow)
     end
   end

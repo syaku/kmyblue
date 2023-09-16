@@ -21,6 +21,19 @@ describe Api::V1::ListsController do
         expect(response).to have_http_status(200)
       end
     end
+
+    describe 'GET #index' do
+      it 'returns http success' do
+        list_id = list.id.to_s
+        Fabricate(:list)
+        get :index
+        expect(response).to have_http_status(200)
+
+        list_ids = body_as_json.pluck(:id)
+        expect(list_ids.size).to eq 1
+        expect(list_ids).to include list_id
+      end
+    end
   end
 
   context 'with the wrong user context' do
