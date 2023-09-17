@@ -1,3 +1,10 @@
+cat << EOF
+
+================== [kmyblue setup script 3] ======================
+Copy setting files and services
+
+EOF
+
 # これを設定しておかないと、Web表示時にNginxがPermission Errorを起こす
 chmod o+x /home/mastodon
 
