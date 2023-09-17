@@ -5,11 +5,15 @@ module Mastodon
     module_function
 
     def kmyblue_major
-      4
+      5
     end
 
     def kmyblue_minor
       0
+    end
+
+    def kmyblue_flag
+      'LTS'
     end
 
     def major
@@ -38,6 +42,7 @@ module Mastodon
 
     def to_s_of_kmyblue
       components = [to_a_of_kmyblue.join('.')]
+      components << "-#{kmyblue_flag}" if kmyblue_flag.present?
       components.join
     end
 
