@@ -349,13 +349,7 @@ class SearchQueryTransformer < Parslet::Transform
     end
 
     def to_query
-      if @statuses_index_only
-        if @negated
-          { bool: { must_not: [{ term: { _index: StatusesIndex.index_name } }, { @type => { @filter => @term } }] } }
-        else
-          { bool: { must: [{ term: { _index: StatusesIndex.index_name } }, { @type => { @filter => @term } }] } }
-        end
-      elsif @negated
+      if @negated
         { bool: { must_not: { @type => { @filter => @term } } } }
       else
         { @type => { @filter => @term } }
