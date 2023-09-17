@@ -335,6 +335,7 @@ ja:
         peers_api_enabled: 発見したサーバーのリストをAPIで公開する
         profile_directory: ディレクトリを有効にする
         receive_other_servers_emoji_reaction: 他のサーバーのユーザーが他のサーバーの投稿につけたスタンプを受け入れる
+        registration_button_message: 新規登録ボタンの直上に表示するメッセージ
         registrations_mode: 新規登録が可能な人
         require_invite_text: 申請事由の入力を必須にする
         show_domain_blocks: ドメインブロックを表示

@@ -320,6 +320,7 @@ en:
         peers_api_enabled: Publish list of discovered servers in the API
         profile_directory: Enable profile directory
         receive_other_servers_emoji_reaction: Receive stamp between other server users
+        registration_button_message: Register button message
         registrations_mode: Who can sign-up
         require_invite_text: Require a reason to join
         show_domain_blocks: Show domain blocks
