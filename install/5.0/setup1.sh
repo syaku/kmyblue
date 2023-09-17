@@ -1,3 +1,5 @@
+VERSION=5.0
+
 apt update && apt upgrade -y
 
 apt install -y curl wget gnupg apt-transport-https lsb-release ca-certificates
@@ -33,10 +35,15 @@ sudo -u postgres psql << EOF
 EOF
 
 # kmyblueソースコードをダウンロード
+# 続きのシェルスクリプトをgit管理外にコピーし権限を与える
 su - mastodon <<EOF
 git clone https://github.com/kmycode/mastodon.git live
-cp /home/mastodon/live/install/setup2.sh /home/mastodon/setup2.sh
+cp /home/mastodon/live/install/$VERSION/setup2.sh /home/mastodon/setup2.sh
+cp /home/mastodon/live/install/$VERSION/setup3.sh /home/mastodon/setup3.sh
+cp /home/mastodon/live/install/$VERSION/setup4.sh /home/mastodon/setup4.sh
 chmod +x /home/mastodon/setup2.sh
+chmod +x /home/mastodon/setup3.sh
+chmod +x /home/mastodon/setup4.sh
 EOF
 
 # ---------------------------------------------------
