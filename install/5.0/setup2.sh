@@ -2,6 +2,7 @@ cd ~/live
 
 # kmyblueの最新タグを取り込む
 if [ "$1" == "debug" ]; then
+  echo 'DEBUG'
 elif [ "$1" == "newest" ]; then
   git checkout $(git tag -l | grep -E '^kb[0-9]' | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)
 else

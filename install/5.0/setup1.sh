@@ -26,6 +26,10 @@ apt install -y \
 corepack enable
 yarn set version classic
 
+# Mastodonパッケージにもnode-gypは入ってるけど、npmのほうからグローバルにインストールしないと
+# yarn installで一部のOptionalパッケージインストール時にエラーが出てしまう様子
+npm i -g node-gyp
+
 # mastodonユーザーを追加
 adduser --disabled-login mastodon
 
