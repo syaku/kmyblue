@@ -1,5 +1,7 @@
-# 必要なファイルをコピー
+# これを設定しておかないと、Web表示時にNginxがPermission Errorを起こす
 chmod o+x /home/mastodon
+
+# 必要なファイルをコピー
 cp /home/mastodon/live/dist/nginx.conf /etc/nginx/sites-available/mastodon
 ln -s /etc/nginx/sites-available/mastodon /etc/nginx/sites-enabled/mastodon
 cp /home/mastodon/live/dist/mastodon-*.service /etc/systemd/system/
