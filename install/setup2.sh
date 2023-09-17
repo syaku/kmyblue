@@ -2,8 +2,11 @@
 cd ~/live
 
 # 最新タグを取り込む
-if [ "$1" != "newest" ]; then
+if [ "$1" == "debug" ]; then
+elif [ "$1" == "newest" ]; then
   git checkout $(git tag -l | grep -E '^kb[0-9]' | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)
+else
+  git checkout $(git tag -l | grep -E '^kb[0-9].*lts$' | grep -v 'rc[0-9]*$' | sort -V | tail -n 1)
 fi
 
 # Rubyバージョン管理用のrbenvをインストール、初期設定
