@@ -52,7 +52,7 @@ class SearchQueryTransformer < Parslet::Transform
     private
 
     def clauses_by_operator
-      @clauses_by_operator ||= @clauses.compact.chunk(&:operator).to_h
+      @clauses_by_operator ||= @clauses.compact.sort_by(&:operator).chunk(&:operator).to_h
     end
 
     def flags_from_clauses!
@@ -330,7 +330,7 @@ class SearchQueryTransformer < Parslet::Transform
                   'desc'
                 end
       when 'searchability'
-        @filter = :searchablity
+        @filter = :searchability
         @type = :terms
         @statuses_index_only = true
         @term = case term
