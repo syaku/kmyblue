@@ -66,7 +66,7 @@ ja:
         setting_bookmark_category_needed: すべてのカテゴリから削除したとき、ブックマークが自動で外れるようになります
         setting_boost_modal: ブーストの公開範囲が指定できるようになります
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
-        setting_disallow_unlisted_public_searchability: この設定を有効にすると、未収載投稿と検索範囲「全て」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
+        setting_disallow_unlisted_public_searchability: この設定を有効にすると、未収載投稿と検索範囲「誰でも」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
         setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大16個まで表示します。kmyblueからアップロードはできません
         setting_display_media_hide_all: メディアを常に隠す
@@ -249,7 +249,7 @@ ja:
         setting_default_sensitive: メディアを常に閲覧注意としてマークする
         setting_delete_modal: 投稿を削除する前に確認ダイアログを表示する
         setting_disable_swiping: スワイプでの切り替えを無効にする
-        setting_disallow_unlisted_public_searchability: 未収載投稿の検索許可が「全て」だった場合、「フォロワーのみ」に変更する
+        setting_disallow_unlisted_public_searchability: 未収載投稿の検索許可が「誰でも」だった場合、「フォロワーのみ」に変更する
         setting_display_media: メディアの表示
         setting_display_media_default: 標準
         setting_display_media_expand: 5個目以降のメディアも表示する (最大16)
@@ -305,9 +305,9 @@ ja:
         username_or_email: ユーザー名またはメールアドレス
         whole_word: 単語全体にマッチ
       dtl_force_with_tag:
-        full: 公開範囲「未収載」検索許可「全て」にする
+        full: 公開範囲「未収載」検索許可「誰でも」にする
         none: 公開範囲も検索許可も変更しない
-        searchability: 検索許可を「全て」にする
+        searchability: 検索許可を「誰でも」にする
       email_domain_block:
         with_dns_records: ドメインのMXレコードとIPアドレスを含む
       emoji_reactions:
