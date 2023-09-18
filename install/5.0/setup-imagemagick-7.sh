@@ -6,7 +6,7 @@ Remove old ImageMagick
 
 EOF
 
-apt remove imagemagick
+apt remove -y imagemagick
 
 cat << EOF
 
@@ -68,6 +68,14 @@ cat << EOF
 =========== [imagemagick 7 setup script completed] ===============
 ImageMagick 7 setup is completed!
 Please check AVIF format on your Mastodon.
+
+To check ImageMagick version:
+  exec bash
+  convert -version
+
+Or
+  sudo su - mastodon
+  convert -version
 
 EOF
 
