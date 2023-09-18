@@ -70,7 +70,7 @@ class BookmarkCategories extends ImmutablePureComponent {
 
         <NewListForm />
 
-        <ColumnLink to='/bookmarks' icon='bookmark' text={intl.formatMessage(messages.allBookmarks)} />,
+        <ColumnLink to='/bookmarks' icon='bookmark' text={intl.formatMessage(messages.allBookmarks)} />
         <ScrollableList
           scrollKey='bookmark_categories'
           emptyMessage={emptyMessage}
