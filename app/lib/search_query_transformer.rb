@@ -329,16 +329,16 @@ class SearchQueryTransformer < Parslet::Transform
                 else
                   'desc'
                 end
-      when 'searchability'
+      when 'searchability', 'searchable_by'
         @filter = :searchability
         @type = :terms
         @statuses_index_only = true
         @term = case term
-                when 'public'
+                when 'public', 'all'
                   %w(public private direct limited)
-                when 'private'
+                when 'private', 'follower', 'followers'
                   %w(private direct limited)
-                when 'direct'
+                when 'direct', 'reaction', 'react', 'reacted'
                   %w(direct limited)
                 else
                   %w(limited)
