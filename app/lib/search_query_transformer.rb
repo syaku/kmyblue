@@ -52,7 +52,7 @@ class SearchQueryTransformer < Parslet::Transform
     private
 
     def clauses_by_operator
-      @clauses_by_operator ||= @clauses.compact.sort_by(&:operator).chunk(&:operator).to_h
+      @clauses_by_operator ||= @clauses.compact.group_by(&:operator).to_h
     end
 
     def flags_from_clauses!
@@ -328,20 +328,6 @@ class SearchQueryTransformer < Parslet::Transform
                   term
                 else
                   'desc'
-                end
-      when 'searchability', 'searchable_by'
-        @filter = :searchability
-        @type = :terms
-        @statuses_index_only = true
-        @term = case term
-                when 'public', 'all'
-                  %w(public private direct limited)
-                when 'private', 'follower', 'followers'
-                  %w(private direct limited)
-                when 'direct', 'reaction', 'react', 'reacted'
-                  %w(direct limited)
-                else
-                  %w(limited)
                 end
       else
         raise "Unknown prefix: #{prefix}"
