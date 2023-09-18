@@ -77,6 +77,7 @@
  * @property {boolean} search_enabled
  * @property {boolean} trends_enabled
  * @property {boolean} show_emoji_reaction_on_timeline
+ * @property {string} simple_timeline_menu
  * @property {boolean} single_user_mode
  * @property {string} source_url
  * @property {string} streaming_api_base_url
@@ -147,6 +148,7 @@ export const searchEnabled = getMeta('search_enabled');
 export const trendsEnabled = getMeta('trends_enabled');
 export const showEmojiReactionOnTimeline = getMeta('show_emoji_reaction_on_timeline');
 export const showTrends = getMeta('show_trends');
+export const simpleTimelineMenu = getMeta('simple_timeline_menu');
 export const singleUserMode = getMeta('single_user_mode');
 export const source_url = getMeta('source_url');
 export const timelinePreview = getMeta('timeline_preview');

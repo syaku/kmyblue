@@ -13,7 +13,7 @@ import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/
 
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import EmojiPickerDropdown from '../features/compose/containers/emoji_picker_dropdown_container';
-import { enableEmojiReaction , bookmarkCategoryNeeded, me } from '../initial_state';
+import { enableEmojiReaction , bookmarkCategoryNeeded, simpleTimelineMenu, me } from '../initial_state';
 
 import { IconButton } from './icon_button';
 
@@ -289,24 +289,28 @@ class StatusActionBar extends ImmutablePureComponent {
 
     let menu = [];
 
-    menu.push({ text: intl.formatMessage(messages.open), action: this.handleOpen });
+    if (!simpleTimelineMenu) {
+      menu.push({ text: intl.formatMessage(messages.open), action: this.handleOpen });
 
-    if (publicStatus && isRemote) {
-      menu.push({ text: intl.formatMessage(messages.openOriginalPage), href: status.get('url') });
-    }
-
-    menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
-
-    if (publicStatus && 'share' in navigator) {
-      menu.push({ text: intl.formatMessage(messages.share), action: this.handleShareClick });
-    }
-
-    if (anonymousStatus && (signedIn || !isRemote)) {
-      menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      if (publicStatus && isRemote) {
+        menu.push({ text: intl.formatMessage(messages.openOriginalPage), href: status.get('url') });
+      }
+  
+      menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
+  
+      if (publicStatus && 'share' in navigator) {
+        menu.push({ text: intl.formatMessage(messages.share), action: this.handleShareClick });
+      }
+  
+      if (anonymousStatus && (signedIn || !isRemote)) {
+        menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      }
     }
 
     if (signedIn) {
-      menu.push(null);
+      if (!simpleTimelineMenu) {
+        menu.push(null);
+      }
 
       menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancelReblog : messages.reblog), action: this.handleReblogForceModalClick });
 
@@ -333,9 +337,11 @@ class StatusActionBar extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.delete), action: this.handleDeleteClick, dangerous: true });
         menu.push({ text: intl.formatMessage(messages.redraft), action: this.handleRedraftClick, dangerous: true });
       } else {
-        menu.push({ text: intl.formatMessage(messages.mention, { name: account.get('username') }), action: this.handleMentionClick });
-        menu.push({ text: intl.formatMessage(messages.direct, { name: account.get('username') }), action: this.handleDirectClick });
-        menu.push(null);
+        if (!simpleTimelineMenu) {
+          menu.push({ text: intl.formatMessage(messages.mention, { name: account.get('username') }), action: this.handleMentionClick });
+          menu.push({ text: intl.formatMessage(messages.direct, { name: account.get('username') }), action: this.handleDirectClick });
+          menu.push(null);
+        }
 
         if (relationship && relationship.get('muting')) {
           menu.push({ text: intl.formatMessage(messages.unmute, { name: account.get('username') }), action: this.handleMuteClick });

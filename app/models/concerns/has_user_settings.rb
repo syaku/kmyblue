@@ -51,6 +51,10 @@ module HasUserSettings
     settings['web.show_emoji_reaction_on_timeline']
   end
 
+  def setting_simple_timeline_menu
+    settings['web.simple_timeline_menu']
+  end
+
   def setting_default_sensitive
     settings['default_sensitive']
   end

@@ -64,6 +64,7 @@ class UserSettings
     setting :display_media, default: 'default', in: %w(default show_all hide_all)
     setting :display_media_expand, default: true
     setting :auto_play, default: true
+    setting :simple_timeline_menu, default: false
   end
 
   namespace :notification_emails do
