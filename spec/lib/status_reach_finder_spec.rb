@@ -8,9 +8,10 @@ describe StatusReachFinder do
       subject { described_class.new(status) }
 
       let(:parent_status) { nil }
+      let(:in_reply_to_account_id) { nil }
       let(:visibility) { :public }
       let(:alice) { Fabricate(:account, username: 'alice') }
-      let(:status) { Fabricate(:status, account: alice, thread: parent_status, visibility: visibility) }
+      let(:status) { Fabricate(:status, account: alice, thread: parent_status, in_reply_to_account_id: in_reply_to_account_id, visibility: visibility) }
 
       context 'with a simple case' do
         let(:bob) { Fabricate(:account, username: 'bob', domain: 'foo.bar', protocol: :activitypub, inbox_url: 'https://foo.bar/inbox') }
@@ -28,6 +29,119 @@ describe StatusReachFinder do
         context 'with non-follower' do
           it 'send status' do
             expect(subject.inboxes).to_not include 'https://foo.bar/inbox'
+          end
+        end
+      end
+
+      context 'with locking bot' do
+        let(:bob) { Fabricate(:account, username: 'bob', domain: 'foo.bar', protocol: :activitypub, inbox_url: 'https://foo.bar/inbox', actor_type: 'Service') }
+
+        context 'with follower' do
+          before do
+            alice.user.settings['stop_deliver_to_bot'] = true
+            alice.user.save!
+            bob.follow!(alice)
+          end
+
+          it 'send status' do
+            expect(subject.inboxes).to_not include 'https://foo.bar/inbox'
+          end
+        end
+
+        context 'with non-follower' do
+          it 'send status' do
+            expect(subject.inboxes).to_not include 'https://foo.bar/inbox'
+          end
+        end
+      end
+
+      context 'with locking bot from misskey' do
+        let(:bob) { Fabricate(:account, username: 'bob', domain: 'foo.bar', protocol: :activitypub, inbox_url: 'https://foo.bar/inbox', actor_type: 'Service') }
+
+        context 'with follower' do
+          before do
+            Fabricate(:instance_info, domain: 'foo.bar', software: 'misskey')
+            alice.user.settings['stop_deliver_to_bot'] = true
+            alice.user.save!
+            bob.follow!(alice)
+          end
+
+          it 'send status' do
+            expect(subject.inboxes).to_not include 'https://foo.bar/inbox'
+            expect(subject.inboxes_for_misskey).to_not include 'https://foo.bar/inbox'
+          end
+        end
+
+        context 'with non-follower' do
+          it 'send status' do
+            expect(subject.inboxes).to_not include 'https://foo.bar/inbox'
+            expect(subject.inboxes_for_misskey).to_not include 'https://foo.bar/inbox'
+          end
+        end
+      end
+
+      context 'with bot but not locking' do
+        let(:bob) { Fabricate(:account, username: 'bob', domain: 'foo.bar', protocol: :activitypub, inbox_url: 'https://foo.bar/inbox', actor_type: 'Service') }
+
+        context 'with follower' do
+          before do
+            bob.follow!(alice)
+          end
+
+          it 'send status' do
+            expect(subject.inboxes).to include 'https://foo.bar/inbox'
+          end
+        end
+
+        context 'with non-follower' do
+          it 'send status' do
+            expect(subject.inboxes).to_not include 'https://foo.bar/inbox'
+          end
+        end
+      end
+
+      context 'with bot but mention' do
+        let(:bob) { Fabricate(:account, username: 'bob', domain: 'foo.bar', protocol: :activitypub, inbox_url: 'https://foo.bar/inbox', actor_type: 'Service') }
+        let(:in_reply_to_account_id) { bob.id }
+
+        context 'with follower' do
+          before do
+            alice.user.settings['stop_deliver_to_bot'] = true
+            alice.user.save!
+            bob.follow!(alice)
+          end
+
+          it 'send status' do
+            expect(subject.inboxes).to include 'https://foo.bar/inbox'
+          end
+        end
+
+        context 'with non-follower' do
+          it 'send status' do
+            expect(subject.inboxes).to include 'https://foo.bar/inbox'
+          end
+        end
+      end
+
+      context 'with bot but mention to status' do
+        let(:bob) { Fabricate(:account, username: 'bob', domain: 'foo.bar', protocol: :activitypub, inbox_url: 'https://foo.bar/inbox', actor_type: 'Service') }
+        let(:parent_status) { Fabricate(:status, account: bob) }
+
+        context 'with follower' do
+          before do
+            alice.user.settings['stop_deliver_to_bot'] = true
+            alice.user.save!
+            bob.follow!(alice)
+          end
+
+          it 'send status' do
+            expect(subject.inboxes).to include 'https://foo.bar/inbox'
+          end
+        end
+
+        context 'with non-follower' do
+          it 'send status' do
+            expect(subject.inboxes).to include 'https://foo.bar/inbox'
           end
         end
       end

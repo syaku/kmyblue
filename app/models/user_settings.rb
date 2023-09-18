@@ -40,6 +40,8 @@ class UserSettings
   setting :unsafe_limited_distribution, default: false
   setting :dtl_force_with_tag, default: :none, in: %w(full searchability none)
   setting :dtl_force_subscribable, default: false
+  setting :lock_follow_from_bot, default: false
+  setting :stop_deliver_to_bot, default: false
 
   setting_inverse_alias :indexable, :noindex
 
