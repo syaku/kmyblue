@@ -7,6 +7,7 @@ Remove old ImageMagick
 EOF
 
 apt remove -y imagemagick
+apt autoremove -y
 
 cat << EOF
 
