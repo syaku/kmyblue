@@ -30,9 +30,9 @@ class StatusReachFinder
     if @status.reblog?
       []
     elsif @status.limited_visibility?
-      expect_bot_query(Account.where(id: mentioned_account_ids).where.not(domain: banned_domains)).inboxes
+      Account.where(id: mentioned_account_ids).where.not(domain: banned_domains).inboxes
     else
-      expect_bot_query(Account.where(id: reached_account_ids).where.not(domain: banned_domains)).inboxes
+      Account.where(id: reached_account_ids).where.not(domain: banned_domains).inboxes
     end
   end
 
@@ -40,9 +40,9 @@ class StatusReachFinder
     if @status.reblog?
       []
     elsif @status.limited_visibility?
-      expect_bot_query(Account.where(id: mentioned_account_ids).where(domain: banned_domains_for_misskey)).inboxes
+      Account.where(id: mentioned_account_ids).where(domain: banned_domains_for_misskey).inboxes
     else
-      expect_bot_query(Account.where(id: reached_account_ids).where(domain: banned_domains_for_misskey)).inboxes
+      Account.where(id: reached_account_ids).where(domain: banned_domains_for_misskey).inboxes
     end
   end
 
@@ -90,25 +90,21 @@ class StatusReachFinder
 
   def followers_inboxes
     if @status.in_reply_to_local_account? && distributable?
-      scope = @status.account.followers.or(@status.thread.account.followers.not_domain_blocked_by_account(@status.account)).where.not(domain: banned_domains)
-      expect_bot_query(scope).inboxes
+      @status.account.followers.or(@status.thread.account.followers.not_domain_blocked_by_account(@status.account)).where.not(domain: banned_domains).inboxes
     elsif @status.direct_visibility? || @status.limited_visibility?
       []
     else
-      scope = @status.account.followers.where.not(domain: banned_domains)
-      expect_bot_query(scope).inboxes
+      @status.account.followers.where.not(domain: banned_domains).inboxes
     end
   end
 
   def followers_inboxes_for_misskey
     if @status.in_reply_to_local_account? && distributable?
-      scope = @status.account.followers.or(@status.thread.account.followers.not_domain_blocked_by_account(@status.account)).where(domain: banned_domains_for_misskey)
-      expect_bot_query(scope).inboxes
+      @status.account.followers.or(@status.thread.account.followers.not_domain_blocked_by_account(@status.account)).where(domain: banned_domains_for_misskey).inboxes
     elsif @status.direct_visibility? || @status.limited_visibility?
       []
     else
-      scope = @status.account.followers.where(domain: banned_domains_for_misskey)
-      expect_bot_query(scope).inboxes
+      @status.account.followers.where(domain: banned_domains_for_misskey).inboxes
     end
   end
 
@@ -166,13 +162,5 @@ class StatusReachFinder
     from_info = InstanceInfo.where(software: %w(misskey calckey firefish)).pluck(:domain)
     from_domain_block = DomainBlock.where(detect_invalid_subscription: true).pluck(:domain)
     (from_info + from_domain_block).uniq
-  end
-
-  def expect_bot_query(scope)
-    if @status.account.user&.setting_stop_deliver_to_bot
-      scope.where('actor_type NOT IN (\'Application\', \'Service\') OR accounts.id IN (?)', (@status.mentioned_accounts.pluck(:id) + [@status.in_reply_to_account_id]).compact)
-    else
-      scope
-    end
   end
 end

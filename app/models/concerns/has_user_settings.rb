@@ -235,14 +235,6 @@ module HasUserSettings
     settings['disallow_unlisted_public_searchability']
   end
 
-  def setting_lock_follow_from_bot
-    settings['lock_follow_from_bot']
-  end
-
-  def setting_stop_deliver_to_bot
-    settings['stop_deliver_to_bot']
-  end
-
   def allows_report_emails?
     settings['notification_emails.report']
   end

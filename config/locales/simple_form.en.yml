@@ -262,7 +262,6 @@ en:
         setting_hide_recent_emojis: Hide recent emojis
         setting_hide_statuses_count: Hide statuses count
         setting_link_preview: Generate post link preview card
-        setting_lock_follow_from_bot: Request approval about bot follow
         setting_noai: Set noai meta tags
         setting_public_post_to_unlisted: Convert public post to public unlisted if not using Web app
         setting_reduce_motion: Reduce motion in animations
@@ -273,7 +272,6 @@ en:
         setting_show_emoji_reaction_on_timeline: Show all stamps on timeline
         setting_simple_timeline_menu: Reduce post menu on timeline
         setting_stay_privacy: Not change privacy after post
-        setting_stop_deliver_to_bot: Stop delivering servers only bots follow you
         setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font
         setting_theme: Site theme
