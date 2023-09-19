@@ -127,6 +127,10 @@ module HasUserSettings
     settings['link_preview']
   end
 
+  def setting_single_ref_to_quote
+    settings['single_ref_to_quote']
+  end
+
   def setting_dtl_force_with_tag
     settings['dtl_force_with_tag']&.to_sym || :none
   end
@@ -233,6 +237,10 @@ module HasUserSettings
 
   def setting_disallow_unlisted_public_searchability
     settings['disallow_unlisted_public_searchability']
+  end
+
+  def setting_lock_follow_from_bot
+    settings['lock_follow_from_bot']
   end
 
   def allows_report_emails?

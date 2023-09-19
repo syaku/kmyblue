@@ -3,7 +3,7 @@
 class ActivityPub::NoteSerializer < ActivityPub::Serializer
   include FormattingHelper
 
-  context_extensions :atom_uri, :conversation, :sensitive, :voters_count, :searchable_by, :references, :limited_scope
+  context_extensions :atom_uri, :conversation, :sensitive, :voters_count, :searchable_by, :references, :limited_scope, :quote_uri
 
   attributes :id, :type, :summary,
              :in_reply_to, :published, :url,
@@ -11,16 +11,19 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
              :atom_uri, :in_reply_to_atom_uri,
              :conversation, :searchable_by, :limited_scope
 
-  attribute :references, if: :not_private_post?
-
   attribute :content
   attribute :content_map, if: :language?
   attribute :updated, if: :edited?
+
+  attribute :quote_uri, if: :quote?
+  attribute :misskey_quote, key: :_misskey_quote, if: :quote?
+  attribute :misskey_content, key: :_misskey_content, if: :quote?
 
   has_many :virtual_attachments, key: :attachment
   has_many :virtual_tags, key: :tag
 
   has_one :replies, serializer: ActivityPub::CollectionSerializer, if: :local?
+  has_one :references, serializer: ActivityPub::CollectionSerializer
 
   has_many :poll_options, key: :one_of, if: :poll_and_not_multiple?
   has_many :poll_options, key: :any_of, if: :poll_and_multiple?
@@ -67,7 +70,19 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
   end
 
   def references
-    ActivityPub::TagManager.instance.references_uri_for(object)
+    refs = object.references.reorder(id: :asc).take(5).pluck(:id, :uri)
+    last_id = refs.last&.first
+
+    ActivityPub::CollectionPresenter.new(
+      type: :unordered,
+      id: ActivityPub::TagManager.instance.references_uri_for(object),
+      first: ActivityPub::CollectionPresenter.new(
+        type: :unordered,
+        part_of: ActivityPub::TagManager.instance.references_uri_for(object),
+        items: refs.map(&:second),
+        next: last_id ? ActivityPub::TagManager.instance.references_uri_for(object, page: true, min_id: last_id) : ActivityPub::TagManager.instance.references_uri_for(object, page: true, only_other_accounts: true)
+      )
+    )
   end
 
   def language?
@@ -156,8 +171,20 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
     object.account.local?
   end
 
-  def not_private_post?
-    !object.private_visibility? && !object.direct_visibility? && !object.limited_visibility?
+  def quote?
+    object.references.count == 1 && object.account.user&.settings&.[]('single_ref_to_quote')
+  end
+
+  def quote_uri
+    ActivityPub::TagManager.instance.uri_for(object.references.first)
+  end
+
+  def misskey_quote
+    quote_uri
+  end
+
+  def misskey_content
+    object.text
   end
 
   def poll_options

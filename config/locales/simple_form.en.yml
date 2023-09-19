@@ -71,6 +71,7 @@ en:
         setting_dtl_menu: Show DTL menu on web
         setting_emoji_reaction_policy: Even with this setting, users on other servers are free to put their stamp on the post and share it within the same server. If you simply want to remove the stamp from your own screen, you can disable it from the appearance settings
         setting_enable_emoji_reaction: If turn off, other users still can react your posts
+        setting_single_ref_to_quote: If this server does not have target post, target server maybe cannot read your quote
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed
         username: You can use letters, numbers, and underscores
@@ -262,6 +263,7 @@ en:
         setting_hide_recent_emojis: Hide recent emojis
         setting_hide_statuses_count: Hide statuses count
         setting_link_preview: Generate post link preview card
+        setting_lock_follow_from_bot: Request approval about bot follow
         setting_noai: Set noai meta tags
         setting_public_post_to_unlisted: Convert public post to public unlisted if not using Web app
         setting_reduce_motion: Reduce motion in animations
@@ -271,6 +273,7 @@ en:
         setting_show_application: Disclose application used to send posts
         setting_show_emoji_reaction_on_timeline: Show all stamps on timeline
         setting_simple_timeline_menu: Reduce post menu on timeline
+        setting_single_ref_to_quote: Deliver single reference to other server as quote
         setting_stay_privacy: Not change privacy after post
         setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font
