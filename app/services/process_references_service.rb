@@ -87,7 +87,7 @@ class ProcessReferencesService < BaseService
 
     target_urls.map do |url|
       status = ResolveURLService.new.call(url, on_behalf_of: @status.account, fetch_remote: @fetch_remote && @no_fetch_urls.exclude?(url))
-      @no_fetch_urls << url if !@fetch_remote && status.present?
+      @no_fetch_urls << url if !@fetch_remote && status.present? && status.local?
       status
     end
   end
