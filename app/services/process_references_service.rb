@@ -75,9 +75,11 @@ class ProcessReferencesService < BaseService
 
   def scan_text!
     text = extract_status_plain_text(@status)
-    statuses = fetch_statuses!(text.scan(REFURL_EXP).pluck(3).uniq)
+    scaned = text.scan(REFURL_EXP)
+    statuses = fetch_statuses!(scaned.pluck(3).uniq)
 
     @again = true if !@fetch_remote && statuses.any?(&:nil?)
+    @attributes = scaned.pluck(0).zip(statuses).to_h { |pair| [pair[1]&.id, pair[0]] }
 
     @scan_text = statuses.compact.map(&:id).uniq.filter { |status_id| !status_id.zero? }
   end
@@ -99,7 +101,7 @@ class ProcessReferencesService < BaseService
 
     statuses = Status.where(id: added_references)
     statuses.each do |status|
-      @added_objects << @status.reference_objects.new(target_status: status)
+      @added_objects << @status.reference_objects.new(target_status: status, attribute_type: @attributes[status.id])
       status.increment_count!(:status_referred_by_count)
       @references_count += 1
 
