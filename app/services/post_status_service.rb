@@ -188,7 +188,7 @@ class PostStatusService < BaseService
 
     process_hashtags_service.call(@status)
     Trends.tags.register(@status)
-    ProcessReferencesService.perform_worker_async(@status, @reference_ids, [])
+    ProcessReferencesService.call_service(@status, @reference_ids, [])
     LinkCrawlWorker.perform_async(@status.id)
     DistributionWorker.perform_async(@status.id)
     ActivityPub::DistributionWorker.perform_async(@status.id)

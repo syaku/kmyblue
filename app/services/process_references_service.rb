@@ -40,6 +40,12 @@ class ProcessReferencesService < BaseService
     ProcessReferencesWorker.perform_async(status.id, reference_parameters, urls)
   end
 
+  def self.call_service(status, reference_parameters, urls)
+    return unless need_process?(status, reference_parameters, urls)
+
+    ProcessReferencesService.new.call(status, reference_parameters || [], urls: urls || [])
+  end
+
   private
 
   def references

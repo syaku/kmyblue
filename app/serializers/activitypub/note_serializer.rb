@@ -17,6 +17,10 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
   attribute :content_map, if: :language?
   attribute :updated, if: :edited?
 
+  attribute :quote_uri, if: :quote?
+  attribute :misskey_quote, key: :_misskey_quote, if: :quote?
+  attribute :misskey_content, key: :_misskey_content, if: :quote?
+
   has_many :virtual_attachments, key: :attachment
   has_many :virtual_tags, key: :tag
 
@@ -158,6 +162,22 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
 
   def not_private_post?
     !object.private_visibility? && !object.direct_visibility? && !object.limited_visibility?
+  end
+
+  def quote?
+    object.references.count == 1 && object.account.user&.single_ref_to_quote
+  end
+
+  def quote_uri
+    ActivityPub::TagManager.instance.uri_for(object.references.first)
+  end
+
+  def misskey_quote
+    quote_uri
+  end
+
+  def misskey_content
+    object.text
   end
 
   def poll_options
