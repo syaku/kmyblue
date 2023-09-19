@@ -13,8 +13,12 @@ describe ActivityPub::NoteSerializer do
   let!(:reply_by_other_first) { Fabricate(:status, account: other, thread: parent, visibility: :public) }
   let!(:reply_by_account_third) { Fabricate(:status, account: account, thread: parent, visibility: :public) }
   let!(:reply_by_account_visibility_direct) { Fabricate(:status, account: account, thread: parent, visibility: :direct) }
+  let!(:referred) { nil }
+  let(:convert_to_quote) { false }
 
   before(:each) do
+    parent.references << referred if referred.present?
+    account.user&.settings&.[]=('single_ref_to_quote', true) if convert_to_quote
     @serialization = ActiveModelSerializers::SerializableResource.new(parent, serializer: described_class, adapter: ActivityPub::Adapter)
   end
 
@@ -40,5 +44,23 @@ describe ActivityPub::NoteSerializer do
 
   it 'does not include replies with direct visibility in its replies collection' do
     expect(subject['replies']['first']['items']).to_not include(reply_by_account_visibility_direct.uri)
+  end
+
+  context 'when has quote but no_convert setting' do
+    let(:referred) { Fabricate(:status) }
+
+    it 'has as reference' do
+      expect(subject['quoteUri']).to be_nil
+    end
+  end
+
+  context 'when has quote and convert setting' do
+    let(:referred) { Fabricate(:status) }
+    let(:convert_to_quote) { true }
+
+    it 'has as quote' do
+      expect(subject['quoteUri']).to_not be_nil
+      expect(subject['_misskey_quote'] == subject['quoteUri']).to be true
+    end
   end
 end
