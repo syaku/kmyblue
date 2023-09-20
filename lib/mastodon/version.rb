@@ -62,7 +62,11 @@ module Mastodon
     end
 
     def gem_version
-      @gem_version ||= Gem::Version.new(to_s.split('+')[0])
+      @gem_version ||= if ENV.fetch('UPDATE_CHECK_SOURCE', 'kmyblue') == 'kmyblue'
+                         Gem::Version.new("#{kmyblue_major}.#{kmyblue_minor}")
+                       else
+                         Gem::Version.new(to_s.split('+')[0])
+                       end
     end
 
     def repository
