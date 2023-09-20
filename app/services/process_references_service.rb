@@ -58,11 +58,11 @@ class ProcessReferencesService < BaseService
   private
 
   def references
-    @references = @reference_parameters + scan_text!
+    @references ||= @reference_parameters + scan_text!
   end
 
   def old_references
-    @old_references = @status.references.pluck(:id)
+    @old_references ||= @status.references.pluck(:id)
   end
 
   def added_references
@@ -112,7 +112,7 @@ class ProcessReferencesService < BaseService
   def create_notifications!
     return if @added_objects.blank?
 
-    local_reference_objects = @added_objects.filter { |ref| ref.target_status.account.local? }
+    local_reference_objects = @added_objects.filter { |ref| ref.target_status.account.local? && StatusPolicy.new(ref.target_status.account, ref.status).show? }
     return if local_reference_objects.empty?
 
     LocalNotificationWorker.push_bulk(local_reference_objects) do |ref|

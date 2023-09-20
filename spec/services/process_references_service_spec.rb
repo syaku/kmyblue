@@ -6,8 +6,9 @@ RSpec.describe ProcessReferencesService, type: :service do
   let(:text) { 'Hello' }
   let(:account) { Fabricate(:user).account }
   let(:visibility) { :public }
+  let(:target_status_visibility) { :public }
   let(:status) { Fabricate(:status, account: account, text: text, visibility: visibility) }
-  let(:target_status) { Fabricate(:status, account: Fabricate(:user).account) }
+  let(:target_status) { Fabricate(:status, account: Fabricate(:user).account, visibility: target_status_visibility) }
   let(:target_status_uri) { ActivityPub::TagManager.instance.uri_for(target_status) }
 
   describe 'posting new status' do
@@ -39,6 +40,26 @@ RSpec.describe ProcessReferencesService, type: :service do
         expect(subject.size).to eq 2
         expect(subject).to include [target_status.id, 'RT']
         expect(subject).to include [target_status2.id, 'BT']
+      end
+    end
+
+    context 'when private post' do
+      let(:text) { "Hello RT #{target_status_uri}" }
+      let(:visibility) { :private }
+
+      it 'post status' do
+        expect(subject.size).to eq 1
+        expect(subject.pluck(0)).to include target_status.id
+        expect(subject.pluck(1)).to include 'RT'
+      end
+    end
+
+    context 'when cannot show private post' do
+      let(:text) { "Hello RT #{target_status_uri}" }
+      let(:target_status_visibility) { :private }
+
+      it 'post status' do
+        expect(subject.size).to eq 0
       end
     end
 
