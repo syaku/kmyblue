@@ -769,6 +769,7 @@
   "status.open": "詳細を表示",
   "status.pin": "プロフィールに固定表示",
   "status.pinned": "固定された投稿",
+  "status.quote": "参照 (他サーバーで引用扱い)",
   "status.read_more": "もっと見る",
   "status.reblog": "ブースト",
   "status.reblog_private": "ブースト",

@@ -46,6 +46,7 @@ const messages = defineMessages({
   admin_domain: { id: 'status.admin_domain', defaultMessage: 'Open moderation interface for {domain}' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   reference: { id: 'status.reference', defaultMessage: 'Add reference' },
+  quote: { id: 'status.quote', defaultMessage: 'Add ref (quote in other servers)' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Block domain {domain}' },
   unblockDomain: { id: 'account.unblock_domain', defaultMessage: 'Unblock domain {domain}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
@@ -74,6 +75,7 @@ class ActionBar extends PureComponent {
     onFavourite: PropTypes.func.isRequired,
     onEmojiReact: PropTypes.func.isRequired,
     onReference: PropTypes.func.isRequired,
+    onQuote: PropTypes.func.isRequired,
     onBookmark: PropTypes.func.isRequired,
     onBookmarkCategoryAdder: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -208,6 +210,10 @@ class ActionBar extends PureComponent {
     this.props.onReference(this.props.status);
   };
 
+  handleQuote = () => {
+    this.props.onQuote(this.props.status);
+  };
+
   handleEmojiPick = (data) => {
     this.props.onEmojiReact(this.props.status, data);
   };
@@ -248,6 +254,7 @@ class ActionBar extends PureComponent {
 
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
+        menu.push({ text: intl.formatMessage(messages.quote), action: this.handleQuote });
       }
       menu.push({ text: intl.formatMessage(messages.bookmark_category), action: this.handleBookmarkCategoryAdderClick });
 

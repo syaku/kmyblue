@@ -785,11 +785,12 @@ export function insertExpirationCompose(position, data) {
   };
 }
 
-export function insertReferenceCompose(position, url) {
+export function insertReferenceCompose(position, url, attributeType) {
   return {
     type: COMPOSE_REFERENCE_INSERT,
     position,
     url,
+    attributeType,
   };
 }
 
