@@ -63,6 +63,32 @@ RSpec.describe ProcessReferencesService, type: :service do
       end
     end
 
+    context 'with quote' do
+      let(:text) { "Hello QT #{target_status_uri}" }
+
+      it 'post status' do
+        expect(subject.size).to eq 1
+        expect(subject.pluck(0)).to include target_status.id
+        expect(subject.pluck(1)).to include 'QT'
+        expect(status.quote).to_not be_nil
+        expect(status.quote.id).to eq target_status.id
+      end
+    end
+
+    context 'with quote and reference' do
+      let(:target_status2) { Fabricate(:status) }
+      let(:target_status2_uri) { ActivityPub::TagManager.instance.uri_for(target_status2) }
+      let(:text) { "Hello QT #{target_status_uri}\nBT #{target_status2_uri}" }
+
+      it 'post status' do
+        expect(subject.size).to eq 2
+        expect(subject).to include [target_status.id, 'QT']
+        expect(subject).to include [target_status2.id, 'BT']
+        expect(status.quote).to_not be_nil
+        expect(status.quote.id).to eq target_status.id
+      end
+    end
+
     context 'when url only' do
       let(:text) { "Hello #{target_status_uri}" }
 
