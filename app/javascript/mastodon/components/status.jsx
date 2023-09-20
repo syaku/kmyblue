@@ -583,7 +583,7 @@ class Status extends ImmutablePureComponent {
     }
 
     const {statusContentProps, hashtagBar} = getHashtagBarForStatus(status);
-    const expanded = !status.get('hidden')
+    const expanded = !status.get('hidden') || status.get('spoiler_text').length === 0;
 
     const withLimited = status.get('visibility_ex') === 'limited' && status.get('limited_scope') ? <span className='status__visibility-icon'><Icon id='get-pocket' title='Limited' /></span> : null;
     const withReference = status.get('status_references_count') > 0 ? <span className='status__visibility-icon'><Icon id='link' title='Reference' /></span> : null;
