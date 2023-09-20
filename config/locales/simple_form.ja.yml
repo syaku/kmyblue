@@ -330,6 +330,7 @@ ja:
         activity_api_enabled: APIでユーザーアクティビティに関する集計統計を公開する
         backups_retention_period: ユーザーアーカイブの保持期間
         bootstrap_timeline_accounts: おすすめユーザーに常に表示するアカウント
+        check_lts_version_only: 更新チェックの時、LTSバージョンのみ確認する
         closed_registrations_message: アカウント作成を停止している時のカスタムメッセージ
         content_cache_retention_period: コンテンツキャッシュの保持期間
         custom_css: カスタムCSS

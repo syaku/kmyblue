@@ -315,6 +315,7 @@ en:
         activity_api_enabled: Publish aggregate statistics about user activity in the API
         backups_retention_period: User archive retention period
         bootstrap_timeline_accounts: Always recommend these accounts to new users
+        check_lts_version_only: Check kmyblue LTS version only when update check
         closed_registrations_message: Custom message when sign-ups are not available
         content_cache_retention_period: Content cache retention period
         custom_css: Custom CSS
