@@ -237,7 +237,7 @@ en:
         setting_default_sensitive: Always mark media as sensitive
         setting_delete_modal: Show confirmation dialog before deleting a post
         setting_disable_swiping: Disable swiping motions
-        setting_disallow_unlisted_public_searchability: Disallow public searchability when unlisted visibility
+        setting_disallow_unlisted_public_searchability: Disallow everyone searchability when unlisted visibility
         setting_display_media: Media display
         setting_display_media_default: Default
         setting_display_media_expand: Show more medias
@@ -293,9 +293,9 @@ en:
         username_or_email: Username or Email
         whole_word: Whole word
       dtl_force_with_tag:
-        full: Visibility is unlisted, searchability is public
+        full: Visibility is unlisted, searchability is everyone
         none: No changes
-        searchability: Searchability is public
+        searchability: Searchability is everyone
       email_domain_block:
         with_dns_records: Include MX records and IPs of the domain
       emoji_reactions:

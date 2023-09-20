@@ -248,7 +248,7 @@ class ActivityPub::TagManager
         []
       end
 
-    searchable_by.concat(mentions_uris(status))
+    searchable_by.concat(mentions_uris(status)).compact
   end
 
   def account_searchable_by(account)

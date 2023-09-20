@@ -1644,6 +1644,10 @@ a .account__avatar {
   display: flex;
   align-items: center;
   gap: 4px;
+
+  .fa-times {
+    color: $ui-secondary-color;
+  }
 }
 
 .account-authorize {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_11_022527) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_19_232836) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1132,6 +1132,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_11_022527) do
     t.bigint "target_status_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.string "attribute_type"
     t.index ["status_id"], name: "index_status_references_on_status_id"
     t.index ["target_status_id"], name: "index_status_references_on_target_status_id"
   end

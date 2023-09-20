@@ -26,7 +26,7 @@ module ContextHelper
     emoji_reactions: { 'fedibird' => 'http://fedibird.com/ns#', 'emojiReactions' => { '@id' => 'fedibird:emojiReactions', '@type' => '@id' } },
     searchable_by: { 'fedibird' => 'http://fedibird.com/ns#', 'searchableBy' => { '@id' => 'fedibird:searchableBy', '@type' => '@id' } },
     subscribable_by: { 'kmyblue' => 'http://kmy.blue/ns#', 'subscribableBy' => { '@id' => 'kmyblue:subscribableBy', '@type' => '@id' } },
-    limited_scope: { 'kmyblue' => 'http://kmy.blue/ns#', 'limitedScope' => { '@id' => 'kmyblue:limitedScope', '@type' => '@id' } },
+    limited_scope: { 'kmyblue' => 'http://kmy.blue/ns#', 'limitedScope' => 'kmyblue:limitedScope' },
     other_setting: { 'fedibird' => 'http://fedibird.com/ns#', 'otherSetting' => 'fedibird:otherSetting' },
     references: { 'fedibird' => 'http://fedibird.com/ns#', 'references' => { '@id' => 'fedibird:references', '@type' => '@id' } },
     quote_uri: { 'fedibird' => 'http://fedibird.com/ns#', 'quoteUri' => 'fedibird:quoteUri' },

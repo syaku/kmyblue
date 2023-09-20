@@ -13,7 +13,7 @@ RSpec.describe ProcessReferencesService, type: :service do
   describe 'posting new status' do
     subject do
       described_class.new.call(status, reference_parameters, urls: urls, fetch_remote: fetch_remote)
-      status.references.pluck(:id)
+      status.reference_objects.pluck(:target_status_id, :attribute_type)
     end
 
     let(:reference_parameters) { [] }
@@ -24,9 +24,9 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:text) { "Hello RT #{target_status_uri}" }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 1
-        expect(ids).to include target_status.id
+        expect(subject.size).to eq 1
+        expect(subject.pluck(0)).to include target_status.id
+        expect(subject.pluck(1)).to include 'RT'
       end
     end
 
@@ -36,10 +36,9 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:text) { "Hello RT #{target_status_uri}\nBT #{target_status2_uri}" }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 2
-        expect(ids).to include target_status.id
-        expect(ids).to include target_status2.id
+        expect(subject.size).to eq 2
+        expect(subject).to include [target_status.id, 'RT']
+        expect(subject).to include [target_status2.id, 'BT']
       end
     end
 
@@ -47,8 +46,7 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:text) { "Hello #{target_status_uri}" }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 0
+        expect(subject.size).to eq 0
       end
     end
 
@@ -67,7 +65,7 @@ RSpec.describe ProcessReferencesService, type: :service do
           updated: '2022-01-22T16:00:00Z',
         }
       end
-      let(:text) { 'BT https://example.com/test_post' }
+      let(:text) { 'BT:https://example.com/test_post' }
 
       before do
         stub_request(:get, 'https://example.com/test_post').to_return(status: 200, body: Oj.dump(object_json), headers: { 'Content-Type' => 'application/activity+json' })
@@ -75,10 +73,10 @@ RSpec.describe ProcessReferencesService, type: :service do
       end
 
       it 'reference it' do
-        ids = subject
-        expect(ids.size).to eq 1
+        expect(subject.size).to eq 1
+        expect(subject[0][1]).to eq 'BT'
 
-        status = Status.find_by(id: ids[0])
+        status = Status.find_by(id: subject[0][0])
         expect(status).to_not be_nil
         expect(status.url).to eq 'https://example.com/test_post'
       end
@@ -87,7 +85,7 @@ RSpec.describe ProcessReferencesService, type: :service do
         let(:fetch_remote) { false }
 
         it 'reference it' do
-          ids = subject
+          ids = subject.pluck(0)
           expect(ids.size).to eq 1
 
           status = Status.find_by(id: ids[0])
@@ -101,11 +99,11 @@ RSpec.describe ProcessReferencesService, type: :service do
         let(:text) { "RT #{ActivityPub::TagManager.instance.uri_for(target_status)} BT https://example.com/test_post" }
 
         it 'reference it' do
-          ids = subject
-          expect(ids.size).to eq 2
-          expect(ids).to include target_status.id
+          expect(subject.size).to eq 2
+          expect(subject).to include [target_status.id, 'RT']
+          expect(subject.pluck(1)).to include 'BT'
 
-          status = Status.find_by(id: ids, uri: 'https://example.com/test_post')
+          status = Status.find_by(id: subject.pluck(0), uri: 'https://example.com/test_post')
           expect(status).to_not be_nil
         end
       end
@@ -114,8 +112,7 @@ RSpec.describe ProcessReferencesService, type: :service do
         let(:text) { 'BT https://example.com/not_found' }
 
         it 'reference it' do
-          ids = subject
-          expect(ids.size).to eq 0
+          expect(subject.size).to eq 0
         end
       end
     end
@@ -144,9 +141,8 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:new_text) { "BT #{target_status_uri}" }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 1
-        expect(ids).to include target_status.id
+        expect(subject.size).to eq 1
+        expect(subject).to include target_status.id
       end
     end
 
@@ -155,10 +151,9 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:new_text) { "BT #{target_status_uri}\nBT #{target_status2_uri}" }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 2
-        expect(ids).to include target_status.id
-        expect(ids).to include target_status2.id
+        expect(subject.size).to eq 2
+        expect(subject).to include target_status.id
+        expect(subject).to include target_status2.id
       end
     end
 
@@ -167,9 +162,8 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:new_text) { "BT #{target_status_uri}\nBT #{target_status_uri}" }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 1
-        expect(ids).to include target_status.id
+        expect(subject.size).to eq 1
+        expect(subject).to include target_status.id
       end
     end
 
@@ -178,8 +172,7 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:new_text) { 'Hello' }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 0
+        expect(subject.size).to eq 0
       end
     end
 
@@ -188,9 +181,8 @@ RSpec.describe ProcessReferencesService, type: :service do
       let(:new_text) { "BT #{target_status2_uri}" }
 
       it 'post status' do
-        ids = subject
-        expect(ids.size).to eq 1
-        expect(ids).to include target_status2.id
+        expect(subject.size).to eq 1
+        expect(subject).to include target_status2.id
       end
     end
   end
