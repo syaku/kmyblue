@@ -464,7 +464,7 @@
   "lists.delete": "リストを削除",
   "lists.edit": "リストを編集",
   "lists.edit.submit": "タイトルを変更",
-  "lists.exclusive": "ホームタイムラインとSTLからこれらの投稿を非表示にする",
+  "lists.exclusive": "ホームからリスト・アンテナに登録されたアカウントの投稿を非表示にする",
   "lists.new.create": "リストを作成",
   "lists.new.title_placeholder": "新規リスト名",
   "lists.replies_policy.followed": "フォロー中のユーザー全員",
