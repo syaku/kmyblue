@@ -15,7 +15,7 @@ kmyblueは、特に未収載投稿の検索が強化されているため、ロ�
 
 ## インストール方法
 
-INSTALL.mdや[Wiki](https://github.com/kmycode/mastodon/wiki/Installation)を参照してください。
+[Wiki](https://github.com/kmycode/mastodon/wiki/Installation)を参照してください。
 
 ## 開発への参加方法
 
@@ -52,6 +52,7 @@ kmyblueは絵文字リアクションに対応しているフォークの１つ�
 - **main** - 管理者が本家MastodonにPRするときに使うことがあります
 - **kb_development** - 現在kmyblue本体で使われているソースコードです
 - **kb_lts** - LTSの管理に使います。LTSはこのブランチから公開されます
+- **kb_patch** - 修正パッチの管理に使います。マイナーバージョンアップデートは通常このブランチから公開されます
 - **kb_migration** - 本家Mastodonへの追従を目的としたブランチです。`kb_development`上で開発を進めているときに利用します
 - **kb_migration_development** - 本家Mastodonへ追従し、かつその上で開発するときに使うブランチです。最新の本家コードでリファクタリングが行われ、`kb_development`と`kb_migration`の互換性の維持が困難になったときに利用します。ここで追加された機能は原則、本家Mastodonのバージョンアップと同時に`kb_development`に反映されます
 
