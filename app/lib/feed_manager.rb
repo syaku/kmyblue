@@ -411,7 +411,7 @@ class FeedManager
   def filter_from_home?(status, receiver_id, crutches, timeline_type = :home, stl_home = false) # rubocop:disable Style/OptionalBooleanParameter
     return false if receiver_id == status.account_id
     return true  if status.reply? && (status.in_reply_to_id.nil? || status.in_reply_to_account_id.nil?)
-    return true if (timeline_type != :list || stl_home) && crutches[:exclusive_list_users][status.account_id].present?
+    return true if (timeline_type != :list || stl_home) && (crutches[:exclusive_list_users][status.account_id].present? || crutches[:exclusive_antenna_users][status.account_id].present?)
     return true if crutches[:languages][status.account_id].present? && status.language.present? && !crutches[:languages][status.account_id].include?(status.language)
 
     check_for_blocks = crutches[:active_mentions][status.id] || []
@@ -602,6 +602,7 @@ class FeedManager
     end
 
     lists = List.where(account_id: receiver_id, exclusive: true)
+    antennas = Antenna.where(list: lists, insert_feeds: true)
 
     crutches[:following]            = Follow.where(account_id: receiver_id, target_account_id: statuses.filter_map(&:in_reply_to_account_id)).pluck(:target_account_id).index_with(true)
     crutches[:languages]            = Follow.where(account_id: receiver_id, target_account_id: statuses.map(&:account_id)).pluck(:target_account_id, :languages).to_h
@@ -611,6 +612,7 @@ class FeedManager
     crutches[:domain_blocking]      = AccountDomainBlock.where(account_id: receiver_id, domain: statuses.flat_map { |s| [s.account.domain, s.reblog&.account&.domain] }.compact).pluck(:domain).index_with(true)
     crutches[:blocked_by]           = Block.where(target_account_id: receiver_id, account_id: statuses.map { |s| [s.account_id, s.reblog&.account_id] }.flatten.compact).pluck(:account_id).index_with(true)
     crutches[:exclusive_list_users] = ListAccount.where(list: lists, account_id: statuses.map(&:account_id)).pluck(:account_id).index_with(true)
+    crutches[:exclusive_antenna_users] = AntennaAccount.where(antenna: antennas, account_id: statuses.map(&:account_id)).pluck(:account_id).index_with(true)
 
     crutches
   end
