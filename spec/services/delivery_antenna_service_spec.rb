@@ -12,6 +12,7 @@ RSpec.describe DeliveryAntennaService, type: :service do
   let(:domain) { nil }
   let(:spoiler_text) { '' }
   let(:tags) { Tag.find_or_create_by_names(['hoge']) }
+  let(:software) { nil }
   let(:status) do
     url = domain.present? ? 'https://example.com/status' : nil
     status = Fabricate(:status, account: alice, spoiler_text: spoiler_text, visibility: visibility, searchability: searchability, text: 'Hello my body #hoge', url: url)
@@ -30,6 +31,8 @@ RSpec.describe DeliveryAntennaService, type: :service do
   let(:mode) { :home }
 
   before do
+    Fabricate(:instance_info, domain: domain, software: software) if domain.present? && software.present?
+
     bob.follow!(alice)
     alice.block!(ohagi)
 
@@ -357,6 +360,44 @@ RSpec.describe DeliveryAntennaService, type: :service do
 
     it 'detecting antenna' do
       expect(antenna_feed_of(antenna)).to include status.id
+    end
+  end
+
+  context 'with federated unlisted post' do
+    let(:visibility)     { :unlisted }
+    let(:searchability)  { :public }
+    let(:domain)         { 'fast.example.com' }
+    let!(:antenna)       { antenna_with_keyword(bob, 'body') }
+    let!(:empty_antenna) { antenna_with_keyword(tom, 'body') }
+
+    context 'when unknown domain' do
+      let(:software) { nil }
+
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to include status.id
+      end
+    end
+
+    context 'when misskey domain' do
+      let(:software) { 'misskey' }
+
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+        expect(antenna_feed_of(empty_antenna)).to include status.id
+      end
+    end
+
+    context 'when firefish domain' do
+      let(:software)       { 'firefish' }
+
+      it 'detecting antenna' do
+        expect(antenna_feed_of(antenna)).to include status.id
+      end
+
+      it 'not detecting antenna' do
+        expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
     end
   end
 end

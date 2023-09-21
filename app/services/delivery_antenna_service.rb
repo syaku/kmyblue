@@ -47,8 +47,8 @@ class DeliveryAntennaService
     end
 
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
-    antennas = antennas.where(account: @status.account.followers) if [:public, :public_unlisted, :login, :limited].exclude?(@status.visibility.to_sym) && !@status.public_searchability?
-    antennas = antennas.where(account: @status.mentioned_accounts) if @status.visibility.to_sym == :limited
+    antennas = antennas.where(account: @status.account.followers) if followers_only?
+    antennas = antennas.where(account: @status.mentioned_accounts) if mentioned_users_only?
     antennas = antennas.where(with_media_only: false) unless @status.with_media?
     antennas = antennas.where(ignore_reblog: false) if @status.reblog?
     antennas = antennas.where(stl: false, ltl: false)
@@ -114,6 +114,26 @@ class DeliveryAntennaService
     end
 
     collection.deliver!
+  end
+
+  def followers_only?
+    case @status.visibility.to_sym
+    when :public, :public_unlisted, :login, :limited
+      false
+    when :unlisted
+      if @status.local?
+        !@status.public_searchability?
+      else
+        info = InstanceInfo.find_by(domain: @status.account.domain)
+        info&.software == 'firefish' || !@status.public_searchability?
+      end
+    else
+      true
+    end
+  end
+
+  def mentioned_users_only?
+    @status.visibility.to_sym == :limited
   end
 
   class AntennaCollection
