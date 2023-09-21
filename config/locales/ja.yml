@@ -741,12 +741,16 @@ ja:
         manage_federation_description: ユーザーが他のドメインとの連合をブロックまたは許可したり、配信を制御したりできます。
         manage_invites: 招待を管理
         manage_invites_description: 招待リンクの閲覧・解除を可能にする。
+        manage_ng_words: NGワードを管理
+        manage_ng_words_description: NGワードの管理を可能にします。投稿の受け入れ可否に関わるデリゲートな部分のため、扱いは慎重にします
         manage_reports: レポートの管理
         manage_reports_description: ユーザーがレポートを確認したり、モデレーションアクションを実行したりできます。
         manage_roles: ロールの管理
         manage_roles_description: ユーザーが自分より下の役割を管理し、割り当てることができます。
         manage_rules: ルールの管理
         manage_rules_description: ユーザーがサーバールールを変更できるようにします
+        manage_sensitive_words: センシティブワードを管理
+        manage_sensitive_words_description: センシティブワードの管理を可能にします。正規表現の利用が可能であるため、注意が必要です
         manage_settings: 設定の管理
         manage_settings_description: ユーザーがサイト設定を変更できるようにします
         manage_taxonomies: 分類の管理

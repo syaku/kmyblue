@@ -745,12 +745,16 @@ en:
         manage_federation_description: Allows users to block or allow federation with other domains, and control deliverability
         manage_invites: Manage Invites
         manage_invites_description: Allows users to browse and deactivate invite links
+        manage_ng_words: Manage NG words
+        manage_ng_words_description: Allows users to manage NG words. We will be very careful in handling this as it is a deligate part of the submission
         manage_reports: Manage Reports
         manage_reports_description: Allows users to review reports and perform moderation actions against them
         manage_roles: Manage Roles
         manage_roles_description: Allows users to manage and assign roles below theirs
         manage_rules: Manage Rules
         manage_rules_description: Allows users to change server rules
+        manage_sensitive_words: Manage Sentive Words
+        manage_sensitive_words_description: Allows users to manage sensitive words. Note that regular expressions are available
         manage_settings: Manage Settings
         manage_settings_description: Allows users to change site settings
         manage_taxonomies: Manage Taxonomies
