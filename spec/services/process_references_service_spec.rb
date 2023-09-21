@@ -6,9 +6,15 @@ RSpec.describe ProcessReferencesService, type: :service do
   let(:text) { 'Hello' }
   let(:account) { Fabricate(:user).account }
   let(:visibility) { :public }
+  let(:target_status_visibility) { :public }
   let(:status) { Fabricate(:status, account: account, text: text, visibility: visibility) }
-  let(:target_status) { Fabricate(:status, account: Fabricate(:user).account) }
+  let(:target_status) { Fabricate(:status, account: Fabricate(:user).account, visibility: target_status_visibility) }
   let(:target_status_uri) { ActivityPub::TagManager.instance.uri_for(target_status) }
+
+  def notify?(target_status_id = nil)
+    target_status_id ||= target_status.id
+    StatusReference.exists?(id: Notification.where(type: 'status_reference').select(:activity_id), target_status_id: target_status_id)
+  end
 
   describe 'posting new status' do
     subject do
@@ -27,6 +33,7 @@ RSpec.describe ProcessReferencesService, type: :service do
         expect(subject.size).to eq 1
         expect(subject.pluck(0)).to include target_status.id
         expect(subject.pluck(1)).to include 'RT'
+        expect(notify?).to be true
       end
     end
 
@@ -39,6 +46,59 @@ RSpec.describe ProcessReferencesService, type: :service do
         expect(subject.size).to eq 2
         expect(subject).to include [target_status.id, 'RT']
         expect(subject).to include [target_status2.id, 'BT']
+        expect(notify?).to be true
+        expect(notify?(target_status2.id)).to be true
+      end
+    end
+
+    context 'when private post' do
+      let(:text) { "Hello RT #{target_status_uri}" }
+      let(:visibility) { :private }
+
+      it 'post status' do
+        expect(subject.size).to eq 1
+        expect(subject.pluck(0)).to include target_status.id
+        expect(subject.pluck(1)).to include 'RT'
+        expect(notify?).to be false
+      end
+    end
+
+    context 'when cannot show private post' do
+      let(:text) { "Hello RT #{target_status_uri}" }
+      let(:target_status_visibility) { :private }
+
+      it 'post status' do
+        expect(subject.size).to eq 0
+        expect(notify?).to be false
+      end
+    end
+
+    context 'with quote' do
+      let(:text) { "Hello QT #{target_status_uri}" }
+
+      it 'post status' do
+        expect(subject.size).to eq 1
+        expect(subject.pluck(0)).to include target_status.id
+        expect(subject.pluck(1)).to include 'QT'
+        expect(status.quote).to_not be_nil
+        expect(status.quote.id).to eq target_status.id
+        expect(notify?).to be true
+      end
+    end
+
+    context 'with quote and reference' do
+      let(:target_status2) { Fabricate(:status) }
+      let(:target_status2_uri) { ActivityPub::TagManager.instance.uri_for(target_status2) }
+      let(:text) { "Hello QT #{target_status_uri}\nBT #{target_status2_uri}" }
+
+      it 'post status' do
+        expect(subject.size).to eq 2
+        expect(subject).to include [target_status.id, 'QT']
+        expect(subject).to include [target_status2.id, 'BT']
+        expect(status.quote).to_not be_nil
+        expect(status.quote.id).to eq target_status.id
+        expect(notify?).to be true
+        expect(notify?(target_status2.id)).to be true
       end
     end
 
@@ -47,6 +107,7 @@ RSpec.describe ProcessReferencesService, type: :service do
 
       it 'post status' do
         expect(subject.size).to eq 0
+        expect(notify?).to be false
       end
     end
 
@@ -143,6 +204,7 @@ RSpec.describe ProcessReferencesService, type: :service do
       it 'post status' do
         expect(subject.size).to eq 1
         expect(subject).to include target_status.id
+        expect(notify?).to be true
       end
     end
 
@@ -154,6 +216,7 @@ RSpec.describe ProcessReferencesService, type: :service do
         expect(subject.size).to eq 2
         expect(subject).to include target_status.id
         expect(subject).to include target_status2.id
+        expect(notify?(target_status2.id)).to be true
       end
     end
 
@@ -173,6 +236,7 @@ RSpec.describe ProcessReferencesService, type: :service do
 
       it 'post status' do
         expect(subject.size).to eq 0
+        expect(notify?).to be false
       end
     end
 
@@ -183,6 +247,7 @@ RSpec.describe ProcessReferencesService, type: :service do
       it 'post status' do
         expect(subject.size).to eq 1
         expect(subject).to include target_status2.id
+        expect(notify?(target_status2.id)).to be true
       end
     end
   end

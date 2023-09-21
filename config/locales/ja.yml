@@ -991,6 +991,9 @@ ja:
           other: 週間%{count}人に使用されました
       title: トレンド
       trending: トレンド
+    update_pendings:
+      major: メジャーアップデートあり
+      patch: パッチアップデートあり
     warning_presets:
       add_new: 追加
       delete: 削除

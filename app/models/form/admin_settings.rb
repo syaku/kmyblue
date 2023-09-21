@@ -46,6 +46,7 @@ class Form::AdminSettings
     receive_other_servers_emoji_reaction
     streaming_other_servers_emoji_reaction
     enable_emoji_reaction
+    check_lts_version_only
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -72,6 +73,7 @@ class Form::AdminSettings
     receive_other_servers_emoji_reaction
     streaming_other_servers_emoji_reaction
     enable_emoji_reaction
+    check_lts_version_only
   ).freeze
 
   UPLOAD_KEYS = %i(

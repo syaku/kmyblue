@@ -41,6 +41,7 @@ defaults: &defaults
   receive_other_servers_emoji_reaction: false
   streaming_other_servers_emoji_reaction: false
   enable_emoji_reaction: true
+  check_lts_version_only: true
 
 development:
   <<: *defaults

@@ -52,6 +52,7 @@ const messages = defineMessages({
   admin_domain: { id: 'status.admin_domain', defaultMessage: 'Open moderation interface for {domain}' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   reference: { id: 'status.reference', defaultMessage: 'Add reference' },
+  quote: { id: 'status.quote', defaultMessage: 'Add ref (quote in other servers)' },
   hide: { id: 'status.hide', defaultMessage: 'Hide post' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Block domain {domain}' },
   unblockDomain: { id: 'account.unblock_domain', defaultMessage: 'Unblock domain {domain}' },
@@ -97,6 +98,8 @@ class StatusActionBar extends ImmutablePureComponent {
     onBookmarkCategoryAdder: PropTypes.func,
     onFilter: PropTypes.func,
     onAddFilter: PropTypes.func,
+    onReference: PropTypes.func,
+    onQuote: PropTypes.func,
     onInteractionModal: PropTypes.func,
     withDismiss: PropTypes.bool,
     withCounters: PropTypes.bool,
@@ -271,6 +274,10 @@ class StatusActionBar extends ImmutablePureComponent {
     this.props.onReference(this.props.status);
   };
 
+  handleQuote = () => {
+    this.props.onQuote(this.props.status);
+  };
+
   handleHideClick = () => {
     this.props.onFilter();
   };
@@ -316,6 +323,7 @@ class StatusActionBar extends ImmutablePureComponent {
 
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
+        menu.push({ text: intl.formatMessage(messages.quote), action: this.handleQuote });
       }
 
       menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.removeBookmark : messages.bookmark), action: this.handleBookmarkClickOriginal });

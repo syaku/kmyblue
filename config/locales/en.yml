@@ -997,6 +997,9 @@ en:
           other: Used by %{count} people over the last week
       title: Trends
       trending: Trending
+    update-pendings:
+      major: Major update pending
+      patch: Patch update pending
     warning_presets:
       add_new: Add new
       delete: Delete

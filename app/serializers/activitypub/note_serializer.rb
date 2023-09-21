@@ -17,7 +17,6 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
 
   attribute :quote_uri, if: :quote?
   attribute :misskey_quote, key: :_misskey_quote, if: :quote?
-  attribute :misskey_content, key: :_misskey_content, if: :quote?
 
   has_many :virtual_attachments, key: :attachment
   has_many :virtual_tags, key: :tag
@@ -172,19 +171,19 @@ class ActivityPub::NoteSerializer < ActivityPub::Serializer
   end
 
   def quote?
-    object.references.count == 1 && object.account.user&.settings&.[]('single_ref_to_quote')
+    @quote ||= (object.reference_objects.count == 1 && object.account.user&.settings&.[]('single_ref_to_quote')) || object.reference_objects.where(attribute_type: 'QT').count == 1
+  end
+
+  def quote_post
+    @quote_post ||= object.quote || object.references.first
   end
 
   def quote_uri
-    ActivityPub::TagManager.instance.uri_for(object.references.first)
+    ActivityPub::TagManager.instance.uri_for(quote_post)
   end
 
   def misskey_quote
     quote_uri
-  end
-
-  def misskey_content
-    object.text
   end
 
   def poll_options

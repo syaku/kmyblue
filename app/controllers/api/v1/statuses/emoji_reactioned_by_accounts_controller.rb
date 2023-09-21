@@ -33,7 +33,7 @@ class Api::V1::Statuses::EmojiReactionedByAccountsController < Api::BaseControll
 
   def paginated_emoji_reactions
     EmojiReaction.paginate_by_max_id(
-      limit_param(1000), # limit_param(DEFAULT_ACCOUNTS_LIMIT),
+      limit_param(DEFAULT_ACCOUNTS_LIMIT),
       params[:max_id],
       params[:since_id]
     )

@@ -73,7 +73,6 @@ describe ActivityPub::NoteSerializer do
       expect(subject['quoteUri']).to_not be_nil
       expect(subject['quoteUri']).to eq referred.uri
       expect(subject['_misskey_quote']).to eq referred.uri
-      expect(subject['_misskey_content']).to eq referred.text
       expect(subject['references']['first']['items']).to include referred.uri
     end
   end

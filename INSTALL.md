@@ -33,58 +33,10 @@ Sudachiインストール終了後、追加で`/etc/elasticsearch/sudachi/config
 }
 ```
 
-## 新規インストールの場合
+## インストール手順
 
-1. 本家Mastodonとセットアップ手順はほとんど一緒です。kmyblueが独自に必須ソフトウェアを追加したわけではありません。ただしkmyblueはMastodonの開発中コードを取り込んでいるので、Rubyなどのバージョンアップ作業が必要になる場合があります。Mastodon公式のセットアップ手順を盲信せず、画面の指示に従ってインストールを進めてください。CloudFlareを組み合わせてセットアップしたとき、サーバーに接続すると400が出るなどのトラブルが出ることがありますが、大抵はMastodon本家由来のトラブルだと思われるので基本サポートはしません
-2. ただひとつ差異があります。Gitリポジトリはこのkmyblueに向けてください。`kb_development`ブランチの最新コミットではなく、`kb`で始まる最新のタグを取り込むことを強くおすすめします
+[Wiki](https://github.com/kmycode/mastodon/wiki/Installation)を参照してください
 
-## 本家Mastodonからのマイグレーションの場合
+## アップデート手順
 
-kmyblueから本家Mastodonに戻りたい場合もあると思いますので、**必ずデータベースのバックアップをとってください**。
-
-1. kmyblueのリリースノートに、kmyblueバージョンに対応した本家Mastodonのバージョンが記載されています。それを参照して、まず本家Mastodonをそのバージョンまでバージョンアップしてください
-2. Gitのリモートにkmyblueを追加して、そのままチェックアウトしてください
-3. データベースのマイグレーションなどを行ってください
-
-```
-sudo systemctl stop mastodon-*
-
-bundle install
-yarn install
-RAILS_ENV=production bin/rails db:migrate
-RAILS_ENV=production bin/rails assets:clobber
-RAILS_ENV=production bin/rails assets:precompile
-
-# ElasticSearchを使用する場合
-RAILS_ENV=production bin/tootctl search deploy
-
-RAILS_ENV=production bin/tootctl cache clear
-sudo systemctl start mastodon-web mastodon-streaming mastodon-sidekiq
-```
-
-## kmyblueのバージョンをアップデートする
-
-リリースノートを参照して、自分に必要な作業を特定してください。面倒な場合は毎回全部実行してしまっても問題ありません。（プリコンパイルが失敗する可能性があるのでご注意ください）
-
-```
-# Rubyパッケージアップデート
-bundle intall
-
-# JSパッケージアップデート
-yarn install
-
-# DBマイグレーション
-RAILS_ENV=production bin/rails db:migrate
-
-# プリコンパイル
-# うまくいかない場合（エラーは出ないのにWeb表示が崩れる）はclobberしてからprecompile
-# それでもうまくいかない場合はsudo systemctl stop mastodon-webしてから試す
-# それでもうまくいかない場合はサーバーOSを再起動してから試す
-RAILS_ENV=production bin/rails assets:clobber # プリコンパイルがうまくいかない場合
-RAILS_ENV=production bin/rails assets:precompile
-
-# サーバー再起動
-sudo systemctl restart mastodon-web
-sudo systemctl restart mastodon-streaming
-sudo systemctl restart mastodon-sidekiq
-```
+[Wiki](https://github.com/kmycode/mastodon/wiki/Updation)を参照してください
