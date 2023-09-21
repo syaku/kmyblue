@@ -31,14 +31,14 @@ class SoftwareUpdateCheckService < BaseService
   end
 
   def version
-    return @version if @version.present?
-
     if ENV.fetch('UPDATE_CHECK_SOURCE', 'kmyblue') == 'kmyblue'
       @version = "#{Mastodon::Version.kmyblue_major}.#{Mastodon::Version.kmyblue_minor}"
       @version += '-lts' if Setting.check_lts_version_only
     else
       @version = Mastodon::Version.to_s.split('+')[0]
     end
+
+    @version
   end
 
   def process_update_notices!(update_notices)
