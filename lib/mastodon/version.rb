@@ -13,7 +13,7 @@ module Mastodon
     end
 
     def kmyblue_flag
-      'LTS'
+      nil # 'LTS'
     end
 
     def major
