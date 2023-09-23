@@ -362,42 +362,4 @@ RSpec.describe DeliveryAntennaService, type: :service do
       expect(antenna_feed_of(antenna)).to include status.id
     end
   end
-
-  context 'with federated unlisted post' do
-    let(:visibility)     { :unlisted }
-    let(:searchability)  { :public }
-    let(:domain)         { 'fast.example.com' }
-    let!(:antenna)       { antenna_with_keyword(bob, 'body') }
-    let!(:empty_antenna) { antenna_with_keyword(tom, 'body') }
-
-    context 'when unknown domain' do
-      let(:software) { nil }
-
-      it 'detecting antenna' do
-        expect(antenna_feed_of(antenna)).to include status.id
-        expect(antenna_feed_of(empty_antenna)).to include status.id
-      end
-    end
-
-    context 'when misskey domain' do
-      let(:software) { 'misskey' }
-
-      it 'detecting antenna' do
-        expect(antenna_feed_of(antenna)).to include status.id
-        expect(antenna_feed_of(empty_antenna)).to include status.id
-      end
-    end
-
-    context 'when firefish domain' do
-      let(:software)       { 'firefish' }
-
-      it 'detecting antenna' do
-        expect(antenna_feed_of(antenna)).to include status.id
-      end
-
-      it 'not detecting antenna' do
-        expect(antenna_feed_of(empty_antenna)).to_not include status.id
-      end
-    end
-  end
 end

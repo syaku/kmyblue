@@ -121,12 +121,7 @@ class DeliveryAntennaService
     when :public, :public_unlisted, :login, :limited
       false
     when :unlisted
-      if @status.local?
-        !@status.public_searchability?
-      else
-        info = InstanceInfo.find_by(domain: @status.account.domain)
-        info&.software == 'firefish' || !@status.public_searchability?
-      end
+      !@status.public_searchability?
     else
       true
     end

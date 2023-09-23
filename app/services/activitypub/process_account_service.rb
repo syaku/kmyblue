@@ -305,7 +305,7 @@ class ActivityPub::ProcessAccountService < BaseService
     info = instance_info
     return false if info.nil?
 
-    %w(misskey calckey firefish).include?(info.software)
+    %w(misskey calckey meisskey).include?(info.software)
   end
 
   def subscribable_by
