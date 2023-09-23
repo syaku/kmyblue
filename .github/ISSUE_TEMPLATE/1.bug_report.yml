@@ -44,7 +44,7 @@ body:
         Mastodonではなくkmyblueのバージョンを記述してください。例えばバージョン表記が `v4.2.0+kmyblue.5.1-LTS` の場合、バージョンは `5.1`になります
 
         バージョンは、PCだと画面左下、スマホだと概要画面の一番下に書いてあります
-      placeholder: 5.1
+      placeholder: '5.1'
     validations:
       required: true
   - type: input
