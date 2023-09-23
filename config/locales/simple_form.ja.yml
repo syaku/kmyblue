@@ -109,6 +109,7 @@ ja:
         closed_registrations_message: アカウント作成を停止している時に表示されます
         content_cache_retention_period: 指定した日数が経過した他のサーバーの投稿とブーストを削除します。削除された投稿は再取得できない場合があります。削除された投稿についたブックマークやお気に入り、ブーストも失われ、元に戻せません。
         custom_css: ウェブ版のMastodonでカスタムスタイルを適用できます。
+        enable_public_unlisted_visibility: 有効にするとあなたのコミュニティは閉鎖的になるかもしれません。この設定はkmyblueの主要機能の1つであり、無効にする場合は概要などに記載することを強くおすすめします。
         mascot: 上級者向けWebインターフェースのイラストを上書きします。
         media_cache_retention_period: 正の値に設定されている場合、ダウンロードされたメディアファイルは指定された日数の後に削除され、リクエストに応じて再ダウンロードされます。
         peers_api_enabled: このサーバーが Fediverse で遭遇したドメイン名のリストです。このサーバーが知っているだけで、特定のサーバーと連合しているかのデータは含まれません。これは一般的に Fediverse に関する統計情報を収集するサービスによって使用されます。
@@ -336,6 +337,7 @@ ja:
         content_cache_retention_period: コンテンツキャッシュの保持期間
         custom_css: カスタムCSS
         enable_emoji_reaction: スタンプ機能を有効にする
+        enable_public_unlisted_visibility: 公開範囲「ローカル公開」を有効にする
         mascot: カスタムマスコット（レガシー）
         media_cache_retention_period: メディアキャッシュの保持期間
         peers_api_enabled: 発見したサーバーのリストをAPIで公開する

@@ -78,7 +78,7 @@ class PostStatusService < BaseService
     @visibility   = :direct if @in_reply_to&.limited_visibility?
     @visibility   = :limited if %w(mutual circle).include?(@options[:visibility])
     @visibility   = :unlisted if (@visibility&.to_sym == :public || @visibility&.to_sym == :public_unlisted || @visibility&.to_sym == :login) && @account.silenced?
-    @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:force_visibility] && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted
+    @visibility   = :public_unlisted if @visibility&.to_sym == :public && !@options[:force_visibility] && !@options[:application]&.superapp && @account.user&.setting_public_post_to_unlisted && Setting.enable_public_unlisted_visibility
     @limited_scope = @options[:visibility]&.to_sym if @visibility == :limited
     @searchability = searchability
     @searchability = :private if @account.silenced? && @searchability&.to_sym == :public
@@ -86,6 +86,8 @@ class PostStatusService < BaseService
     @scheduled_at = @options[:scheduled_at]&.to_datetime
     @scheduled_at = nil if scheduled_in_the_past?
     @reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
+    raise ArgumentError if !Setting.enable_public_unlisted_visibility && @visibility == :public_unlisted
+
     load_circle
     overwrite_dtl_post
     process_sensitive_words

@@ -449,11 +449,13 @@ class Status < ApplicationRecord
 
   class << self
     def selectable_visibilities
-      visibilities.keys - %w(direct limited)
+      vs = visibilities.keys - %w(direct limited)
+      vs -= %w(public_unlisted) unless Setting.enable_public_unlisted_visibility
+      vs
     end
 
     def selectable_reblog_visibilities
-      %w(unset) + visibilities.keys - %w(direct limited)
+      %w(unset) + selectable_visibilities
     end
 
     def selectable_searchabilities

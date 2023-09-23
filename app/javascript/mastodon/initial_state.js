@@ -61,6 +61,7 @@
  * @property {string} dtl_tag
  * @property {boolean} enable_emoji_reaction
  * @property {boolean} enable_login_privacy
+ * @property {boolean} enable_local_privacy
  * @property {boolean} enable_dtl_menu
  * @property {boolean=} expand_spoilers
  * @property {boolean} hide_recent_emojis
@@ -130,6 +131,7 @@ export const displayMediaExpand = getMeta('display_media_expand');
 export const domain = getMeta('domain');
 export const dtlTag = getMeta('dtl_tag');
 export const enableEmojiReaction = getMeta('enable_emoji_reaction');
+export const enableLocalPrivacy = getMeta('enable_local_privacy');
 export const enableLoginPrivacy = getMeta('enable_login_privacy');
 export const enableDtlMenu = getMeta('enable_dtl_menu');
 export const expandSpoilers = getMeta('expand_spoilers');
