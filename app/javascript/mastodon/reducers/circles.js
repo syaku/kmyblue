@@ -38,7 +38,7 @@ const normalizeCircle = (state, circle) => {
   } else {
     s = s.setIn([circle.id, 'statuses'], initialStatusesState);
   }
-  return s;
+  return s.setIn([circle.id, 'isLoading'], false).setIn([circle.id, 'isLoaded'], true);
 };
 
 const normalizeCircles = (state, circles) => {
