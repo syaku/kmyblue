@@ -1,5 +1,5 @@
-name: 仕様変更要望
-description: 既存の仕様変更の要望
+name: 仕様変更・改善要望
+description: 既存の仕様や挙動変更の要望
 labels: [specchange]
 body:
   - type: markdown
