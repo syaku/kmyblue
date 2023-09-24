@@ -116,7 +116,6 @@ export default function bookmarkCategories(state = initialState, action) {
   case BOOKMARK_CATEGORY_STATUSES_EXPAND_SUCCESS:
     return appendToBookmarkCategoryStatuses(state, action.id, action.statuses, action.next);
   case BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS:
-    console.log('HERE')
     return prependToBookmarkCategoryStatusesById(state, action.bookmarkCategoryId, action.statusId);
   case BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS:
     return removeStatusFromBookmarkCategoryById(state, action.bookmarkCategoryId, action.statusId);
