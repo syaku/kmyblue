@@ -120,11 +120,20 @@ RSpec.describe Status do
     let(:account_searchability) { :public }
     let(:status_searchability) { :public }
     let(:account_domain) { 'example.com' }
-    let(:account) { Fabricate(:account, domain: account_domain, searchability: account_searchability) }
+    let(:silenced_at) { nil }
+    let(:account) { Fabricate(:account, domain: account_domain, searchability: account_searchability, silenced_at: silenced_at) }
 
     context 'when public-public' do
       it 'returns public' do
         expect(subject.compute_searchability).to eq 'public'
+      end
+    end
+
+    context 'when public-public but silenced' do
+      let(:silenced_at) { Time.now.utc }
+
+      it 'returns private' do
+        expect(subject.compute_searchability).to eq 'private'
       end
     end
 

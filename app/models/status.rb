@@ -427,6 +427,7 @@ class Status < ApplicationRecord
   def compute_searchability
     local = account.local?
 
+    return 'private' if public_searchability? && account.silenced?
     return 'direct' if unsupported_searchability?
     return searchability if local && !searchability.nil?
     return 'direct' if local || [:public, :private, :direct, :limited].exclude?(account.searchability.to_sym)
