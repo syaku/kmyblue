@@ -64,6 +64,15 @@ const appendToBookmarkCategoryStatusesById = (state, bookmarkCategoryId, statuse
   }));
 };
 
+const prependToBookmarkCategoryStatusesById = (state, bookmarkCategoryId, statuses) => {
+  return state.update(bookmarkCategoryId, listMap => listMap.withMutations(map => {
+    map.set('isLoading', false);
+    if (map.get('items')) {
+      map.update('items', list => ImmutableOrderedSet([statuses]).union(list));
+    }
+  }));
+};
+
 const removeStatusFromBookmarkCategoryById = (state, bookmarkCategoryId, status) => {
   if (state.getIn([bookmarkCategoryId, 'items'])) {
     return state.updateIn([bookmarkCategoryId, 'items'], items => items.delete(status));
@@ -107,7 +116,7 @@ export default function bookmarkCategories(state = initialState, action) {
   case BOOKMARK_CATEGORY_STATUSES_EXPAND_SUCCESS:
     return appendToBookmarkCategoryStatuses(state, action.id, action.statuses, action.next);
   case BOOKMARK_CATEGORY_EDITOR_ADD_SUCCESS:
-    return appendToBookmarkCategoryStatusesById(state, action.bookmarkCategoryId, action.statusId, undefined);
+    return prependToBookmarkCategoryStatusesById(state, action.bookmarkCategoryId, action.statusId);
   case BOOKMARK_CATEGORY_EDITOR_REMOVE_SUCCESS:
     return removeStatusFromBookmarkCategoryById(state, action.bookmarkCategoryId, action.statusId);
   case UNBOOKMARK_SUCCESS:
