@@ -559,7 +559,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     info = instance_info
     return false if info.nil?
 
-    %w(misskey calckey firefish).include?(info.software)
+    %w(misskey calckey).include?(info.software)
   end
 
   def misskey_searchability
