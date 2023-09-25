@@ -206,6 +206,27 @@ RSpec.describe PostStatusService, type: :service do
     expect(status.mentioned_accounts.first.id).to eq circle_account.id
   end
 
+  it 'circle post with limited visibility' do
+    account = Fabricate(:account)
+    circle_account = Fabricate(:account)
+    circle = Fabricate(:circle, account: account)
+    text = 'This is an English text.'
+
+    circle_account.follow!(account)
+    circle.accounts << circle_account
+    status = subject.call(account, text: text, visibility: 'limited', circle_id: circle.id)
+
+    expect(status.visibility).to eq 'limited'
+    expect(status.limited_scope).to eq 'circle'
+  end
+
+  it 'limited visibility and empty circle' do
+    account = Fabricate(:account)
+    text = 'This is an English text.'
+
+    expect { subject.call(account, text: text, visibility: 'limited') }.to raise_exception ActiveRecord::RecordInvalid
+  end
+
   it 'safeguards mentions' do
     account = Fabricate(:account)
     mentioned_account = Fabricate(:account, username: 'alice')

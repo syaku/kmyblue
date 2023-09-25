@@ -94,6 +94,7 @@ class PostStatusService < BaseService
   end
 
   def load_circle
+    raise ArgumentError if @options[:visibility] == 'limited' && @options[:circle_id].nil?
     return unless @options[:visibility] == 'circle' || (@options[:visibility] == 'limited' && @options[:circle_id].present?)
 
     @circle = @options[:circle_id].present? && Circle.find(@options[:circle_id])
