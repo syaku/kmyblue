@@ -188,6 +188,17 @@ RSpec.describe PostStatusService, type: :service do
     expect(status.mentioned_accounts.first.id).to eq mutual_account.id
   end
 
+  it 'personal visibility with mutual' do
+    account = Fabricate(:account)
+    text = 'This is an English text.'
+
+    status = subject.call(account, text: text, visibility: 'mutual')
+
+    expect(status.visibility).to eq 'limited'
+    expect(status.limited_scope).to eq 'personal'
+    expect(status.mentioned_accounts.count).to eq 0
+  end
+
   it 'circle visibility' do
     account = Fabricate(:account)
     circle_account = Fabricate(:account)
@@ -225,6 +236,18 @@ RSpec.describe PostStatusService, type: :service do
     text = 'This is an English text.'
 
     expect { subject.call(account, text: text, visibility: 'limited') }.to raise_exception ActiveRecord::RecordInvalid
+  end
+
+  it 'personal visibility with circle' do
+    account = Fabricate(:account)
+    circle = Fabricate(:circle, account: account)
+    text = 'This is an English text.'
+
+    status = subject.call(account, text: text, visibility: 'circle', circle_id: circle.id)
+
+    expect(status.visibility).to eq 'limited'
+    expect(status.limited_scope).to eq 'personal'
+    expect(status.mentioned_accounts.count).to eq 0
   end
 
   it 'safeguards mentions' do

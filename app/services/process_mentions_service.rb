@@ -24,6 +24,10 @@ class ProcessMentionsService < BaseService
     end
   end
 
+  def mentions?
+    @current_mentions.present?
+  end
+
   private
 
   def scan_text!

@@ -145,6 +145,8 @@ class PostStatusService < BaseService
     process_mentions_service.call(@status, limited_type: @status.limited_visibility? ? @limited_scope : '', circle: @circle, save_records: false)
     safeguard_mentions!(@status)
 
+    @status.limited_scope = :personal if @status.limited_visibility? && !process_mentions_service.mentions?
+
     UpdateStatusExpirationService.new.call(@status)
 
     # The following transaction block is needed to wrap the UPDATEs to
@@ -221,7 +223,7 @@ class PostStatusService < BaseService
   end
 
   def process_mentions_service
-    ProcessMentionsService.new
+    @process_mentions_service ||= ProcessMentionsService.new
   end
 
   def process_hashtags_service
