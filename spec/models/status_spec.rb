@@ -169,6 +169,14 @@ RSpec.describe Status do
       end
     end
 
+    context 'when limited-public' do
+      let(:account_searchability) { :limited }
+
+      it 'returns limited' do
+        expect(subject.compute_searchability).to eq 'limited'
+      end
+    end
+
     context 'when private-limited' do
       let(:account_searchability) { :private }
       let(:status_searchability) { :limited }

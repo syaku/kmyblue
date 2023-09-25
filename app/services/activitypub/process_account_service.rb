@@ -265,7 +265,7 @@ class ActivityPub::ProcessAccountService < BaseService
       bio = searchability_from_bio
       return bio unless bio.nil?
 
-      return misskey_software? ? :public : :direct
+      return misskey_software? ? misskey_searchability_from_indexable : :direct
     end
 
     if audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
@@ -295,6 +295,12 @@ class ActivityPub::ProcessAccountService < BaseService
     searchability = :limited if %w(private nobody).include?(searchability)
 
     searchability
+  end
+
+  def misskey_searchability_from_indexable
+    return :public if @json['indexable'].nil?
+
+    @json['indexable'] ? :public : :limited
   end
 
   def instance_info

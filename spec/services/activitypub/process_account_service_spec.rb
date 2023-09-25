@@ -11,6 +11,7 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
     let(:software) { 'mastodon' }
     let(:searchable_by) { 'https://www.w3.org/ns/activitystreams#Public' }
     let(:sender_bio) { '' }
+    let(:indexable) { nil }
     let(:payload) do
       {
         id: 'https://foo.test',
@@ -18,6 +19,7 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
         inbox: 'https://foo.test/inbox',
         followers: 'https://example.com/followers',
         searchableBy: searchable_by,
+        indexable: indexable,
         summary: sender_bio,
       }.with_indifferent_access
     end
@@ -72,6 +74,39 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
 
       it 'searchability is public' do
         expect(subject.searchability).to eq 'public'
+      end
+
+      context 'with true indexable' do
+        let(:indexable) { true }
+
+        it 'searchability is public' do
+          expect(subject.searchability).to eq 'public'
+        end
+      end
+
+      context 'with false indexable' do
+        let(:indexable) { false }
+
+        it 'searchability is limited' do
+          expect(subject.searchability).to eq 'limited'
+        end
+      end
+
+      context 'with no-indexable key' do
+        let(:payload) do
+          {
+            id: 'https://foo.test',
+            type: 'Actor',
+            inbox: 'https://foo.test/inbox',
+            followers: 'https://example.com/followers',
+            searchableBy: searchable_by,
+            summary: sender_bio,
+          }.with_indifferent_access
+        end
+
+        it 'searchability is public' do
+          expect(subject.searchability).to eq 'public'
+        end
       end
     end
 
