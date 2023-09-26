@@ -577,7 +577,11 @@ export default function compose(state = initialState, action) {
       map.set('id', action.status.get('id'));
       map.set('text', action.text);
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
-      map.set('privacy', action.status.get('visibility_ex'));
+      if (action.status.get('visibility_ex') !== 'limited') {
+        map.set('privacy', action.status.get('visibility_ex'));
+      } else {
+        map.set('privacy', action.status.get('limited_scope') === 'mutual' ? 'mutual' : 'circle');
+      }
       map.set('media_attachments', action.status.get('media_attachments'));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
