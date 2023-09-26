@@ -58,7 +58,7 @@ import {
 import { REDRAFT } from '../actions/statuses';
 import { STORE_HYDRATE } from '../actions/store';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { enableLocalPrivacy, me } from '../initial_state';
+import { enableLocalPrivacy, enableLoginPrivacy, me } from '../initial_state';
 import { unescapeHTML } from '../utils/html';
 import { uuid } from '../uuid';
 
@@ -138,7 +138,7 @@ function clearAll(state) {
     if (state.get('stay_privacy') && !state.get('in_reply_to')) {
       map.set('default_privacy', state.get('privacy'));
     }
-    if (map.get('privacy') && !enableLocalPrivacy) {
+    if ((map.get('privacy') === 'login' && !enableLoginPrivacy) || (map.get('privacy') === 'public_unlisted' && !enableLocalPrivacy)) {
       map.set('privacy', 'public');
     }
     if (!state.get('in_reply_to')) {
