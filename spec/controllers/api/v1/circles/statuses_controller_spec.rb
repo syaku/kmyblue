@@ -19,7 +19,7 @@ describe Api::V1::Circles::StatusesController do
 
   describe 'GET #index' do
     it 'returns http success' do
-      get :show, params: { circle_id: circle.id, limit: 1 }
+      get :show, params: { circle_id: circle.id, limit: 5 }
 
       expect(response).to have_http_status(200)
       json = body_as_json
