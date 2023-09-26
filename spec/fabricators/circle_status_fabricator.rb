@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Fabricator(:circle_status) do
-  circle { Fabricate.build(:circle) }
-  status { Fabricate.build(:status) }
+  circle
+  status
+  before_create { |circle_status, _| circle_status.status.account = circle.account }
 end
