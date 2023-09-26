@@ -293,6 +293,19 @@ RSpec.describe PostStatusService, type: :service do
     expect(ActivityPub::DistributionWorker).to have_received(:perform_async).with(status.id)
   end
 
+  it 'gets distributed when personal post' do
+    allow(DistributionWorker).to receive(:perform_async)
+    allow(ActivityPub::DistributionWorker).to receive(:perform_async)
+
+    account = Fabricate(:account)
+
+    empty_circle = Fabricate(:circle, account: account)
+    status = subject.call(account, text: 'test status update', visibility: 'circle', circle_id: empty_circle.id)
+
+    expect(DistributionWorker).to have_received(:perform_async).with(status.id)
+    expect(ActivityPub::DistributionWorker).to_not have_received(:perform_async).with(status.id)
+  end
+
   it 'crawls links' do
     allow(LinkCrawlWorker).to receive(:perform_async)
     account = Fabricate(:account)
