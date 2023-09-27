@@ -10,7 +10,7 @@ class ActivityPub::ProcessStatusUpdateService < BaseService
 
     @activity_json             = activity_json
     @json                      = object_json
-    @status_parser             = ActivityPub::Parser::StatusParser.new(@json)
+    @status_parser             = ActivityPub::Parser::StatusParser.new(@json, account: status.account)
     @uri                       = @status_parser.uri
     @status                    = status
     @account                   = status.account
