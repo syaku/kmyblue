@@ -3,8 +3,8 @@
 class ProcessReferencesWorker
   include Sidekiq::Worker
 
-  def perform(status_id, ids, urls, no_fetch_urls: nil)
-    ProcessReferencesService.new.call(Status.find(status_id), ids || [], urls: urls || [], no_fetch_urls: no_fetch_urls || [])
+  def perform(status_id, ids, urls, no_fetch_urls)
+    ProcessReferencesService.new.call(Status.find(status_id), ids || [], urls: urls || [], no_fetch_urls: no_fetch_urls)
   rescue ActiveRecord::RecordNotFound
     true
   end

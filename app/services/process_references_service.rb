@@ -46,7 +46,7 @@ class ProcessReferencesService < BaseService
     return unless need_process?(status, reference_parameters, urls)
 
     Rails.cache.write("status_reference:#{status.id}", true, expires_in: 10.minutes)
-    ProcessReferencesWorker.perform_async(status.id, reference_parameters, urls, no_fetch_urls: [])
+    ProcessReferencesWorker.perform_async(status.id, reference_parameters, urls, [])
   end
 
   def self.call_service(status, reference_parameters, urls)
@@ -133,6 +133,6 @@ class ProcessReferencesService < BaseService
   end
 
   def launch_worker
-    ProcessReferencesWorker.perform_async(@status.id, @reference_parameters, @urls, no_fetch_urls: @no_fetch_urls)
+    ProcessReferencesWorker.perform_async(@status.id, @reference_parameters, @urls, @no_fetch_urls)
   end
 end
