@@ -107,6 +107,10 @@ class ActivityPub::Parser::StatusParser
   end
 
   def language
+    @language ||= original_language || (misskey_software? ? 'ja' : nil)
+  end
+
+  def original_language
     if content_language_map?
       @object['contentMap'].keys.first
     elsif name_language_map?
