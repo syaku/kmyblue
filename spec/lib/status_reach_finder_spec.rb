@@ -9,8 +9,9 @@ describe StatusReachFinder do
 
       let(:parent_status) { nil }
       let(:visibility) { :public }
+      let(:searchability) { :public }
       let(:alice) { Fabricate(:account, username: 'alice') }
-      let(:status) { Fabricate(:status, account: alice, thread: parent_status, visibility: visibility) }
+      let(:status) { Fabricate(:status, account: alice, thread: parent_status, visibility: visibility, searchability: searchability) }
 
       context 'with a simple case' do
         let(:bob) { Fabricate(:account, username: 'bob', domain: 'foo.bar', protocol: :activitypub, inbox_url: 'https://foo.bar/inbox') }
@@ -49,8 +50,9 @@ describe StatusReachFinder do
           end
         end
 
-        context 'when misskey' do
+        context 'when misskey with private searchability' do
           let(:sender_software) { 'misskey' }
+          let(:searchability) { :private }
 
           it 'send status without setting' do
             expect(subject.inboxes).to include 'https://foo.bar/inbox'
@@ -61,6 +63,16 @@ describe StatusReachFinder do
             alice.user.settings.update(reject_unlisted_subscription: 'true')
             expect(subject.inboxes).to_not include 'https://foo.bar/inbox'
             expect(subject.inboxes_for_misskey).to include 'https://foo.bar/inbox'
+          end
+        end
+
+        context 'when misskey with public searchability' do
+          let(:sender_software) { 'misskey' }
+
+          it 'send status with setting' do
+            alice.user.settings.update(reject_unlisted_subscription: 'true')
+            expect(subject.inboxes).to include 'https://foo.bar/inbox'
+            expect(subject.inboxes_for_misskey).to_not include 'https://foo.bar/inbox'
           end
         end
       end

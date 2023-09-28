@@ -157,6 +157,7 @@ class StatusReachFinder
   end
 
   def banned_domains_for_misskey_of_status(status)
+    return [] if status.public_searchability?
     return [] unless (status.public_unlisted_visibility? && status.account.user&.setting_reject_public_unlisted_subscription) || (status.unlisted_visibility? && status.account.user&.setting_reject_unlisted_subscription)
 
     from_info = InstanceInfo.where(software: %w(misskey calckey)).pluck(:domain)
