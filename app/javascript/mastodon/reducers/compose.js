@@ -144,6 +144,7 @@ function clearAll(state) {
     if (!state.get('in_reply_to')) {
       map.set('posted_on_this_session', true);
     }
+    map.set('limited_scope', null);
     map.set('id', null);
     map.set('in_reply_to', null);
     map.set('searchability', state.get('default_searchability'));
@@ -411,6 +412,7 @@ export default function compose(state = initialState, action) {
       map.set('in_reply_to', action.status.get('id'));
       map.set('text', statusToTextMentions(state, action.status));
       map.set('privacy', privacyPreference(action.status.get('visibility_ex'), state.get('default_privacy')));
+      map.set('limited_scope', null);
       map.set('searchability', privacyPreference(action.status.get('searchability'), state.get('default_searchability')));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
@@ -547,6 +549,7 @@ export default function compose(state = initialState, action) {
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility_ex'));
+      map.set('limited_scope', null);
       map.set('media_attachments', action.status.get('media_attachments').map((media) => media.set('unattached', true)));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
@@ -582,6 +585,7 @@ export default function compose(state = initialState, action) {
       } else {
         map.set('privacy', action.status.get('limited_scope') === 'mutual' ? 'mutual' : 'circle');
       }
+      map.set('limited_scope', action.status.get('limited_scope'));
       map.set('media_attachments', action.status.get('media_attachments'));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
