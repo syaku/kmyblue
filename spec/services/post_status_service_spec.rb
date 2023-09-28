@@ -250,6 +250,19 @@ RSpec.describe PostStatusService, type: :service do
     expect(status.mentioned_accounts.count).to eq 0
   end
 
+  it 'using empty circle but with mention' do
+    account = Fabricate(:account)
+    Fabricate(:account, username: 'bob', domain: nil)
+    circle = Fabricate(:circle, account: account)
+    text = 'This is an English text. @bob'
+
+    status = subject.call(account, text: text, visibility: 'circle', circle_id: circle.id)
+
+    expect(status.visibility).to eq 'limited'
+    expect(status.limited_scope).to eq 'circle'
+    expect(status.mentioned_accounts.count).to eq 1
+  end
+
   it 'safeguards mentions' do
     account = Fabricate(:account)
     mentioned_account = Fabricate(:account, username: 'alice')
