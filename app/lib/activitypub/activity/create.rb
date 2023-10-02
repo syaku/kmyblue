@@ -93,9 +93,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     resolve_thread(@status)
     fetch_replies(@status)
+    process_references!
     distribute
     forward_for_reply
-    process_references!
     join_group!
   end
 
