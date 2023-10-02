@@ -11,6 +11,7 @@ RSpec.describe ProcessReferencesService, type: :service do
   let(:target_status) { Fabricate(:status, account: Fabricate(:user).account, visibility: target_status_visibility) }
   let(:target_status_uri) { ActivityPub::TagManager.instance.uri_for(target_status) }
   let(:quote_urls) { nil }
+  let(:allow_quote) { true }
 
   def notify?(target_status_id = nil)
     target_status_id ||= target_status.id
@@ -19,6 +20,9 @@ RSpec.describe ProcessReferencesService, type: :service do
 
   describe 'posting new status' do
     subject do
+      target_status.account.user.settings('allow_quote', false) unless allow_quote
+      target_status.account.user&.save
+
       described_class.new.call(status, reference_parameters, urls: urls, fetch_remote: fetch_remote, quote_urls: quote_urls)
       status.reference_objects.pluck(:target_status_id, :attribute_type)
     end
@@ -129,6 +133,19 @@ RSpec.describe ProcessReferencesService, type: :service do
         expect(subject.pluck(1)).to include 'QT'
         expect(status.quote).to_not be_nil
         expect(status.quote.id).to eq target_status.id
+        expect(notify?).to be true
+      end
+    end
+
+    context 'when quote is rejected' do
+      let(:text) { "Hello QT #{target_status_uri}" }
+      let(:allow_quote) { false }
+
+      it 'post status' do
+        expect(subject.size).to eq 1
+        expect(subject.pluck(0)).to include target_status.id
+        expect(subject.pluck(1)).to include 'BT'
+        expect(status.quote).to be_nil
         expect(notify?).to be true
       end
     end

@@ -116,7 +116,7 @@ class ProcessReferencesService < BaseService
   end
 
   def quotable?(target_status)
-    @status.account.allow_quote? && (!@status.local? || StatusPolicy.new(@status.account, target_status).quote?)
+    target_status.account.allow_quote? && (!@status.local? || StatusPolicy.new(@status.account, target_status).quote?)
   end
 
   def add_references
