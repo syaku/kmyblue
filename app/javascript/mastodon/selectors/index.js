@@ -40,11 +40,10 @@ export const makeGetStatus = () => {
       (state, { id }) => state.getIn(['statuses', state.getIn(['statuses', id, 'quote_id'])]),
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', id, 'account'])]),
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', state.getIn(['statuses', id, 'reblog']), 'account'])]),
-      (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', state.getIn(['statuses', id, 'quote_id']), 'account'])]),
       getFilters,
     ],
 
-    (statusBase, statusReblog, statusQuote, accountBase, accountReblog, accountQuote, filters) => {
+    (statusBase, statusReblog, statusQuote, accountBase, accountReblog, filters) => {
       if (!statusBase || statusBase.get('isLoading')) {
         return null;
       }
@@ -53,12 +52,6 @@ export const makeGetStatus = () => {
         statusReblog = statusReblog.set('account', accountReblog);
       } else {
         statusReblog = null;
-      }
-
-      if (statusQuote) {
-        statusQuote = statusQuote.set('account', accountQuote);
-      } else {
-        statusQuote = null;
       }
 
       if (hideBlockingQuote && statusBase.getIn(['quote', 'quote_muted'])) {
