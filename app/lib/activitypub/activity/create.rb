@@ -486,7 +486,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def process_references!
     references = @object['references'].nil? ? [] : ActivityPub::FetchReferencesService.new.call(@status, @object['references'])
 
-    ProcessReferencesService.perform_worker_async(@status, [], references, [quote].compact)
+    ProcessReferencesService.call_service_without_error(@status, [], references, [quote].compact)
   end
 
   def quote_local?

@@ -58,6 +58,14 @@ class ProcessReferencesService < BaseService
     ProcessReferencesService.new.call(status, reference_parameters || [], urls: urls || [], fetch_remote: false, quote_urls: quote_urls)
   end
 
+  def self.call_service_without_error(status, reference_parameters, urls, quote_urls = [])
+    begin
+      call_service(status, reference_parameters, urls, quote_urls)
+    rescue
+      true
+    end
+  end
+
   private
 
   def references
