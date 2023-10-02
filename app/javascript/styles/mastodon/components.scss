@@ -1733,6 +1733,11 @@ a.account__display-name {
 .status__avatar {
   width: 46px;
   height: 46px;
+
+  &.status__avatar__compact {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .muted {
@@ -6519,7 +6524,7 @@ a.status-card {
   position: relative;
   width: 100%;
   min-height: 64px;
-  max-height: 70vh;
+  max-height: 60vh;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
@@ -6539,6 +6544,10 @@ a.status-card {
 
   &--column4 {
     grid-template-columns: 25% 25% 25% 25%;
+  }
+
+  &__compact {
+    max-height: 24vh;
   }
 }
 
@@ -8478,6 +8487,13 @@ noscript {
 .notification,
 .status__wrapper {
   position: relative;
+
+  &.status__wrapper__compact {
+    border-radius: 4px;
+    border: 1px solid $ui-primary-color;
+    margin-block-start: 16px;
+    cursor: pointer;
+  }
 
   &.unread {
     &::before {

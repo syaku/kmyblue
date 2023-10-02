@@ -1089,6 +1089,97 @@ RSpec.describe ActivityPub::Activity::Create do
         end
       end
 
+      context 'with references' do
+        let(:recipient) { Fabricate(:account) }
+        let!(:target_status) { Fabricate(:status, account: Fabricate(:account, domain: nil)) }
+
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            references: {
+              id: 'target_status',
+              type: 'Collection',
+              first: {
+                type: 'CollectionPage',
+                next: nil,
+                partOf: 'target_status',
+                items: [
+                  ActivityPub::TagManager.instance.uri_for(target_status),
+                ],
+              },
+            },
+          }
+        end
+
+        it 'creates status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.quote).to be_nil
+          expect(status.references.pluck(:id)).to eq [target_status.id]
+        end
+      end
+
+      context 'with quote' do
+        let(:recipient) { Fabricate(:account) }
+        let!(:target_status) { Fabricate(:status, account: Fabricate(:account, domain: nil)) }
+
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            quote: ActivityPub::TagManager.instance.uri_for(target_status),
+          }
+        end
+
+        it 'creates status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.references.pluck(:id)).to eq [target_status.id]
+          expect(status.quote).to_not be_nil
+          expect(status.quote.id).to eq target_status.id
+        end
+      end
+
+      context 'with references and quote' do
+        let(:recipient) { Fabricate(:account) }
+        let!(:target_status) { Fabricate(:status, account: Fabricate(:account, domain: nil)) }
+
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            quote: ActivityPub::TagManager.instance.uri_for(target_status),
+            references: {
+              id: 'target_status',
+              type: 'Collection',
+              first: {
+                type: 'CollectionPage',
+                next: nil,
+                partOf: 'target_status',
+                items: [
+                  ActivityPub::TagManager.instance.uri_for(target_status),
+                ],
+              },
+            },
+          }
+        end
+
+        it 'creates status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.references.pluck(:id)).to eq [target_status.id]
+          expect(status.quote).to_not be_nil
+          expect(status.quote.id).to eq target_status.id
+        end
+      end
+
       context 'with language' do
         let(:to) { 'https://www.w3.org/ns/activitystreams#Public' }
         let(:object_json) do
@@ -1271,6 +1362,53 @@ RSpec.describe ActivityPub::Activity::Create do
 
         expect(status).to_not be_nil
         expect(status.text).to eq 'Lorem ipsum'
+      end
+    end
+
+    context 'when sender quotes to local status' do
+      subject { described_class.new(json, sender, delivery: true) }
+
+      let!(:local_status) { Fabricate(:status) }
+      let(:object_json) do
+        {
+          id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+          type: 'Note',
+          content: 'Lorem ipsum',
+          quote: ActivityPub::TagManager.instance.uri_for(local_status),
+        }
+      end
+
+      before do
+        subject.perform
+      end
+
+      it 'creates status' do
+        status = sender.statuses.first
+
+        expect(status).to_not be_nil
+        expect(status.text).to eq 'Lorem ipsum'
+      end
+    end
+
+    context 'when sender quotes to non-local status' do
+      subject { described_class.new(json, sender, delivery: true) }
+
+      let!(:remote_status) { Fabricate(:status, uri: 'https://foo.bar/among', account: Fabricate(:account, domain: 'foo.bar', uri: 'https://foo.bar/account')) }
+      let(:object_json) do
+        {
+          id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+          type: 'Note',
+          content: 'Lorem ipsum',
+          quote: ActivityPub::TagManager.instance.uri_for(remote_status),
+        }
+      end
+
+      before do
+        subject.perform
+      end
+
+      it 'creates status' do
+        expect(sender.statuses.count).to eq 0
       end
     end
 

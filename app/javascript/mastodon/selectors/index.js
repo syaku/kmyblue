@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 
 import { toServerSideType } from 'mastodon/utils/filters';
 
-import { me } from '../initial_state';
+import { me, hideBlockingQuote } from '../initial_state';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
@@ -53,7 +53,12 @@ export const makeGetStatus = () => {
         statusReblog = null;
       }
 
+      if (hideBlockingQuote && statusBase.getIn(['quote', 'quote_muted'])) {
+        return null;
+      }
+
       let filtered = false;
+      let filterAction = 'warn';
       if ((accountReblog || accountBase).get('id') !== me && filters) {
         let filterResults = statusReblog?.get('filtered') || statusBase.get('filtered') || ImmutableList();
         if (filterResults.some((result) => filters.getIn([result.get('filter'), 'filter_action']) === 'hide')) {
@@ -62,6 +67,7 @@ export const makeGetStatus = () => {
         filterResults = filterResults.filter(result => filters.has(result.get('filter')));
         if (!filterResults.isEmpty()) {
           filtered = filterResults.map(result => filters.getIn([result.get('filter'), 'title']));
+          filterAction = filterResults.some((result) => filters.getIn([result.get('filter'), 'filter_action']) === 'warn') ? 'warn' : 'half_warn';
         }
       }
 
@@ -69,6 +75,7 @@ export const makeGetStatus = () => {
         map.set('reblog', statusReblog);
         map.set('account', accountBase);
         map.set('matched_filters', filtered);
+        map.set('filter_action', filterAction);
       });
     },
   );

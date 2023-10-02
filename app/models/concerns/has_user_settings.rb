@@ -111,6 +111,22 @@ module HasUserSettings
     settings['web.use_system_font']
   end
 
+  def setting_show_quote_in_home
+    settings['web.show_quote_in_home']
+  end
+
+  def setting_show_quote_in_public
+    settings['web.show_quote_in_public']
+  end
+
+  def setting_hide_blocking_quote
+    settings['web.hide_blocking_quote']
+  end
+
+  def setting_allow_quote
+    settings['allow_quote']
+  end
+
   def setting_noindex
     settings['noindex']
   end
@@ -125,10 +141,6 @@ module HasUserSettings
 
   def setting_link_preview
     settings['link_preview']
-  end
-
-  def setting_single_ref_to_quote
-    settings['single_ref_to_quote']
   end
 
   def setting_dtl_force_with_tag

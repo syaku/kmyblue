@@ -30,6 +30,7 @@
 #  searchability                :integer
 #  markdown                     :boolean          default(FALSE)
 #  limited_scope                :integer
+#  quote_of_id                  :bigint(8)
 #
 
 require 'ostruct'
@@ -69,12 +70,14 @@ class Status < ApplicationRecord
 
   belongs_to :thread, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :replies, optional: true
   belongs_to :reblog, foreign_key: 'reblog_of_id', class_name: 'Status', inverse_of: :reblogs, optional: true
+  belongs_to :quote, foreign_key: 'quote_of_id', class_name: 'Status', inverse_of: :quotes, optional: true
 
   has_many :favourites, inverse_of: :status, dependent: :destroy
   has_many :emoji_reactions, inverse_of: :status, dependent: :destroy
   has_many :bookmarks, inverse_of: :status, dependent: :destroy
   has_many :reblogs, foreign_key: 'reblog_of_id', class_name: 'Status', inverse_of: :reblog, dependent: :destroy
   has_many :reblogged_by_accounts, through: :reblogs, class_name: 'Account', source: :account
+  has_many :quotes, foreign_key: 'quote_of_id', class_name: 'Status', inverse_of: :quote
   has_many :replies, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :thread
   has_many :mentions, dependent: :destroy, inverse_of: :status
   has_many :mentioned_accounts, through: :mentions, source: :account, class_name: 'Account'
@@ -193,6 +196,19 @@ class Status < ApplicationRecord
                      account: [:account_stat, user: :role],
                      active_mentions: { account: :account_stat },
                    ],
+                   quote: [
+                     :application,
+                     :tags,
+                     :preview_cards,
+                     :media_attachments,
+                     :conversation,
+                     :status_stat,
+                     :preloadable_poll,
+                     :reference_objects,
+                     :scheduled_expiration_status,
+                     account: [:account_stat, user: :role],
+                     active_mentions: { account: :account_stat },
+                   ],
                    thread: { account: :account_stat }
 
   delegate :domain, to: :account, prefix: true
@@ -227,8 +243,8 @@ class Status < ApplicationRecord
     !reblog_of_id.nil?
   end
 
-  def quote
-    reference_objects.where(attribute_type: 'QT').first&.target_status
+  def quote?
+    !quote_of_id.nil?
   end
 
   def within_realtime_window?
@@ -480,12 +496,16 @@ class Status < ApplicationRecord
       ConversationMute.select('conversation_id').where(conversation_id: conversation_ids).where(account_id: account_id).each_with_object({}) { |m, h| h[m.conversation_id] = true }
     end
 
-    def pins_map(status_ids, account_id)
-      StatusPin.select('status_id').where(status_id: status_ids).where(account_id: account_id).each_with_object({}) { |p, h| h[p.status_id] = true }
+    def blocks_map(account_ids, account_id)
+      Block.where(account_id: account_id, target_account_id: account_ids).each_with_object({}) { |b, h| h[b.target_account_id] = true }
     end
 
-    def emoji_reactions_map(status_ids, account_id)
-      EmojiReaction.select('status_id').where(status_id: status_ids).where(account_id: account_id).each_with_object({}) { |e, h| h[e.status_id] = true }
+    def domain_blocks_map(domains, account_id)
+      AccountDomainBlock.where(account_id: account_id, domain: domains).each_with_object({}) { |d, h| h[d.domain] = true }
+    end
+
+    def pins_map(status_ids, account_id)
+      StatusPin.select('status_id').where(status_id: status_ids).where(account_id: account_id).each_with_object({}) { |p, h| h[p.status_id] = true }
     end
 
     def emoji_reaction_allows_map(status_ids, account_id)
