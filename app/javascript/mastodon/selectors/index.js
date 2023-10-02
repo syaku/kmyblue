@@ -37,12 +37,14 @@ export const makeGetStatus = () => {
     [
       (state, { id }) => state.getIn(['statuses', id]),
       (state, { id }) => state.getIn(['statuses', state.getIn(['statuses', id, 'reblog'])]),
+      (state, { id }) => state.getIn(['statuses', state.getIn(['statuses', id, 'quote_id'])]),
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', id, 'account'])]),
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', state.getIn(['statuses', id, 'reblog']), 'account'])]),
+      (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', state.getIn(['statuses', id, 'quote_id']), 'account'])]),
       getFilters,
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, filters) => {
+    (statusBase, statusReblog, statusQuote, accountBase, accountReblog, accountQuote, filters) => {
       if (!statusBase || statusBase.get('isLoading')) {
         return null;
       }
@@ -53,6 +55,12 @@ export const makeGetStatus = () => {
         statusReblog = null;
       }
 
+      if (statusQuote) {
+        statusQuote = statusQuote.set('account', accountQuote);
+      } else {
+        statusQuote = null;
+      }
+
       if (hideBlockingQuote && statusBase.getIn(['quote', 'quote_muted'])) {
         return null;
       }
@@ -61,6 +69,14 @@ export const makeGetStatus = () => {
       let filterAction = 'warn';
       if ((accountReblog || accountBase).get('id') !== me && filters) {
         let filterResults = statusReblog?.get('filtered') || statusBase.get('filtered') || ImmutableList();
+        const quoteFilterResults = statusQuote?.get('filtered');
+        if (quoteFilterResults) {
+          const filterWithQuote = quoteFilterResults.some((result) => filters.getIn([result.get('filter'), 'with_quote']));
+          if (filterWithQuote) {
+            filterResults = filterResults.concat(quoteFilterResults);
+          }
+        }
+
         if (filterResults.some((result) => filters.getIn([result.get('filter'), 'filter_action']) === 'hide')) {
           return null;
         }
@@ -73,6 +89,7 @@ export const makeGetStatus = () => {
 
       return statusBase.withMutations(map => {
         map.set('reblog', statusReblog);
+        map.set('quote', statusQuote);
         map.set('account', accountBase);
         map.set('matched_filters', filtered);
         map.set('filter_action', filterAction);
