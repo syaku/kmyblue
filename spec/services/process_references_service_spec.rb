@@ -20,7 +20,7 @@ RSpec.describe ProcessReferencesService, type: :service do
 
   describe 'posting new status' do
     subject do
-      target_status.account.user.settings('allow_quote', false) unless allow_quote
+      target_status.account.user.settings['allow_quote'] = false unless allow_quote
       target_status.account.user&.save
 
       described_class.new.call(status, reference_parameters, urls: urls, fetch_remote: fetch_remote, quote_urls: quote_urls)
