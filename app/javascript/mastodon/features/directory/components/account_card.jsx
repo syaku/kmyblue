@@ -202,7 +202,7 @@ class AccountCard extends ImmutablePureComponent {
         <div className='account-card__actions'>
           <div className='account-card__counters'>
             <div className='account-card__counters__item'>
-              <ShortNumber value={account.get('statuses_count')} />
+              <ShortNumber value={account.get('statuses_count')} isHide={account.getIn(['other_settings', 'hide_statuses_count']) || false} />
               <small>
                 <FormattedMessage id='account.posts' defaultMessage='Posts' />
               </small>
