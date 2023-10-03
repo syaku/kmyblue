@@ -252,10 +252,11 @@ const insertExpiration = (state, position, data) => {
   });
 };
 
-const insertReference = (state, url) => {
+const insertReference = (state, url, attributeType) => {
   const oldText = state.get('text');
+  const attribute = attributeType || 'BT';
 
-  if (oldText.indexOf(`BT ${url}`) >= 0) {
+  if (oldText.indexOf(`${attribute} ${url}`) >= 0) {
     return state;
   }
 
@@ -271,12 +272,12 @@ const insertReference = (state, url) => {
 
   if (oldText.length > 0) {
     const lastLine = oldText.slice(oldText.lastIndexOf('\n') + 1, oldText.length - 1);
-    if (lastLine.startsWith('BT ')) {
+    if (lastLine.startsWith(`${attribute} `)) {
       newLine = '\n';
     }
   }
 
-  const referenceText = `${newLine}BT ${url}`;
+  const referenceText = `${newLine}${attribute} ${url}`;
   const text = `${oldText}${referenceText}`;
 
   return state.merge({
@@ -526,7 +527,7 @@ export default function compose(state = initialState, action) {
   case COMPOSE_EXPIRATION_INSERT:
     return insertExpiration(state, action.position, action.data);
   case COMPOSE_REFERENCE_INSERT:
-    return insertReference(state, action.url);
+    return insertReference(state, action.url, action.attributeType);
   case COMPOSE_UPLOAD_CHANGE_SUCCESS:
     return state
       .set('is_changing_upload', false)

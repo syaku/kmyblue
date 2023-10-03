@@ -15,6 +15,7 @@ class REST::StatusSerializer < ActiveModel::Serializer
   attribute :bookmarked, if: :current_user?
   attribute :pinned, if: :pinnable?
   attribute :reactions, if: :reactions?
+  attribute :expires_at, if: :will_expire?
   has_many :filtered, serializer: REST::FilterResultSerializer, if: :current_user?
 
   attribute :content, unless: :source_requested?
@@ -102,7 +103,9 @@ class REST::StatusSerializer < ActiveModel::Serializer
   end
 
   def status_references_count
-    status_reference_ids.size
+    return status_reference_ids.size if status_reference_ids.any?
+
+    Rails.cache.exist?("status_reference:#{object.id}") ? 1 : 0
   end
 
   def reblogs_count
@@ -213,6 +216,14 @@ class REST::StatusSerializer < ActiveModel::Serializer
 
   def ordered_mentions
     object.active_mentions.to_a.sort_by(&:id)
+  end
+
+  def will_expire?
+    object.scheduled_expiration_status.present?
+  end
+
+  def expires_at
+    object.scheduled_expiration_status.scheduled_at
   end
 
   private

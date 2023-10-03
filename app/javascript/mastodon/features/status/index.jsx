@@ -363,7 +363,11 @@ class Status extends ImmutablePureComponent {
   };
 
   handleReference = (status) => {
-    this.props.dispatch(insertReferenceCompose(0, status.get('url')));
+    this.props.dispatch(insertReferenceCompose(0, status.get('url'), 'BT'));
+  };
+
+  handleQuote = (status) => {
+    this.props.dispatch(insertReferenceCompose(0, status.get('url'), 'QT'));
   };
 
   handleBookmarkClick = (status) => {
@@ -750,6 +754,7 @@ class Status extends ImmutablePureComponent {
                   onReblog={this.handleReblogClick}
                   onReblogForceModal={this.handleReblogForceModalClick}
                   onReference={this.handleReference}
+                  onQuote={this.handleQuote}
                   onBookmark={this.handleBookmarkClick}
                   onBookmarkCategoryAdder={this.handleBookmarkCategoryAdderClick}
                   onDelete={this.handleDeleteClick}

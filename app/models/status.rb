@@ -86,6 +86,7 @@ class Status < ApplicationRecord
   has_many :referenced_by_statuses, through: :referenced_by_status_objects, class_name: 'Status', source: :status
   has_many :capability_tokens, class_name: 'StatusCapabilityToken', inverse_of: :status, dependent: :destroy
   has_many :bookmark_category_relationships, class_name: 'BookmarkCategoryStatus', inverse_of: :status, dependent: :destroy
+  has_many :bookmark_categories, class_name: 'BookmarkCategory', through: :bookmark_category_relationships, source: :bookmark_category
   has_many :joined_bookmark_categories, class_name: 'BookmarkCategory', through: :bookmark_category_relationships, source: :bookmark_category
 
   # Those associations are used for the private search index
@@ -93,6 +94,7 @@ class Status < ApplicationRecord
   has_many :local_favorited, -> { merge(Account.local) }, through: :favourites, source: :account
   has_many :local_reblogged, -> { merge(Account.local) }, through: :reblogs, source: :account
   has_many :local_bookmarked, -> { merge(Account.local) }, through: :bookmarks, source: :account
+  has_many :local_bookmark_categoried, -> { merge(Account.local) }, through: :bookmark_categories, source: :account
   has_many :local_emoji_reacted, -> { merge(Account.local) }, through: :emoji_reactions, source: :account
   has_many :local_referenced, -> { merge(Account.local) }, through: :referenced_by_statuses, source: :account
 
@@ -222,6 +224,10 @@ class Status < ApplicationRecord
 
   def reblog?
     !reblog_of_id.nil?
+  end
+
+  def quote
+    reference_objects.where(attribute_type: 'QT').first&.target_status
   end
 
   def within_realtime_window?
@@ -420,6 +426,7 @@ class Status < ApplicationRecord
   def compute_searchability
     local = account.local?
 
+    return 'private' if public_searchability? && account.silenced?
     return 'direct' if unsupported_searchability?
     return searchability if local && !searchability.nil?
     return 'direct' if local || [:public, :private, :direct, :limited].exclude?(account.searchability.to_sym)
@@ -433,6 +440,12 @@ class Status < ApplicationRecord
     return 'private' if public_unlisted_visibility? && public_searchability?
 
     compute_searchability
+  end
+
+  def searchable_visibility
+    return limited_scope if limited_visibility? && !none_limited?
+
+    visibility
   end
 
   class << self

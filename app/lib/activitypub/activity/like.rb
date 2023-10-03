@@ -9,7 +9,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
 
     return if @original_status.nil? || delete_arrived_first?(@json['id']) || reject_favourite?
 
-    if shortcode.nil?
+    if shortcode.nil? || !Setting.enable_emoji_reaction
       process_favourite
     else
       process_emoji_reaction

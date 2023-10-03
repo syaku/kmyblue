@@ -2,12 +2,15 @@ ja:
   simple_form:
     hints:
       account:
+        discoverable: プロフィールと公開投稿をMastodonのおすすめやハイライトとしてほかのユーザーに表示することを許可します。
         display_name: フルネーム、ハンドルネームなど
         fields: ホームページ、代名詞、年齢など何でも構いません。
         hide_collections: People will not be able to browse through your follows and followers. People that you follow will see that you follow them regardless.
-        indexable: 他のMastodonサーバーの人は誰でもあなたの公開投稿を検索できるようになります。ただしkmyblue内での検索の場合、この設定は無視され代わりに「検索許可」が適用されます
+        indexable: 「公開」で送信された投稿が、検索許可（検索範囲）に対応していないサーバー（kmyblue・Fedibird以外）のMastodonの検索結果にヒットするようになります。ここのチェック状態にかかわらず、ほかのユーザーにブーストやお気に入り登録された投稿はそのユーザーから検索されることがあります。kmyblue・Fedibird内での検索の場合、この設定は無視され代わりに「検索許可」が適用されます
         locked: People will request to follow you and you will be able to either accept or reject new followers.
         note: '自己紹介には #ハッシュタグ や、ほかのアカウントのユーザー名 (@user) を使用できます'
+        show_collections: チェックを入れるとフォローとフォロワーの一覧を誰でも見られるようにします。チェックをはずすとこれらの情報を非公開にできますが、あなたがフォローしているユーザーからは、あなたがフォロワーになっていることがわかります。
+        unlocked: 新しいフォロワーを自動的に承認します。チェックをはずすとフォローリクエストとその承認が必要になり、新しいフォロワーを受け入れるか拒否するかを自分で選べるようになります。
       account_alias:
         acct: 引っ越し元のユーザー名@ドメインを指定してください
       account_migration:
@@ -62,8 +65,9 @@ ja:
         setting_always_send_emails: 通常、Mastodon からメール通知は行われません。
         setting_bookmark_category_needed: すべてのカテゴリから削除したとき、ブックマークが自動で外れるようになります
         setting_boost_modal: ブーストの公開範囲が指定できるようになります
+        setting_default_searchability: kmyblue・Fedibirdでは検索許可設定に基づき検索されます。Misskeyでは当設定に関係なく、全ての公開・ローカル公開・未収載投稿が検索されます。Mastodon・Firefishでは検索許可の代わりにプロフィール設定の「公開投稿を他のサーバーで自由に検索できるようにする」設定が適用されます
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
-        setting_disallow_unlisted_public_searchability: この設定を有効にすると、未収載投稿と検索範囲「全て」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
+        setting_disallow_unlisted_public_searchability: この設定を有効にすると、未収載投稿と検索範囲「誰でも」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
         setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大16個まで表示します。kmyblueからアップロードはできません
         setting_display_media_hide_all: メディアを常に隠す
@@ -79,6 +83,7 @@ ja:
         setting_public_post_to_unlisted: 未対応のサードパーティアプリからもローカル公開で投稿できますが、公開投稿はWeb以外できなくなります
         setting_reject_unlisted_subscription: Misskeyやそのフォーク(Calckeyなど)は、フォローしていないアカウントの「未収載」投稿を **購読・検索** することができます。これはkmyblueの挙動と異なります。そのようなサーバーに、指定した公開範囲の投稿を「フォロワーのみ」として配送します。ただし構造上、完璧な対応は困難でたまに未収載として配信されること、ご理解ください
         setting_show_application: 投稿するのに使用したアプリが投稿の詳細ビューに表示されるようになります
+        setting_single_ref_to_quote: 当サーバーがまだ対象投稿を取り込んでいない場合、引用が相手に正常に認識されない場合があります
         setting_stop_emoji_reaction_streaming: 通信容量の節約に役立ちます
         setting_unsafe_limited_distribution: Mastodon 3.5、4.0、4.1のサーバーにも限定投稿（相互のみ）が届くようになりますが、安全でない方法で送信します
         setting_use_blurhash: ぼかしはメディアの色を元に生成されますが、細部は見えにくくなっています
@@ -145,8 +150,8 @@ ja:
         otp: '携帯電話のアプリで生成された二要素認証コードを入力するか、リカバリーコードを使用してください:'
         webauthn: USBキーの場合は、必ず挿入し、必要に応じてタップしてください。
       settings:
-        indexable: Your profile page may appear in search results on Google, Bing, and others.
-        show_application: You will always be able to see which app published your post regardless.
+        indexable: プロフィールがGoogleやBingなどの検索結果にヒットするようになります。
+        show_application: 自分で自分の投稿の送信元アプリを確認することは、ここのチェック状態にかかわらず可能です。
       tag:
         name: 視認性向上などのためにアルファベット大文字小文字の変更のみ行うことができます
       user:
@@ -165,12 +170,13 @@ ja:
     kmyblue: kmyblue
     labels:
       account:
+        discoverable: アカウントを見つけやすくする
         fields:
           name: ラベル
           value: 内容
         indexable: 公開投稿を他のサーバーで自由に検索できるようにする
-        show_collections: （仮訳）フォロー・フォロワー一覧を公開する
-        unlocked: （仮訳）新規フォローを自動で承認する
+        show_collections: フォローとフォロワーの一覧を開示する
+        unlocked: フォローリクエストを不要にする
       account_alias:
         acct: 引っ越し元のユーザー ID
       account_migration:
@@ -245,7 +251,7 @@ ja:
         setting_default_sensitive: メディアを常に閲覧注意としてマークする
         setting_delete_modal: 投稿を削除する前に確認ダイアログを表示する
         setting_disable_swiping: スワイプでの切り替えを無効にする
-        setting_disallow_unlisted_public_searchability: 未収載投稿の検索許可が「全て」だった場合、「フォロワーのみ」に変更する
+        setting_disallow_unlisted_public_searchability: 未収載投稿の検索許可が「誰でも」だった場合、「フォロワーのみ」に変更する
         setting_display_media: メディアの表示
         setting_display_media_default: 標準
         setting_display_media_expand: 5個目以降のメディアも表示する (最大16)
@@ -272,6 +278,7 @@ ja:
         setting_hide_recent_emojis: 絵文字ピッカーで最近使用した絵文字を隠す（リアクションデッキのみを表示する）
         setting_hide_statuses_count: 投稿数を隠す
         setting_link_preview: リンクのプレビューを生成する
+        setting_lock_follow_from_bot: botからのフォローを承認制にする
         setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_noai: 自分のコンテンツのAI学習利用に対して不快感を表明する
         setting_public_post_to_unlisted: サードパーティから公開範囲「公開」で投稿した場合、「ローカル公開」に変更する
@@ -281,6 +288,8 @@ ja:
         setting_send_without_domain_blocks: 管理人の設定した配送停止設定を拒否する (非推奨)
         setting_show_application: 送信したアプリを開示する
         setting_show_emoji_reaction_on_timeline: タイムライン上に他の人のつけたスタンプを表示する
+        setting_simple_timeline_menu: タイムライン上でメニューの項目を減らす
+        setting_single_ref_to_quote: 参照が１つしかない投稿は、他のサーバーには引用として配信する
         setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_stop_emoji_reaction_streaming: スタンプのストリーミングを停止する
         setting_system_font_ui: システムのデフォルトフォントを使う
@@ -300,9 +309,9 @@ ja:
         username_or_email: ユーザー名またはメールアドレス
         whole_word: 単語全体にマッチ
       dtl_force_with_tag:
-        full: 公開範囲「未収載」検索許可「全て」にする
+        full: 公開範囲「未収載」検索許可「誰でも」にする
         none: 公開範囲も検索許可も変更しない
-        searchability: 検索許可を「全て」にする
+        searchability: 検索許可を「誰でも」にする
       email_domain_block:
         with_dns_records: ドメインのMXレコードとIPアドレスを含む
       emoji_reactions:
@@ -322,6 +331,7 @@ ja:
         activity_api_enabled: APIでユーザーアクティビティに関する集計統計を公開する
         backups_retention_period: ユーザーアーカイブの保持期間
         bootstrap_timeline_accounts: おすすめユーザーに常に表示するアカウント
+        check_lts_version_only: 更新チェックの時、LTSバージョンのみ確認する
         closed_registrations_message: アカウント作成を停止している時のカスタムメッセージ
         content_cache_retention_period: コンテンツキャッシュの保持期間
         custom_css: カスタムCSS
@@ -331,6 +341,7 @@ ja:
         peers_api_enabled: 発見したサーバーのリストをAPIで公開する
         profile_directory: ディレクトリを有効にする
         receive_other_servers_emoji_reaction: 他のサーバーのユーザーが他のサーバーの投稿につけたスタンプを受け入れる
+        registration_button_message: 新規登録ボタンの直上に表示するメッセージ
         registrations_mode: 新規登録が可能な人
         require_invite_text: 申請事由の入力を必須にする
         show_domain_blocks: ドメインブロックを表示
@@ -375,12 +386,18 @@ ja:
         pending_account: 新しいアカウントの承認が必要な時
         reblog: 投稿がブーストされた時
         report: 新しい通報が送信された時
+        software_updates:
+          all: すべてのアップデートを通知する
+          critical: 緊急のアップデートのみ通知する
+          label: 新しいMastodonバージョンが利用可能です
+          none: 通知しない (非推奨)
+          patch: 緊急のアップデートとバグ修正アップデートを通知する
         trending_tag: 新しいトレンドのレビューをする必要がある時
       rule:
         text: ルール
       settings:
-        indexable: （仮訳）プロフィールページを検索エンジンの収集対象に含める
-        show_application: （仮訳）投稿に使用したアプリを開示する
+        indexable: 検索エンジンからアクセスできるようにする
+        show_application: 投稿に使ったアプリを開示する
       tag:
         listable: 検索とディレクトリへの使用を許可する
         name: ハッシュタグ
@@ -401,6 +418,7 @@ ja:
         url: エンドポイントURL
     'no': 'いいえ'
     not_recommended: 非推奨
+    overridden: 上書き済み
     recommended: おすすめ
     required:
       mark: "*"

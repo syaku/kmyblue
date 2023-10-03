@@ -12,6 +12,7 @@ RSpec.describe DeliveryAntennaService, type: :service do
   let(:domain) { nil }
   let(:spoiler_text) { '' }
   let(:tags) { Tag.find_or_create_by_names(['hoge']) }
+  let(:software) { nil }
   let(:status) do
     url = domain.present? ? 'https://example.com/status' : nil
     status = Fabricate(:status, account: alice, spoiler_text: spoiler_text, visibility: visibility, searchability: searchability, text: 'Hello my body #hoge', url: url)
@@ -30,6 +31,8 @@ RSpec.describe DeliveryAntennaService, type: :service do
   let(:mode) { :home }
 
   before do
+    Fabricate(:instance_info, domain: domain, software: software) if domain.present? && software.present?
+
     bob.follow!(alice)
     alice.block!(ohagi)
 
@@ -266,8 +269,8 @@ RSpec.describe DeliveryAntennaService, type: :service do
   end
 
   context 'when multiple antennas insert list with keyword' do
-    let!(:antenna)       { antenna_with_keyword(bob, 'body', insert_feeds: true, list: list(bob).id) }
-    let!(:empty_antenna) { antenna_with_keyword(tom, 'body', insert_feeds: true, list: list(tom).id) }
+    let!(:antenna)       { antenna_with_keyword(bob, 'body', insert_feeds: true, list: list(bob)) }
+    let!(:empty_antenna) { antenna_with_keyword(tom, 'body', insert_feeds: true, list: list(tom)) }
 
     it 'detecting antenna' do
       expect(antenna_feed_of(antenna)).to include status.id

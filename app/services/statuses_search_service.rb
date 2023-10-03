@@ -16,8 +16,11 @@ class StatusesSearchService < BaseService
   private
 
   def status_search_results
-    request             = parsed_query.request
-    results             = request.collapse(field: :id).order(id: { order: :desc }).limit(@limit).offset(@offset).objects.compact
+    query               = parsed_query
+    request             = query.request
+    return [] unless query.valid
+
+    results             = request.collapse(field: :id).order(id: { order: query.order_by }).limit(@limit).offset(@offset).objects.compact
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)
     preloaded_relations = @account.relations_map(account_ids, account_domains)
@@ -40,12 +43,12 @@ class StatusesSearchService < BaseService
     end
 
     if @options[:min_id]
-      timestamp = Mastodon::Snowflake.to_time(@options[:min_id])
+      timestamp = Mastodon::Snowflake.to_time(@options[:min_id].to_i)
       syntax_options << "after:\"#{timestamp.iso8601}\""
     end
 
     if @options[:max_id]
-      timestamp = Mastodon::Snowflake.to_time(@options[:max_id])
+      timestamp = Mastodon::Snowflake.to_time(@options[:max_id].to_i)
       syntax_options << "before:\"#{timestamp.iso8601}\""
     end
 

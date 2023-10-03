@@ -29,7 +29,6 @@ class SearchResults extends ImmutablePureComponent {
     results: ImmutablePropTypes.map.isRequired,
     expandSearch: PropTypes.func.isRequired,
     searchTerm: PropTypes.string,
-    noMoreResults: ImmutablePropTypes.map,
   };
 
   handleLoadMoreAccounts = () => this.props.expandSearch('accounts');
@@ -37,8 +36,6 @@ class SearchResults extends ImmutablePureComponent {
   handleLoadMoreStatuses = () => this.props.expandSearch('statuses');
 
   handleLoadMoreHashtags = () => this.props.expandSearch('hashtags');
-
-  showMoreResults = (searchType) => this.props.noMoreResults ? !this.props.noMoreResults.get(searchType) : true;
 
   render () {
     const { results } = this.props;

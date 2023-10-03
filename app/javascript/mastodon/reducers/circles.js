@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { List as ImmutableList, fromJS } from 'immutable';
 
 import {
   CIRCLE_FETCH_SUCCESS,
@@ -9,7 +9,7 @@ import {
   CIRCLE_DELETE_SUCCESS,
 } from '../actions/circles';
 
-const initialState = ImmutableMap();
+const initialState = ImmutableList();
 
 const normalizeList = (state, circle) => state.set(circle.id, fromJS(circle));
 

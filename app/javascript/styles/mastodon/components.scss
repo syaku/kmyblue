@@ -1644,6 +1644,10 @@ a .account__avatar {
   display: flex;
   align-items: center;
   gap: 4px;
+
+  .fa-times {
+    color: $ui-secondary-color;
+  }
 }
 
 .account-authorize {
@@ -2239,8 +2243,8 @@ $ui-header-height: 55px;
   &__links {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 0 10px;
+    gap: 8px;
+    padding: 0 9px;
     overflow: hidden;
 
     .button {
@@ -5274,6 +5278,11 @@ a.status-card {
           font-weight: 700;
           color: $primary-text-color;
         }
+
+        span {
+          overflow: inherit;
+          text-overflow: inherit;
+        }
       }
     }
   }
@@ -6509,7 +6518,7 @@ a.status-card {
   position: relative;
   width: 100%;
   min-height: 64px;
-  max-height: 70vh;
+  max-height: 60vh;
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
@@ -6529,6 +6538,10 @@ a.status-card {
 
   &--column4 {
     grid-template-columns: 25% 25% 25% 25%;
+  }
+
+  &__compact {
+    max-height: 24vh;
   }
 }
 
@@ -8632,6 +8645,9 @@ noscript {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
+  background: $ui-base-color;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 .story {
@@ -9295,9 +9311,7 @@ noscript {
   }
 
   &__action {
-    position: absolute;
-    inset-inline-end: 0;
-    top: 0;
+    float: right;
     padding: 15px 10px;
 
     .icon-button {
@@ -9363,6 +9377,10 @@ noscript {
   p {
     color: $dark-text-color;
     margin-bottom: 20px;
+
+    .version {
+      white-space: nowrap;
+    }
 
     strong {
       font-weight: 500;
@@ -9633,13 +9651,16 @@ noscript {
     0 10px 15px -3px rgba($base-shadow-color, 0.25),
     0 4px 6px -4px rgba($base-shadow-color, 0.25);
   cursor: default;
-  transition: 0.5s cubic-bezier(0.89, 0.01, 0.5, 1.1);
-  transform: translateZ(0);
   font-size: 15px;
   line-height: 21px;
 
   &.notification-bar-active {
     inset-inline-start: 1rem;
+  }
+
+  .no-reduce-motion & {
+    transition: 0.5s cubic-bezier(0.89, 0.01, 0.5, 1.1);
+    transform: translateZ(0);
   }
 }
 

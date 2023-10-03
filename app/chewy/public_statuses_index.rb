@@ -144,12 +144,12 @@ class PublicStatusesIndex < Chewy::Index
   index_scope ::Status.unscoped
                       .kept
                       .indexable
-                      .includes(:media_attachments, :preloadable_poll, :preview_cards, :tags)
+                      .includes(:media_attachments, :preloadable_poll, :preview_cards, :tags, :account)
 
   root date_detection: false do
     field(:id, type: 'long')
     field(:account_id, type: 'long')
-    field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text }) { field(:stemmed, type: 'text', analyzer: 'sudachi_analyzer') }
+    field(:text, type: 'text', analyzer: 'sudachi_analyzer', value: ->(status) { status.searchable_text })
     field(:tags, type: 'text', analyzer: 'hashtag', value: ->(status) { status.tags.map(&:display_name) })
     field(:language, type: 'keyword')
     field(:domain, type: 'keyword', value: ->(status) { status.account.domain || '' })

@@ -51,6 +51,10 @@ export const EMOJI_REACTIONS_FETCH_REQUEST = 'EMOJI_REACTIONS_FETCH_REQUEST';
 export const EMOJI_REACTIONS_FETCH_SUCCESS = 'EMOJI_REACTIONS_FETCH_SUCCESS';
 export const EMOJI_REACTIONS_FETCH_FAIL    = 'EMOJI_REACTIONS_FETCH_FAIL';
 
+export const EMOJI_REACTIONS_EXPAND_REQUEST = 'EMOJI_REACTIONS_EXPAND_REQUEST';
+export const EMOJI_REACTIONS_EXPAND_SUCCESS = 'EMOJI_REACTIONS_EXPAND_SUCCESS';
+export const EMOJI_REACTIONS_EXPAND_FAIL    = 'EMOJI_REACTIONS_EXPAND_FAIL';
+
 export const PIN_REQUEST = 'PIN_REQUEST';
 export const PIN_SUCCESS = 'PIN_SUCCESS';
 export const PIN_FAIL    = 'PIN_FAIL';
@@ -547,8 +551,9 @@ export function fetchEmojiReactions(id) {
     dispatch(fetchEmojiReactionsRequest(id));
 
     api(getState).get(`/api/v1/statuses/${id}/emoji_reactioned_by`).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedAccounts(response.data.map((er) => er.account)));
-      dispatch(fetchEmojiReactionsSuccess(id, response.data));
+      dispatch(fetchEmojiReactionsSuccess(id, response.data, next ? next.uri : null));
     }).catch(error => {
       dispatch(fetchEmojiReactionsFail(id, error));
     });
@@ -562,17 +567,60 @@ export function fetchEmojiReactionsRequest(id) {
   };
 }
 
-export function fetchEmojiReactionsSuccess(id, accounts) {
+export function fetchEmojiReactionsSuccess(id, accounts, next) {
   return {
     type: EMOJI_REACTIONS_FETCH_SUCCESS,
     id,
     accounts,
+    next,
   };
 }
 
 export function fetchEmojiReactionsFail(id, error) {
   return {
     type: EMOJI_REACTIONS_FETCH_FAIL,
+    error,
+  };
+}
+
+export function expandEmojiReactions(id) {
+  return (dispatch, getState) => {
+    const url = getState().getIn(['user_lists', 'emoji_reactioned_by', id, 'next']);
+    if (url === null) {
+      return;
+    }
+
+    dispatch(expandEmojiReactionsRequest(id));
+
+    api(getState).get(url).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+
+      dispatch(importFetchedAccounts(response.data.map((er) => er.account)));
+      dispatch(expandEmojiReactionsSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => dispatch(expandEmojiReactionsFail(id, error)));
+  };
+}
+
+export function expandEmojiReactionsRequest(id) {
+  return {
+    type: EMOJI_REACTIONS_EXPAND_REQUEST,
+    id,
+  };
+}
+
+export function expandEmojiReactionsSuccess(id, accounts, next) {
+  return {
+    type: EMOJI_REACTIONS_EXPAND_SUCCESS,
+    id,
+    accounts,
+    next,
+  };
+}
+
+export function expandEmojiReactionsFail(id, error) {
+  return {
+    type: EMOJI_REACTIONS_EXPAND_FAIL,
+    id,
     error,
   };
 }

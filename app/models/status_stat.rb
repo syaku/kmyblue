@@ -21,8 +21,6 @@
 class StatusStat < ApplicationRecord
   belongs_to :status, inverse_of: :status_stat
 
-  after_commit :reset_parent_cache
-
   def replies_count
     [attributes['replies_count'], 0].max
   end
@@ -49,11 +47,5 @@ class StatusStat < ApplicationRecord
 
   def status_referred_by_count
     [attributes['status_referred_by_count'] || 0, 0].max
-  end
-
-  private
-
-  def reset_parent_cache
-    Rails.cache.delete("statuses/#{status_id}")
   end
 end

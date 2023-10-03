@@ -40,6 +40,8 @@ class UserSettings
   setting :unsafe_limited_distribution, default: false
   setting :dtl_force_with_tag, default: :none, in: %w(full searchability none)
   setting :dtl_force_subscribable, default: false
+  setting :lock_follow_from_bot, default: false
+  setting :single_ref_to_quote, default: false
 
   setting_inverse_alias :indexable, :noindex
 
@@ -64,6 +66,7 @@ class UserSettings
     setting :display_media, default: 'default', in: %w(default show_all hide_all)
     setting :display_media_expand, default: true
     setting :auto_play, default: true
+    setting :simple_timeline_menu, default: false
   end
 
   namespace :notification_emails do

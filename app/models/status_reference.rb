@@ -9,6 +9,7 @@
 #  target_status_id :bigint(8)        not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
+#  attribute_type   :string
 #
 
 class StatusReference < ApplicationRecord
@@ -17,14 +18,9 @@ class StatusReference < ApplicationRecord
 
   has_one :notification, as: :activity, dependent: :destroy
 
-  validate :validate_status_visibilities
   after_commit :reset_parent_cache
 
   private
-
-  def validate_status_visibilities
-    raise Mastodon::ValidationError, I18n.t('status_references.errors.invalid_status_visibilities') if [:public, :public_unlisted, :unlisted, :login].exclude?(target_status.visibility.to_sym)
-  end
 
   def reset_parent_cache
     Rails.cache.delete("statuses/#{status_id}")

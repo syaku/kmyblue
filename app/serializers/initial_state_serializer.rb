@@ -48,7 +48,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:display_media]     = object.current_account.user.setting_display_media
       store[:display_media_expand] = object.current_account.user.setting_display_media_expand
       store[:expand_spoilers] = object.current_account.user.setting_expand_spoilers
-      store[:enable_emoji_reaction] = object.current_account.user.setting_enable_emoji_reaction
+      store[:enable_emoji_reaction] = object.current_account.user.setting_enable_emoji_reaction && Setting.enable_emoji_reaction
       store[:show_emoji_reaction_on_timeline] = object.current_account.user.setting_show_emoji_reaction_on_timeline
       store[:enable_login_privacy] = object.current_account.user.setting_enable_login_privacy
       store[:enable_dtl_menu] = object.current_account.user.setting_enable_dtl_menu
@@ -60,6 +60,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:use_pending_items] = object.current_account.user.setting_use_pending_items
       store[:show_trends]       = Setting.trends && object.current_account.user.setting_trends
       store[:bookmark_category_needed] = object.current_account.user.setting_bookmark_category_needed
+      store[:simple_timeline_menu] = object.current_account.user.setting_simple_timeline_menu
     else
       store[:auto_play_gif] = Setting.auto_play_gif
       store[:display_media] = Setting.display_media
@@ -126,6 +127,6 @@ class InitialStateSerializer < ActiveModel::Serializer
   end
 
   def sso_redirect
-    "/auth/auth/#{Devise.omniauth_providers[0]}" if ENV['OMNIAUTH_ONLY'] == 'true' && Devise.omniauth_providers.length == 1
+    "/auth/auth/#{Devise.omniauth_providers[0]}" if ENV['ONE_CLICK_SSO_LOGIN'] == 'true' && ENV['OMNIAUTH_ONLY'] == 'true' && Devise.omniauth_providers.length == 1
   end
 end

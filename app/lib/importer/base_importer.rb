@@ -3,9 +3,12 @@
 class Importer::BaseImporter
   # @param [Integer] batch_size
   # @param [Concurrent::ThreadPoolExecutor] executor
-  def initialize(batch_size:, executor:)
+  def initialize(batch_size:, executor:, full: true, from: nil, to: nil)
     @batch_size = batch_size
     @executor   = executor
+    @full       = full
+    @from       = from.to_date if from.present?
+    @to         = to.to_date if to.present?
     @wait_for   = Concurrent::Set.new
   end
 
@@ -34,7 +37,9 @@ class Importer::BaseImporter
   # Estimate the amount of documents that would be indexed. Not exact!
   # @returns [Integer]
   def estimate!
-    ActiveRecord::Base.connection_pool.with_connection { |connection| connection.select_one("SELECT reltuples AS estimate FROM pg_class WHERE relname = '#{index.adapter.target.table_name}'")['estimate'].to_i }
+    reltuples = ActiveRecord::Base.connection_pool.with_connection { |connection| connection.select_one("SELECT reltuples FROM pg_class WHERE relname = '#{index.adapter.target.table_name}'")['reltuples'].to_i }
+    # If the table has never yet been vacuumed or analyzed, reltuples contains -1
+    [reltuples, 0].max
   end
 
   # Import data from the database into the index

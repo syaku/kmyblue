@@ -442,7 +442,7 @@ en:
       reject_send_dissubscribable_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
       reject_send_media: 画像付き投稿を配送しない
       reject_send_media_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
-      reject_send_not_public_searchability: 検索許可が「公開」でない投稿を配送しない
+      reject_send_not_public_searchability: 検索許可が「誰でも」でない投稿を配送しない
       reject_send_not_public_searchability_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
       reject_send_public_unlisted: ローカル公開投稿を配送しない
       reject_send_public_unlisted_hint: 相手サーバーからのフェッチは防げません。停止とは無関係です
@@ -745,12 +745,16 @@ en:
         manage_federation_description: Allows users to block or allow federation with other domains, and control deliverability
         manage_invites: Manage Invites
         manage_invites_description: Allows users to browse and deactivate invite links
+        manage_ng_words: Manage NG words
+        manage_ng_words_description: Allows users to manage NG words. We will be very careful in handling this as it is a deligate part of the submission
         manage_reports: Manage Reports
         manage_reports_description: Allows users to review reports and perform moderation actions against them
         manage_roles: Manage Roles
         manage_roles_description: Allows users to manage and assign roles below theirs
         manage_rules: Manage Rules
         manage_rules_description: Allows users to change server rules
+        manage_sensitive_words: Manage Sentive Words
+        manage_sensitive_words_description: Allows users to manage sensitive words. Note that regular expressions are available
         manage_settings: Manage Settings
         manage_settings_description: Allows users to change site settings
         manage_taxonomies: Manage Taxonomies
@@ -997,6 +1001,9 @@ en:
           other: Used by %{count} people over the last week
       title: Trends
       trending: Trending
+    update-pendings:
+      major: Major update pending
+      patch: Patch update pending
     warning_presets:
       add_new: Add new
       delete: Delete
@@ -1123,9 +1130,6 @@ en:
       expires_on: Expires on %{date}
       stl: This antenna is in STL mode, ignoring reject-subscription settings.
       title: Antennas
-    new:
-      save: Save new antenna
-      title: Add new antenna
   appearance:
     advanced_web_interface: Advanced web interface
     advanced_web_interface_hint: 'If you want to make use of your entire screen width, the advanced web interface allows you to configure many different columns to see as much information at the same time as you want: Home, notifications, federated timeline, any number of lists and hashtags.'

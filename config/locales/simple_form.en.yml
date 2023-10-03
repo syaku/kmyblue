@@ -62,6 +62,7 @@ en:
         setting_aggregate_reblogs: Do not show new boosts for posts that have been recently boosted (only affects newly-received boosts)
         setting_always_send_emails: Normally e-mail notifications won't be sent when you are actively using Mastodon
         setting_bookmark_category_needed: When removing from all category, unbookmarked automatically
+        setting_default_searchability: kmyblue・Fedibirdでは検索許可設定に基づき検索されます。Misskeyでは当設定に関係なく、全ての公開・ローカル公開・未収載投稿が検索されます。Mastodon・Firefishでは検索許可の代わりにプロフィール設定の「公開投稿を他のサーバーで自由に検索できるようにする」設定が適用されます
         setting_default_sensitive: Sensitive media is hidden by default and can be revealed with a click
         setting_display_media_default: Hide media marked as sensitive
         setting_display_media_hide_all: Always hide media
@@ -71,6 +72,7 @@ en:
         setting_dtl_menu: Show DTL menu on web
         setting_emoji_reaction_policy: Even with this setting, users on other servers are free to put their stamp on the post and share it within the same server. If you simply want to remove the stamp from your own screen, you can disable it from the appearance settings
         setting_enable_emoji_reaction: If turn off, other users still can react your posts
+        setting_single_ref_to_quote: If this server does not have target post, target server maybe cannot read your quote
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed
         username: You can use letters, numbers, and underscores
@@ -236,7 +238,7 @@ en:
         setting_default_sensitive: Always mark media as sensitive
         setting_delete_modal: Show confirmation dialog before deleting a post
         setting_disable_swiping: Disable swiping motions
-        setting_disallow_unlisted_public_searchability: Disallow public searchability when unlisted visibility
+        setting_disallow_unlisted_public_searchability: Disallow everyone searchability when unlisted visibility
         setting_display_media: Media display
         setting_display_media_default: Default
         setting_display_media_expand: Show more medias
@@ -262,6 +264,7 @@ en:
         setting_hide_recent_emojis: Hide recent emojis
         setting_hide_statuses_count: Hide statuses count
         setting_link_preview: Generate post link preview card
+        setting_lock_follow_from_bot: Request approval about bot follow
         setting_noai: Set noai meta tags
         setting_public_post_to_unlisted: Convert public post to public unlisted if not using Web app
         setting_reduce_motion: Reduce motion in animations
@@ -270,6 +273,8 @@ en:
         setting_send_without_domain_blocks: Send your post to all server with administrator set as rejecting-post-server for protect you [DEPRECATED]
         setting_show_application: Disclose application used to send posts
         setting_show_emoji_reaction_on_timeline: Show all stamps on timeline
+        setting_simple_timeline_menu: Reduce post menu on timeline
+        setting_single_ref_to_quote: Deliver single reference to other server as quote
         setting_stay_privacy: Not change privacy after post
         setting_stop_emoji_reaction_streaming: Disable stamp streamings
         setting_system_font_ui: Use system's default font
@@ -289,9 +294,9 @@ en:
         username_or_email: Username or Email
         whole_word: Whole word
       dtl_force_with_tag:
-        full: Visibility is unlisted, searchability is public
+        full: Visibility is unlisted, searchability is everyone
         none: No changes
-        searchability: Searchability is public
+        searchability: Searchability is everyone
       email_domain_block:
         with_dns_records: Include MX records and IPs of the domain
       emoji_reactions:
@@ -311,6 +316,7 @@ en:
         activity_api_enabled: Publish aggregate statistics about user activity in the API
         backups_retention_period: User archive retention period
         bootstrap_timeline_accounts: Always recommend these accounts to new users
+        check_lts_version_only: Check kmyblue LTS version only when update check
         closed_registrations_message: Custom message when sign-ups are not available
         content_cache_retention_period: Content cache retention period
         custom_css: Custom CSS
@@ -320,6 +326,7 @@ en:
         peers_api_enabled: Publish list of discovered servers in the API
         profile_directory: Enable profile directory
         receive_other_servers_emoji_reaction: Receive stamp between other server users
+        registration_button_message: Register button message
         registrations_mode: Who can sign-up
         require_invite_text: Require a reason to join
         show_domain_blocks: Show domain blocks

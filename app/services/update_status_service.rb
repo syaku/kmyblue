@@ -161,7 +161,8 @@ class UpdateStatusService < BaseService
 
   def update_references!
     reference_ids = (@options[:status_reference_ids] || []).map(&:to_i).filter(&:positive?)
-    ProcessReferencesWorker.perform_async(@status.id, reference_ids, [])
+
+    ProcessReferencesService.call_service(@status, reference_ids, [])
   end
 
   def update_metadata!

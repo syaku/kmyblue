@@ -5,11 +5,15 @@ module Mastodon
     module_function
 
     def kmyblue_major
-      3
+      5
     end
 
     def kmyblue_minor
-      3
+      2
+    end
+
+    def kmyblue_flag
+      'LTS'
     end
 
     def major
@@ -21,11 +25,11 @@ module Mastodon
     end
 
     def patch
-      0
+      1
     end
 
     def default_prerelease
-      'beta3'
+      'rc1'
     end
 
     def prerelease
@@ -38,6 +42,7 @@ module Mastodon
 
     def to_s_of_kmyblue
       components = [to_a_of_kmyblue.join('.')]
+      components << "-#{kmyblue_flag}" if kmyblue_flag.present?
       components.join
     end
 
@@ -57,7 +62,11 @@ module Mastodon
     end
 
     def gem_version
-      @gem_version ||= Gem::Version.new(to_s.split('+')[0])
+      @gem_version ||= if ENV.fetch('UPDATE_CHECK_SOURCE', 'kmyblue') == 'kmyblue'
+                         Gem::Version.new("#{kmyblue_major}.#{kmyblue_minor}")
+                       else
+                         Gem::Version.new(to_s.split('+')[0])
+                       end
     end
 
     def repository

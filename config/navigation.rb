@@ -4,7 +4,11 @@ SimpleNavigation::Configuration.run do |navigation|
   navigation.items do |n|
     n.item :web, safe_join([fa_icon('chevron-left fw'), t('settings.back')]), root_path
 
-    n.item :software_updates, safe_join([fa_icon('exclamation-circle fw'), t('admin.critical_update_pending')]), admin_software_updates_path, if: -> { ENV['UPDATE_CHECK_URL'] != '' && current_user.can?(:view_devops) && SoftwareUpdate.urgent_pending? }, html: { class: 'warning' }
+    if ENV['UPDATE_CHECK_URL'] != '' && current_user.can?(:view_devops)
+      n.item :software_updates, safe_join([fa_icon('exclamation-circle fw'), t('admin.critical_update_pending')]), admin_software_updates_path, if: -> { SoftwareUpdate.urgent_pending? }, html: { class: 'warning' }
+      n.item :software_updates, safe_join([fa_icon('exclamation-circle fw'), t('admin.update_pendings.major')]), admin_software_updates_path, if: -> { !SoftwareUpdate.urgent_pending? && SoftwareUpdate.major_pending? }, html: { class: 'warning' }
+      n.item :software_updates, safe_join([fa_icon('exclamation-circle fw'), t('admin.update_pendings.patch')]), admin_software_updates_path, if: -> { !SoftwareUpdate.urgent_pending? && SoftwareUpdate.patch_pending? }, html: { class: 'warning' }
+    end
 
     n.item :profile, safe_join([fa_icon('user fw'), t('settings.profile')]), settings_profile_path, if: -> { current_user.functional? }, highlights_on: %r{/settings/profile|/settings/featured_tags|/settings/verification|/settings/privacy}
 
@@ -43,7 +47,6 @@ SimpleNavigation::Configuration.run do |navigation|
     n.item :moderation, safe_join([fa_icon('gavel fw'), t('moderation.title')]), nil, if: -> { current_user.can?(:manage_reports, :view_audit_log, :manage_users, :manage_invites, :manage_taxonomies, :manage_federation, :manage_blocks, :manage_ng_words, :manage_sensitive_words) } do |s|
       s.item :reports, safe_join([fa_icon('flag fw'), t('admin.reports.title')]), admin_reports_path, highlights_on: %r{/admin/reports}, if: -> { current_user.can?(:manage_reports) }
       s.item :accounts, safe_join([fa_icon('users fw'), t('admin.accounts.title')]), admin_accounts_path(origin: 'local'), highlights_on: %r{/admin/accounts|/admin/pending_accounts|/admin/disputes|/admin/users}, if: -> { current_user.can?(:manage_users) }
-      s.item :media_attachments, safe_join([fa_icon('picture-o fw'), t('admin.media_attachments.title')]), admin_media_attachments_path, highlights_on: %r{/admin/media_attachments}, if: -> { current_user.can?(:manage_users) }
       s.item :ng_words, safe_join([fa_icon('list fw'), t('admin.ng_words.title')]), admin_ng_words_path, highlights_on: %r{/admin/ng_words}, if: -> { current_user.can?(:manage_ng_words) }
       s.item :sensitive_words, safe_join([fa_icon('list fw'), t('admin.sensitive_words.title')]), admin_sensitive_words_path, highlights_on: %r{/admin/sensitive_words}, if: -> { current_user.can?(:manage_sensitive_words) }
       s.item :invites, safe_join([fa_icon('user-plus fw'), t('admin.invites.title')]), admin_invites_path, if: -> { current_user.can?(:manage_invites) }
