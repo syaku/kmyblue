@@ -1125,9 +1125,6 @@ ja:
       tags:
         other: "%{count}件のタグ"
       title: アンテナ
-    new:
-      save: 新規アンテナを保存
-      title: 新規アンテナを追加
   appearance:
     advanced_web_interface: 上級者向けUI
     advanced_web_interface_hint: 'ディスプレイを幅いっぱいまで活用したい場合、上級者向け UI をおすすめします。ホーム、通知、連合タイムライン、更にはリストやハッシュタグなど、様々な異なるカラムから望む限りの情報を一度に受け取れるような設定が可能になります。'

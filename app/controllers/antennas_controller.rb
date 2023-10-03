@@ -12,27 +12,7 @@ class AntennasController < ApplicationController
     @antennas = current_account.antennas.includes(:antenna_domains).includes(:antenna_tags).includes(:antenna_accounts)
   end
 
-  def new
-    @antenna = current_account.antennas.build
-    @antenna.antenna_domains.build
-    @antenna.antenna_tags.build
-    @antenna.antenna_accounts.build
-  end
-
   def edit; end
-
-  def create
-    @antenna = current_account.antennas.build(thin_resource_params)
-
-    saved = @antenna.save
-    saved = @antenna.update(resource_params) if saved
-
-    if saved
-      redirect_to antennas_path
-    else
-      render action: :new
-    end
-  end
 
   def update
     if @antenna.update(resource_params)
