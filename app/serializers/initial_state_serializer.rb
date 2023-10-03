@@ -37,6 +37,7 @@ class InitialStateSerializer < ActiveModel::Serializer
       status_page_url: Setting.status_page_url,
       sso_redirect: sso_redirect,
       dtl_tag: DTL_ENABLED ? DTL_TAG : nil,
+      enable_local_privacy: Setting.enable_public_unlisted_visibility,
     }
 
     if object.current_account

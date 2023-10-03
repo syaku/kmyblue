@@ -96,6 +96,7 @@ en:
         closed_registrations_message: Displayed when sign-ups are closed
         content_cache_retention_period: All posts and boosts from other servers will be deleted after the specified number of days. Some posts may not be recoverable. All related bookmarks, favourites and boosts will also be lost and impossible to undo.
         custom_css: You can apply custom styles on the web version of Mastodon.
+        enable_public_unlisted_visibility: If true, your community maybe closed-minded. If turn it false, strongly recommend that you disclose that you have disabled this setting!
         mascot: Overrides the illustration in the advanced web interface.
         media_cache_retention_period: Downloaded media files will be deleted after the specified number of days when set to a positive value, and re-downloaded on demand.
         peers_api_enabled: A list of domain names this server has encountered in the fediverse. No data is included here about whether you federate with a given server, just that your server knows about it. This is used by services that collect statistics on federation in a general sense.
@@ -268,8 +269,8 @@ en:
         setting_noai: Set noai meta tags
         setting_public_post_to_unlisted: Convert public post to public unlisted if not using Web app
         setting_reduce_motion: Reduce motion in animations
-        setting_reject_public_unlisted_subscription: Reject sending public unlisted posts to Misskey, Calckey
-        setting_reject_unlisted_subscription: Reject sending unlisted posts to Misskey, Calckey
+        setting_reject_public_unlisted_subscription: Reject sending public unlisted visibility/non-public searchability posts to Misskey, Calckey
+        setting_reject_unlisted_subscription: Reject sending unlisted visibility/non-public searchability posts to Misskey, Calckey
         setting_send_without_domain_blocks: Send your post to all server with administrator set as rejecting-post-server for protect you [DEPRECATED]
         setting_show_application: Disclose application used to send posts
         setting_show_emoji_reaction_on_timeline: Show all stamps on timeline
@@ -321,6 +322,7 @@ en:
         content_cache_retention_period: Content cache retention period
         custom_css: Custom CSS
         enable_emoji_reaction: Enable stamp function
+        enable_public_unlisted_visibility: Enable public-unlisted visibility
         mascot: Custom mascot (legacy)
         media_cache_retention_period: Media cache retention period
         peers_api_enabled: Publish list of discovered servers in the API

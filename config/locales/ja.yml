@@ -814,6 +814,7 @@ ja:
         publish_statistics: 統計情報を公開する
         title: 見つける
         trends: トレンド
+        visibilities: 公開範囲
       domain_blocks:
         all: 誰にでも許可
         disabled: 誰にも許可しない

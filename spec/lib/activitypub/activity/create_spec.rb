@@ -1088,6 +1088,86 @@ RSpec.describe ActivityPub::Activity::Create do
           expect(poll.votes.first).to be_nil
         end
       end
+
+      context 'with language' do
+        let(:to) { 'https://www.w3.org/ns/activitystreams#Public' }
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: to,
+            contentMap: { ja: 'Lorem ipsum' },
+          }
+        end
+
+        it 'create status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.language).to eq 'ja'
+        end
+      end
+
+      context 'without language' do
+        let(:to) { 'https://www.w3.org/ns/activitystreams#Public' }
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: to,
+          }
+        end
+
+        it 'create status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.language).to be_nil
+        end
+      end
+
+      context 'without language when misskey server' do
+        let(:sender_software) { 'misskey' }
+        let(:to) { 'https://www.w3.org/ns/activitystreams#Public' }
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: to,
+          }
+        end
+
+        it 'create status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.language).to eq 'ja'
+        end
+      end
+
+      context 'with language when misskey server' do
+        let(:sender_software) { 'misskey' }
+        let(:to) { 'https://www.w3.org/ns/activitystreams#Public' }
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: to,
+            contentMap: { 'en-US': 'Lorem ipsum' },
+          }
+        end
+
+        it 'create status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.language).to eq 'en-US'
+        end
+      end
     end
 
     context 'with an encrypted message' do

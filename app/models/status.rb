@@ -58,7 +58,7 @@ class Status < ApplicationRecord
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, _suffix: :visibility
   enum searchability: { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, _suffix: :searchability
-  enum limited_scope: { none: 0, mutual: 1, circle: 2 }, _suffix: :limited
+  enum limited_scope: { none: 0, mutual: 1, circle: 2, personal: 3 }, _suffix: :limited
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
 
@@ -106,6 +106,7 @@ class Status < ApplicationRecord
   has_one :poll, inverse_of: :status, dependent: :destroy
   has_one :trend, class_name: 'StatusTrend', inverse_of: :status
   has_one :scheduled_expiration_status, inverse_of: :status, dependent: :destroy
+  has_one :circle_status, inverse_of: :status, dependent: :destroy
 
   validates :uri, uniqueness: true, presence: true, unless: :local?
   validates :text, presence: true, unless: -> { with_media? || reblog? }
@@ -450,11 +451,13 @@ class Status < ApplicationRecord
 
   class << self
     def selectable_visibilities
-      visibilities.keys - %w(direct limited)
+      vs = visibilities.keys - %w(direct limited)
+      vs -= %w(public_unlisted) unless Setting.enable_public_unlisted_visibility
+      vs
     end
 
     def selectable_reblog_visibilities
-      %w(unset) + visibilities.keys - %w(direct limited)
+      %w(unset) + selectable_visibilities
     end
 
     def selectable_searchabilities

@@ -397,6 +397,7 @@ class Account < ApplicationRecord
   end
 
   def public_settings
+    # Please update `app/javascript/mastodon/api_types/accounts.ts` when making changes to the attributes
     config = {
       'noindex' => noindex?,
       'noai' => noai?,
