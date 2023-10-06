@@ -17,6 +17,7 @@ module KmyblueCapabilitiesHelper
       :kmyblue_bookmark_category,
       :kmyblue_quote,
       :kmyblue_searchability_limited,
+      :kmyblue_circle_history,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?
