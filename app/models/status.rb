@@ -683,7 +683,7 @@ class Status < ApplicationRecord
   def set_searchable_follow_on_destroy
     return unless public_searchability? || public_unlisted_searchability? || private_searchability?
     return if account.account_stat.nil? || !account.account_stat.searchable_by_follower
-    return if account.statuses.exists?(searchability: %i(public public_unlisted unlisted private))
+    return if account.statuses.exists?(searchability: %i(public public_unlisted private))
 
     account.account_stat.update(searchable_by_follower: false)
   end
