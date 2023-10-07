@@ -58,7 +58,9 @@ class ActivityPub::Activity::Follow < ActivityPub::Activity
      @account.username.downcase.end_with?('bot') ||
      @account.display_name&.downcase&.include?('proxy') ||
      @account.display_name&.include?('プロキシ') ||
-     @account.note&.include?('プロキシ')) && proxyable_software?
+     @account.note&.include?('プロキシ')) &&
+      (@account.following_count.zero? || @account.following_count > @account.followers_count) &&
+      proxyable_software?
   end
 
   def proxyable_software?
