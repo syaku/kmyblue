@@ -854,7 +854,7 @@ RSpec.describe Account do
         match = Fabricate(:account, username: 'pattern_and_suffix')
         account = Fabricate(:account, username: 'prefix_and_pattern')
 
-        expect(described_class.matches_username('pattern')).to eq [match, account]
+        expect(described_class.matches_username('pattern')).to contain_exactly(match, account)
       end
     end
 
