@@ -108,11 +108,11 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
       emoji ||= CustomEmoji.new(
         domain: domain,
         shortcode: custom_emoji_parser.shortcode,
-        uri: custom_emoji_parser.uri,
-        is_sensitive: custom_emoji_parser.is_sensitive,
-        license: custom_emoji_parser.license
+        uri: custom_emoji_parser.uri
       )
       emoji.image_remote_url = custom_emoji_parser.image_remote_url
+      emoji.license = custom_emoji_parser.license
+      emoji.is_sensitive = custom_emoji_parser.is_sensitive
       emoji.save
     rescue Seahorse::Client::NetworkingError => e
       Rails.logger.warn "Error storing emoji: #{e}"
