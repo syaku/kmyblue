@@ -4,8 +4,8 @@ require 'rails_helper'
 
 RSpec.describe ActivityPub::Activity::Follow do
   let(:actor_type) { 'Person' }
-  let(:note)       { '' }
-  let(:sender)    { Fabricate(:account, domain: 'example.com', inbox_url: 'https://example.com/inbox', actor_type: actor_type, note: note) }
+  let(:display_name) { '' }
+  let(:sender)    { Fabricate(:account, domain: 'example.com', inbox_url: 'https://example.com/inbox', actor_type: actor_type, display_name: display_name) }
   let(:recipient) { Fabricate(:account) }
 
   let(:json) do
@@ -105,7 +105,7 @@ RSpec.describe ActivityPub::Activity::Follow do
       end
 
       context 'when unlocked misskey proxy account but locked from bot' do
-        let(:note) { 'i am proxy.' }
+        let(:display_name) { 'i am proxy.' }
 
         before do
           Fabricate(:instance_info, domain: 'example.com', software: 'misskey')
@@ -125,7 +125,7 @@ RSpec.describe ActivityPub::Activity::Follow do
       end
 
       context 'when unlocked mastodon proxy account but locked from bot' do
-        let(:note) { 'i am proxy.' }
+        let(:display_name) { 'i am proxy.' }
 
         before do
           Fabricate(:instance_info, domain: 'example.com', software: 'mastodon')

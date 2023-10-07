@@ -52,11 +52,12 @@ class ActivityPub::Activity::Follow < ActivityPub::Activity
   end
 
   def proxy_account?
-    (@account.username.downcase.include?('proxy') ||
-     @account.username.downcase.include?('followbot') ||
+    (@account.username.downcase.include?('_proxy') ||
+     @account.username.downcase.end_with?('proxy') ||
+     @account.username.downcase.include?('_bot_') ||
+     @account.username.downcase.end_with?('bot') ||
      @account.display_name&.downcase&.include?('proxy') ||
      @account.display_name&.include?('プロキシ') ||
-     @account.note&.downcase&.include?('proxy') ||
      @account.note&.include?('プロキシ')) && proxyable_software?
   end
 
