@@ -93,14 +93,16 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
 
     return if custom_emoji_parser.shortcode.blank? || custom_emoji_parser.image_remote_url.blank?
 
-    emoji = CustomEmoji.find_by(shortcode: custom_emoji_parser.shortcode, domain: @account.domain)
-
-    return unless emoji.nil? || custom_emoji_parser.image_remote_url != emoji.image_remote_url || (custom_emoji_parser.updated_at && custom_emoji_parser.updated_at >= emoji.updated_at)
-
-    domain = emoji_tag['domain'] || URI.split(custom_emoji_parser.uri)[2] || @account.domain
+    domain = tag['domain'] || URI.split(custom_emoji_parser.uri)[2] || @account.domain
     domain = nil if domain == Rails.configuration.x.local_domain || domain == Rails.configuration.x.web_domain
-
     return if domain.present? && skip_download?(domain)
+
+    emoji = CustomEmoji.find_by(shortcode: custom_emoji_parser.shortcode, domain: domain)
+
+    return emoji unless emoji.nil? ||
+                        custom_emoji_parser.image_remote_url != emoji.image_remote_url ||
+                        (custom_emoji_parser.updated_at && custom_emoji_parser.updated_at >= emoji.updated_at) ||
+                        custom_emoji_parser.license != emoji.license
 
     begin
       emoji ||= CustomEmoji.new(
