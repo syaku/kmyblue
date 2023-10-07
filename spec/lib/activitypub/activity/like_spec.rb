@@ -93,6 +93,35 @@ RSpec.describe ActivityPub::Activity::Like do
       end
     end
 
+    context 'with custom emoji but that is existing on local server' do
+      let(:content) { ':tinking:' }
+      let(:tag) do
+        {
+          id: 'https://example.com/aaa',
+          type: 'Emoji',
+          icon: {
+            url: 'http://example.com/emoji.png',
+          },
+          name: 'tinking',
+          license: 'Everyone but Ohagi',
+        }
+      end
+
+      before do
+        Fabricate(:custom_emoji, domain: 'example.com', uri: 'https://example.com/aaa', image_remote_url: 'http://example.com/emoji.png', shortcode: 'tinking', license: 'Everyone but Ohagi')
+      end
+
+      it 'create emoji reaction' do
+        expect(subject.count).to eq 1
+        expect(subject.first.name).to eq 'tinking'
+        expect(subject.first.account).to eq sender
+        expect(subject.first.custom_emoji).to_not be_nil
+        expect(subject.first.custom_emoji.shortcode).to eq 'tinking'
+        expect(subject.first.custom_emoji.domain).to eq 'example.com'
+        expect(sender.favourited?(status)).to be false
+      end
+    end
+
     context 'with custom emoji and custom domain' do
       let(:content) { ':tinking:' }
       let(:tag) do
