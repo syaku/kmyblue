@@ -4,6 +4,8 @@ class ActivityPub::Activity::Follow < ActivityPub::Activity
   include Payloadable
 
   def perform
+    return request_follow_for_friend if friend_follow?
+
     target_account = account_from_uri(object_uri)
 
     return if target_account.nil? || !target_account.local? || delete_arrived_first?(@json['id'])
@@ -43,6 +45,36 @@ class ActivityPub::Activity::Follow < ActivityPub::Activity
     ActivityPub::DeliveryWorker.perform_async(json, target_account.id, @account.inbox_url)
   end
 
+  def request_follow_for_friend
+    already_accepted = false
+
+    if friend.present?
+      already_accepted = friend.they_are_accepted?
+      friend.update!(passive_state: :pending, passive_follow_activity_id: @json['id'])
+    else
+      @friend = FriendDomain.create!(domain: @account.domain, passive_state: :pending, passive_follow_activity_id: @json['id'])
+    end
+
+    if already_accepted || friend.unlocked || Setting.unlocked_friend
+      friend.accept!
+    else
+      # Notify for admin even if unlocked
+      notify_staff_about_pending_friend_server!
+    end
+  end
+
+  def friend
+    @friend ||= FriendDomain.find_by(domain: @account.domain) if @account.domain.present?
+  end
+
+  def friend_follow?
+    @json['object'] == ActivityPub::TagManager::COLLECTIONS[:public] && !block_friend?
+  end
+
+  def block_friend?
+    @block_friend ||= DomainBlock.reject_friend?(@account.domain) || DomainBlock.blocked?(@account.domain)
+  end
+
   def block_straight_follow?
     @block_straight_follow ||= DomainBlock.reject_straight_follow?(@account.domain)
   end
@@ -72,5 +104,13 @@ class ActivityPub::Activity::Follow < ActivityPub::Activity
 
   def instance_info
     @instance_info ||= InstanceInfo.find_by(domain: @account.domain)
+  end
+
+  def notify_staff_about_pending_friend_server!
+    User.those_who_can(:manage_federation).includes(:account).find_each do |u|
+      next unless u.allows_pending_friend_server_emails?
+
+      AdminMailer.with(recipient: u.account).new_pending_friend_server(friend).deliver_later
+    end
   end
 end

@@ -422,6 +422,8 @@ ja:
       public_comment_hint: ドメインブロックの公開を有効にしている場合、このコメントも公開されます。
       reject_favourite: お気に入り、スタンプを拒否
       reject_favourite_hint: 今後のお気に入り、スタンプを拒否します。停止とは無関係です
+      reject_friend: フレンドサーバー申請を拒否
+      reject_friend_hint: 今後のフレンドサーバー申請を全て拒否します。停止とは無関係です
       reject_hashtag: ハッシュタグを拒否
       reject_hashtag_hint: ハッシュタグで検索できなくなり、トレンドにも影響しなくなります。停止とは無関係です
       reject_media: メディアファイルを拒否
@@ -492,6 +494,35 @@ ja:
       suppressed: 非表示
       title: おすすめフォロー
       unsuppress: おすすめフォローを復元
+    friend_servers:
+      accept: 相手の申請を承認する
+      active_status: 自分の状態
+      add_new: フレンドサーバーを追加・申請
+      delete: 削除
+      description_html: <strong>フレンドサーバー</strong>とは、お互いのローカル公開・ローカル検索許可の投稿をそのまま交換するシステムです。
+      disabled: 無効
+      domain: ドメイン
+      edit:
+        allow_all_posts: このサーバーからの全ての投稿を受け入れる
+        available: 有効にする
+        description: フレンドサーバーは、登録と同時に相手方のサーバーへ申請されます。
+        domain: ドメイン
+        inbox_url: フレンドサーバーの inbox URL
+        inbox_url_hint: 空欄にした場合、自動で「https://ドメイン名/inbox」に設定されます。（例：https://example.com/inbox）相手のサーバーがinbox URLを特別に指定している場合、入力してください。
+        pseudo_relay: 全ての公開・ローカル公開・非収載かつ検索可能な投稿を送信する
+        unlocked: このサーバーからの申請を自動で承認する
+      edit_friend: 編集
+      enabled: 有効
+      follow: こちらから申請する
+      passive_status: 相手の状態
+      pending: 承認待ち
+      reject: 相手からの申請を却下する
+      save_and_enable: 保存して有効にする
+      setup: フレンドサーバーを追加・申請
+      signatures_not_enabled: セキュアモードまたは連合制限モードが有効の場合、フレンドサーバーの動作を確認していないため正常に動作しない可能性があります
+      status: ステータス
+      title: フレンドサーバー
+      unfollow: こちらの申請を取り消す
     instances:
       availability:
         description_html:
@@ -514,6 +545,7 @@ ja:
         policies:
           detect_invalid_subscription: 購読のプライバシーなし
           reject_favourite: お気に入りを拒否
+          reject_friend: フレンドサーバー申請を拒否
           reject_hashtag: ハッシュタグを拒否
           reject_media: メディアを拒否する
           reject_new_follow: 新規フォローを拒否
@@ -807,6 +839,7 @@ ja:
       discovery:
         emoji_reactions: スタンプ
         follow_recommendations: おすすめフォロー
+        friend_servers: フレンドサーバー
         preamble: Mastodon を知らないユーザーを取り込むには、興味深いコンテンツを浮上させることが重要です。サーバー上で様々なディスカバリー機能がどのように機能するかを制御します。
         profile_directory: ディレクトリ
         public_timelines: 公開タイムライン
@@ -1043,6 +1076,9 @@ ja:
     new_pending_account:
       body: 新しいアカウントの詳細は以下の通りです。この申請を承認または却下することができます。
       subject: '%{instance}で新しいアカウント (%{username}) が承認待ちです'
+    new_pending_friend_server:
+      body: 新しいフレンドサーバー %{domain} の申請が届いています。この申請を承認または却下することができます。
+      subject: '%{instance}で新しいフレンドサーバー (%{domain}) が承認待ちです'
     new_report:
       body: "%{reporter}さんが%{target}さんを通報しました"
       body_remote: "%{domain}の誰かが%{target}さんを通報しました"
