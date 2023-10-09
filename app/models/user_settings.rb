@@ -25,7 +25,7 @@ class UserSettings
   setting :default_privacy, default: nil, in: %w(public public_unlisted login unlisted private)
   setting :stay_privacy, default: false
   setting :default_reblog_privacy, default: nil
-  setting :default_searchability, default: :direct, in: %w(public private direct limited)
+  setting :default_searchability, default: :direct, in: %w(public private direct limited public_unlisted)
   setting :default_searchability_of_search, default: :public, in: %w(public private direct limited)
   setting :use_public_index, default: true
   setting :disallow_unlisted_public_searchability, default: false
