@@ -509,12 +509,14 @@ en:
       domain: Domain
       edit:
         allow_all_posts: Receive all posts
+        allow_all_posts_hint: 通常は自分のサーバーの誰もフォローしていないアカウントの投稿は例外を除き受け入れがブロックされます。そのブロックを解除します。スパムが発生した場合など、いつでもブロックを再開できます。
         available: Available
         description: フレンドサーバーは、登録と同時に相手方のサーバーへ申請されます。
         domain: Domain
         inbox_url: Friend server inbox URL
         inbox_url_hint: Default value is https://domain/inbox if you input empty (For example, https://example.com/inbox)
         pseudo_relay: Send all public or searchable posts
+        pseudo_relay_hint: お互いに有効で、かつ相手側で「このサーバーからの投稿を無条件で受け入れる」が有効になっている必要があります
         unlocked: Approve automatically receiving new request
       edit_friend: Edit
       enabled: Enabled
