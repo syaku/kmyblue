@@ -147,6 +147,18 @@ describe StatusReachFinder do
           end
         end
 
+        context 'with idle' do
+          before do
+            Fabricate(:friend_domain, domain: 'foo.bar', active_state: :idle, passive_state: :accepted)
+            bob.follow!(alice)
+          end
+
+          it 'send status' do
+            expect(subject.inboxes).to include 'https://foo.bar/inbox'
+            expect(subject.inboxes_for_friend).to_not include 'https://foo.bar/inbox'
+          end
+        end
+
         context 'when unavailable' do
           before do
             Fabricate(:friend_domain, domain: 'foo.bar', active_state: :accepted, available: false)
