@@ -339,6 +339,37 @@ RSpec.describe ActivityPub::Activity::Follow do
         expect(friend).to_not be_nil
         expect(friend.they_are_pending?).to be true
         expect(friend.passive_follow_activity_id).to eq 'foo'
+        expect(friend.inbox_url).to eq 'https://abc.com/inbox'
+      end
+    end
+
+    context 'when my server is pending' do
+      before do
+        friend.update(active_state: :pending)
+      end
+
+      it 'marks me as idle' do
+        subject.perform
+        expect(friend.reload.they_are_pending?).to be true
+        expect(friend.i_am_idle?).to be true
+      end
+    end
+
+    context 'when my server is already accepted' do
+      before do
+        friend.update(active_state: :accepted)
+        stub_request(:post, 'https://example.com/inbox')
+      end
+
+      it 'marks me as idle and the friend as accepted' do
+        subject.perform
+        expect(friend.reload.they_are_accepted?).to be true
+        expect(friend.i_am_idle?).to be true
+        expect(a_request(:post, 'https://example.com/inbox').with(body: hash_including({
+          id: 'foo#accepts/friends',
+          type: 'Accept',
+          object: 'foo',
+        }))).to have_been_made.once
       end
     end
 
@@ -369,26 +400,6 @@ RSpec.describe ActivityPub::Activity::Follow do
         subject.perform
         expect(friend.reload.they_are_pending?).to be true
         expect(friend.passive_follow_activity_id).to eq 'foo'
-      end
-    end
-
-    context 'when unlocked' do
-      before do
-        friend.update(unlocked: true)
-        stub_request(:post, 'https://example.com/inbox')
-      end
-
-      it 'marks the friend as accepted' do
-        subject.perform
-
-        friend = FriendDomain.find_by(domain: 'abc.com')
-        expect(friend).to_not be_nil
-        expect(friend.they_are_accepted?).to be true
-        expect(a_request(:post, 'https://example.com/inbox').with(body: hash_including({
-          id: 'foo#accepts/friends',
-          type: 'Accept',
-          object: 'foo',
-        }))).to have_been_made.once
       end
     end
 
