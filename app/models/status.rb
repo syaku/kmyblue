@@ -437,8 +437,6 @@ class Status < ApplicationRecord
   end
 
   def compute_searchability_activitypub
-    return 'private' if public_unlisted_visibility? && public_searchability?
-
     compute_searchability
   end
 
