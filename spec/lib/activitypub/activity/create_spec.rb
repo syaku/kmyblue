@@ -475,6 +475,17 @@ RSpec.describe ActivityPub::Activity::Create do
         end
 
         context 'with limited' do
+          let(:searchable_by) { 'kmyblue:Limited' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'limited'
+          end
+        end
+
+        context 'with limited old spec' do
           let(:searchable_by) { 'as:Limited' }
 
           it 'create status' do
@@ -600,7 +611,7 @@ RSpec.describe ActivityPub::Activity::Create do
 
         context 'with misskey' do
           let(:sender_software) { 'misskey' }
-          let(:searchable_by) { 'as:Limited' }
+          let(:searchable_by) { 'kmyblue:Limited' }
 
           it 'create status' do
             status = sender.statuses.first

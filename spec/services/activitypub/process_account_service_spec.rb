@@ -54,6 +54,14 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
     end
 
     context 'when limited' do
+      let(:searchable_by) { 'kmyblue:Limited' }
+
+      it 'searchability is limited' do
+        expect(subject.searchability).to eq 'limited'
+      end
+    end
+
+    context 'when limited old spec' do
       let(:searchable_by) { 'as:Limited' }
 
       it 'searchability is limited' do

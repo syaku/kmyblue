@@ -249,7 +249,7 @@ class ActivityPub::TagManager
       when 'direct'
         status.conversation_id.present? ? [uri_for(status.conversation)] : []
       when 'limited'
-        ['as:Limited']
+        ['as:Limited', 'kmyblue:Limited']
       else
         []
       end
@@ -270,7 +270,7 @@ class ActivityPub::TagManager
     when 'private', 'direct'
       [account_followers_url(account)]
     when 'limited'
-      ['as:Limited']
+      ['as:Limited', 'kmyblue:Limited']
     else
       []
     end
