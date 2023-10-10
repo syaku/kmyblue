@@ -188,7 +188,7 @@ RSpec.describe ActivityPub::TagManager do
 
     it 'returns as:Limited array for limited status' do
       status    = Fabricate(:status, searchability: :limited)
-      expect(subject.searchable_by(status)).to eq ['as:Limited']
+      expect(subject.searchable_by(status)).to eq ['as:Limited', 'kmyblue:Limited']
     end
   end
 
