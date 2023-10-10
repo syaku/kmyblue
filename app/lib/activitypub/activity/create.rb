@@ -575,7 +575,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       :public
     elsif audience_cc.any? { |cc| ActivityPub::TagManager.instance.public_collection?(cc) }
       :unlisted
-    elsif audience_to.include?('as:LoginOnly') || audience_to.include?('LoginUser')
+    elsif audience_to.include?('kmyblue:LoginOnly') || audience_to.include?('as:LoginOnly') || audience_to.include?('LoginUser')
       :login
     elsif audience_to.include?(@account.followers_url)
       :private
