@@ -509,7 +509,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       nil
     elsif audience_searchable_by.any? { |uri| ActivityPub::TagManager.instance.public_collection?(uri) }
       :public
-    elsif audience_searchable_by.include?('as:Limited')
+    elsif audience_searchable_by.include?('kmyblue:Limited') || audience_searchable_by.include?('as:Limited')
       :limited
     elsif audience_searchable_by.include?(@account.followers_url)
       :private
