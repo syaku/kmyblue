@@ -99,7 +99,7 @@ class ActivityPub::TagManager
     when 'unlisted', 'public_unlisted', 'private'
       [account_followers_url(status.account)]
     when 'login'
-      [account_followers_url(status.account), 'as:LoginOnly', 'LoginUser']
+      [account_followers_url(status.account), 'as:LoginOnly', 'kmyblue:LoginOnly', 'LoginUser']
     when 'direct'
       if status.account.silenced?
         # Only notify followers if the account is locally silenced
