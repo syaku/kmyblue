@@ -83,7 +83,7 @@ const prependToCircleStatusById = (state, circleId, statusId) => {
       map.updateIn(['statuses', 'items'], list => ImmutableOrderedSet([statusId]).union(list));
     }
   }));
-}
+};
 
 export default function circles(state = initialState, action) {
   switch(action.type) {

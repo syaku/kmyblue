@@ -356,10 +356,10 @@ class MediaGallery extends PureComponent {
 
     const rowClass = (size === 5 || size === 6 || size === 9 || size === 10 || size === 11 || size === 12) ? 'media-gallery--row3' :
       (size === 7 || size === 8 || size === 13 || size === 14 || size === 15 || size === 16) ? 'media-gallery--row4' :
-      'media-gallery--row2';
+        'media-gallery--row2';
     const columnClass = (size === 9) ? 'media-gallery--column3' :
       (size === 10 || size === 11 || size === 12 || size === 13 || size === 14 || size === 15 || size === 16) ? 'media-gallery--column4' :
-      'media-gallery--column2';
+        'media-gallery--column2';
     const compactClass = compact ? 'media-gallery__compact' : null;
 
     return (
