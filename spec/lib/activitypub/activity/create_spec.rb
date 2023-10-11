@@ -236,13 +236,13 @@ RSpec.describe ActivityPub::Activity::Create do
         end
       end
 
-      context 'when public_unlisted with LocalPublic' do
+      context 'when public_unlisted with kmyblue:LocalPublic' do
         let(:object_json) do
           {
             id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
             type: 'Note',
             content: 'Lorem ipsum',
-            to: ['http://example.com/followers', 'LocalPublic'],
+            to: ['http://example.com/followers', 'kmyblue:LocalPublic'],
             cc: 'https://www.w3.org/ns/activitystreams#Public',
           }
         end
@@ -255,13 +255,13 @@ RSpec.describe ActivityPub::Activity::Create do
         end
       end
 
-      context 'when public_unlisted with LocalPublic from friend-server' do
+      context 'when public_unlisted with kmyblue:LocalPublic from friend-server' do
         let(:object_json) do
           {
             id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
             type: 'Note',
             content: 'Lorem ipsum',
-            to: ['http://example.com/followers', 'LocalPublic'],
+            to: ['http://example.com/followers', 'kmyblue:LocalPublic'],
             cc: 'https://www.w3.org/ns/activitystreams#Public',
           }
         end
@@ -452,8 +452,8 @@ RSpec.describe ActivityPub::Activity::Create do
           end
         end
 
-        context 'with public_unlisted with LocalPublic' do
-          let(:searchable_by) { ['http://example.com/followers', 'LocalPublic'] }
+        context 'with public_unlisted with kmyblue:LocalPublic' do
+          let(:searchable_by) { ['http://example.com/followers', 'kmyblue:LocalPublic'] }
 
           it 'create status' do
             status = sender.statuses.first
@@ -463,8 +463,8 @@ RSpec.describe ActivityPub::Activity::Create do
           end
         end
 
-        context 'with public_unlisted with LocalPublic from friend-server' do
-          let(:searchable_by) { ['http://example.com/followers', 'LocalPublic'] }
+        context 'with public_unlisted with kmyblue:LocalPublic from friend-server' do
+          let(:searchable_by) { ['http://example.com/followers', 'kmyblue:LocalPublic'] }
           let(:active_friend) { true }
 
           it 'create status' do

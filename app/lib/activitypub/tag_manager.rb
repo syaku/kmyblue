@@ -128,7 +128,7 @@ class ActivityPub::TagManager
 
   def to_for_friend(status)
     to = to(status)
-    to << 'LocalPublic' if status.public_unlisted_visibility?
+    to << 'kmyblue:LocalPublic' if status.public_unlisted_visibility?
     to
   end
 
@@ -259,7 +259,7 @@ class ActivityPub::TagManager
 
   def searchable_by_for_friend(status)
     searchable = searchable_by(status)
-    searchable << 'LocalPublic' if status.compute_searchability_local == 'public_unlisted'
+    searchable << 'kmyblue:LocalPublic' if status.compute_searchability_local == 'public_unlisted'
     searchable
   end
 
