@@ -149,7 +149,7 @@ RSpec.describe ActivityPub::Activity::Undo do
         friend = Fabricate(:friend_domain, domain: sender.domain, passive_state: :accepted)
         subject.perform
         expect(sender.following?(recipient)).to be false
-        expect(friend.they_are_accepted?).to be true
+        expect(friend.reload.they_are_accepted?).to be true
       end
 
       context 'with only object uri' do
@@ -175,8 +175,19 @@ RSpec.describe ActivityPub::Activity::Undo do
 
         it 'deletes follow from this server to friend' do
           subject.perform
-          expect(friend.reload.they_are_idle?).to be true
-          expect(friend.passive_follow_activity_id).to be_nil
+          expect(FriendDomain.exists?(domain: 'abc.com')).to be false
+        end
+
+        it 'when my server is pending' do
+          friend.update(active_state: :pending)
+          subject.perform
+          expect(FriendDomain.exists?(domain: 'abc.com')).to be false
+        end
+
+        it 'when my server is accepted' do
+          friend.update(active_state: :accepted)
+          subject.perform
+          expect(FriendDomain.exists?(domain: 'abc.com')).to be false
         end
       end
     end
@@ -200,6 +211,33 @@ RSpec.describe ActivityPub::Activity::Undo do
       it 'deletes favourite from sender to status' do
         subject.perform
         expect(sender.favourited?(status)).to be false
+      end
+    end
+
+    context 'with EmojiReact' do
+      let(:status) { Fabricate(:status) }
+
+      let(:content) { '😀' }
+      let(:object_json) do
+        {
+          id: 'bar',
+          type: 'Like',
+          actor: ActivityPub::TagManager.instance.uri_for(sender),
+          object: ActivityPub::TagManager.instance.uri_for(status),
+          content: content,
+        }
+      end
+
+      before do
+        Fabricate(:favourite, account: sender, status: status)
+        Fabricate(:emoji_reaction, account: sender, status: status, name: content)
+      end
+
+      it 'delete emoji reaction' do
+        subject.perform
+        reaction = EmojiReaction.find_by(account: sender, status: status)
+        expect(reaction).to be_nil
+        expect(sender.favourited?(status)).to be true
       end
     end
   end

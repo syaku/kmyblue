@@ -103,7 +103,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
   end
 
   def remove_follow_from_friend
-    friend.update!(passive_state: :idle, passive_follow_activity_id: nil)
+    friend.destroy_without_signal!
   end
 
   def friend
@@ -146,6 +146,7 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
         if @original_status.account.local?
           forward_for_undo_emoji_reaction
           relay_for_undo_emoji_reaction
+          relay_friend_for_undo_emoji_reaction
         end
       end
     else
@@ -180,6 +181,14 @@ class ActivityPub::Activity::Undo < ActivityPub::Activity
     return unless @json['signature'].present? && @original_status.public_visibility?
 
     ActivityPub::DeliveryWorker.push_bulk(Relay.enabled.pluck(:inbox_url)) do |inbox_url|
+      [Oj.dump(@json), @original_status.account.id, inbox_url]
+    end
+  end
+
+  def relay_friend_for_undo_emoji_reaction
+    return unless @json['signature'].present? && @original_status.distributable_friend?
+
+    ActivityPub::DeliveryWorker.push_bulk(FriendDomain.distributables.pluck(:inbox_url)) do |inbox_url|
       [Oj.dump(@json), @original_status.account.id, inbox_url]
     end
   end

@@ -272,7 +272,7 @@ class ActivityPub::ProcessAccountService < BaseService
       :public
     elsif audience_searchable_by.include?(@account.followers_url)
       :private
-    elsif audience_searchable_by.include?('as:Limited')
+    elsif audience_searchable_by.include?('kmyblue:Limited') || audience_searchable_by.include?('as:Limited')
       :limited
     else
       :direct

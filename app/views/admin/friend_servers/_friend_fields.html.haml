@@ -11,10 +11,10 @@
   = f.input :available, as: :boolean, wrapper: :with_label, label: t('admin.friend_servers.edit.available')
 
 .fields-group
-  = f.input :pseudo_relay, as: :boolean, wrapper: :with_label, label: t('admin.friend_servers.edit.pseudo_relay'), hint: t('admin.friend_servers.edit.pseudo_relay_hint')
+  = f.input :delivery_local, as: :boolean, wrapper: :with_label, label: t('admin.friend_servers.edit.delivery_local'), hint: t('admin.friend_servers.edit.delivery_local_hint')
 
 .fields-group
-  = f.input :unlocked, as: :boolean, wrapper: :with_label, label: t('admin.friend_servers.edit.unlocked')
+  = f.input :pseudo_relay, as: :boolean, wrapper: :with_label, label: t('admin.friend_servers.edit.pseudo_relay'), hint: t('admin.friend_servers.edit.pseudo_relay_hint')
 
 .fields-group
   = f.input :allow_all_posts, as: :boolean, wrapper: :with_label, label: t('admin.friend_servers.edit.allow_all_posts'), hint: t('admin.friend_servers.edit.allow_all_posts_hint')

@@ -30,9 +30,11 @@ RSpec.describe ActivityPub::Activity::Create do
 
       let(:sender_software) { 'mastodon' }
       let(:custom_before) { false }
+      let(:active_friend) { false }
 
       before do
         Fabricate(:instance_info, domain: 'example.com', software: sender_software)
+        Fabricate(:friend_domain, domain: 'example.com', active_state: :accepted) if active_friend
         subject.perform unless custom_before
       end
 
@@ -234,16 +236,36 @@ RSpec.describe ActivityPub::Activity::Create do
         end
       end
 
-      context 'when public_unlisted with LocalPublic' do
+      context 'when public_unlisted with kmyblue:LocalPublic' do
         let(:object_json) do
           {
             id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
             type: 'Note',
             content: 'Lorem ipsum',
-            to: ['http://example.com/followers', 'LocalPublic'],
+            to: ['http://example.com/followers', 'kmyblue:LocalPublic'],
             cc: 'https://www.w3.org/ns/activitystreams#Public',
           }
         end
+
+        it 'creates status' do
+          status = sender.statuses.first
+
+          expect(status).to_not be_nil
+          expect(status.visibility).to eq 'unlisted'
+        end
+      end
+
+      context 'when public_unlisted with kmyblue:LocalPublic from friend-server' do
+        let(:object_json) do
+          {
+            id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+            type: 'Note',
+            content: 'Lorem ipsum',
+            to: ['http://example.com/followers', 'kmyblue:LocalPublic'],
+            cc: 'https://www.w3.org/ns/activitystreams#Public',
+          }
+        end
+        let(:active_friend) { true }
 
         it 'creates status' do
           status = sender.statuses.first
@@ -430,8 +452,20 @@ RSpec.describe ActivityPub::Activity::Create do
           end
         end
 
-        context 'with public_unlisted with LocalPublic' do
-          let(:searchable_by) { ['http://example.com/followers', 'LocalPublic'] }
+        context 'with public_unlisted with kmyblue:LocalPublic' do
+          let(:searchable_by) { ['http://example.com/followers', 'kmyblue:LocalPublic'] }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'private'
+          end
+        end
+
+        context 'with public_unlisted with kmyblue:LocalPublic from friend-server' do
+          let(:searchable_by) { ['http://example.com/followers', 'kmyblue:LocalPublic'] }
+          let(:active_friend) { true }
 
           it 'create status' do
             status = sender.statuses.first
@@ -475,6 +509,17 @@ RSpec.describe ActivityPub::Activity::Create do
         end
 
         context 'with limited' do
+          let(:searchable_by) { 'kmyblue:Limited' }
+
+          it 'create status' do
+            status = sender.statuses.first
+
+            expect(status).to_not be_nil
+            expect(status.searchability).to eq 'limited'
+          end
+        end
+
+        context 'with limited old spec' do
           let(:searchable_by) { 'as:Limited' }
 
           it 'create status' do
@@ -600,7 +645,7 @@ RSpec.describe ActivityPub::Activity::Create do
 
         context 'with misskey' do
           let(:sender_software) { 'misskey' }
-          let(:searchable_by) { 'as:Limited' }
+          let(:searchable_by) { 'kmyblue:Limited' }
 
           it 'create status' do
             status = sender.statuses.first
@@ -1495,11 +1540,7 @@ RSpec.describe ActivityPub::Activity::Create do
     context 'when sender is in friend server' do
       subject { described_class.new(json, sender, delivery: true) }
 
-      before do
-        Fabricate(:friend_domain, domain: sender.domain, active_state: :accepted, passive_state: :accepted)
-        subject.perform
-      end
-
+      let!(:friend) { Fabricate(:friend_domain, domain: sender.domain, active_state: :accepted) }
       let(:object_json) do
         {
           id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
@@ -1509,10 +1550,19 @@ RSpec.describe ActivityPub::Activity::Create do
       end
 
       it 'creates status' do
+        subject.perform
         status = sender.statuses.first
 
         expect(status).to_not be_nil
         expect(status.text).to eq 'Lorem ipsum'
+      end
+
+      it 'whey no-relay not creates status' do
+        friend.update(allow_all_posts: false)
+        subject.perform
+        status = sender.statuses.first
+
+        expect(status).to be_nil
       end
     end
 

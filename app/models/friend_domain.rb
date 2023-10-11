@@ -13,10 +13,10 @@
 #  passive_follow_activity_id :string
 #  available                  :boolean          default(TRUE), not null
 #  pseudo_relay               :boolean          default(FALSE), not null
-#  unlocked                   :boolean          default(FALSE), not null
 #  allow_all_posts            :boolean          default(TRUE), not null
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
+#  delivery_local             :boolean          default(TRUE), not null
 #
 
 class FriendDomain < ApplicationRecord
@@ -27,24 +27,31 @@ class FriendDomain < ApplicationRecord
   enum passive_state: { idle: 0, pending: 1, accepted: 2, rejected: 3 }, _prefix: :they_are
 
   scope :by_domain_and_subdomains, ->(domain) { where(domain: Instance.by_domain_and_subdomains(domain).select(:domain)) }
-  scope :enabled, -> { where(available: true) }
-  scope :mutuals, -> { enabled.where(active_state: :accepted, passive_state: :accepted) }
-  scope :distributables, -> { mutuals.where(pseudo_relay: true) }
-  scope :deliver_locals, -> { enabled.where(active_state: :accepted) }
-  scope :free_receivings, -> { mutuals.where(allow_all_posts: true) }
+  scope :enabled, -> { where(active_state: :accepted).or(FriendDomain.where(passive_state: :accepted)).where(available: true) }
+  scope :distributables, -> { enabled.where(pseudo_relay: true) }
+  scope :deliver_locals, -> { enabled.where(delivery_local: true) }
+  scope :free_receivings, -> { enabled.where(allow_all_posts: true) }
 
   before_destroy :ensure_disabled
   after_commit :set_default_inbox_url
 
-  def mutual?
-    i_am_accepted? && they_are_accepted?
+  def accepted?
+    i_am_accepted? || they_are_accepted?
+  end
+
+  def pending?
+    !accepted? && (i_am_pending? || they_are_pending?)
+  end
+
+  def idle?
+    (i_am_idle? || i_am_rejected?) && (they_are_idle? || they_are_rejected?)
   end
 
   def follow!
     activity_id = ActivityPub::TagManager.instance.generate_uri_for(nil)
     payload     = Oj.dump(follow_activity(activity_id))
 
-    update!(active_state: :pending, active_follow_activity_id: activity_id)
+    update!(active_state: :pending, passive_state: :idle, active_follow_activity_id: activity_id)
     DeliveryFailureTracker.reset!(inbox_url)
     ActivityPub::DeliveryWorker.perform_async(payload, some_local_account.id, inbox_url)
   end
@@ -53,7 +60,7 @@ class FriendDomain < ApplicationRecord
     activity_id = ActivityPub::TagManager.instance.generate_uri_for(nil)
     payload     = Oj.dump(unfollow_activity(activity_id))
 
-    update!(active_state: :idle, active_follow_activity_id: nil)
+    update!(active_state: :idle, passive_state: :idle, active_follow_activity_id: nil)
     DeliveryFailureTracker.reset!(inbox_url)
     ActivityPub::DeliveryWorker.perform_async(payload, some_local_account.id, inbox_url)
   end
@@ -64,7 +71,7 @@ class FriendDomain < ApplicationRecord
     activity_id = passive_follow_activity_id
     payload     = Oj.dump(accept_follow_activity(activity_id))
 
-    update!(passive_state: :accepted)
+    update!(passive_state: :accepted, active_state: :idle)
     DeliveryFailureTracker.reset!(inbox_url)
     ActivityPub::DeliveryWorker.perform_async(payload, some_local_account.id, inbox_url)
   end
@@ -75,9 +82,19 @@ class FriendDomain < ApplicationRecord
     activity_id = passive_follow_activity_id
     payload     = Oj.dump(reject_follow_activity(activity_id))
 
-    update!(passive_state: :rejected, passive_follow_activity_id: nil)
+    update!(passive_state: :rejected, active_state: :idle, passive_follow_activity_id: nil)
     DeliveryFailureTracker.reset!(inbox_url)
     ActivityPub::DeliveryWorker.perform_async(payload, some_local_account.id, inbox_url)
+  end
+
+  def destroy_without_signal!
+    self.active_state = :idle
+    self.passive_state = :idle
+    destroy!
+  end
+
+  def initialize_inbox_url!
+    self.inbox_url = default_inbox_url
   end
 
   private
@@ -154,7 +171,7 @@ class FriendDomain < ApplicationRecord
   end
 
   def ensure_disabled
-    delete_for_friend! unless i_am_idle? && they_are_idle?
+    delete_for_friend! unless id.nil? || (i_am_idle? && they_are_idle?)
   end
 
   def set_default_inbox_url

@@ -77,7 +77,7 @@ RSpec.describe ActivityPub::TagManager do
   describe '#to_for_friend' do
     it 'returns followers collection for public_unlisted status' do
       status = Fabricate(:status, visibility: :public_unlisted)
-      expect(subject.to_for_friend(status)).to eq [account_followers_url(status.account), 'LocalPublic']
+      expect(subject.to_for_friend(status)).to eq [account_followers_url(status.account), 'kmyblue:LocalPublic']
     end
 
     it 'returns followers collection for unlisted status' do
@@ -188,7 +188,7 @@ RSpec.describe ActivityPub::TagManager do
 
     it 'returns as:Limited array for limited status' do
       status    = Fabricate(:status, searchability: :limited)
-      expect(subject.searchable_by(status)).to eq ['as:Limited']
+      expect(subject.searchable_by(status)).to eq ['as:Limited', 'kmyblue:Limited']
     end
   end
 
@@ -200,7 +200,7 @@ RSpec.describe ActivityPub::TagManager do
 
     it 'returns public collection for public_unlisted status' do
       status = Fabricate(:status, account: Fabricate(:account, searchability: :public), searchability: :public_unlisted)
-      expect(subject.searchable_by_for_friend(status)).to eq [account_followers_url(status.account), 'LocalPublic']
+      expect(subject.searchable_by_for_friend(status)).to eq [account_followers_url(status.account), 'kmyblue:LocalPublic']
     end
 
     it 'returns followers collection for private status' do

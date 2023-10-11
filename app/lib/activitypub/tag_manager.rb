@@ -99,7 +99,7 @@ class ActivityPub::TagManager
     when 'unlisted', 'public_unlisted', 'private'
       [account_followers_url(status.account)]
     when 'login'
-      [account_followers_url(status.account), 'as:LoginOnly', 'LoginUser']
+      [account_followers_url(status.account), 'as:LoginOnly', 'kmyblue:LoginOnly', 'LoginUser']
     when 'direct'
       if status.account.silenced?
         # Only notify followers if the account is locally silenced
@@ -128,7 +128,7 @@ class ActivityPub::TagManager
 
   def to_for_friend(status)
     to = to(status)
-    to << 'LocalPublic' if status.public_unlisted_visibility?
+    to << 'kmyblue:LocalPublic' if status.public_unlisted_visibility?
     to
   end
 
@@ -249,7 +249,7 @@ class ActivityPub::TagManager
       when 'direct'
         status.conversation_id.present? ? [uri_for(status.conversation)] : []
       when 'limited'
-        ['as:Limited']
+        ['as:Limited', 'kmyblue:Limited']
       else
         []
       end
@@ -259,7 +259,7 @@ class ActivityPub::TagManager
 
   def searchable_by_for_friend(status)
     searchable = searchable_by(status)
-    searchable << 'LocalPublic' if status.compute_searchability_local == 'public_unlisted'
+    searchable << 'kmyblue:LocalPublic' if status.compute_searchability_local == 'public_unlisted'
     searchable
   end
 
@@ -270,7 +270,7 @@ class ActivityPub::TagManager
     when 'private', 'direct'
       [account_followers_url(account)]
     when 'limited'
-      ['as:Limited']
+      ['as:Limited', 'kmyblue:Limited']
     else
       []
     end

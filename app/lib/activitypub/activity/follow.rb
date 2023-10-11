@@ -49,16 +49,20 @@ class ActivityPub::Activity::Follow < ActivityPub::Activity
     already_accepted = false
 
     if friend.present?
-      already_accepted = friend.they_are_accepted?
-      friend.update!(passive_state: :pending, passive_follow_activity_id: @json['id'])
+      already_accepted = friend.accepted?
+      friend.update!(passive_state: :pending, active_state: :idle, passive_follow_activity_id: @json['id'])
     else
-      @friend = FriendDomain.create!(domain: @account.domain, passive_state: :pending, passive_follow_activity_id: @json['id'])
+      @friend = FriendDomain.new(domain: @account.domain, passive_state: :pending, passive_follow_activity_id: @json['id'])
+      @friend.initialize_inbox_url!
+      @friend.save!
     end
 
-    if already_accepted || friend.unlocked || Setting.unlocked_friend
+    if already_accepted || Setting.unlocked_friend
       friend.accept!
-    else
+
       # Notify for admin even if unlocked
+      notify_staff_about_pending_friend_server! unless already_accepted
+    else
       notify_staff_about_pending_friend_server!
     end
   end
