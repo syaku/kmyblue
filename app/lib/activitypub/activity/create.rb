@@ -93,9 +93,9 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     resolve_thread(@status)
     fetch_replies(@status)
+    process_references!
     distribute
     forward_for_reply
-    process_references!
     join_group!
   end
 
@@ -114,7 +114,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def process_status_params
-    @status_parser = ActivityPub::Parser::StatusParser.new(@json, followers_collection: @account.followers_url, object: @object, account: @account)
+    @status_parser = ActivityPub::Parser::StatusParser.new(@json, followers_collection: @account.followers_url, object: @object, account: @account, friend_domain: friend_domain?)
 
     @params = {
       uri: @status_parser.uri,
@@ -256,17 +256,20 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     emoji = CustomEmoji.find_by(shortcode: custom_emoji_parser.shortcode, domain: @account.domain)
 
-    return unless emoji.nil? || custom_emoji_parser.image_remote_url != emoji.image_remote_url || (custom_emoji_parser.updated_at && custom_emoji_parser.updated_at >= emoji.updated_at)
+    return unless emoji.nil? ||
+                  custom_emoji_parser.image_remote_url != emoji.image_remote_url ||
+                  (custom_emoji_parser.updated_at && custom_emoji_parser.updated_at >= emoji.updated_at) ||
+                  custom_emoji_parser.license != emoji.license
 
     begin
       emoji ||= CustomEmoji.new(
         domain: @account.domain,
         shortcode: custom_emoji_parser.shortcode,
-        uri: custom_emoji_parser.uri,
-        is_sensitive: custom_emoji_parser.is_sensitive,
-        license: custom_emoji_parser.license
+        uri: custom_emoji_parser.uri
       )
       emoji.image_remote_url = custom_emoji_parser.image_remote_url
+      emoji.license = custom_emoji_parser.license
+      emoji.is_sensitive = custom_emoji_parser.is_sensitive
       emoji.save
     rescue Seahorse::Client::NetworkingError => e
       Rails.logger.warn "Error storing emoji: #{e}"
@@ -444,7 +447,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def related_to_local_activity?
     fetch? || followed_by_local_accounts? || requested_through_relay? ||
-      responds_to_followed_account? || addresses_local_accounts?
+      responds_to_followed_account? || addresses_local_accounts? || quote_local? || free_friend_domain?
   end
 
   def responds_to_followed_account?
@@ -485,10 +488,30 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def process_references!
     references = @object['references'].nil? ? [] : ActivityPub::FetchReferencesService.new.call(@status, @object['references'])
-    quote = @object['quote'] || @object['quoteUrl'] || @object['quoteURL'] || @object['_misskey_quote']
-    references << quote if quote
 
-    ProcessReferencesService.perform_worker_async(@status, [], references)
+    ProcessReferencesService.call_service_without_error(@status, [], references, [quote].compact)
+  end
+
+  def quote_local?
+    url = quote
+
+    if url.present?
+      ResolveURLService.new.call(url, on_behalf_of: @account, local_only: true).present?
+    else
+      false
+    end
+  end
+
+  def free_friend_domain?
+    FriendDomain.free_receivings.exists?(domain: @account.domain)
+  end
+
+  def friend_domain?
+    FriendDomain.enabled.find_by(domain: @account.domain)&.accepted?
+  end
+
+  def quote
+    @quote ||= @object['quote'] || @object['quoteUrl'] || @object['quoteURL'] || @object['_misskey_quote']
   end
 
   def join_group!

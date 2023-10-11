@@ -17,7 +17,8 @@ module KmyblueCapabilitiesHelper
       :kmyblue_bookmark_category,
       :kmyblue_quote,
       :kmyblue_searchability_limited,
-      :kmyblue_visibility_public_unlisted,
+      :kmyblue_searchability_public_unlisted,
+      :kmyblue_circle_history,
     ]
 
     capabilities << :profile_search unless Chewy.enabled?
@@ -25,6 +26,7 @@ module KmyblueCapabilitiesHelper
       capabilities << :emoji_reaction
       capabilities << :enable_wide_emoji_reaction
     end
+    capabilities << :kmyblue_visibility_public_unlisted if Setting.enable_public_unlisted_visibility
 
     capabilities
   end

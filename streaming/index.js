@@ -864,7 +864,7 @@ const startServer = async () => {
         }
 
         if (!payload.filtered && !req.cachedFilters) {
-          queries.push(client.query('SELECT filter.id AS id, filter.phrase AS title, filter.context AS context, filter.expires_at AS expires_at, filter.action AS filter_action, keyword.keyword AS keyword, keyword.whole_word AS whole_word, filter.exclude_follows AS exclude_follows, filter.exclude_localusers AS exclude_localusers FROM custom_filter_keywords keyword JOIN custom_filters filter ON keyword.custom_filter_id = filter.id WHERE filter.account_id = $1 AND (filter.expires_at IS NULL OR filter.expires_at > NOW())', [req.accountId]));
+          queries.push(client.query('SELECT filter.id AS id, filter.phrase AS title, filter.context AS context, filter.expires_at AS expires_at, filter.action AS filter_action, filter.with_quote AS with_quote, keyword.keyword AS keyword, keyword.whole_word AS whole_word, filter.exclude_follows AS exclude_follows, filter.exclude_localusers AS exclude_localusers FROM custom_filter_keywords keyword JOIN custom_filters filter ON keyword.custom_filter_id = filter.id WHERE filter.account_id = $1 AND (filter.expires_at IS NULL OR filter.expires_at > NOW())', [req.accountId]));
         }
         if (!payload.filtered) {
           queries.push(client.query(`SELECT 1
@@ -913,7 +913,8 @@ const startServer = async () => {
                     // representing a value in an enum defined by Ruby on Rails:
                     //
                     // enum { warn: 0, hide: 1 }
-                    filter_action: ['warn', 'hide'][filter.filter_action],
+                    filter_action: ['warn', 'hide', 'half_warn'][filter.filter_action],
+                    with_quote: filter.with_quote,
                     excludeFollows: filter.exclude_follows,
                     excludeLocalusers: filter.exclude_localusers,
                   },
