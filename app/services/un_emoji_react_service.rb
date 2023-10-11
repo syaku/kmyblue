@@ -16,7 +16,6 @@ class UnEmojiReactService < BaseService
       notify_to_followers(emoji_reaction) if @status.account.local?
       write_stream(emoji_reaction)
 
-      forward_for_undo_emoji_reaction!(emoji_reaction)
       relay_for_undo_emoji_reaction!(emoji_reaction)
       relay_friend_for_undo_emoji_reaction!(emoji_reaction)
     else
@@ -62,12 +61,6 @@ class UnEmojiReactService < BaseService
   def render_emoji_reaction(emoji_group)
     # @rendered_emoji_reaction ||= InlineRenderer.render(emoji_group, nil, :emoji_reaction)
     Oj.dump(event: :emoji_reaction, payload: emoji_group.to_json)
-  end
-
-  def forward_for_undo_emoji_reaction!(emoji_reaction)
-    return unless @status.local?
-
-    ActivityPub::RawDistributionWorker.perform_async(build_json(emoji_reaction), @status.account.id, [@status.account.preferred_inbox_url])
   end
 
   def relay_for_undo_emoji_reaction!(emoji_reaction)

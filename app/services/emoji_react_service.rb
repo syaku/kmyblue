@@ -37,7 +37,6 @@ class EmojiReactService < BaseService
     notify_to_followers(emoji_reaction)
     bump_potential_friendship(account, status)
     write_stream(emoji_reaction)
-    forward_for_emoji_reaction!(emoji_reaction)
     relay_for_emoji_reaction!(emoji_reaction)
     relay_friend_for_emoji_reaction!(emoji_reaction)
 
@@ -89,12 +88,6 @@ class EmojiReactService < BaseService
   def render_emoji_reaction(emoji_group)
     # @rendered_emoji_reaction ||= InlineRenderer.render(HashObject.new(emoji_group), nil, :emoji_reaction)
     @render_emoji_reaction ||= Oj.dump(event: :emoji_reaction, payload: emoji_group.to_json)
-  end
-
-  def forward_for_emoji_reaction!(emoji_reaction)
-    return unless @status.local?
-
-    ActivityPub::RawDistributionWorker.perform_async(build_json(emoji_reaction), @status.account.id, [@status.account.preferred_inbox_url])
   end
 
   def relay_for_emoji_reaction!(emoji_reaction)
