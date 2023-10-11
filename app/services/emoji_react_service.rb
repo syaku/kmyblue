@@ -79,7 +79,7 @@ class EmojiReactService < BaseService
   end
 
   def build_json(emoji_reaction)
-    Oj.dump(serialize_payload(emoji_reaction, ActivityPub::EmojiReactionSerializer))
+    Oj.dump(serialize_payload(emoji_reaction, ActivityPub::EmojiReactionSerializer, signer: emoji_reaction.account))
   end
 
   def render_emoji_reaction(emoji_group)
