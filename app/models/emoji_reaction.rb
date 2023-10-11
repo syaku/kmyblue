@@ -43,6 +43,10 @@ class EmojiReaction < ApplicationRecord
     custom_emoji? && !custom_emoji.local?
   end
 
+  def sign?
+    status&.distributable_friend?
+  end
+
   private
 
   def refresh_cache

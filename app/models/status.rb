@@ -591,6 +591,10 @@ class Status < ApplicationRecord
     end
   end
 
+  def distributable_friend?
+    public_visibility? || public_unlisted_visibility? || (unlisted_visibility? && (public_searchability? || public_unlisted_searchability?))
+  end
+
   private
 
   def update_status_stat!(attrs)

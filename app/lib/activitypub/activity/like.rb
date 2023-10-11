@@ -78,7 +78,7 @@ class ActivityPub::Activity::Like < ActivityPub::Activity
   end
 
   def relay_friend_for_emoji_reaction
-    return unless @json['signature'].present? && @original_status.public_visibility?
+    return unless @json['signature'].present? && @original_status.distributable_friend?
 
     ActivityPub::DeliveryWorker.push_bulk(FriendDomain.distributables.pluck(:inbox_url)) do |inbox_url|
       [Oj.dump(@json), @original_status.account.id, inbox_url]
