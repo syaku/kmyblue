@@ -52,7 +52,7 @@ class UnEmojiReactService < BaseService
   end
 
   def build_json(emoji_reaction)
-    Oj.dump(serialize_payload(emoji_reaction, ActivityPub::UndoEmojiReactionSerializer))
+    Oj.dump(serialize_payload(emoji_reaction, ActivityPub::UndoEmojiReactionSerializer, signer: emoji_reaction.account))
   end
 
   def render_emoji_reaction(emoji_group)
