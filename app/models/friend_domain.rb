@@ -93,15 +93,11 @@ class FriendDomain < ApplicationRecord
     destroy!
   end
 
-  def initialize_inbox_url!
-    self.inbox_url = default_inbox_url
-  end
-
-  private
-
   def default_inbox_url
     "https://#{domain}/inbox"
   end
+
+  private
 
   def delete_for_friend!
     activity_id = ActivityPub::TagManager.instance.generate_uri_for(nil)
@@ -118,6 +114,9 @@ class FriendDomain < ApplicationRecord
       type: 'Follow',
       actor: ActivityPub::TagManager.instance.uri_for(some_local_account),
       object: ActivityPub::TagManager::COLLECTIONS[:public],
+
+      # Cannot use inbox_url method because this model also has inbox_url column
+      inboxUrl: "https://#{Rails.configuration.x.web_domain}/inbox",
     }
   end
 

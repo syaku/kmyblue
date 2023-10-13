@@ -310,6 +310,7 @@ RSpec.describe ActivityPub::Activity::Follow do
     let!(:friend) { Fabricate(:friend_domain, domain: 'abc.com', passive_state: :idle) }
     let!(:owner_user) { Fabricate(:user, role: UserRole.find_by(name: 'Owner')) }
     let!(:patch_user) { Fabricate(:user, role: Fabricate(:user_role, name: 'OhagiOps', permissions: UserRole::FLAGS[:manage_federation])) }
+    let(:inbox_url) { nil }
 
     let(:json) do
       {
@@ -318,6 +319,7 @@ RSpec.describe ActivityPub::Activity::Follow do
         type: 'Follow',
         actor: ActivityPub::TagManager.instance.uri_for(sender),
         object: 'https://www.w3.org/ns/activitystreams#Public',
+        inboxUrl: inbox_url,
       }.with_indifferent_access
     end
 
@@ -340,6 +342,24 @@ RSpec.describe ActivityPub::Activity::Follow do
         expect(friend.they_are_pending?).to be true
         expect(friend.passive_follow_activity_id).to eq 'foo'
         expect(friend.inbox_url).to eq 'https://abc.com/inbox'
+      end
+    end
+
+    context 'when no record and inbox_url is specified' do
+      let(:inbox_url) { 'https://ohagi.com/inbox' }
+
+      before do
+        friend.update(domain: 'def.com')
+      end
+
+      it 'marks the friend as pending' do
+        subject.perform
+
+        friend = FriendDomain.find_by(domain: 'abc.com')
+        expect(friend).to_not be_nil
+        expect(friend.they_are_pending?).to be true
+        expect(friend.passive_follow_activity_id).to eq 'foo'
+        expect(friend.inbox_url).to eq 'https://ohagi.com/inbox'
       end
     end
 
