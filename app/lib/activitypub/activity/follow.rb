@@ -53,7 +53,7 @@ class ActivityPub::Activity::Follow < ActivityPub::Activity
       friend.update!(passive_state: :pending, active_state: :idle, passive_follow_activity_id: @json['id'])
     else
       @friend = FriendDomain.new(domain: @account.domain, passive_state: :pending, passive_follow_activity_id: @json['id'])
-      @friend.initialize_inbox_url!
+      @friend.inbox_url = @json['inboxUrl'].presence || @friend.default_inbox_url
       @friend.save!
     end
 
