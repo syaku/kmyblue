@@ -51,16 +51,11 @@ RSpec.describe 'Lists' do
 
     it_behaves_like 'forbidden for wrong scope', 'write write:lists'
 
-    it 'returns http success' do
+    it 'returns the expected lists', :aggregate_failures do
       subject
 
       expect(response).to have_http_status(200)
-    end
-
-    it 'returns the expected lists' do
-      subject
-
-      expect(body_as_json).to match_array(expected_response_with_antennas)
+      expect(body_as_json).to match_array(expected_response)
     end
   end
 
@@ -73,15 +68,10 @@ RSpec.describe 'Lists' do
 
     it_behaves_like 'forbidden for wrong scope', 'write write:lists'
 
-    it 'returns http success' do
+    it 'returns the requested list correctly', :aggregate_failures do
       subject
 
       expect(response).to have_http_status(200)
-    end
-
-    it 'returns the requested list correctly' do
-      subject
-
       expect(body_as_json).to eq({
         id: list.id.to_s,
         title: list.title,
@@ -119,21 +109,11 @@ RSpec.describe 'Lists' do
 
     it_behaves_like 'forbidden for wrong scope', 'read read:lists'
 
-    it 'returns http success' do
+    it 'returns the new list', :aggregate_failures do
       subject
 
       expect(response).to have_http_status(200)
-    end
-
-    it 'returns the new list' do
-      subject
-
       expect(body_as_json).to match(a_hash_including(title: 'my list', replies_policy: 'none', exclusive: true))
-    end
-
-    it 'creates a list' do
-      subject
-
       expect(List.where(account: user.account).count).to eq(1)
     end
 
@@ -168,15 +148,10 @@ RSpec.describe 'Lists' do
 
     it_behaves_like 'forbidden for wrong scope', 'read read:lists'
 
-    it 'returns http success' do
+    it 'returns the updated list', :aggregate_failures do
       subject
 
       expect(response).to have_http_status(200)
-    end
-
-    it 'returns the updated list' do
-      subject
-
       list.reload
 
       expect(body_as_json).to eq({
@@ -228,15 +203,10 @@ RSpec.describe 'Lists' do
 
     it_behaves_like 'forbidden for wrong scope', 'read read:lists'
 
-    it 'returns http success' do
+    it 'deletes the list', :aggregate_failures do
       subject
 
       expect(response).to have_http_status(200)
-    end
-
-    it 'deletes the list' do
-      subject
-
       expect(List.where(id: list.id)).to_not exist
     end
 
