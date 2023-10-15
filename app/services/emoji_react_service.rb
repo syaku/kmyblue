@@ -23,7 +23,10 @@ class EmojiReactService < BaseService
       raise Mastodon::ValidationError, I18n.t('reactions.errors.duplication') unless emoji_reaction.nil?
 
       shortcode, domain = name.split('@')
+      domain = nil if TagManager.instance.local_domain?(domain)
       custom_emoji = CustomEmoji.find_by(shortcode: shortcode, domain: domain)
+      return if domain.present? && !EmojiReaction.exists?(status: status, custom_emoji: custom_emoji)
+
       emoji_reaction = EmojiReaction.create!(account: account, status: status, name: shortcode, custom_emoji: custom_emoji)
 
       status.touch # rubocop:disable Rails/SkipsModelValidations
@@ -62,7 +65,6 @@ class EmojiReactService < BaseService
     status = emoji_reaction.status
 
     return unless status.account.local?
-    return if emoji_reaction.remote_custom_emoji?
 
     ActivityPub::RawDistributionWorker.perform_async(build_json(emoji_reaction), status.account_id)
   end
