@@ -29,17 +29,6 @@ RSpec.describe 'Lists' do
           title: list.title,
           replies_policy: list.replies_policy,
           exclusive: list.exclusive,
-        }
-      end
-    end
-
-    let(:expected_response_with_antennas) do
-      lists.map do |list|
-        {
-          id: list.id.to_s,
-          title: list.title,
-          replies_policy: list.replies_policy,
-          exclusive: list.exclusive,
           antennas: list.antennas,
         }
       end
