@@ -5,15 +5,15 @@ module Mastodon
     module_function
 
     def kmyblue_major
-      5
+      7
     end
 
     def kmyblue_minor
-      5
+      0
     end
 
     def kmyblue_flag
-      'LTS'
+      nil # 'LTS'
     end
 
     def major
