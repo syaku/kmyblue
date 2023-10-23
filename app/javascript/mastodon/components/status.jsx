@@ -12,7 +12,7 @@ import { HotKeys } from 'react-hotkeys';
 import AttachmentList from 'mastodon/components/attachment_list';
 import { Icon }  from 'mastodon/components/icon';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
-import { withOptionalRouter, WithRouterPropTypes } from 'mastodon/utils/react_router';
+import { withOptionalRouter, WithOptionalRouterPropTypes } from 'mastodon/utils/react_router';
 
 import CompactedStatusContainer from '../containers/compacted_status_container';
 import Card from '../features/status/components/card';
@@ -127,7 +127,7 @@ class Status extends ImmutablePureComponent {
       available: PropTypes.bool,
     }),
     withoutEmojiReactions: PropTypes.bool,
-    ...WithRouterPropTypes,
+    ...WithOptionalRouterPropTypes,
   };
 
   // Avoid checking props that are functions (and whose equality will always

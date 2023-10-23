@@ -14,7 +14,7 @@ import { WithOptionalRouterPropTypes, withOptionalRouter } from 'mastodon/utils/
 
 import AutosuggestInput from '../../../components/autosuggest_input';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
-import Button from '../../../components/button';
+import { Button } from '../../../components/button';
 import CircleSelectContainer from '../containers/circle_select_container';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import ExpirationDropdownContainer from '../containers/expiration_dropdown_container';
