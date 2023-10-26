@@ -46,6 +46,7 @@ import ColumnHeader from 'mastodon/components/column_header';
 import { Icon }  from 'mastodon/components/icon';
 import { LoadingIndicator } from 'mastodon/components/loading_indicator';
 import BundleColumnError from 'mastodon/features/ui/components/bundle_column_error';
+import { enableLocalTimeline } from 'mastodon/initial_state';
 import { WithRouterPropTypes } from 'mastodon/utils/react_router';
 
 import RadioPanel from './components/radio_panel';
@@ -401,7 +402,7 @@ class AntennaSetting extends PureComponent {
             </button>
           </div>
 
-          {!isLtl && (
+          {!isLtl && (enableLocalTimeline || isStl) && (
             <div className='setting-toggle'>
               <Toggle id={`antenna-${id}-stl`} defaultChecked={isStl} onChange={this.onStlToggle} />
               <label htmlFor={`antenna-${id}-stl`} className='setting-toggle__label'>
@@ -410,7 +411,7 @@ class AntennaSetting extends PureComponent {
             </div>
           )}
 
-          {!isStl && (
+          {!isStl && (enableLocalTimeline || isLtl) && (
             <div className='setting-toggle'>
               <Toggle id={`antenna-${id}-ltl`} defaultChecked={isLtl} onChange={this.onLtlToggle} />
               <label htmlFor={`antenna-${id}-ltl`} className='setting-toggle__label'>
