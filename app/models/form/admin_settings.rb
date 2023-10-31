@@ -38,6 +38,8 @@ class Form::AdminSettings
     status_page_url
     captcha_enabled
     ng_words
+    ng_words_for_stranger_mention
+    stranger_mention_from_local_ng
     hide_local_users_for_anonymous
     post_hash_tags_max
     sensitive_words
@@ -78,6 +80,7 @@ class Form::AdminSettings
     check_lts_version_only
     enable_public_unlisted_visibility
     unlocked_friend
+    stranger_mention_from_local_ng
   ).freeze
 
   UPLOAD_KEYS = %i(
@@ -91,6 +94,7 @@ class Form::AdminSettings
 
   STRING_ARRAY_KEYS = %i(
     ng_words
+    ng_words_for_stranger_mention
     sensitive_words
     sensitive_words_for_full
   ).freeze
