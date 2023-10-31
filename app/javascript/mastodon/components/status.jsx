@@ -13,7 +13,7 @@ import AttachmentList from 'mastodon/components/attachment_list';
 import { Icon }  from 'mastodon/components/icon';
 import PictureInPicturePlaceholder from 'mastodon/components/picture_in_picture_placeholder';
 
-import CompactedStatusContainer from '../containers/compacted_status_container'
+import CompactedStatusContainer from '../containers/compacted_status_container';
 import Card from '../features/status/components/card';
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -213,7 +213,7 @@ class Status extends ImmutablePureComponent {
     } else if (attachments.getIn([0, 'type']) === 'audio') {
       return '16 / 9';
     } else {
-      return (attachments.size === 1 && attachments.getIn([0, 'meta', 'small', 'aspect'])) ? attachments.getIn([0, 'meta', 'small', 'aspect']) : '3 / 2'
+      return (attachments.size === 1 && attachments.getIn([0, 'meta', 'small', 'aspect'])) ? attachments.getIn([0, 'meta', 'small', 'aspect']) : '3 / 2';
     }
   }
 
@@ -489,12 +489,12 @@ class Status extends ImmutablePureComponent {
               </div>
 
               <div >
-                  <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {matchedFilters.join(', ')}.
-                  {' '}
-                  <button className='status__wrapper--filtered__button' onClick={this.handleUnfilterClick}>
-                    <FormattedMessage id='status.show_filter_reason' defaultMessage='Show anyway' />
-                  </button>
-                </div>
+                <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {matchedFilters.join(', ')}.
+                {' '}
+                <button className='status__wrapper--filtered__button' onClick={this.handleUnfilterClick}>
+                  <FormattedMessage id='status.show_filter_reason' defaultMessage='Show anyway' />
+                </button>
+              </div>
             </div>
           </HotKeys>
         );
@@ -628,7 +628,7 @@ class Status extends ImmutablePureComponent {
     const withReference = (!withQuote && status.get('status_references_count') > 0) ? <span className='status__visibility-icon'><Icon id='link' title='Reference' /></span> : null;
     const withExpiration = status.get('expires_at') ? <span className='status__visibility-icon'><Icon id='clock-o' title='Expiration' /></span> : null;
 
-    const quote = !muted && status.get('quote_id') && (['public', 'community'].includes(contextType) ? showQuoteInPublic : showQuoteInHome) && <CompactedStatusContainer id={status.get('quote_id')} />
+    const quote = !muted && status.get('quote_id') && (['public', 'community'].includes(contextType) ? showQuoteInPublic : showQuoteInHome) && <CompactedStatusContainer id={status.get('quote_id')} />;
 
     return (
       <HotKeys handlers={handlers}>
@@ -669,11 +669,11 @@ class Status extends ImmutablePureComponent {
               {...statusContentProps}
             />
 
-            {(!status.get('spoiler_text') || expanded) && quote}
-
             {(!isCardMediaWithSensitive || !status.get('hidden')) && media}
 
             {(!status.get('spoiler_text') || expanded) && hashtagBar}
+
+            {(!status.get('spoiler_text') || expanded) && quote}
 
             {emojiReactionsBar}
 

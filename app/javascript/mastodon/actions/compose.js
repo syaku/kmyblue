@@ -290,7 +290,7 @@ export function submitComposeWithCircleSuccess(status, circleId) {
     type: COMPOSE_WITH_CIRCLE_SUCCESS,
     status,
     circleId,
-  }
+  };
 }
 
 export function submitComposeFail(error) {

@@ -1,3 +1,4 @@
+---
 fi:
   activerecord:
     attributes:
@@ -10,7 +11,7 @@ fi:
         locale: Alue
         password: Salasana
       user/account:
-        username: Käyttäjätunnus
+        username: Käyttäjänimi
       user/invite_request:
         text: Syy
     errors:

@@ -78,6 +78,7 @@ class Status < ApplicationRecord
   has_many :reblogs, foreign_key: 'reblog_of_id', class_name: 'Status', inverse_of: :reblog, dependent: :destroy
   has_many :reblogged_by_accounts, through: :reblogs, class_name: 'Account', source: :account
   has_many :quotes, foreign_key: 'quote_of_id', class_name: 'Status', inverse_of: :quote
+  has_many :quoted_by_accounts, through: :quotes, class_name: 'Account', source: :account
   has_many :replies, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :thread
   has_many :mentions, dependent: :destroy, inverse_of: :status
   has_many :mentioned_accounts, through: :mentions, source: :account, class_name: 'Account'
@@ -631,12 +632,10 @@ class Status < ApplicationRecord
 
     self.searchability = if %w(public public_unlisted login unlisted).include?(visibility)
                            searchability
-                         elsif visibility == 'limited'
-                           :limited
+                         elsif visibility == 'limited' || visibility == 'direct'
+                           searchability == 'limited' ? :limited : :direct
                          elsif visibility == 'private'
                            searchability == 'public' || searchability == 'public_unlisted' ? :private : searchability
-                         elsif visibility == 'direct'
-                           searchability == 'limited' ? :limited : :direct
                          else
                            :direct
                          end

@@ -1,3 +1,4 @@
+---
 ja:
   about:
     about_mastodon_html: 'Mastodonは、オープンなウェブプロトコルを採用した、自由でオープンソースなソーシャルネットワークです。電子メールのような分散型の仕組みを採っています。'
@@ -312,6 +313,8 @@ ja:
       updated_msg: お知らせを更新しました
     critical_update_pending: 重要な更新が保留中です
     custom_emojis:
+      aliases: エイリアス名
+      aliases_hint: 絵文字ピッカー内で検索する際、ショートコードだけでなくエイリアス名でも検索できます。「,」（カンマ）で区切ることで、複数指定が可能です。
       assign_category: カテゴリーを割り当て
       by_domain: ドメイン
       copied_msg: 絵文字のコピーをローカルに作成しました
@@ -324,11 +327,17 @@ ja:
       disable: 無効化
       disabled: 無効
       disabled_msg: 絵文字を無効化しました
+      domain: ドメイン
+      edit:
+        label: 編集
+        title: カスタム絵文字の編集
       emoji: 絵文字
       enable: 有効化
       enabled: 有効
       enabled_msg: 絵文字を有効化しました
       image_hint: '%{size}までのPNGまたはGIF画像を利用できます'
+      license: ライセンス
+      license_hint: カスタム絵文字のライセンス情報を設定します。ただしライセンス情報の連合に対応していないサーバーも多く、Misskeyもローカル絵文字のライセンス情報には対応しますが他のサーバーのライセンス情報は参照しません。ライセンスは無視される場合があることを考慮してください。
       list: 表示
       listed: 表示
       new:
@@ -345,6 +354,7 @@ ja:
       update_failed_msg: 絵文字を更新できませんでした
       updated_msg: 絵文字の更新に成功しました！
       upload: アップロード
+      visible_in_picker: 絵文字ピッカーで表示
     dashboard:
       active_users: アクティブユーザー
       interactions: 交流
@@ -392,12 +402,17 @@ ja:
       created_msg: ドメインブロック処理を完了しました
       destroyed_msg: ドメインブロックを外しました
       detect_invalid_subscription: 不正な購読を行うサーバーとしてマークする
-      detect_invalid_subscription_hint: Misskey、Calckeyなどは購読機能で未フォローユーザーの未収載投稿を拾います。これをマークしたサーバーは、ユーザーが任意で配送を拒否できます。停止とは無関係です
+      detect_invalid_subscription_hint: 未フォローユーザーの未収載投稿が自由に購読・検索できるサーバーとしてマークします。Misskeyサーバーはこのチェックに関係なく、自動で制限が有効とみなされます。各ユーザーはそれぞれのプライバシー追加設定でMisskeyサーバーへの配送制限を有効にすることで、これらのサーバーへローカル公開・未収載投稿を鍵付きで配信できるようになります。停止とは無関係です
       domain: ドメイン
       edit: ドメインブロックを編集
       existing_domain_block: あなたは既に%{name}さんに厳しい制限を課しています。
       existing_domain_block_html: 既に%{name}に対して、より厳しい制限を課しています。先に<a href="%{unblock_url}">その制限を解除</a>する必要があります。
       export: エクスポート
+      headers:
+        disagreement: 政治的な意見の相違からの敏感な投稿の保護
+        harassment: 嫌がらせまたはスパム
+        invalid_privacy: プライバシーが守られていない
+        mastodon_default: 本家Mastodonの設定項目
       hidden: 非公開にする
       hidden_hint: 公開することで当サーバーの安全が脅かされる場合、このドメインブロックを非公開にすることができます。
       hidden_anonymous: 未ログインユーザーに非公開にする
@@ -633,8 +648,12 @@ ja:
     ng_words:
       hide_local_users_for_anonymous: ログインしていない状態でローカルユーザーの投稿をタイムラインから取得できないようにする
       keywords: 投稿できないキーワード
+      keywords_for_stranger_mention: フォローしていないアカウントへのメンションで利用できないキーワード
+      keywords_for_stranger_mention_hint: フォローしていないアカウントへのメンションにのみ適用されます。現状は外部サーバーから来た投稿のみに適用されます
       keywords_hint: 行を「?」で始めると、正規表現が使えます
       post_hash_tags_max: 投稿に設定可能なハッシュタグの最大数
+      stranger_mention_from_local_ng: フォローしていないアカウントへのメンションのNGワードを、ローカルユーザーによる投稿にも適用する
+      stranger_mention_from_local_ng_hint: サーバーの登録が承認制でない場合、あなたのサーバーにもスパムが入り込む可能性があります
       test_error: NGワードのテストに失敗しました。正規表現のミスが含まれているかもしれません
       title: NGワードとスパム
     relationships:
@@ -1866,11 +1885,11 @@ ja:
       private: フォロワー限定
       private_long: フォロワーにのみ表示されます
       public: 公開
-      public_long: 誰でも見ることができ、かつ連合・ローカルタイムラインに表示されます
+      public_long: 誰でも見ることができ、かつ公開タイムラインに表示されます
       public_unlisted: ローカル公開
-      public_unlisted_long: 誰でも見ることができますが、連合タイムラインには表示されません
-      unlisted: 未収載
-      unlisted_long: 誰でも見ることができますが、連合・ローカルタイムラインには表示されません
+      public_unlisted_long: 誰でも見ることができますが、他のサーバーの連合タイムラインには表示されません
+      unlisted: 非収載
+      unlisted_long: 誰でも見ることができますが、公開タイムラインには表示されません
       unset: 設定なし
       unset_long: デフォルトの挙動に従います
   statuses_cleanup:

@@ -209,6 +209,17 @@ RSpec.describe PostStatusService, type: :service do
     expect(status.mentioned_accounts.first.id).to eq mutual_account.id
   end
 
+  it 'limited visibility and direct searchability' do
+    account = Fabricate(:account)
+    text = 'This is an English text.'
+
+    status = subject.call(account, text: text, visibility: 'mutual', searchability: 'public')
+
+    expect(status.visibility).to eq 'limited'
+    expect(status.limited_scope).to eq 'personal'
+    expect(status.searchability).to eq 'direct'
+  end
+
   it 'personal visibility with mutual' do
     account = Fabricate(:account)
     text = 'This is an English text.'
@@ -423,6 +434,102 @@ RSpec.describe PostStatusService, type: :service do
     status1 = subject.call(account, text: 'test', idempotency: 'meepmeep')
     status2 = subject.call(account, text: 'test', idempotency: 'meepmeep')
     expect(status2.id).to eq status1.id
+  end
+
+  describe 'ng word is set' do
+    it 'hit ng words' do
+      account = Fabricate(:account)
+      text = 'ng word test'
+      Form::AdminSettings.new(ng_words: 'test').save
+
+      expect { subject.call(account, text: text) }.to raise_error(Mastodon::ValidationError)
+    end
+
+    it 'not hit ng words' do
+      account = Fabricate(:account)
+      text = 'ng word aiueo'
+      Form::AdminSettings.new(ng_words: 'test').save
+
+      status = subject.call(account, text: text)
+
+      expect(status).to be_persisted
+      expect(status.text).to eq text
+    end
+
+    it 'hit ng words for mention' do
+      account = Fabricate(:account)
+      mentioned = Fabricate(:account, username: 'ohagi', domain: nil)
+      text = 'ng word test @ohagi'
+      Form::AdminSettings.new(ng_words_for_stranger_mention: 'test', stranger_mention_from_local_ng: '1').save
+
+      expect { subject.call(account, text: text) }.to raise_error(Mastodon::ValidationError)
+    end
+
+    it 'hit ng words for mention but local posts are not checked' do
+      account = Fabricate(:account)
+      mentioned = Fabricate(:account, username: 'ohagi', domain: nil)
+      text = 'ng word test @ohagi'
+      Form::AdminSettings.new(ng_words_for_stranger_mention: 'test', stranger_mention_from_local_ng: '0').save
+
+      status = subject.call(account, text: text)
+
+      expect(status).to be_persisted
+      expect(status.text).to eq text
+    end
+
+    it 'hit ng words for mention to follower' do
+      account = Fabricate(:account)
+      mentioned = Fabricate(:account, username: 'ohagi', domain: nil)
+      mentioned.follow!(account)
+      text = 'ng word test @ohagi'
+      Form::AdminSettings.new(ng_words_for_stranger_mention: 'test', stranger_mention_from_local_ng: '1').save
+
+      status = subject.call(account, text: text)
+
+      expect(status).to be_persisted
+      expect(status.text).to eq text
+    end
+
+    it 'hit ng words for reply' do
+      account = Fabricate(:account)
+      text = 'ng word test'
+      Form::AdminSettings.new(ng_words_for_stranger_mention: 'test', stranger_mention_from_local_ng: '1').save
+
+      expect { subject.call(account, text: text, thread: Fabricate(:status)) }.to raise_error(Mastodon::ValidationError)
+    end
+
+    it 'hit ng words for reply to follower' do
+      account = Fabricate(:account)
+      mentioned = Fabricate(:account, username: 'ohagi', domain: nil)
+      mentioned.follow!(account)
+      text = 'ng word test'
+      Form::AdminSettings.new(ng_words_for_stranger_mention: 'test', stranger_mention_from_local_ng: '1').save
+
+      status = subject.call(account, text: text)
+
+      expect(status).to be_persisted
+      expect(status.text).to eq text
+    end
+
+    it 'using hashtag under limit' do
+      account = Fabricate(:account)
+      text = '#a #b'
+      Form::AdminSettings.new(post_hash_tags_max: 2).save
+
+      status = subject.call(account, text: text)
+
+      expect(status).to be_persisted
+      expect(status.tags.count).to eq 2
+      expect(status.text).to eq text
+    end
+
+    it 'using hashtag over limit' do
+      account = Fabricate(:account)
+      text = '#a #b #c'
+      Form::AdminSettings.new(post_hash_tags_max: 2).save
+
+      expect { subject.call(account, text: text) }.to raise_error Mastodon::ValidationError
+    end
   end
 
   def create_status_with_options(**options)
