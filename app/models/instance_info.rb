@@ -33,8 +33,6 @@ class InstanceInfo < ApplicationRecord
   end
 
   def self.fetch_emoji_reaction_available(domain)
-    return Setting.enable_emoji_reaction if domain.nil?
-
     info = InstanceInfo.find_by(domain: domain)
     return false if info.nil?
 
