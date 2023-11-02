@@ -24,6 +24,8 @@ linters:
       - 'app/views/settings/preferences/appearance/show.html.haml'
       - 'app/views/settings/preferences/notifications/show.html.haml'
       - 'app/views/settings/preferences/other/show.html.haml'
+      - 'app/views/settings/preferences/reaching/show.html.haml'
+      - 'app/views/settings/profiles/show.html.haml'
 
   # Offense count: 9
   RuboCop:
