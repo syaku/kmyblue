@@ -21,7 +21,8 @@ export interface ApiAccountOtherSettingsJSON {
   hide_followers_count: boolean;
   translatable_private: boolean;
   link_preview: boolean;
-  emoji_reaction_policy?:
+  allow_quote: boolean;
+  emoji_reaction_policy:
     | 'allow'
     | 'outside_only'
     | 'following_only'
@@ -49,10 +50,10 @@ export interface ApiAccountJSON {
   id: string;
   last_status_at: string;
   locked: boolean;
-  noindex: boolean;
+  noindex?: boolean;
   note: string;
   other_settings: ApiAccountOtherSettingsJSON;
-  roles: ApiAccountJSON[];
+  roles?: ApiAccountJSON[];
   subscribable: boolean;
   statuses_count: number;
   uri: string;
