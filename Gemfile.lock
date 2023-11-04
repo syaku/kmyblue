@@ -650,7 +650,6 @@ GEM
       rspec-mocks (~> 3.0)
       sidekiq (>= 5, < 8)
     rspec-support (3.12.1)
-    rspec_chunked (0.6)
     rubocop (1.57.1)
       base64 (~> 0.1.1)
       json (~> 2.3)
@@ -922,7 +921,6 @@ DEPENDENCIES
   rspec-rails (~> 6.0)
   rspec-retry (>= 0.6.2)
   rspec-sidekiq (~> 4.0)
-  rspec_chunked (~> 0.6)
   rubocop
   rubocop-capybara
   rubocop-performance
