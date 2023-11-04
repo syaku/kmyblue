@@ -22,7 +22,7 @@ export interface ApiAccountOtherSettingsJSON {
   translatable_private: boolean;
   link_preview: boolean;
   allow_quote: boolean;
-  emoji_reaction_policy?:
+  emoji_reaction_policy:
     | 'allow'
     | 'outside_only'
     | 'following_only'

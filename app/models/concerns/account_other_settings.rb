@@ -97,26 +97,14 @@ module AccountOtherSettings
         'translatable_private' => translatable_private?,
         'link_preview' => link_preview?,
         'allow_quote' => allow_quote?,
+        'emoji_reaction_policy' => Setting.enable_emoji_reaction ? emoji_reaction_policy : :block,
       }
-      if Setting.enable_emoji_reaction
-        config = config.merge({
-          'emoji_reaction_policy' => emoji_reaction_policy,
-        })
-      end
       config = config.merge(settings) if settings.present?
       config
     end
 
     def public_settings_for_local
-      config = public_settings
-
-      unless Setting.enable_emoji_reaction
-        config = config.merge({
-          'emoji_reaction_policy' => :block,
-        })
-      end
-
-      config
+      public_settings
     end
   end
 end

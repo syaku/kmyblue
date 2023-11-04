@@ -6,6 +6,7 @@ import escapeTextContentForBrowser from 'escape-html';
 import type {
   ApiAccountFieldJSON,
   ApiAccountRoleJSON,
+  ApiAccountOtherSettingsJSON,
   ApiAccountJSON,
 } from 'mastodon/api_types/accounts';
 import type { ApiCustomEmojiJSON } from 'mastodon/api_types/custom_emoji';
@@ -41,6 +42,23 @@ const AccountRoleFactory = ImmutableRecord<AccountRoleShape>({
   color: '',
   id: '',
   name: '',
+});
+
+// AccountOtherSettings
+export type AccountOtherSettingsShape = ApiAccountOtherSettingsJSON;
+export type AccountOtherSettings = RecordOf<AccountOtherSettingsShape>;
+
+const AccountOtherSettingsFactory = ImmutableRecord<AccountOtherSettingsShape>({
+  noindex: false,
+  noai: true,
+  hide_network: false,
+  hide_followers_count: false,
+  hide_following_count: false,
+  hide_statuses_count: false,
+  translatable_private: false,
+  link_preview: true,
+  allow_quote: true,
+  emoji_reaction_policy: 'allow',
 });
 
 // Account
@@ -93,6 +111,8 @@ export const accountDefaultValues: AccountShape = {
   memorial: false,
   limited: false,
   moved: null,
+  other_settings: AccountOtherSettingsFactory(),
+  subscribable: true,
 };
 
 const AccountFactory = ImmutableRecord<AccountShape>(accountDefaultValues);
