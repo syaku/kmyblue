@@ -158,7 +158,7 @@ RSpec.describe AccountStatusesFilter do
         let!(:direct_status) { status_with_mention!(:direct) }
 
         it 'not returns the direct status' do
-          expect(subject.results.pluck(:id)).to_not include(direct_status.id)
+          expect(results_ids).to_not include(direct_status.id)
         end
       end
 
@@ -166,7 +166,7 @@ RSpec.describe AccountStatusesFilter do
         let!(:limited_status) { status_with_mention!(:limited, current_account) }
 
         it 'returns the limited status' do
-          expect(subject.results.pluck(:id)).to include(limited_status.id)
+          expect(results_ids).to include(limited_status.id)
         end
       end
 
@@ -174,7 +174,7 @@ RSpec.describe AccountStatusesFilter do
         let!(:limited_status) { status_with_mention!(:limited) }
 
         it 'not returns the limited status' do
-          expect(subject.results.pluck(:id)).to_not include(limited_status.id)
+          expect(results_ids).to_not include(limited_status.id)
         end
       end
 

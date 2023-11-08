@@ -128,7 +128,7 @@ class RemoveStatusService < BaseService
   end
 
   def decrement_references
-    @status.references.find_each do |ref|
+    @status.references.reorder(nil).find_each do |ref|
       ref.decrement_count!(:status_referred_by_count)
     end
   end
