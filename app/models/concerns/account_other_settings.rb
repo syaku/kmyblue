@@ -104,7 +104,7 @@ module AccountOtherSettings
     end
 
     def public_settings_for_local
-      public_settings
+      public_settings.merge(public_master_settings)
     end
   end
 end

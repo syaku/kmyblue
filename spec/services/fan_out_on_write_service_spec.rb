@@ -10,10 +10,10 @@ RSpec.describe FanOutOnWriteService, type: :service do
   let(:last_active_at) { Time.now.utc }
   let(:visibility) { 'public' }
   let(:searchability) { 'public' }
-  let(:dissubscribable) { false }
+  let(:subscription_policy) { :allow }
   let(:status) { Fabricate(:status, account: alice, visibility: visibility, searchability: searchability, text: 'Hello @bob #hoge') }
 
-  let!(:alice) { Fabricate(:user, current_sign_in_at: last_active_at, account_attributes: { dissubscribable: dissubscribable }).account }
+  let!(:alice) { Fabricate(:user, current_sign_in_at: last_active_at, account_attributes: { master_settings: { subscription_policy: subscription_policy } }).account }
   let!(:bob)   { Fabricate(:user, current_sign_in_at: last_active_at, account_attributes: { username: 'bob' }).account }
   let!(:tom)   { Fabricate(:user, current_sign_in_at: last_active_at).account }
   let!(:ohagi) { Fabricate(:user, current_sign_in_at: last_active_at).account }
@@ -61,6 +61,13 @@ RSpec.describe FanOutOnWriteService, type: :service do
   def antenna_with_account(owner, target_account)
     antenna = Fabricate(:antenna, account: owner, any_accounts: false)
     Fabricate(:antenna_account, antenna: antenna, account: target_account)
+    antenna
+  end
+
+  def antenna_with_tag(owner, target_tag, **options)
+    antenna = Fabricate(:antenna, account: owner, any_tags: false, **options)
+    tag = Tag.find_or_create_by_names([target_tag])[0]
+    Fabricate(:antenna_tag, antenna: antenna, tag: tag)
     antenna
   end
 
@@ -123,11 +130,67 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is not added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to_not include status.id
+        end
+      end
+
+      context 'when subscription is allowed followers only' do
+        let(:subscription_policy) { :followers_only }
+        let!(:antenna) { antenna_with_account(ohagi, alice) }
+
+        it 'is not added to the antenna feed' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+        end
+
+        context 'with following' do
+          let!(:antenna) { antenna_with_account(bob, alice) }
+
+          it 'is added to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to include status.id
+          end
+        end
+      end
+
+      context 'when dtl post' do
+        let!(:antenna) { antenna_with_tag(bob, 'hoge') }
+
+        around do |example|
+          ClimateControl.modify DTL_ENABLED: 'true', DTL_TAG: 'hoge' do
+            example.run
+          end
+        end
+
+        context 'with listening tag' do
+          it 'is added to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to include status.id
+          end
+        end
+
+        context 'with listening tag but sender is limiting subscription' do
+          let(:subscription_policy) { :block }
+
+          it 'does not add to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to_not include status.id
+          end
+        end
+
+        context 'with listening tag but sender is limiting subscription but permit dtl only' do
+          let(:subscription_policy) { :block }
+          let(:custom_before) { true }
+
+          before do
+            alice.user.settings['dtl_force_subscribable'] = true
+            alice.user.save!
+            subject.call(status)
+          end
+
+          it 'is added to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to include status.id
+          end
         end
       end
     end
@@ -141,8 +204,8 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
@@ -168,8 +231,8 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
@@ -370,8 +433,8 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is not added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to_not include status.id
@@ -388,8 +451,8 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
@@ -415,8 +478,8 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
