@@ -28,7 +28,7 @@ class UnEmojiReactService < BaseService
   private
 
   def bulk(account, status)
-    EmojiReaction.where(account: account, status: status).each do |emoji_reaction|
+    EmojiReaction.where(account: account, status: status).find_each do |emoji_reaction|
       call(account, status, emoji_reaction)
     end
   end

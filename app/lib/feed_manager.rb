@@ -283,7 +283,7 @@ class FeedManager
   end
 
   def clear_from_antennas(account, target_account)
-    Antenna.where(account: account).each do |antenna|
+    Antenna.where(account: account).find_each do |antenna|
       clear_from_antenna(antenna, target_account)
     end
   end
