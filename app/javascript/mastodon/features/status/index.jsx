@@ -95,7 +95,7 @@ const makeMapStateToProps = () => {
   const getPictureInPicture = makeGetPictureInPicture();
 
   const getReferenceIds = createSelector([
-    (state, { id }) => state.getIn(['contexts', 'references', id]),
+    (state, { id }) => state.getIn(['contexts', 'references', id]) || Immutable.List(),
   ], (references) => {
     return references;
   });

@@ -777,6 +777,7 @@
   "status.media.show": "クリックして表示",
   "status.media_hidden": "非表示のメディア",
   "status.mention": "@{name}さんに投稿",
+  "status.mentions": "メンション先一覧",
   "status.more": "もっと見る",
   "status.mute": "@{name}さんをミュート",
   "status.mute_conversation": "会話をミュート",
