@@ -18,7 +18,7 @@ class StatusCacheHydrator
     # We take advantage of the fact that some relationships can only occur with an original status, not
     # the reblog that wraps it, so we can assume that some values are always false
     if payload[:reblog]
-      hydrate_reblog_payload(payload, account_id)
+      hydrate_reblog_payload(payload, account_id, account)
     else
       hydrate_non_reblog_payload(payload, account_id, account)
     end
@@ -43,7 +43,7 @@ class StatusCacheHydrator
     end
   end
 
-  def hydrate_reblog_payload(empty_payload, account_id)
+  def hydrate_reblog_payload(empty_payload, account_id, account)
     empty_payload.tap do |payload|
       payload[:muted]      = false
       payload[:bookmarked] = false
