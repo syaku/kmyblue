@@ -360,7 +360,7 @@ ja:
         mascot: カスタムマスコット（レガシー）
         media_cache_retention_period: メディアキャッシュの保持期間
         peers_api_enabled: 発見したサーバーのリストをAPIで公開する
-        profile_directory: ディレクトリを有効にする
+        profile_directory: プロフィール一覧を有効にする
         receive_other_servers_emoji_reaction: 他のサーバーのユーザーが他のサーバーの投稿につけたスタンプを受け入れる
         registration_button_message: 新規登録ボタンの直上に表示するメッセージ
         registrations_mode: 新規登録が可能な人
@@ -373,7 +373,7 @@ ja:
         site_short_description: サーバーの説明
         site_terms: プライバシーポリシー
         site_title: サーバーの名前
-        status_page_url: ステータスページのURL
+        status_page_url: サーバーの状態ページのURL
         streaming_other_servers_emoji_reaction: 他のサーバーのユーザーが他のサーバーの投稿につけたスタンプをストリーミングする
         theme: デフォルトテーマ
         thumbnail: サーバーのサムネイル
