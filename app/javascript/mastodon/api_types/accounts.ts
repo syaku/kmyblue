@@ -29,6 +29,7 @@ export interface ApiAccountOtherSettingsJSON {
     | 'followers_only'
     | 'mutuals_only'
     | 'block';
+  subscription_policy: 'allow' | 'followers_only' | 'block';
 }
 
 // See app/serializers/rest/account_serializer.rb
@@ -63,4 +64,5 @@ export interface ApiAccountJSON {
   suspended?: boolean;
   limited?: boolean;
   memorial?: boolean;
+  hide_collections: boolean;
 }
