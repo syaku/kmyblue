@@ -8,7 +8,7 @@ class REST::AccountSerializer < ActiveModel::Serializer
 
   attributes :id, :username, :acct, :display_name, :locked, :bot, :discoverable, :group, :created_at,
              :note, :url, :uri, :avatar, :avatar_static, :header, :header_static, :subscribable,
-             :followers_count, :following_count, :statuses_count, :last_status_at, :other_settings, :noindex
+             :followers_count, :following_count, :statuses_count, :last_status_at, :hide_collections, :other_settings, :noindex
 
   has_one :moved_to_account, key: :moved, serializer: REST::AccountSerializer, if: :moved_and_not_nested?
 
