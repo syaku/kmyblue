@@ -226,7 +226,7 @@ class ListTimeline extends PureComponent {
           </div>
 
           <div className='setting-toggle'>
-            <Toggle id={`list-${id}-exclusive`} defaultChecked={isNotify} onChange={this.onNotifyToggle} />
+            <Toggle id={`list-${id}-exclusive`} checked={isNotify} onChange={this.onNotifyToggle} />
             <label htmlFor={`list-${id}-notify`} className='setting-toggle__label'>
               <FormattedMessage id='lists.notify' defaultMessage='Notify these posts' />
             </label>
