@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     /bookmark_categories/(*any)
     /pinned
     /reaction_deck
-    /start
+    /start/(*any)
     /directory
     /explore/(*any)
     /search

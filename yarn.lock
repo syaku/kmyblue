@@ -4709,13 +4709,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.4.0":
-  version: 1.6.1
-  resolution: "axios@npm:1.6.1"
+  version: 1.6.2
+  resolution: "axios@npm:1.6.2"
   dependencies:
     follow-redirects: "npm:^1.15.0"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: ca2c6f56659a7f19e4a99082f549fe151952f6fd8aa72ed148559ab2d6a32ce37cd5dc72ce6d4d3cd91f0c1e2617c7c95c20077e5e244a79f319a6c0ce41204f
+  checksum: 9b77e030e85e4f9cbcba7bb52fbff67d6ce906c92d213e0bd932346a50140faf83733bf786f55bd58301bd92f9973885c7b87d6348023e10f7eaf286d0791a1d
   languageName: node
   linkType: hard
 
@@ -17058,8 +17058,8 @@ __metadata:
   linkType: hard
 
 "webpack-bundle-analyzer@npm:^4.8.0":
-  version: 4.10.0
-  resolution: "webpack-bundle-analyzer@npm:4.10.0"
+  version: 4.10.1
+  resolution: "webpack-bundle-analyzer@npm:4.10.1"
   dependencies:
     "@discoveryjs/json-ext": "npm:0.5.7"
     acorn: "npm:^8.0.4"
@@ -17076,7 +17076,7 @@ __metadata:
     ws: "npm:^7.3.1"
   bin:
     webpack-bundle-analyzer: lib/bin/analyzer.js
-  checksum: f812a8d3c0198ce518baf742bff656526f3eae69fb7a64c7f0c9cff202f6fb3380cabf3baaae965b8d6ffbbb6fb802eacb373fca03a596a38b01b84cfb2e8329
+  checksum: 6a94c8f6aa03296fb2eb00d6ad3b27bd5c551590fd253772bc61debf3177414d42701014079d4f85c74ba1ca685ae9f0cb4063812b58c21f294d108e9908e5cd
   languageName: node
   linkType: hard
 

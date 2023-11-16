@@ -201,7 +201,6 @@ class Status < ApplicationRecord
                    quote: [
                      :application,
                      :tags,
-                     :preview_cards,
                      :media_attachments,
                      :conversation,
                      :status_stat,
