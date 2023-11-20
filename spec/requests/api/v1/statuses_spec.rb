@@ -99,7 +99,7 @@ describe '/api/v1/statuses' do
       let!(:thread) { Fabricate(:status, account: user.account, thread: status) }
 
       it 'returns http success' do
-        get :context, params: { id: status.id }
+        get "/api/v1/statuses/#{status.id}/context", params: { id: status.id }
         expect(response).to have_http_status(200)
       end
 
@@ -109,14 +109,14 @@ describe '/api/v1/statuses' do
         end
 
         it 'returns unique ancestors' do
-          get :context, params: { id: thread.id }
+          get "/api/v1/statuses/#{thread.id}/context"
           status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
 
           expect(status_ids).to eq [status.id]
         end
 
         it 'returns unique references' do
-          get :context, params: { id: thread.id, with_reference: true }
+          get "/api/v1/statuses/#{thread.id}/context", params: { with_reference: true }
           ancestor_status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
           reference_status_ids = body_as_json[:references].map { |ref| ref[:id].to_i }
 
@@ -147,14 +147,14 @@ describe '/api/v1/statuses' do
       end
 
       it 'returns empty references' do
-        get :context, params: { id: status.id }
+        get "/api/v1/statuses/#{status.id}/context", headers: headers
         status_ids = body_as_json[:references].map { |ref| ref[:id].to_i }
 
         expect(status_ids).to eq []
       end
 
       it 'contains referred status' do
-        get :context, params: { id: status.id }
+        get "/api/v1/statuses/#{status.id}/context", headers: headers
         status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
 
         expect(status_ids).to include referred.id
@@ -162,7 +162,14 @@ describe '/api/v1/statuses' do
       end
 
       it 'does not contain private status' do
-        get :context, params: { id: status.id }
+        get "/api/v1/statuses/#{status.id}/context", headers: headers
+        status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
+
+        expect(status_ids).to_not include referred_private.id
+      end
+
+      it 'does not contain private status when not autienticated' do
+        get "/api/v1/statuses/#{status.id}/context"
         status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
 
         expect(status_ids).to_not include referred_private.id
@@ -170,19 +177,19 @@ describe '/api/v1/statuses' do
 
       context 'when with_reference is enabled' do
         it 'returns http success' do
-          get :context, params: { id: status.id, with_reference: true }
+          get "/api/v1/statuses/#{status.id}/context", params: { with_reference: true }, headers: headers
           expect(response).to have_http_status(200)
         end
 
         it 'returns empty ancestors' do
-          get :context, params: { id: status.id, with_reference: true }
+          get "/api/v1/statuses/#{status.id}/context", params: { with_reference: true }, headers: headers
           status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
 
           expect(status_ids).to eq []
         end
 
         it 'contains referred status' do
-          get :context, params: { id: status.id, with_reference: true }
+          get "/api/v1/statuses/#{status.id}/context", params: { with_reference: true }, headers: headers
           status_ids = body_as_json[:references].map { |ref| ref[:id].to_i }
 
           expect(status_ids).to include referred.id
