@@ -111,6 +111,7 @@ class Status < ApplicationRecord
   has_one :trend, class_name: 'StatusTrend', inverse_of: :status
   has_one :scheduled_expiration_status, inverse_of: :status, dependent: :destroy
   has_one :circle_status, inverse_of: :status, dependent: :destroy
+  has_many :list_status, inverse_of: :status, dependent: :destroy
 
   validates :uri, uniqueness: true, presence: true, unless: :local?
   validates :text, presence: true, unless: -> { with_media? || reblog? }
@@ -244,7 +245,7 @@ class Status < ApplicationRecord
   end
 
   def quote?
-    !quote_of_id.nil?
+    !quote_of_id.nil? && !quote.nil?
   end
 
   def within_realtime_window?
@@ -319,7 +320,7 @@ class Status < ApplicationRecord
   end
 
   def dtl?
-    tags.where(name: DTL_TAG).exists?
+    (%w(public public_unlisted login).include?(visibility) || (unlisted_visibility? && public_searchability?)) && tags.where(name: dtl_tag_name).exists?
   end
 
   def emojis
@@ -522,6 +523,10 @@ class Status < ApplicationRecord
     def emoji_reaction_allows_map(status_ids, account_id)
       my_account = Account.find_by(id: account_id)
       Status.where(id: status_ids).pluck(:account_id).uniq.index_with { |a| Account.find_by(id: a).show_emoji_reaction?(my_account) }
+    end
+
+    def emoji_reaction_availables_map(domains)
+      domains.index_with { |d| InstanceInfo.emoji_reaction_available?(d) }
     end
 
     def reload_stale_associations!(cached_items)

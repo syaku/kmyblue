@@ -10,6 +10,7 @@ class FeedInsertWorker
       @status    = Status.find(status_id)
       @options   = options.symbolize_keys
       @antenna   = Antenna.find(@options[:antenna_id]) if @options[:antenna_id].present?
+      @pushed    = false
 
       case @type
       when :home, :tags
@@ -38,6 +39,7 @@ class FeedInsertWorker
     else
       perform_push
       perform_notify if notify?
+      perform_notify_for_list if notify_for_list?
     end
   end
 
@@ -58,13 +60,19 @@ class FeedInsertWorker
     Follow.find_by(account: @follower, target_account: @status.account)&.notify?
   end
 
+  def notify_for_list?
+    return false if @type != :list || update? || !@pushed
+
+    @list.notify?
+  end
+
   def perform_push
     if @antenna.nil? || @antenna.insert_feeds
       case @type
       when :home, :tags
-        FeedManager.instance.push_to_home(@follower, @status, update: update?)
+        @pushed = FeedManager.instance.push_to_home(@follower, @status, update: update?)
       when :list
-        FeedManager.instance.push_to_list(@list, @status, update: update?)
+        @pushed = FeedManager.instance.push_to_list(@list, @status, update: update?)
       end
     end
 
@@ -88,6 +96,11 @@ class FeedInsertWorker
 
   def perform_notify
     LocalNotificationWorker.perform_async(@follower.id, @status.id, 'Status', 'status')
+  end
+
+  def perform_notify_for_list
+    list_status = ListStatus.create!(list: @list, status: @status)
+    LocalNotificationWorker.perform_async(@list.account_id, list_status.id, 'ListStatus', 'list_status')
   end
 
   def update?

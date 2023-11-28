@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_22_074913) do
+ActiveRecord::Schema[7.1].define(version: 2023_11_05_225839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -200,9 +200,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_22_074913) do
     t.datetime "requested_review_at", precision: nil
     t.boolean "group_allow_private_message"
     t.integer "searchability", default: 2, null: false
-    t.boolean "dissubscribable", default: false, null: false
     t.jsonb "settings"
     t.boolean "indexable", default: false, null: false
+    t.jsonb "master_settings"
     t.index "(((setweight(to_tsvector('simple'::regconfig, (display_name)::text), 'A'::\"char\") || setweight(to_tsvector('simple'::regconfig, (username)::text), 'B'::\"char\")) || setweight(to_tsvector('simple'::regconfig, (COALESCE(domain, ''::character varying))::text), 'C'::\"char\")))", name: "search_index", using: :gin
     t.index "lower((username)::text), COALESCE(lower((domain)::text), ''::text)", name: "index_accounts_on_username_and_domain_lower", unique: true
     t.index ["domain", "id"], name: "index_accounts_on_domain_and_id"
@@ -761,6 +761,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_22_074913) do
     t.index ["list_id", "account_id"], name: "index_list_accounts_on_list_id_and_account_id"
   end
 
+  create_table "list_statuses", force: :cascade do |t|
+    t.bigint "list_id", null: false
+    t.bigint "status_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["list_id", "status_id"], name: "index_list_statuses_on_list_id_and_status_id", unique: true
+    t.index ["list_id"], name: "index_list_statuses_on_list_id"
+    t.index ["status_id"], name: "index_list_statuses_on_status_id"
+  end
+
   create_table "lists", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.string "title", default: "", null: false
@@ -768,6 +778,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_22_074913) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "replies_policy", default: 0, null: false
     t.boolean "exclusive", default: false, null: false
+    t.boolean "notify", default: false, null: false
     t.index ["account_id"], name: "index_lists_on_account_id"
   end
 
@@ -1480,6 +1491,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_22_074913) do
   add_foreign_key "list_accounts", "follow_requests", on_delete: :cascade
   add_foreign_key "list_accounts", "follows", on_delete: :cascade
   add_foreign_key "list_accounts", "lists", on_delete: :cascade
+  add_foreign_key "list_statuses", "lists", on_delete: :cascade
+  add_foreign_key "list_statuses", "statuses", on_delete: :cascade
   add_foreign_key "lists", "accounts", on_delete: :cascade
   add_foreign_key "login_activities", "users", on_delete: :cascade
   add_foreign_key "markers", "users", on_delete: :cascade

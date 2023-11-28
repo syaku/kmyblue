@@ -108,7 +108,7 @@ class RemoveStatusService < BaseService
 
     status_reach_finder = StatusReachFinder.new(@status, unsafe: true)
 
-    ActivityPub::DeliveryWorker.push_bulk(status_reach_finder.inboxes + status_reach_finder.inboxes_for_misskey, limit: 1_000) do |inbox_url|
+    ActivityPub::DeliveryWorker.push_bulk(status_reach_finder.all_inboxes, limit: 1_000) do |inbox_url|
       [signed_activity_json, @account.id, inbox_url]
     end
   end
@@ -128,13 +128,13 @@ class RemoveStatusService < BaseService
   end
 
   def decrement_references
-    @status.references.each do |ref|
+    @status.references.reorder(nil).find_each do |ref|
       ref.decrement_count!(:status_referred_by_count)
     end
   end
 
   def remove_from_hashtags
-    @account.featured_tags.where(tag_id: @status.tags.map(&:id)).each do |featured_tag|
+    @account.featured_tags.where(tag_id: @status.tags.map(&:id)).find_each do |featured_tag|
       featured_tag.decrement(@status.id)
     end
 

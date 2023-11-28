@@ -9,4 +9,5 @@ export interface ApiCustomEmojiJSON {
   height?: number;
   sensitive?: boolean;
   aliases?: string[];
+  license?: string;
 }

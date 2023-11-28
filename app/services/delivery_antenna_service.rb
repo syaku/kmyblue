@@ -23,11 +23,14 @@ class DeliveryAntennaService
   private
 
   def delivery!
-    must_dtl_tag = @account.dissubscribable
-    return if must_dtl_tag && !DTL_ENABLED
+    subscription_policy = @account.subscription_policy
+
+    dtl_post = @status.dtl? && dtl_enabled?
+    return if subscription_policy == :block && (!dtl_post || !@account.user&.setting_dtl_force_subscribable)
 
     tag_ids = @status.tags.pluck(:id)
-    domain = @account.domain || Rails.configuration.x.local_domain
+    domain = @account.domain
+    domain ||= Rails.configuration.x.local_domain if Setting.enable_local_timeline
     follower_ids = @status.unlisted_visibility? ? @status.account.followers.pluck(:id) : []
 
     antennas = Antenna.availables
@@ -37,8 +40,8 @@ class DeliveryAntennaService
     antennas = antennas.left_joins(:antenna_accounts).where(any_accounts: true).or(Antenna.left_joins(:antenna_accounts).where(antenna_accounts: { account: @account }))
 
     antennas = Antenna.where(id: antennas.select(:id))
-    if must_dtl_tag
-      dtl_tag = Tag.find_or_create_by_names(DTL_TAG).first
+    if subscription_policy == :block
+      dtl_tag = Tag.find_or_create_by_names(dtl_tag_name).first
       return if !dtl_tag || tag_ids.exclude?(dtl_tag.id)
 
       antennas = antennas.left_joins(:antenna_tags).where(antenna_tags: { tag_id: dtl_tag.id })
@@ -77,6 +80,8 @@ class DeliveryAntennaService
   end
 
   def delivery_stl!
+    return unless Setting.enable_local_timeline
+
     antennas = Antenna.available_stls
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
 
@@ -101,6 +106,7 @@ class DeliveryAntennaService
     return if %i(public public_unlisted login).exclude?(@status.visibility.to_sym)
     return unless @account.local?
     return if @status.reblog?
+    return unless Setting.enable_local_timeline
 
     antennas = Antenna.available_ltls
     antennas = antennas.where(account_id: Account.without_suspended.joins(:user).select('accounts.id').where('users.current_sign_in_at > ?', User::ACTIVE_DURATION.ago))
@@ -121,9 +127,9 @@ class DeliveryAntennaService
   def followers_only?
     case @status.visibility.to_sym
     when :public, :public_unlisted, :login, :limited
-      false
+      @status.account.subscription_policy == :followers_only
     when :unlisted
-      @status.compute_searchability != 'public'
+      @status.compute_searchability != 'public' || @status.account.subscription_policy == :followers_only
     else
       true
     end
