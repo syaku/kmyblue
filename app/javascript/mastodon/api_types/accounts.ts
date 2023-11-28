@@ -21,13 +21,15 @@ export interface ApiAccountOtherSettingsJSON {
   hide_followers_count: boolean;
   translatable_private: boolean;
   link_preview: boolean;
-  emoji_reaction_policy?:
+  allow_quote: boolean;
+  emoji_reaction_policy:
     | 'allow'
     | 'outside_only'
     | 'following_only'
     | 'followers_only'
     | 'mutuals_only'
     | 'block';
+  subscription_policy: 'allow' | 'followers_only' | 'block';
 }
 
 // See app/serializers/rest/account_serializer.rb
@@ -49,10 +51,10 @@ export interface ApiAccountJSON {
   id: string;
   last_status_at: string;
   locked: boolean;
-  noindex: boolean;
+  noindex?: boolean;
   note: string;
   other_settings: ApiAccountOtherSettingsJSON;
-  roles: ApiAccountJSON[];
+  roles?: ApiAccountJSON[];
   subscribable: boolean;
   statuses_count: number;
   uri: string;
@@ -62,4 +64,5 @@ export interface ApiAccountJSON {
   suspended?: boolean;
   limited?: boolean;
   memorial?: boolean;
+  hide_collections: boolean;
 }

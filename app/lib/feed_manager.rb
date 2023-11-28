@@ -261,7 +261,7 @@ class FeedManager
   # @param [Account] target_account
   # @return [void]
   def clear_from_lists(account, target_account)
-    List.where(account: account).each do |list|
+    List.where(account: account).find_each do |list|
       clear_from_list(list, target_account)
     end
   end
@@ -283,7 +283,7 @@ class FeedManager
   end
 
   def clear_from_antennas(account, target_account)
-    Antenna.where(account: account).each do |antenna|
+    Antenna.where(account: account).find_each do |antenna|
       clear_from_antenna(antenna, target_account)
     end
   end
@@ -590,7 +590,7 @@ class FeedManager
   def build_crutches(receiver_id, statuses)
     crutches = {}
 
-    crutches[:active_mentions] = Mention.active.where(status_id: statuses.flat_map { |s| [s.id, s.reblog_of_id] }.compact).pluck(:status_id, :account_id).each_with_object({}) { |(id, account_id), mapping| (mapping[id] ||= []).push(account_id) }
+    crutches[:active_mentions] = crutches_active_mentions(statuses)
 
     check_for_blocks = statuses.flat_map do |s|
       arr = crutches[:active_mentions][s.id] || []
@@ -618,5 +618,13 @@ class FeedManager
     crutches[:exclusive_antenna_users] = AntennaAccount.where(antenna: antennas, account_id: statuses.map(&:account_id)).pluck(:account_id).index_with(true)
 
     crutches
+  end
+
+  def crutches_active_mentions(statuses)
+    Mention
+      .active
+      .where(status_id: statuses.flat_map { |status| [status.id, status.reblog_of_id] }.compact)
+      .pluck(:status_id, :account_id)
+      .each_with_object({}) { |(id, account_id), mapping| (mapping[id] ||= []).push(account_id) }
   end
 end

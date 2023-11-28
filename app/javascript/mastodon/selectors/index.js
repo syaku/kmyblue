@@ -3,25 +3,9 @@ import { createSelector } from 'reselect';
 
 import { toServerSideType } from 'mastodon/utils/filters';
 
-import { me, hideBlockingQuote } from '../initial_state';
+import { me, isHideItem } from '../initial_state';
 
-const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
-const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
-const getAccountRelationship = (state, id) => state.getIn(['relationships', id], null);
-const getAccountMoved        = (state, id) => state.getIn(['accounts', state.getIn(['accounts', id, 'moved'])]);
-
-export const makeGetAccount = () => {
-  return createSelector([getAccountBase, getAccountCounters, getAccountRelationship, getAccountMoved], (base, counters, relationship, moved) => {
-    if (base === null) {
-      return null;
-    }
-
-    return base.merge(counters).withMutations(map => {
-      map.set('relationship', relationship);
-      map.set('moved', moved);
-    });
-  });
-};
+export { makeGetAccount } from "./accounts";
 
 const getFilters = (state, { contextType }) => {
   if (!contextType) return null;
@@ -56,7 +40,7 @@ export const makeGetStatus = () => {
         statusReblog = null;
       }
 
-      if (hideBlockingQuote && (statusReblog || statusBase).getIn(['quote', 'quote_muted'])) {
+      if (isHideItem('blocking_quote') && (statusReblog || statusBase).getIn(['quote', 'quote_muted'])) {
         return null;
       }
 

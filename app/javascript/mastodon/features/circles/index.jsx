@@ -9,6 +9,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { ReactComponent as CirclesIcon } from '@material-symbols/svg-600/outlined/account_circle-fill.svg';
+import { ReactComponent as CircleIcon } from '@material-symbols/svg-600/outlined/account_circle.svg';
+
 import { fetchCircles, deleteCircle } from 'mastodon/actions/circles';
 import { openModal } from 'mastodon/actions/modal';
 import Column from 'mastodon/components/column';
@@ -94,7 +97,7 @@ class Circles extends ImmutablePureComponent {
 
     return (
       <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.heading)}>
-        <ColumnHeader title={intl.formatMessage(messages.heading)} icon='user-circle' multiColumn={multiColumn} />
+        <ColumnHeader title={intl.formatMessage(messages.heading)} icon='user-circle' iconComponent={CirclesIcon} multiColumn={multiColumn} />
 
         <NewCircleForm />
 
@@ -105,7 +108,7 @@ class Circles extends ImmutablePureComponent {
           bindToDocument={!multiColumn}
         >
           {circles.map(circle =>
-            <ColumnLink key={circle.get('id')} to={`/circles/${circle.get('id')}`} icon='user-circle' text={circle.get('title')} />,
+            <ColumnLink key={circle.get('id')} to={`/circles/${circle.get('id')}`} icon='user-circle' iconComponent={CircleIcon} text={circle.get('title')} />,
           )}
         </ScrollableList>
 

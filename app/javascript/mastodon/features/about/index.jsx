@@ -10,6 +10,11 @@ import { List as ImmutableList } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
+import { ReactComponent as ChevronRightIcon } from '@material-symbols/svg-600/outlined/chevron_right.svg';
+import { ReactComponent as DisabledIcon } from '@material-symbols/svg-600/outlined/close-fill.svg';
+import { ReactComponent as EnabledIcon } from '@material-symbols/svg-600/outlined/done-fill.svg';
+import { ReactComponent as ExpandMoreIcon } from '@material-symbols/svg-600/outlined/expand_more.svg';
+
 import { fetchServer, fetchExtendedDescription, fetchDomainBlocks  } from 'mastodon/actions/server';
 import Column from 'mastodon/components/column';
 import { Icon  }  from 'mastodon/components/icon';
@@ -22,6 +27,8 @@ const messages = defineMessages({
   title: { id: 'column.about', defaultMessage: 'About' },
   rules: { id: 'about.rules', defaultMessage: 'Server rules' },
   blocks: { id: 'about.blocks', defaultMessage: 'Moderated servers' },
+  fullTextSearch: { id: 'about.full_text_search', defaultMessage: 'Full text search' },
+  localTimeline: { id: 'column.community', defaultMessage: 'Local timeline' },
   noop: { id: 'about.domain_blocks.noop.title', defaultMessage: 'Soft limited' },
   noopExplanation: { id: 'about.domain_blocks.noop.explanation', defaultMessage: 'This server is limited partically.' },
   silenced: { id: 'about.domain_blocks.silenced.title', defaultMessage: 'Limited' },
@@ -85,7 +92,7 @@ class Section extends PureComponent {
     return (
       <div className={classNames('about__section', { active: !collapsed })}>
         <div className='about__section__title' role='button' tabIndex={0} onClick={this.handleClick}>
-          <Icon id={collapsed ? 'chevron-right' : 'chevron-down'} fixedWidth /> {title}
+          <Icon id={collapsed ? 'chevron-right' : 'chevron-down'} icon={collapsed ? ChevronRightIcon : ExpandMoreIcon} /> {title}
         </div>
 
         {!collapsed && (
@@ -95,6 +102,28 @@ class Section extends PureComponent {
     );
   }
 
+}
+
+class CapabilityIcon extends PureComponent {
+
+  static propTypes = {
+    intl: PropTypes.object.isRequired,
+    state: PropTypes.bool,
+  };
+
+  render () {
+    const { intl, state } = this.props;
+
+    if (state) {
+      return (
+        <span className='capability-icon enabled'><Icon id='check' icon={EnabledIcon} title={intl.formatMessage(messages.enabled)} />{intl.formatMessage(messages.enabled)}</span>
+      );
+    } else {
+      return (
+        <span className='capability-icon disabled'><Icon id='times' icon={DisabledIcon} title={intl.formatMessage(messages.disabled)} />{intl.formatMessage(messages.disabled)}</span>
+      );
+    }
+  }
 }
 
 class About extends PureComponent {
@@ -130,6 +159,8 @@ class About extends PureComponent {
     const fedibirdCapabilities = server.get('fedibird_capabilities') || [];   // thinking about isLoading is true
     const isPublicUnlistedVisibility = fedibirdCapabilities.includes('kmyblue_visibility_public_unlisted');
     const isEmojiReaction = fedibirdCapabilities.includes('emoji_reaction');
+    const isLocalTimeline = !fedibirdCapabilities.includes('timeline_no_local');
+    const isFullTextSearch = !fedibirdCapabilities.includes('profile_search');
 
     return (
       <Column bindToDocument={!multiColumn} label={intl.formatMessage(messages.title)}>
@@ -196,10 +227,16 @@ class About extends PureComponent {
             {!isLoading && (
               <ol className='rules-list'>
                 <li>
-                  <span className='rules-list__text'>{intl.formatMessage(messages.emojiReaction)}: {intl.formatMessage(isEmojiReaction ? messages.enabled : messages.disabled)}</span>
+                  <span className='rules-list__text'>{intl.formatMessage(messages.emojiReaction)}: <CapabilityIcon state={isEmojiReaction} intl={intl} /></span>
                 </li>
                 <li>
-                  <span className='rules-list__text'>{intl.formatMessage(messages.publicUnlistedVisibility)}: {intl.formatMessage(isPublicUnlistedVisibility ? messages.enabled : messages.disabled)}</span>
+                  <span className='rules-list__text'>{intl.formatMessage(messages.publicUnlistedVisibility)}: <CapabilityIcon state={isPublicUnlistedVisibility} intl={intl} /></span>
+                </li>
+                <li>
+                  <span className='rules-list__text'>{intl.formatMessage(messages.localTimeline)}: <CapabilityIcon state={isLocalTimeline} intl={intl} /></span>
+                </li>
+                <li>
+                  <span className='rules-list__text'>{intl.formatMessage(messages.fullTextSearch)}: <CapabilityIcon state={isFullTextSearch} intl={intl} /></span>
                 </li>
               </ol>
             )}

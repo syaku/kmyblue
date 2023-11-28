@@ -4,7 +4,7 @@ module HasUserSettings
   extend ActiveSupport::Concern
 
   included do
-    serialize :settings, UserSettingsSerializer
+    serialize :settings, coder: UserSettingsSerializer
   end
 
   def settings_attributes=(attributes)
@@ -143,8 +143,12 @@ module HasUserSettings
     settings['link_preview']
   end
 
-  def setting_dtl_force_with_tag
-    settings['dtl_force_with_tag']&.to_sym || :none
+  def setting_dtl_force_visibility
+    settings['dtl_force_visibility']&.to_sym || :unchange
+  end
+
+  def setting_dtl_force_searchability
+    settings['dtl_force_searchability']&.to_sym || :unchange
   end
 
   def setting_dtl_force_subscribable
@@ -253,6 +257,14 @@ module HasUserSettings
 
   def setting_lock_follow_from_bot
     settings['lock_follow_from_bot']
+  end
+
+  def setting_hide_emoji_reaction_unavailable_server
+    settings['web.hide_emoji_reaction_unavailable_server']
+  end
+
+  def setting_hide_favourite_menu
+    settings['web.hide_favourite_menu']
   end
 
   def allows_report_emails?

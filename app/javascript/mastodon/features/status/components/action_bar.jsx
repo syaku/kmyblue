@@ -4,16 +4,28 @@ import { PureComponent } from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import classNames from 'classnames';
+import { withRouter } from 'react-router-dom';
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
+import { ReactComponent as BookmarkIcon } from '@material-symbols/svg-600/outlined/bookmark-fill.svg';
+import { ReactComponent as BookmarkBorderIcon } from '@material-symbols/svg-600/outlined/bookmark.svg';
+import { ReactComponent as EmojiReactionIcon } from '@material-symbols/svg-600/outlined/mood.svg';
+import { ReactComponent as MoreHorizIcon } from '@material-symbols/svg-600/outlined/more_horiz.svg';
+import { ReactComponent as RepeatIcon } from '@material-symbols/svg-600/outlined/repeat.svg';
+import { ReactComponent as ReplyIcon } from '@material-symbols/svg-600/outlined/reply.svg';
+import { ReactComponent as ReplyAllIcon } from '@material-symbols/svg-600/outlined/reply_all.svg';
+import { ReactComponent as StarIcon } from '@material-symbols/svg-600/outlined/star-fill.svg';
+import { ReactComponent as StarBorderIcon } from '@material-symbols/svg-600/outlined/star.svg';
+
 import { PERMISSION_MANAGE_USERS, PERMISSION_MANAGE_FEDERATION } from 'mastodon/permissions';
+import { WithRouterPropTypes } from 'mastodon/utils/react_router';
 
 
 import { IconButton } from '../../../components/icon_button';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
-import { enableEmojiReaction , bookmarkCategoryNeeded, me } from '../../../initial_state';
+import { enableEmojiReaction , bookmarkCategoryNeeded, me, isHideItem } from '../../../initial_state';
 import EmojiPickerDropdown from '../../compose/containers/emoji_picker_dropdown_container';
 
 const messages = defineMessages({
@@ -63,7 +75,6 @@ const mapStateToProps = (state, { status }) => ({
 class ActionBar extends PureComponent {
 
   static contextTypes = {
-    router: PropTypes.object,
     identity: PropTypes.object,
   };
 
@@ -94,10 +105,11 @@ class ActionBar extends PureComponent {
     onPin: PropTypes.func,
     onEmbed: PropTypes.func,
     intl: PropTypes.object.isRequired,
+    ...WithRouterPropTypes,
   };
 
   handleOpenMentions = () => {
-    this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/${this.props.status.get('id')}/mentioned_users`);
+    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/${this.props.status.get('id')}/mentioned_users`);
   };
 
   handleReplyClick = () => {
@@ -129,23 +141,23 @@ class ActionBar extends PureComponent {
   };
 
   handleDeleteClick = () => {
-    this.props.onDelete(this.props.status, this.context.router.history);
+    this.props.onDelete(this.props.status, this.props.history);
   };
 
   handleRedraftClick = () => {
-    this.props.onDelete(this.props.status, this.context.router.history, true);
+    this.props.onDelete(this.props.status, this.props.history, true);
   };
 
   handleEditClick = () => {
-    this.props.onEdit(this.props.status, this.context.router.history);
+    this.props.onEdit(this.props.status, this.props.history);
   };
 
   handleDirectClick = () => {
-    this.props.onDirect(this.props.status.get('account'), this.context.router.history);
+    this.props.onDirect(this.props.status.get('account'), this.props.history);
   };
 
   handleMentionClick = () => {
-    this.props.onMention(this.props.status.get('account'), this.context.router.history);
+    this.props.onMention(this.props.status.get('account'), this.props.history);
   };
 
   handleMuteClick = () => {
@@ -324,10 +336,13 @@ class ActionBar extends PureComponent {
     }
 
     let replyIcon;
+    let replyIconComponent;
     if (status.get('in_reply_to_id', null) === null) {
       replyIcon = 'reply';
+      replyIconComponent = ReplyIcon;
     } else {
       replyIcon = 'reply-all';
+      replyIconComponent = ReplyAllIcon;
     }
 
     const reblogPrivate = status.getIn(['account', 'id']) === me && status.get('visibility_ex') === 'private';
@@ -343,6 +358,7 @@ class ActionBar extends PureComponent {
       reblogTitle = intl.formatMessage(messages.cannot_reblog);
     }
 
+    const emojiReactionAvailableServer = !isHideItem('emoji_reaction_unavailable_server') || status.get('emoji_reaction_available_server');
     const emojiReactionPolicy = account.getIn(['other_settings', 'emoji_reaction_policy']) || 'allow';
     const following = emojiReactionPolicy !== 'following_only' || (relationship && relationship.get('following'));
     const followed = emojiReactionPolicy !== 'followers_only' || (relationship && relationship.get('followed_by'));
@@ -350,22 +366,22 @@ class ActionBar extends PureComponent {
     const outside = emojiReactionPolicy !== 'outside_only' || (relationship && (relationship.get('following') || relationship.get('followed_by')));
     const denyFromAll = emojiReactionPolicy !== 'block' && emojiReactionPolicy !== 'block';
     const emojiPickerButton = (
-      <IconButton icon='smile-o' onClick={this.handleEmojiPickInnerButton} title={intl.formatMessage(messages.pickEmoji)} />
+      <IconButton icon='smile-o' iconComponent={EmojiReactionIcon} onClick={this.handleEmojiPickInnerButton} title={intl.formatMessage(messages.pickEmoji)} />
     );
-    const emojiPickerDropdown = enableEmojiReaction && denyFromAll && (writtenByMe || (following && followed && mutual && outside)) && (
+    const emojiPickerDropdown = enableEmojiReaction && emojiReactionAvailableServer && denyFromAll && (writtenByMe || (following && followed && mutual && outside)) && (
       <div className='detailed-status__button'><EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} button={emojiPickerButton} /></div>
     );
 
     return (
       <div className='detailed-status__action-bar'>
-        <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.reply)} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} onClick={this.handleReplyClick} /></div>
-        <div className='detailed-status__button'><IconButton className={classNames({ reblogPrivate })} disabled={!publicStatus && !reblogPrivate} active={status.get('reblogged')} title={reblogTitle} icon='retweet' onClick={this.handleReblogClick} /></div>
-        <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} /></div>
-        <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' onClick={this.handleBookmarkClick} /></div>
+        <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.reply)} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} iconComponent={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? ReplyIcon : replyIconComponent} onClick={this.handleReplyClick} /></div>
+        <div className='detailed-status__button'><IconButton className={classNames({ reblogPrivate })} disabled={!publicStatus && !reblogPrivate} active={status.get('reblogged')} title={reblogTitle} icon='retweet' iconComponent={RepeatIcon} onClick={this.handleReblogClick} /></div>
+        <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' iconComponent={status.get('favourited') ? StarIcon : StarBorderIcon} onClick={this.handleFavouriteClick} /></div>
+        <div className='detailed-status__button'><IconButton className='bookmark-icon' disabled={!signedIn} active={status.get('bookmarked')} title={intl.formatMessage(messages.bookmark)} icon='bookmark' iconComponent={status.get('bookmarked') ? BookmarkIcon : BookmarkBorderIcon} onClick={this.handleBookmarkClick} /></div>
         {emojiPickerDropdown}
 
         <div className='detailed-status__action-bar-dropdown'>
-          <DropdownMenuContainer size={18} icon='ellipsis-h' status={status} items={menu} direction='left' title={intl.formatMessage(messages.more)} />
+          <DropdownMenuContainer icon='ellipsis-h' iconComponent={MoreHorizIcon} status={status} items={menu} direction='left' title={intl.formatMessage(messages.more)} />
         </div>
       </div>
     );
@@ -373,4 +389,4 @@ class ActionBar extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(injectIntl(ActionBar));
+export default withRouter(connect(mapStateToProps)(injectIntl(ActionBar)));

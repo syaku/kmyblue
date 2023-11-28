@@ -150,7 +150,7 @@ class StatusReachFinder
   end
 
   def friend_inboxes
-    if @status.public_visibility? || @status.public_unlisted_visibility? || (@status.unlisted_visibility? && (@status.public_searchability? || @status.public_unlisted_searchability?))
+    if @status.distributable_friend?
       DeliveryFailureTracker.without_unavailable(FriendDomain.distributables.where(delivery_local: true).where.not(domain: AccountDomainBlock.where(account: @status.account).select(:domain)).pluck(:inbox_url))
     else
       []
@@ -195,7 +195,7 @@ class StatusReachFinder
       blocks = DomainBlock.where(domain: nil)
       blocks = blocks.or(DomainBlock.where(reject_send_not_public_searchability: true)) if status.compute_searchability != 'public'
       blocks = blocks.or(DomainBlock.where(reject_send_public_unlisted: true)) if status.public_unlisted_visibility?
-      blocks = blocks.or(DomainBlock.where(reject_send_dissubscribable: true)) if status.account.dissubscribable
+      blocks = blocks.or(DomainBlock.where(reject_send_dissubscribable: true)) unless status.account.all_subscribable?
       blocks = blocks.or(DomainBlock.where(reject_send_media: true)) if status.with_media?
       blocks = blocks.or(DomainBlock.where(reject_send_sensitive: true)) if (status.with_media? && status.sensitive) || status.spoiler_text?
       blocks.pluck(:domain).uniq

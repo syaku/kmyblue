@@ -5,16 +5,19 @@ require 'rails_helper'
 RSpec.describe FanOutOnWriteService, type: :service do
   subject { described_class.new }
 
+  let(:ltl_enabled) { true }
+
   let(:last_active_at) { Time.now.utc }
   let(:visibility) { 'public' }
   let(:searchability) { 'public' }
-  let(:dissubscribable) { false }
+  let(:subscription_policy) { :allow }
   let(:status) { Fabricate(:status, account: alice, visibility: visibility, searchability: searchability, text: 'Hello @bob #hoge') }
 
-  let!(:alice) { Fabricate(:user, current_sign_in_at: last_active_at, account_attributes: { dissubscribable: dissubscribable }).account }
+  let!(:alice) { Fabricate(:user, current_sign_in_at: last_active_at, account_attributes: { master_settings: { subscription_policy: subscription_policy } }).account }
   let!(:bob)   { Fabricate(:user, current_sign_in_at: last_active_at, account_attributes: { username: 'bob' }).account }
   let!(:tom)   { Fabricate(:user, current_sign_in_at: last_active_at).account }
   let!(:ohagi) { Fabricate(:user, current_sign_in_at: last_active_at).account }
+  let!(:tagf)  { Fabricate(:user, current_sign_in_at: last_active_at).account }
 
   let!(:list)          { nil }
   let!(:empty_list)    { nil }
@@ -28,10 +31,15 @@ RSpec.describe FanOutOnWriteService, type: :service do
     tom.follow!(alice)
     ohagi.follow!(bob)
 
+    Form::AdminSettings.new(enable_local_timeline: '0').save unless ltl_enabled
+
     ProcessMentionsService.new.call(status)
     ProcessHashtagsService.new.call(status)
 
     allow(redis).to receive(:publish)
+
+    tag = status.tags.first
+    Fabricate(:tag_follow, account: tagf, tag: tag) if tag.present?
 
     subject.call(status) unless custom_before
   end
@@ -60,6 +68,13 @@ RSpec.describe FanOutOnWriteService, type: :service do
     antenna
   end
 
+  def antenna_with_tag(owner, target_tag, **options)
+    antenna = Fabricate(:antenna, account: owner, any_tags: false, **options)
+    tag = Tag.find_or_create_by_names([target_tag])[0]
+    Fabricate(:antenna_tag, antenna: antenna, tag: tag)
+    antenna
+  end
+
   def antenna_with_options(owner, **options)
     Fabricate(:antenna, account: owner, **options)
   end
@@ -76,6 +91,10 @@ RSpec.describe FanOutOnWriteService, type: :service do
       expect(home_feed_of(tom)).to include status.id
     end
 
+    it 'is added to the tag follower' do
+      expect(home_feed_of(tagf)).to include status.id
+    end
+
     it 'is broadcast to the hashtag stream' do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge:local', anything)
@@ -84,6 +103,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
     it 'is broadcast to the public stream' do
       expect(redis).to have_received(:publish).with('timeline:public', anything)
       expect(redis).to have_received(:publish).with('timeline:public:local', anything)
+    end
+
+    context 'when local timeline is disabled' do
+      let(:ltl_enabled) { false }
+
+      it 'is broadcast to the hashtag stream' do
+        expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
+        expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
+      end
+
+      it 'is broadcast to the public stream' do
+        expect(redis).to have_received(:publish).with('timeline:public', anything)
+        expect(redis).to_not have_received(:publish).with('timeline:public:local', anything)
+      end
     end
 
     context 'with list' do
@@ -105,11 +138,67 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is not added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to_not include status.id
+        end
+      end
+
+      context 'when subscription is allowed followers only' do
+        let(:subscription_policy) { :followers_only }
+        let!(:antenna) { antenna_with_account(ohagi, alice) }
+
+        it 'is not added to the antenna feed' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+        end
+
+        context 'with following' do
+          let!(:antenna) { antenna_with_account(bob, alice) }
+
+          it 'is added to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to include status.id
+          end
+        end
+      end
+
+      context 'when dtl post' do
+        let!(:antenna) { antenna_with_tag(bob, 'hoge') }
+
+        around do |example|
+          ClimateControl.modify DTL_ENABLED: 'true', DTL_TAG: 'hoge' do
+            example.run
+          end
+        end
+
+        context 'with listening tag' do
+          it 'is added to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to include status.id
+          end
+        end
+
+        context 'with listening tag but sender is limiting subscription' do
+          let(:subscription_policy) { :block }
+
+          it 'does not add to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to_not include status.id
+          end
+        end
+
+        context 'with listening tag but sender is limiting subscription but permit dtl only' do
+          let(:subscription_policy) { :block }
+          let(:custom_before) { true }
+
+          before do
+            alice.user.settings['dtl_force_subscribable'] = true
+            alice.user.save!
+            subject.call(status)
+          end
+
+          it 'is added to the antenna feed' do
+            expect(antenna_feed_of(antenna)).to include status.id
+          end
         end
       end
     end
@@ -123,11 +212,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
+        end
+      end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
       end
     end
@@ -141,11 +239,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
+        end
+      end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
       end
     end
@@ -164,6 +271,10 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
     it 'is not added to the home feed of the other follower' do
       expect(home_feed_of(tom)).to_not include status.id
+    end
+
+    it 'is not added to the tag follower' do
+      expect(home_feed_of(tagf)).to_not include status.id
     end
 
     it 'is not broadcast publicly' do
@@ -222,6 +333,10 @@ RSpec.describe FanOutOnWriteService, type: :service do
       expect(home_feed_of(tom)).to include status.id
     end
 
+    it 'is not added to the tag follower' do
+      expect(home_feed_of(tagf)).to_not include status.id
+    end
+
     it 'is not broadcast publicly' do
       expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to_not have_received(:publish).with('timeline:public', anything)
@@ -255,6 +370,15 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
+        end
+      end
     end
 
     context 'with LTL antenna' do
@@ -262,6 +386,14 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
       it 'is added to the antenna feed of antenna follower' do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
+        end
       end
     end
   end
@@ -278,10 +410,28 @@ RSpec.describe FanOutOnWriteService, type: :service do
       expect(home_feed_of(tom)).to include status.id
     end
 
+    it 'is added to the tag follower' do
+      expect(home_feed_of(tagf)).to include status.id
+    end
+
     it 'is broadcast publicly' do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to have_received(:publish).with('timeline:public:local', anything)
       expect(redis).to have_received(:publish).with('timeline:public', anything)
+    end
+
+    context 'when local timeline is disabled' do
+      let(:ltl_enabled) { false }
+
+      it 'is broadcast to the hashtag stream' do
+        expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
+        expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
+      end
+
+      it 'is broadcast to the public stream' do
+        expect(redis).to have_received(:publish).with('timeline:public', anything)
+        expect(redis).to_not have_received(:publish).with('timeline:public:local', anything)
+      end
     end
 
     context 'with list' do
@@ -303,8 +453,8 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is not added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to_not include status.id
@@ -321,11 +471,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
+        end
+      end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
       end
     end
@@ -339,11 +498,20 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
-      context 'when dissubscribable is true' do
-        let(:dissubscribable) { true }
+      context 'when subscription is blocked' do
+        let(:subscription_policy) { :block }
 
         it 'is added to the antenna feed' do
           expect(antenna_feed_of(antenna)).to include status.id
+        end
+      end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
       end
     end
@@ -361,6 +529,10 @@ RSpec.describe FanOutOnWriteService, type: :service do
       expect(home_feed_of(tom)).to include status.id
     end
 
+    it 'is added to the tag follower' do
+      expect(home_feed_of(tagf)).to include status.id
+    end
+
     it 'is not broadcast publicly' do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to_not have_received(:publish).with('timeline:public', anything)
@@ -369,9 +541,13 @@ RSpec.describe FanOutOnWriteService, type: :service do
     context 'with searchability public_unlisted' do
       let(:searchability) { 'public_unlisted' }
 
-      it 'is not broadcast to the hashtag stream' do
+      it 'is broadcast to the hashtag stream' do
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge:local', anything)
+      end
+
+      it 'is added to the tag follower' do
+        expect(home_feed_of(tagf)).to include status.id
       end
     end
 
@@ -380,6 +556,19 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
       it 'is not broadcast to the hashtag stream' do
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
+        expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
+      end
+
+      it 'is not added to the tag follower' do
+        expect(home_feed_of(tagf)).to_not include status.id
+      end
+    end
+
+    context 'when local timeline is disabled' do
+      let(:ltl_enabled) { false }
+
+      it 'is broadcast to the hashtag stream' do
+        expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
       end
     end
@@ -412,6 +601,15 @@ RSpec.describe FanOutOnWriteService, type: :service do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(antenna)).to_not include status.id
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
+        end
+      end
     end
 
     context 'with LTL antenna' do
@@ -419,6 +617,14 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
       it 'is added to the antenna feed of antenna follower' do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
+      end
+
+      context 'when local timeline is disabled' do
+        let(:ltl_enabled) { false }
+
+        it 'is not added to the antenna feed of antenna follower' do
+          expect(antenna_feed_of(empty_antenna)).to_not include status.id
+        end
       end
     end
 
@@ -445,6 +651,10 @@ RSpec.describe FanOutOnWriteService, type: :service do
 
     it 'is not added to the home feed of the other follower' do
       expect(home_feed_of(tom)).to_not include status.id
+    end
+
+    it 'is not added to the tag follower' do
+      expect(home_feed_of(tagf)).to_not include status.id
     end
 
     it 'is not broadcast publicly' do

@@ -47,7 +47,6 @@ en:
         digest: Only sent after a long period of inactivity and only if you have received any personal messages in your absence
         discoverable: Allow your account to be discovered by strangers through recommendations, trends and other features
         discoverable_local: Disable the setting on federated servers. The setting is available this server only for avoiding full-text search on other servers
-        dissubscribable: Your post is not picked by antenna
         email: You will be sent a confirmation e-mail
         group: Reps sent to this account will be automatically BT'd and distributed to all accounts you follow!
         group_allow_private_message: Posts are duplicated and cannot be edited or deleted by the post
@@ -68,13 +67,15 @@ en:
         setting_display_media_hide_all: Always hide media
         setting_display_media_show_all: Always show media
         setting_dtl_force_subscribable: Your post can be detected local user's antenna to subscribe deep timeline
-        setting_dtl_force_with_tag: "With using #%{tag} tag, your post settings will be changed forcibly"
+        setting_dtl_force_searchability: "With using #%{tag} tag, your post settings will be changed forcibly"
+        setting_dtl_force_visibility: "With using #%{tag} tag, your post settings will be changed forcibly"
         setting_dtl_menu: Show DTL menu on web
         setting_emoji_reaction_policy: Even with this setting, users on other servers are free to put their stamp on the post and share it within the same server. If you simply want to remove the stamp from your own screen, you can disable it from the appearance settings
         setting_enable_emoji_reaction: If turn off, other users still can react your posts
         setting_single_ref_to_quote: If this server does not have target post, target server maybe cannot read your quote
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed
+        subscription_policy: Your post is not picked by antenna
         username: You can use letters, numbers, and underscores
         whole_word: When the keyword or phrase is alphanumeric only, it will only be applied if it matches the whole word
       domain_allow:
@@ -97,6 +98,7 @@ en:
         closed_registrations_message: Displayed when sign-ups are closed
         content_cache_retention_period: All posts and boosts from other servers will be deleted after the specified number of days. Some posts may not be recoverable. All related bookmarks, favourites and boosts will also be lost and impossible to undo.
         custom_css: You can apply custom styles on the web version of Mastodon.
+        enable_local_timeline: While enabling this feature will allow for interaction between like-minded users, it may also strengthen the internal atmosphere; since Mastodon is supposed to have a local timeline, we recommend annotating it in the server introduction if it is to be disabled.
         enable_public_unlisted_visibility: If true, your community maybe closed-minded. If turn it false, strongly recommend that you disclose that you have disabled this setting!
         mascot: Overrides the illustration in the advanced web interface.
         media_cache_retention_period: Downloaded media files will be deleted after the specified number of days when set to a positive value, and re-downloaded on demand.
@@ -141,6 +143,10 @@ en:
       settings:
         indexable: Your profile page may appear in search results on Google, Bing, and others.
         show_application: You will always be able to see which app published your post regardless.
+      subscription_policy:
+        allow: Allow
+        block: Block
+        followers_only: Followers only
       tag:
         name: You can only change the casing of the letters, for example, to make it more readable
       user:
@@ -206,7 +212,6 @@ en:
         discoverable: Suggest account to others
         discoverable_local: Disallow suggesting account on other servers
         display_name: Display name
-        dissubscribable: Reject any subscriptions
         email: E-mail address
         expires_in: Expire after
         fields: Extra fields
@@ -247,8 +252,9 @@ en:
         setting_display_media_expand: Show more medias
         setting_display_media_hide_all: Hide all
         setting_display_media_show_all: Show all
-        setting_dtl_force_subscribable: Ignore your dissubscribable setting when using the DTL tag
-        setting_dtl_force_with_tag: Post with DTL tag
+        setting_dtl_force_subscribable: Ignore your subscribability setting when using the DTL tag
+        setting_dtl_force_searchability: Post searchability
+        setting_dtl_force_visibility: Post visibility
         setting_emoji_reaction_streaming_notify_impl2: Enable stamp notification compat with Nyastodon, Catstodon, glitch-soc
         setting_enable_emoji_reaction: Use stamp function
         setting_enable_login_privacy: Enable login visibility
@@ -262,6 +268,8 @@ en:
           outside_only: Followings or followers only
         setting_expand_spoilers: Always expand posts marked with content warnings
         setting_hide_blocking_quote: Hide posts which have a quote written by the user you are blocking
+        setting_hide_emoji_reaction_unavailable_server: Hide stamp button from unavailable server
+        setting_hide_favourite_menu: Hide favourite menu
         setting_hide_followers_count: Hide followers count
         setting_hide_following_count: Hide following count
         setting_hide_network: Hide your social graph
@@ -294,15 +302,21 @@ en:
         setting_use_public_index: Include permitted accounts post to results of search
         severity: Severity
         sign_in_token_attempt: Security code
+        subscription_policy: Subscribability
         title: Title
         type: Import type
         username: Username
         username_or_email: Username or Email
         whole_word: Whole word
-      dtl_force_with_tag:
-        full: Visibility is unlisted, searchability is everyone
-        none: No changes
-        searchability: Searchability is everyone
+      dtl_force_searchability:
+        public: Everyone
+        public_unlisted: Local and followers
+        unchange: Unchange
+      dtl_force_visibility:
+        public: Public
+        public_unlisted: Public unlisted
+        unchange: Unchange
+        unlisted: Unlisted
       email_domain_block:
         with_dns_records: Include MX records and IPs of the domain
       emoji_reactions:
@@ -329,6 +343,7 @@ en:
         content_cache_retention_period: Content cache retention period
         custom_css: Custom CSS
         enable_emoji_reaction: Enable stamp function
+        enable_local_timeline: Enable local timeline
         enable_public_unlisted_visibility: Enable public-unlisted visibility
         mascot: Custom mascot (legacy)
         media_cache_retention_period: Media cache retention period
