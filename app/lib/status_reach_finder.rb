@@ -21,6 +21,12 @@ class StatusReachFinder
     end
   end
 
+  def inboxes_for_limited
+    DeliveryFailureTracker.without_unavailable(
+      @status.mentioned_accounts.where.not(domain: nil).pluck(:inbox_url).compact.uniq
+    )
+  end
+
   private
 
   def reached_account_inboxes
