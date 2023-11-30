@@ -19,9 +19,24 @@ class ActivityPub::DistributionWorker < ActivityPub::RawDistributionWorker
   protected
 
   def distribute_limited!
+    if @status.reply? && @status.conversation.present? && !@status.conversation.local?
+      distribute_conversation!
+    else
+      distribute_limited_mentions!
+    end
+  end
+
+  def distribute_limited_mentions!
     ActivityPub::DeliveryWorker.push_bulk(inboxes_for_limited, limit: 1_000) do |inbox_url|
       [payload, @account.id, inbox_url, options]
     end
+  end
+
+  def distribute_conversation!
+    inbox_url = @status.conversation.inbox_url
+    return if inbox_url.blank?
+
+    ActivityPub::DeliveryWorker.perform_async(payload, @account.id, inbox_url, options)
   end
 
   def inboxes
@@ -45,7 +60,7 @@ class ActivityPub::DistributionWorker < ActivityPub::RawDistributionWorker
   end
 
   def payload
-    @payload ||= Oj.dump(serialize_payload(activity, ActivityPub::ActivitySerializer, signer: @account))
+    @payload ||= Oj.dump(serialize_payload(activity, ActivityPub::ActivitySerializer, signer: @account, always_sign_unsafe: always_sign))
   end
 
   def payload_for_misskey
@@ -53,7 +68,7 @@ class ActivityPub::DistributionWorker < ActivityPub::RawDistributionWorker
   end
 
   def payload_for_friend
-    @payload_for_friend ||= Oj.dump(serialize_payload(activity_for_friend, ActivityPub::ActivityForFriendSerializer, signer: @account))
+    @payload_for_friend ||= Oj.dump(serialize_payload(activity_for_friend, ActivityPub::ActivityForFriendSerializer, signer: @account, always_sign_unsafe: always_sign))
   end
 
   def activity
@@ -66,6 +81,10 @@ class ActivityPub::DistributionWorker < ActivityPub::RawDistributionWorker
 
   def activity_for_friend
     ActivityPub::ActivityPresenter.from_status(@status, for_friend: true)
+  end
+
+  def always_sign
+    false
   end
 
   def options

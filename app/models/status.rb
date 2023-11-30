@@ -59,13 +59,14 @@ class Status < ApplicationRecord
 
   enum visibility: { public: 0, unlisted: 1, private: 2, direct: 3, limited: 4, public_unlisted: 10, login: 11 }, _suffix: :visibility
   enum searchability: { public: 0, private: 1, direct: 2, limited: 3, unsupported: 4, public_unlisted: 10 }, _suffix: :searchability
-  enum limited_scope: { none: 0, mutual: 1, circle: 2, personal: 3 }, _suffix: :limited
+  enum limited_scope: { none: 0, mutual: 1, circle: 2, personal: 3, reply: 4 }, _suffix: :limited
 
   belongs_to :application, class_name: 'Doorkeeper::Application', optional: true
 
   belongs_to :account, inverse_of: :statuses
   belongs_to :in_reply_to_account, class_name: 'Account', optional: true
   belongs_to :conversation, optional: true
+  has_one :owned_conversation, class_name: 'Conversation', foreign_key: 'ancestor_status_id', dependent: :nullify, inverse_of: false
   belongs_to :preloadable_poll, class_name: 'Poll', foreign_key: 'poll_id', optional: true, inverse_of: false
 
   belongs_to :thread, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :replies, optional: true
@@ -83,6 +84,7 @@ class Status < ApplicationRecord
   has_many :mentions, dependent: :destroy, inverse_of: :status
   has_many :mentioned_accounts, through: :mentions, source: :account, class_name: 'Account'
   has_many :active_mentions, -> { active }, class_name: 'Mention', inverse_of: :status
+  has_many :silent_mentions, -> { silent }, class_name: 'Mention', inverse_of: :status
   has_many :media_attachments, dependent: :nullify
   has_many :reference_objects, class_name: 'StatusReference', inverse_of: :status, dependent: :destroy
   has_many :references, through: :reference_objects, class_name: 'Status', source: :target_status
@@ -658,11 +660,16 @@ class Status < ApplicationRecord
 
     self.reply = !(in_reply_to_id.nil? && thread.nil?) unless reply
 
-    if reply? && !thread.nil?
+    if reply? && !thread.nil? && (!limited_visibility? || none_limited? || reply_limited?)
       self.in_reply_to_account_id = carried_over_reply_to_account_id
       self.conversation_id        = thread.conversation_id if conversation_id.nil?
     elsif conversation_id.nil?
-      self.conversation = Conversation.new
+      if local?
+        self.owned_conversation = Conversation.new
+        self.conversation = owned_conversation
+      else
+        self.conversation = Conversation.new
+      end
     end
   end
 

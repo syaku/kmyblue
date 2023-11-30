@@ -63,6 +63,22 @@ describe ActivityPub::DistributionWorker do
       end
     end
 
+    context 'with limited response status' do
+      before do
+        allow(ActivityPub::DeliveryWorker).to receive(:perform_async).with(kind_of(String), status.account.id, 'http://example.com/conversation/inbox', anything)
+        status.update(visibility: :limited, thread: Fabricate(:status))
+        status.conversation.update(uri: 'https://example.com/conversation', inbox_url: 'http://example.com/conversation/inbox')
+        status.capability_tokens.create!
+        status.mentions.create!(account: follower, silent: true)
+        stub_request(:post, 'http://example.com/conversation/inbox')
+      end
+
+      it 'delivers to followers' do
+        subject.perform(status.id)
+        expect(ActivityPub::DeliveryWorker).to have_received(:perform_async)
+      end
+    end
+
     context 'with limited status for no-follower but non-mentioned follower' do
       let(:no_follower) { Fabricate(:account, domain: 'example.com', inbox_url: 'http://example.com/no_follower/inbox', shared_inbox_url: 'http://example.com') }
 
