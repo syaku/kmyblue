@@ -36,14 +36,14 @@
 require 'ostruct'
 
 class Status < ApplicationRecord
+  include Cacheable
   include Discard::Model
   include Paginable
-  include Cacheable
-  include StatusThreadingConcern
-  include StatusSnapshotConcern
   include RateLimitable
-  include StatusSafeReblogInsert
-  include StatusSearchConcern
+  include Status::SafeReblogInsert
+  include Status::SearchConcern
+  include Status::SnapshotConcern
+  include Status::ThreadingConcern
   include DtlHelper
 
   rate_limit by: :account, family: :statuses
@@ -78,13 +78,11 @@ class Status < ApplicationRecord
   has_many :bookmarks, inverse_of: :status, dependent: :destroy
   has_many :reblogs, foreign_key: 'reblog_of_id', class_name: 'Status', inverse_of: :reblog, dependent: :destroy
   has_many :reblogged_by_accounts, through: :reblogs, class_name: 'Account', source: :account
-  has_many :quotes, foreign_key: 'quote_of_id', class_name: 'Status', inverse_of: :quote
+  has_many :quotes, foreign_key: 'quote_of_id', class_name: 'Status', inverse_of: :quote, dependent: nil
   has_many :quoted_by_accounts, through: :quotes, class_name: 'Account', source: :account
-  has_many :replies, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :thread
+  has_many :replies, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :thread, dependent: nil
   has_many :mentions, dependent: :destroy, inverse_of: :status
   has_many :mentioned_accounts, through: :mentions, source: :account, class_name: 'Account'
-  has_many :active_mentions, -> { active }, class_name: 'Mention', inverse_of: :status
-  has_many :silent_mentions, -> { silent }, class_name: 'Mention', inverse_of: :status
   has_many :media_attachments, dependent: :nullify
   has_many :reference_objects, class_name: 'StatusReference', inverse_of: :status, dependent: :destroy
   has_many :references, through: :reference_objects, class_name: 'Status', source: :target_status
@@ -94,6 +92,10 @@ class Status < ApplicationRecord
   has_many :bookmark_category_relationships, class_name: 'BookmarkCategoryStatus', inverse_of: :status, dependent: :destroy
   has_many :bookmark_categories, class_name: 'BookmarkCategory', through: :bookmark_category_relationships, source: :bookmark_category
   has_many :joined_bookmark_categories, class_name: 'BookmarkCategory', through: :bookmark_category_relationships, source: :bookmark_category
+
+  # The `dependent` option is enabled by the initial `mentions` association declaration
+  has_many :active_mentions, -> { active }, class_name: 'Mention', inverse_of: :status # rubocop:disable Rails/HasManyOrHasOneDependent
+  has_many :silent_mentions, -> { silent }, class_name: 'Mention', inverse_of: :status # rubocop:disable Rails/HasManyOrHasOneDependent
 
   # Those associations are used for the private search index
   has_many :local_mentioned, -> { merge(Account.local) }, through: :active_mentions, source: :account
@@ -106,11 +108,13 @@ class Status < ApplicationRecord
 
   has_and_belongs_to_many :tags
 
-  has_one :preview_cards_status, inverse_of: :status # Because of a composite primary key, the dependent option cannot be used
+  # Because of a composite primary key, the `dependent` option cannot be used on this association
+  has_one :preview_cards_status, inverse_of: :status # rubocop:disable Rails/HasManyOrHasOneDependent
+
   has_one :notification, as: :activity, dependent: :destroy
-  has_one :status_stat, inverse_of: :status
+  has_one :status_stat, inverse_of: :status, dependent: nil
   has_one :poll, inverse_of: :status, dependent: :destroy
-  has_one :trend, class_name: 'StatusTrend', inverse_of: :status
+  has_one :trend, class_name: 'StatusTrend', inverse_of: :status, dependent: nil
   has_one :scheduled_expiration_status, inverse_of: :status, dependent: :destroy
   has_one :circle_status, inverse_of: :status, dependent: :destroy
   has_many :list_status, inverse_of: :status, dependent: :destroy

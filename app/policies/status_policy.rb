@@ -11,7 +11,7 @@ class StatusPolicy < ApplicationPolicy
   delegate :reply?, :expired?, to: :record
 
   def show?
-    return false if author.suspended?
+    return false if author.unavailable?
 
     if requires_mention?
       owned? || mention_exists?

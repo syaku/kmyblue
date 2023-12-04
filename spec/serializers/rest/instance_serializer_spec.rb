@@ -10,6 +10,12 @@ describe REST::InstanceSerializer do
     it 'returns recent usage data' do
       expect(serialization['usage']).to eq({ 'users' => { 'active_month' => 0 } })
     end
+
+    it 'returns the VAPID public key' do
+      expect(serialization['configuration']['vapid']).to eq({
+        'public_key' => Rails.configuration.x.vapid_public_key,
+      })
+    end
   end
 
   describe 'fedibird_capabilities' do
