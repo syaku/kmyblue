@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AccountsIndex < Chewy::Index
+  include DatetimeClampingConcern
+
   DEVELOPMENT_SETTINGS = {
     filter: {
       english_stop: {
@@ -153,7 +155,7 @@ class AccountsIndex < Chewy::Index
     field(:following_count, type: 'long', value: ->(account) { account.public_following_count })
     field(:followers_count, type: 'long', value: ->(account) { account.public_followers_count })
     field(:properties, type: 'keyword', value: ->(account) { account.searchable_properties })
-    field(:last_status_at, type: 'date', value: ->(account) { account.last_status_at || account.created_at })
+    field(:last_status_at, type: 'date', value: ->(account) { clamp_date(account.last_status_at || account.created_at) })
     field(:domain, type: 'keyword', value: ->(account) { account.domain || '' })
     field(:display_name, type: 'text', analyzer: 'verbatim') { field :edge_ngram, type: 'text', analyzer: 'edge_ngram', search_analyzer: 'verbatim' }
     field(:username, type: 'text', analyzer: 'verbatim', value: ->(account) { [account.username, account.domain].compact.join('@') }) { field :edge_ngram, type: 'text', analyzer: 'edge_ngram', search_analyzer: 'verbatim' }
