@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PublicStatusesIndex < Chewy::Index
+  include DatetimeClampingConcern
+
   DEVELOPMENT_SETTINGS = {
     filter: {
       english_stop: {
@@ -154,6 +156,6 @@ class PublicStatusesIndex < Chewy::Index
     field(:language, type: 'keyword')
     field(:domain, type: 'keyword', value: ->(status) { status.account.domain || '' })
     field(:properties, type: 'keyword', value: ->(status) { status.searchable_properties })
-    field(:created_at, type: 'date')
+    field(:created_at, type: 'date', value: ->(status) { clamp_date(status.created_at) })
   end
 end
