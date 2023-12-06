@@ -82,7 +82,7 @@ class ActivityPub::ProcessAccountService < BaseService
     @account.suspended_at      = domain_block.created_at if auto_suspend?
     @account.suspension_origin = :local if auto_suspend?
     @account.silenced_at       = domain_block.created_at if auto_silence?
-    @account.searchability     = :direct   # not null
+    @account.searchability     = :direct # not null
 
     set_immediate_protocol_attributes!
 
@@ -448,7 +448,7 @@ class ActivityPub::ProcessAccountService < BaseService
     shortcode = tag['name'].delete(':')
     image_url = tag['icon']['url']
     uri       = tag['id']
-    sensitive = (tag['isSensitive'].presence || false)
+    sensitive = tag['isSensitive'].presence || false
     license   = tag['license']
     updated   = tag['updated']
     emoji     = CustomEmoji.find_by(shortcode: shortcode, domain: @account.domain)
