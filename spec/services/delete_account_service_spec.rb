@@ -47,8 +47,15 @@ RSpec.describe DeleteAccountService, type: :service do
 
     let!(:account_note) { Fabricate(:account_note, account: account) }
 
-    it 'deletes associated owned records' do
-      expect { subject }.to change {
+    it 'deletes associated owned and target records and target notifications' do
+      expect { subject }
+        .to delete_associated_owned_records
+        .and delete_associated_target_records
+        .and delete_associated_target_notifications
+    end
+
+    def delete_associated_owned_records
+      change do
         [
           account.statuses,
           account.media_attachments,
@@ -61,7 +68,7 @@ RSpec.describe DeleteAccountService, type: :service do
           account.polls,
           account.account_notes,
         ].map(&:count)
-      }.from([3, 1, 1, 1, 1, 1, 2, 2, 1, 1]).to([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+      end.from([3, 1, 1, 1, 1, 1, 2, 2, 1, 1]).to([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
     end
 
     it 'deletes associated owned record groups' do
@@ -82,20 +89,20 @@ RSpec.describe DeleteAccountService, type: :service do
       expect { bookmark_category_status.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'deletes associated target records' do
-      expect { subject }.to change {
+    def delete_associated_target_records
+      change do
         [
           AccountPin.where(target_account: account),
         ].map(&:count)
-      }.from([1]).to([0])
+      end.from([1]).to([0])
     end
 
-    it 'deletes associated target notifications' do
-      expect { subject }.to change {
+    def delete_associated_target_notifications
+      change do
         %w(
           poll favourite emoji_reaction status mention follow
         ).map { |type| Notification.where(type: type).count }
-      }.from([1, 1, 1, 1, 1, 1]).to([0, 0, 0, 0, 0, 0])
+      end.from([1, 1, 1, 1, 1, 1]).to([0, 0, 0, 0, 0, 0])
     end
   end
 
