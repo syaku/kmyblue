@@ -99,7 +99,7 @@ class NavigationPanel extends Component {
         </div>
 
         {banner &&
-          <div class='navigation-panel__banner'>
+          <div className='navigation-panel__banner'>
             {banner}
           </div>
         }
