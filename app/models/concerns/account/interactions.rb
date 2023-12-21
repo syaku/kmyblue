@@ -198,6 +198,15 @@ module Account::Interactions
     other_account.following?(self)
   end
 
+  def followed_by_domain?(other_domain, since = nil)
+    return true if other_domain.blank?
+    return false unless local?
+
+    scope = followers
+    scope = scope.where('follows.created_at < ?', since) if since.present?
+    scope.exists?(domain: other_domain)
+  end
+
   def mutual?(other_account)
     following?(other_account) && followed_by?(other_account)
   end
