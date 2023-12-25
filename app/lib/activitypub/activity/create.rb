@@ -117,6 +117,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def process_status_params
     @status_parser = ActivityPub::Parser::StatusParser.new(@json, followers_collection: @account.followers_url, object: @object, account: @account, friend_domain: friend_domain?)
 
+    attachment_ids = process_attachments.take(MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX).map(&:id)
+
     @params = {
       uri: @status_parser.uri,
       url: @status_parser.url || @status_parser.uri,
@@ -134,7 +136,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
       searchability: @status_parser.searchability,
       thread: replied_to_status,
       conversation: conversation_from_activity,
-      media_attachment_ids: process_attachments.take(MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX).map(&:id),
+      media_attachment_ids: attachment_ids,
+      ordered_media_attachment_ids: attachment_ids,
       poll: process_poll,
     }
   end
