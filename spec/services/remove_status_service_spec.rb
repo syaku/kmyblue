@@ -12,17 +12,17 @@ RSpec.describe RemoveStatusService, type: :service do
   let!(:bill)   { Fabricate(:account, username: 'bill', protocol: :activitypub, domain: 'example2.com', shared_inbox_url: 'http://example2.com/inbox', inbox_url: 'http://example2.com/bill/inbox') }
 
   before do
-    stub_request(:post, 'http://example.com/inbox').to_return(status: 200)
-    stub_request(:post, 'http://example.com/hank/inbox').to_return(status: 200)
-    stub_request(:post, 'http://example2.com/inbox').to_return(status: 200)
-    stub_request(:post, 'http://example2.com/bill/inbox').to_return(status: 200)
+    stub_request(:post, hank.inbox_url).to_return(status: 200)
+    stub_request(:post, hank.shared_inbox_url).to_return(status: 200)
+    stub_request(:post, bill.inbox_url).to_return(status: 200)
+    stub_request(:post, bill.shared_inbox_url).to_return(status: 200)
 
     jeff.follow!(alice)
     hank.follow!(alice)
   end
 
   context 'when removed status is not a reblog' do
-    let!(:status) { PostStatusService.new.call(alice, text: 'Hello @bob@example.com ThisIsASecret') }
+    let!(:status) { PostStatusService.new.call(alice, text: "Hello @#{bob.pretty_acct} ThisIsASecret") }
 
     before do
       FavouriteService.new.call(jeff, status)
@@ -41,7 +41,7 @@ RSpec.describe RemoveStatusService, type: :service do
 
     it 'sends Delete activity to followers' do
       subject.call(status)
-      expect(a_request(:post, 'http://example.com/inbox').with(
+      expect(a_request(:post, hank.shared_inbox_url).with(
                body: hash_including({
                  'type' => 'Delete',
                  'object' => {
@@ -55,7 +55,7 @@ RSpec.describe RemoveStatusService, type: :service do
 
     it 'sends Delete activity to rebloggers' do
       subject.call(status)
-      expect(a_request(:post, 'http://example2.com/inbox').with(
+      expect(a_request(:post, bill.shared_inbox_url).with(
                body: hash_including({
                  'type' => 'Delete',
                  'object' => {
@@ -83,7 +83,7 @@ RSpec.describe RemoveStatusService, type: :service do
 
     it 'sends Delete activity to followers' do
       subject.call(status)
-      expect(a_request(:post, 'http://example.com/inbox').with(
+      expect(a_request(:post, hank.shared_inbox_url).with(
                body: hash_including({
                  'type' => 'Delete',
                  'object' => {
@@ -106,7 +106,7 @@ RSpec.describe RemoveStatusService, type: :service do
 
     it 'sends Delete activity to conversation' do
       subject.call(status)
-      expect(a_request(:post, 'http://example2.com/bill/inbox').with(
+      expect(a_request(:post, bill.inbox_url).with(
                body: hash_including({
                  'type' => 'Delete',
                  'object' => {
@@ -120,8 +120,8 @@ RSpec.describe RemoveStatusService, type: :service do
 
     it 'do not send Delete activity to followers' do
       subject.call(status)
-      expect(a_request(:post, 'http://example.com/hank/inbox')).to_not have_been_made
-      expect(a_request(:post, 'http://example.com/inbox')).to_not have_been_made
+      expect(a_request(:post, hank.inbox_url)).to_not have_been_made
+      expect(a_request(:post, hank.shared_inbox_url)).to_not have_been_made
     end
   end
 
@@ -131,7 +131,7 @@ RSpec.describe RemoveStatusService, type: :service do
 
     it 'sends Undo activity to followers' do
       subject.call(status)
-      expect(a_request(:post, 'http://example.com/inbox').with(
+      expect(a_request(:post, hank.shared_inbox_url).with(
                body: hash_including({
                  'type' => 'Undo',
                  'object' => hash_including({
@@ -149,7 +149,7 @@ RSpec.describe RemoveStatusService, type: :service do
 
     it 'sends Undo activity to followers' do
       subject.call(status)
-      expect(a_request(:post, 'http://example.com/inbox').with(
+      expect(a_request(:post, hank.shared_inbox_url).with(
                body: hash_including({
                  'type' => 'Undo',
                  'object' => hash_including({

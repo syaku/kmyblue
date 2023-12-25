@@ -10,7 +10,10 @@ RSpec.describe BlockDomainService, type: :service do
   let!(:bad_status_with_attachment) { Fabricate(:status, account: bad_account, text: 'Hahaha') }
   let!(:bad_attachment) { Fabricate(:media_attachment, account: bad_account, status: bad_status_with_attachment, file: attachment_fixture('attachment.jpg')) }
   let!(:already_banned_account) { Fabricate(:account, username: 'badguy', domain: 'evil.org', suspended: true, silenced: true) }
-  let!(:bad_friend) { Fabricate(:friend_domain, domain: 'evil.org', inbox_url: 'https://evil.org/inbox', active_state: :accepted, passive_state: :accepted) }
+
+  before do
+    Fabricate(:friend_domain, domain: 'evil.org', inbox_url: 'https://evil.org/inbox', active_state: :accepted, passive_state: :accepted)
+  end
 
   describe 'for a suspension' do
     before do
@@ -25,19 +28,19 @@ RSpec.describe BlockDomainService, type: :service do
     end
 
     it 'removes remote accounts from that domain' do
-      expect(Account.find_remote('badguy666', 'evil.org').suspended?).to be true
+      expect(bad_account.reload.suspended?).to be true
     end
 
     it 'records suspension date appropriately' do
-      expect(Account.find_remote('badguy666', 'evil.org').suspended_at).to eq DomainBlock.find_by(domain: 'evil.org').created_at
+      expect(bad_account.reload.suspended_at).to eq DomainBlock.find_by(domain: 'evil.org').created_at
     end
 
     it 'keeps already-banned accounts banned' do
-      expect(Account.find_remote('badguy', 'evil.org').suspended?).to be true
+      expect(already_banned_account.reload.suspended?).to be true
     end
 
     it 'does not overwrite suspension date of already-banned accounts' do
-      expect(Account.find_remote('badguy', 'evil.org').suspended_at).to_not eq DomainBlock.find_by(domain: 'evil.org').created_at
+      expect(already_banned_account.reload.suspended_at).to_not eq DomainBlock.find_by(domain: 'evil.org').created_at
     end
 
     it 'removes the remote accounts\'s statuses and media attachments' do
@@ -72,19 +75,19 @@ RSpec.describe BlockDomainService, type: :service do
     end
 
     it 'silences remote accounts from that domain' do
-      expect(Account.find_remote('badguy666', 'evil.org').silenced?).to be true
+      expect(bad_account.reload.silenced?).to be true
     end
 
     it 'records suspension date appropriately' do
-      expect(Account.find_remote('badguy666', 'evil.org').silenced_at).to eq DomainBlock.find_by(domain: 'evil.org').created_at
+      expect(bad_account.reload.silenced_at).to eq DomainBlock.find_by(domain: 'evil.org').created_at
     end
 
     it 'keeps already-banned accounts banned' do
-      expect(Account.find_remote('badguy', 'evil.org').silenced?).to be true
+      expect(already_banned_account.reload.silenced?).to be true
     end
 
     it 'does not overwrite suspension date of already-banned accounts' do
-      expect(Account.find_remote('badguy', 'evil.org').silenced_at).to_not eq DomainBlock.find_by(domain: 'evil.org').created_at
+      expect(already_banned_account.reload.silenced_at).to_not eq DomainBlock.find_by(domain: 'evil.org').created_at
     end
 
     it 'leaves the domains status and attachments, but clears media' do
