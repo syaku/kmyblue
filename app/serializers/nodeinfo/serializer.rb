@@ -11,7 +11,7 @@ class NodeInfo::Serializer < ActiveModel::Serializer
   end
 
   def software
-    { name: 'mastodon', version: Mastodon::Version.to_s }
+    { name: 'kmyblue', version: Mastodon::Version.to_s }
   end
 
   def services
@@ -41,6 +41,10 @@ class NodeInfo::Serializer < ActiveModel::Serializer
   def metadata
     {
       features: fedibird_capabilities,
+      upstream: {
+        name: 'Mastodon',
+        version: Mastodon::Version.to_s_of_mastodon,
+      },
     }
   end
 
