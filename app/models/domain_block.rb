@@ -25,7 +25,6 @@
 #  reject_straight_follow               :boolean          default(FALSE), not null
 #  reject_new_follow                    :boolean          default(FALSE), not null
 #  hidden                               :boolean          default(FALSE), not null
-#  hidden_anonymous                     :boolean          default(FALSE), not null
 #  detect_invalid_subscription          :boolean          default(FALSE), not null
 #  reject_reply_exclude_followers       :boolean          default(FALSE), not null
 #
@@ -43,7 +42,7 @@ class DomainBlock < ApplicationRecord
   delegate :count, to: :accounts, prefix: true
 
   scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
-  scope :with_user_facing_limitations, -> { where(hidden: false, hidden_anonymous: false) }
+  scope :with_user_facing_limitations, -> { where(hidden: false) }
   scope :with_limitations, -> { where(severity: [:silence, :suspend]).or(where(reject_media: true)).or(where(reject_favourite: true)).or(where(reject_reply: true)).or(where(reject_reply_exclude_followers: true)).or(where(reject_new_follow: true)).or(where(reject_straight_follow: true)) }
   scope :by_severity, -> { order(Arel.sql('(CASE severity WHEN 0 THEN 1 WHEN 1 THEN 2 WHEN 2 THEN 0 END), domain')) }
 
