@@ -24,15 +24,6 @@
     = f.input :reject_reply_exclude_followers, as: :boolean, wrapper: :with_label, label: I18n.t('admin.domain_blocks.reject_reply_exclude_followers'), hint: I18n.t('admin.domain_blocks.reject_reply_exclude_followers_hint')
 
   .fields-group
-    = f.input :reject_send_not_public_searchability, as: :boolean, wrapper: :with_label, label: I18n.t('admin.domain_blocks.reject_send_not_public_searchability'), hint: I18n.t('admin.domain_blocks.reject_send_not_public_searchability_hint')
-
-  .fields-group
-    = f.input :reject_send_dissubscribable, as: :boolean, wrapper: :with_label, label: I18n.t('admin.domain_blocks.reject_send_dissubscribable'), hint: I18n.t('admin.domain_blocks.reject_send_dissubscribable_hint')
-
-  .fields-group
-    = f.input :reject_send_public_unlisted, as: :boolean, wrapper: :with_label, label: I18n.t('admin.domain_blocks.reject_send_public_unlisted'), hint: I18n.t('admin.domain_blocks.reject_send_public_unlisted_hint')
-
-  .fields-group
     = f.input :reject_send_media, as: :boolean, wrapper: :with_label, label: I18n.t('admin.domain_blocks.reject_send_media'), hint: I18n.t('admin.domain_blocks.reject_send_media_hint')
 
   .fields-group
