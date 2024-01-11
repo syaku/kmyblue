@@ -78,10 +78,6 @@ RSpec.describe 'Domain Blocks' do
             reject_new_follow: domain_block.reject_new_follow,
             reject_reply: domain_block.reject_reply,
             reject_reply_exclude_followers: domain_block.reject_reply_exclude_followers,
-            reject_send_dissubscribable: domain_block.reject_send_dissubscribable,
-            reject_send_media: domain_block.reject_send_media,
-            reject_send_not_public_searchability: domain_block.reject_send_not_public_searchability,
-            reject_send_public_unlisted: domain_block.reject_send_public_unlisted,
             reject_send_sensitive: domain_block.reject_send_sensitive,
             reject_straight_follow: domain_block.reject_straight_follow,
           }
@@ -130,10 +126,6 @@ RSpec.describe 'Domain Blocks' do
         reject_new_follow: domain_block.reject_new_follow,
         reject_reply: domain_block.reject_reply,
         reject_reply_exclude_followers: domain_block.reject_reply_exclude_followers,
-        reject_send_dissubscribable: domain_block.reject_send_dissubscribable,
-        reject_send_media: domain_block.reject_send_media,
-        reject_send_not_public_searchability: domain_block.reject_send_not_public_searchability,
-        reject_send_public_unlisted: domain_block.reject_send_public_unlisted,
         reject_send_sensitive: domain_block.reject_send_sensitive,
         reject_straight_follow: domain_block.reject_straight_follow,
       }

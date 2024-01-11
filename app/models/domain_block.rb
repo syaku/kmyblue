@@ -25,7 +25,6 @@
 #  reject_straight_follow               :boolean          default(FALSE), not null
 #  reject_new_follow                    :boolean          default(FALSE), not null
 #  hidden                               :boolean          default(FALSE), not null
-#  hidden_anonymous                     :boolean          default(FALSE), not null
 #  detect_invalid_subscription          :boolean          default(FALSE), not null
 #  reject_reply_exclude_followers       :boolean          default(FALSE), not null
 #
@@ -60,10 +59,6 @@ class DomainBlock < ApplicationRecord
        reject_favourite? ? :reject_favourite : nil,
        reject_reply? ? :reject_reply : nil,
        reject_reply_exclude_followers? ? :reject_reply_exclude_followers : nil,
-       reject_send_not_public_searchability? ? :reject_send_not_public_searchability : nil,
-       reject_send_public_unlisted? ? :reject_send_public_unlisted : nil,
-       reject_send_dissubscribable? ? :reject_send_dissubscribable : nil,
-       reject_send_media? ? :reject_send_media : nil,
        reject_send_sensitive? ? :reject_send_sensitive : nil,
        reject_hashtag? ? :reject_hashtag : nil,
        reject_straight_follow? ? :reject_straight_follow : nil,
