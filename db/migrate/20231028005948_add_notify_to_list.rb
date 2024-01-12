@@ -9,7 +9,7 @@ class AddNotifyToList < ActiveRecord::Migration[7.0]
 
   def change
     safety_assured do
-      add_column_with_default :lists, :notify, :boolean, default: false, allow_null: false
+      add_column :lists, :notify, :boolean, default: false, null: false
     end
   end
 end

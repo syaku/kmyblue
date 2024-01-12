@@ -4,12 +4,13 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
 
+import { createSelector } from '@reduxjs/toolkit';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { ReactComponent as AntennaIcon } from '@material-symbols/svg-600/outlined/wifi.svg';
+
 
 import { fetchAntennas } from 'mastodon/actions/antennas';
 import Column from 'mastodon/components/column';

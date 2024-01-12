@@ -14,7 +14,7 @@ class AddQuoteToStatuses < ActiveRecord::Migration[7.0]
 
   def up
     safety_assured do
-      add_column_with_default :statuses, :quote_of_id, :bigint, default: nil, allow_null: true
+      add_column :statuses, :quote_of_id, :bigint, default: nil, null: true
 
       StatusReference.transaction do
         StatusReference.where(quote: true).includes(:status).find_each do |ref|

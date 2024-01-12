@@ -23,7 +23,7 @@ RSpec.describe ReportService, type: :service do
       stub_request(:post, 'http://example.com/inbox').to_return(status: 200)
     end
 
-    context 'when forward is true' do
+    context 'when forward is true', :sidekiq_inline do
       let(:forward) { true }
 
       it 'sends ActivityPub payload when forward is true' do
@@ -53,7 +53,7 @@ RSpec.describe ReportService, type: :service do
         end
 
         context 'when forward_to_domains includes only the replied-to domain' do
-          it 'sends ActivityPub payload only to the author of the replied-to post' do
+          it 'sends ActivityPub payload only to the author of the replied-to post', :sidekiq_inline do
             subject.call(source_account, remote_account, status_ids: [reported_status.id], forward: forward, forward_to_domains: [remote_thread_account.domain])
             expect(a_request(:post, 'http://foo.com/inbox')).to have_been_made
             expect(a_request(:post, 'http://example.com/inbox')).to_not have_been_made
@@ -61,7 +61,7 @@ RSpec.describe ReportService, type: :service do
         end
 
         context 'when forward_to_domains does not include the replied-to domain' do
-          it 'does not send ActivityPub payload to the author of the replied-to post' do
+          it 'does not send ActivityPub payload to the author of the replied-to post', :sidekiq_inline do
             subject.call(source_account, remote_account, status_ids: [reported_status.id], forward: forward)
             expect(a_request(:post, 'http://foo.com/inbox')).to_not have_been_made
           end
@@ -89,7 +89,7 @@ RSpec.describe ReportService, type: :service do
     end
 
     context 'when forward is false' do
-      it 'does not send anything' do
+      it 'does not send anything', :sidekiq_inline do
         subject.call(source_account, remote_account, forward: forward)
         expect(a_request(:post, 'http://example.com/inbox')).to_not have_been_made
       end

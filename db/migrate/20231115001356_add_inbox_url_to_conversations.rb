@@ -9,8 +9,8 @@ class AddInboxURLToConversations < ActiveRecord::Migration[7.1]
 
   def change
     safety_assured do
-      add_column_with_default :conversations, :inbox_url, :string, default: nil, allow_null: true
-      add_column_with_default :conversations, :ancestor_status_id, :bigint, default: nil, allow_null: true
+      add_column :conversations, :inbox_url, :string, default: nil, null: true
+      add_column :conversations, :ancestor_status_id, :bigint, default: nil, null: true
     end
   end
 end

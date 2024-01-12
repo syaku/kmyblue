@@ -5,11 +5,12 @@ import { defineMessages, injectIntl } from 'react-intl';
 
 import { Helmet } from 'react-helmet';
 
+import { createSelector } from '@reduxjs/toolkit';
 import { Map as ImmutableMap } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
+
 
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { ReactComponent as MenuIcon } from '@material-symbols/svg-600/outlined/menu.svg';

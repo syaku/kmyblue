@@ -10,7 +10,7 @@ describe FriendDomain do
   end
 
   describe '#follow!' do
-    it 'call inbox' do
+    it 'call inbox', :sidekiq_inline do
       friend.update(active_state: :accepted, passive_state: :accepted)
       friend.follow!
       expect(friend.active_follow_activity_id).to_not be_nil
@@ -27,7 +27,7 @@ describe FriendDomain do
   end
 
   describe '#unfollow!' do
-    it 'call inbox' do
+    it 'call inbox', :sidekiq_inline do
       friend.update(active_follow_activity_id: 'ohagi', active_state: :accepted, passive_state: :accepted)
       friend.unfollow!
       expect(friend.active_follow_activity_id).to be_nil
@@ -46,7 +46,7 @@ describe FriendDomain do
   end
 
   describe '#accept!' do
-    it 'call inbox' do
+    it 'call inbox', :sidekiq_inline do
       friend.update(passive_follow_activity_id: 'ohagi', active_state: :accepted, passive_state: :pending)
       friend.accept!
       expect(friend.they_are_accepted?).to be true
@@ -61,7 +61,7 @@ describe FriendDomain do
   end
 
   describe '#reject!' do
-    it 'call inbox' do
+    it 'call inbox', :sidekiq_inline do
       friend.update(passive_follow_activity_id: 'ohagi', active_state: :accepted, passive_state: :pending)
       friend.reject!
       expect(friend.they_are_rejected?).to be true
@@ -76,7 +76,7 @@ describe FriendDomain do
   end
 
   describe '#delete!' do
-    it 'call inbox' do
+    it 'call inbox', :sidekiq_inline do
       friend.update(active_state: :pending)
       friend.destroy
       expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({

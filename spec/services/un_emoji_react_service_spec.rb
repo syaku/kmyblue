@@ -90,7 +90,7 @@ RSpec.describe UnEmojiReactService, type: :service do
       stub_request(:post, 'https://author.foo.bar/inbox')
     end
 
-    it 'react with emoji' do
+    it 'react with emoji', :sidekiq_inline do
       expect(subject.count).to eq 0
       expect(a_request(:post, 'https://author.foo.bar/inbox').with(body: hash_including({
         type: 'Undo',
@@ -107,7 +107,7 @@ RSpec.describe UnEmojiReactService, type: :service do
         stub_request(:post, 'https://foo.bar/inbox')
       end
 
-      it 'react with emoji' do
+      it 'react with emoji', :sidekiq_inline do
         expect(subject.count).to eq 0
         expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
           type: 'Undo',
@@ -127,7 +127,7 @@ RSpec.describe UnEmojiReactService, type: :service do
       stub_request(:post, 'https://foo.bar/inbox')
     end
 
-    it 'react with emoji' do
+    it 'react with emoji', :sidekiq_inline do
       expect(subject.count).to eq 0
       expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
         type: 'Undo',
@@ -145,7 +145,7 @@ RSpec.describe UnEmojiReactService, type: :service do
       stub_request(:post, 'https://foo.bar/inbox')
     end
 
-    it 'react with emoji' do
+    it 'react with emoji', :sidekiq_inline do
       expect(subject.count).to eq 0
       expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
         type: 'Undo',
@@ -163,7 +163,7 @@ RSpec.describe UnEmojiReactService, type: :service do
       stub_request(:post, 'https://foo.bar/inbox')
     end
 
-    it 'react with emoji' do
+    it 'react with emoji', :sidekiq_inline do
       expect(subject.count).to eq 0
       expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
         type: 'Undo',

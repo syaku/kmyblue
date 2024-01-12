@@ -143,7 +143,7 @@ RSpec.describe ActivityPub::Activity::Update do
         subject.perform
       end
 
-      it 'forwards to parent status holder' do
+      it 'forwards to parent status holder', :sidekiq_inline do
         expect(a_request(:post, 'https://example.com/inbox').with(body: hash_including({
           type: 'Update',
           signature: 'foo',

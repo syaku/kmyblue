@@ -43,7 +43,7 @@ class StatusCacheHydrator
     end
   end
 
-  def hydrate_reblog_payload(empty_payload, account_id, account)
+  def hydrate_reblog_payload(empty_payload, account_id, account) # rubocop:disable Metrics/AbcSize
     empty_payload.tap do |payload|
       payload[:muted]      = false
       payload[:bookmarked] = false

@@ -11,7 +11,7 @@ class AddQuoteToStatusReferences < ActiveRecord::Migration[7.0]
 
   def up
     safety_assured do
-      add_column_with_default :status_references, :quote, :boolean, default: false, allow_null: false
+      add_column :status_references, :quote, :boolean, default: false, null: false
       StatusReference.where(attribute_type: 'QT').update_all(quote: true)
     end
   end

@@ -9,7 +9,7 @@ class AddWithQuoteToCustomFilters < ActiveRecord::Migration[7.0]
 
   def change
     safety_assured do
-      add_column_with_default :custom_filters, :with_quote, :boolean, default: true, allow_null: false
+      add_column :custom_filters, :with_quote, :boolean, default: true, null: false
     end
   end
 end

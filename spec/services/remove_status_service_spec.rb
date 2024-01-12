@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RemoveStatusService, type: :service do
+RSpec.describe RemoveStatusService, :sidekiq_inline, type: :service do
   subject { described_class.new }
 
   let!(:alice)  { Fabricate(:account) }
@@ -22,7 +22,8 @@ RSpec.describe RemoveStatusService, type: :service do
   end
 
   context 'when removed status is not a reblog' do
-    let!(:status) { PostStatusService.new.call(alice, text: "Hello @#{bob.pretty_acct} ThisIsASecret") }
+    let!(:media_attachment) { Fabricate(:media_attachment, account: alice) }
+    let!(:status) { PostStatusService.new.call(alice, text: "Hello @#{bob.pretty_acct} ThisIsASecret", media_ids: [media_attachment.id]) }
 
     before do
       FavouriteService.new.call(jeff, status)
@@ -37,6 +38,14 @@ RSpec.describe RemoveStatusService, type: :service do
     it 'removes status from local follower\'s home feed' do
       subject.call(status)
       expect(HomeFeed.new(jeff).get(10).pluck(:id)).to_not include(status.id)
+    end
+
+    it 'publishes to public media timeline' do
+      allow(redis).to receive(:publish).with(any_args)
+
+      subject.call(status)
+
+      expect(redis).to have_received(:publish).with('timeline:public:media', Oj.dump(event: :delete, payload: status.id.to_s))
     end
 
     it 'sends Delete activity to followers' do
@@ -118,7 +127,7 @@ RSpec.describe RemoveStatusService, type: :service do
              )).to have_been_made.once
     end
 
-    it 'do not send Delete activity to followers' do
+    it 'do not send Delete activity to followers', :sidekiq_inline do
       subject.call(status)
       expect(a_request(:post, hank.inbox_url)).to_not have_been_made
       expect(a_request(:post, hank.shared_inbox_url)).to_not have_been_made
