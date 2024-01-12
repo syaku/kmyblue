@@ -22,7 +22,7 @@ class AddMasterSettingsToAccounts < ActiveRecord::Migration[7.1]
 
   def down
     safety_assured do
-      add_column_with_default :accounts, :dissubscribable, :boolean, default: false, allow_null: false
+      add_column :accounts, :dissubscribable, :boolean, default: false, null: false
 
       ActiveRecord::Base.connection.execute("UPDATE accounts SET dissubscribable = TRUE WHERE master_settings ->> 'subscription_policy' = 'block'")
       ActiveRecord::Base.connection.execute("UPDATE accounts SET dissubscribable = FALSE WHERE master_settings ->> 'subscription_policy' = 'allow'")

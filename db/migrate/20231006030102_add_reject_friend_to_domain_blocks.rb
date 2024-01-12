@@ -9,7 +9,7 @@ class AddRejectFriendToDomainBlocks < ActiveRecord::Migration[7.0]
 
   def change
     safety_assured do
-      add_column_with_default :domain_blocks, :reject_friend, :boolean, default: false, allow_null: false
+      add_column :domain_blocks, :reject_friend, :boolean, default: false, null: false
     end
   end
 end
