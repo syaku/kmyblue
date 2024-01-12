@@ -73,19 +73,19 @@ describe FeedInsertWorker do
     end
 
     context 'with notification' do
-      it 'skips notification when unset' do
+      it 'skips notification when unset', :sidekiq_inline do
         subject.perform(status.id, follower.id)
         expect(notify?(follower, 'status', status.id)).to be false
       end
 
-      it 'pushes notification when read status is set' do
+      it 'pushes notification when read status is set', :sidekiq_inline do
         Fabricate(:follow, account: follower, target_account: status.account, notify: true)
 
         subject.perform(status.id, follower.id)
         expect(notify?(follower, 'status', status.id)).to be true
       end
 
-      it 'skips notification when the account is registered list but not notify' do
+      it 'skips notification when the account is registered list but not notify', :sidekiq_inline do
         follower.follow!(status.account)
         list = Fabricate(:list, account: follower)
         Fabricate(:list_account, list: list, account: status.account)
@@ -97,7 +97,7 @@ describe FeedInsertWorker do
         expect(list_status).to be_nil
       end
 
-      it 'pushes notification when the account is registered list' do
+      it 'pushes notification when the account is registered list', :sidekiq_inline do
         follower.follow!(status.account)
         list = Fabricate(:list, account: follower, notify: true)
         Fabricate(:list_account, list: list, account: status.account)

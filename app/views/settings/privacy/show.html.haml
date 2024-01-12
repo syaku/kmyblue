@@ -40,7 +40,14 @@
   = f.simple_fields_for :settings, current_user.settings do |ff|
     .fields-row
       .fields-group.fields-row__column.fields-row__column-12
-        = ff.input :default_searchability, collection: Status.selectable_searchabilities, wrapper: :with_label, kmyblue: true, include_blank: false, label_method: ->(searchability) { safe_join([I18n.t("statuses.searchabilities.#{searchability}"), I18n.t("statuses.searchabilities.#{searchability}_long")], ' - ') }, required: false, label: I18n.t('simple_form.labels.account.searchability_kmyblue')
+        = ff.input :default_searchability,
+                   collection: Status.selectable_searchabilities,
+                   include_blank: false,
+                   kmyblue: true,
+                   label: I18n.t('simple_form.labels.account.searchability_kmyblue'),
+                   label_method: ->(searchability) { safe_join([I18n.t("statuses.searchabilities.#{searchability}"), I18n.t("statuses.searchabilities.#{searchability}_long")], ' - ') },
+                   required: false,
+                   wrapper: :with_label
 
   %h4= t('privacy.privacy')
 

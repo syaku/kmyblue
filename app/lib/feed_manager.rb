@@ -409,7 +409,7 @@ class FeedManager
   # @param [Integer] receiver_id
   # @param [Hash] crutches
   # @return [Boolean]
-  def filter_from_home?(status, receiver_id, crutches, timeline_type = :home, stl_home: false) # rubocop:disable Metrics/PerceivedComplexity
+  def filter_from_home?(status, receiver_id, crutches, timeline_type = :home, stl_home: false) # rubocop:disable Metrics/PerceivedComplexity, Metrics/AbcSize
     return false if receiver_id == status.account_id
     return true  if status.reply? && (status.in_reply_to_id.nil? || status.in_reply_to_account_id.nil?) && !(timeline_type == :home && status.limited_visibility?)
     return true if (timeline_type != :list || stl_home) && (crutches[:exclusive_list_users][status.account_id].present? || crutches[:exclusive_antenna_users][status.account_id].present?)
@@ -588,7 +588,7 @@ class FeedManager
   # @param [Integer] receiver_id
   # @param [Array<Status>] statuses
   # @return [Hash]
-  def build_crutches(receiver_id, statuses)
+  def build_crutches(receiver_id, statuses) # rubocop:disable Metrics/AbcSize
     crutches = {}
 
     crutches[:active_mentions] = crutches_active_mentions(statuses)
