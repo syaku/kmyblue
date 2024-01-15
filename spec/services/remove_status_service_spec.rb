@@ -176,7 +176,7 @@ RSpec.describe RemoveStatusService, :sidekiq_inline, type: :service do
 
     it 'sends Undo activity to followers' do
       subject.call(status)
-      expect(a_request(:post, bill.inbox_url).with(
+      expect(a_request(:post, bill.shared_inbox_url).with(
                body: hash_including({
                  'type' => 'Undo',
                  'object' => hash_including({

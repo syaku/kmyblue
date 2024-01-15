@@ -38,11 +38,8 @@ class StatusReachFinder
   private
 
   def reached_account_inboxes
-    if @status.limited_visibility?
-      Account.where(id: mentioned_account_ids).where.not(domain: banned_domains).inboxes
-    else
-      Account.where(id: reached_account_ids).inboxes
-    end
+    reject_domains = @status.limited_visibility? ? banned_domains : banned_domains + friend_domains
+    Account.where(id: reached_account_ids).where.not(domain: reject_domains).inboxes
   end
 
   def reached_account_inboxes_for_misskey
@@ -67,6 +64,8 @@ class StatusReachFinder
 
     if @status.reblog?
       [reblog_of_account_id]
+    elsif @status.limited_visibility?
+      [mentioned_account_ids]
     else
       [
         replied_to_account_id,
@@ -203,7 +202,7 @@ class StatusReachFinder
   end
 
   def banned_domains_for_misskey
-    return @banned_domains_for_misskey if @banned_domains_for_misskey
+    return @banned_domains_for_misskey if defined?(@banned_domains_for_misskey)
 
     return @banned_domains_for_misskey = [] if (!@status.account.user&.setting_reject_public_unlisted_subscription && !@status.account.user&.setting_reject_unlisted_subscription) || (!@status.public_unlisted_visibility? && !@status.unlisted_visibility?)
 
