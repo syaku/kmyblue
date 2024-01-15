@@ -10,7 +10,6 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import Overlay from 'react-overlays/Overlay';
 
 import CircleIcon from 'mastodon/../material-icons/400-24px/account_circle.svg?react';
-import ReplyIcon from 'mastodon/../material-icons/400-24px/alternate_email.svg?react';
 import AlternateEmailIcon from 'mastodon/../material-icons/400-24px/alternate_email.svg?react';
 import PublicUnlistedIcon from 'mastodon/../material-icons/400-24px/cloud.svg?react';
 import MutualIcon from 'mastodon/../material-icons/400-24px/compare_arrows.svg?react';
@@ -18,6 +17,7 @@ import LoginIcon from 'mastodon/../material-icons/400-24px/key.svg?react';
 import LockIcon from 'mastodon/../material-icons/400-24px/lock.svg?react';
 import LockOpenIcon from 'mastodon/../material-icons/400-24px/no_encryption.svg?react';
 import PublicIcon from 'mastodon/../material-icons/400-24px/public.svg?react';
+import ReplyIcon from 'mastodon/../material-icons/400-24px/reply.svg?react';
 import { Icon }  from 'mastodon/components/icon';
 import { enableLoginPrivacy, enableLocalPrivacy } from 'mastodon/initial_state';
 
