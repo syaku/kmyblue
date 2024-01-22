@@ -1081,18 +1081,18 @@ RSpec.describe Account do
     describe 'matches_display_name' do
       it 'matches display name which starts with the given string' do
         match = Fabricate(:account, display_name: 'pattern and suffix')
-        account = Fabricate(:account, display_name: 'prefix and pattern')
+        Fabricate(:account, display_name: 'prefix and pattern')
 
-        expect(described_class.matches_display_name('pattern')).to contain_exactly(match, account)
+        expect(described_class.matches_display_name('pattern')).to eq [match]
       end
     end
 
     describe 'matches_username' do
       it 'matches display name which starts with the given string' do
         match = Fabricate(:account, username: 'pattern_and_suffix')
-        account = Fabricate(:account, username: 'prefix_and_pattern')
+        Fabricate(:account, username: 'prefix_and_pattern')
 
-        expect(described_class.matches_username('pattern')).to contain_exactly(match, account)
+        expect(described_class.matches_username('pattern')).to eq [match]
       end
     end
 
