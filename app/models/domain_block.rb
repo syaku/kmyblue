@@ -39,7 +39,6 @@ class DomainBlock < ApplicationRecord
   has_many :accounts, foreign_key: :domain, primary_key: :domain, inverse_of: false, dependent: nil
   delegate :count, to: :accounts, prefix: true
 
-  scope :matches_domain, ->(value) { where(arel_table[:domain].matches("%#{value}%")) }
   scope :with_user_facing_limitations, -> { where(hidden: false) }
   scope :with_limitations, lambda {
     where(severity: [:silence, :suspend])
