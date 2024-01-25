@@ -282,5 +282,38 @@ RSpec.describe AccountStatusesFilter do
 
       it_behaves_like 'filter params'
     end
+
+    context 'when accessed by remote user' do
+      let(:current_account) { Fabricate(:account, domain: 'example.com', uri: 'https://example.com/actor') }
+      let(:sensitive_status_with_cw) { Fabricate(:status, sensitive: true, spoiler_text: 'CW', account: account) }
+      let(:sensitive_status_with_media) do
+        Fabricate(:status, sensitive: true, spoiler_text: 'CW', account: account).tap do |status|
+          Fabricate(:media_attachment, account: account, status: status)
+        end
+      end
+
+      before do
+        Fabricate(:domain_block, domain: 'example.com', severity: :noop, reject_send_sensitive: true)
+      end
+
+      it 'returns everything' do
+        expect(subject.results.pluck(:visibility).uniq).to match_array %w(login unlisted public_unlisted public)
+      end
+
+      it 'returns replies' do
+        expect(subject.results.pluck(:in_reply_to_id)).to_not be_empty
+      end
+
+      it 'returns reblogs' do
+        expect(subject.results.pluck(:reblog_of_id)).to_not be_empty
+      end
+
+      it 'does not send sensitive posts' do
+        expect(subject.results.pluck(:id)).to_not include sensitive_status_with_cw.id
+        expect(subject.results.pluck(:id)).to_not include sensitive_status_with_media.id
+      end
+
+      it_behaves_like 'filter params'
+    end
   end
 end
