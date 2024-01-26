@@ -9,8 +9,7 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import Overlay from 'react-overlays/Overlay';
 
 import TimerIcon from '@/material-icons/400-24px/timer.svg?react';
-
-import { IconButton } from '../../../components/icon_button';
+import { Icon }  from 'mastodon/components/icon';
 
 const messages = defineMessages({
   add_expiration: { id: 'status.expiration.add', defaultMessage: 'Set status expiration' },
@@ -23,7 +22,6 @@ class ExpirationDropdownMenu extends PureComponent {
   static propTypes = {
     style: PropTypes.object,
     items: PropTypes.array.isRequired,
-    value: PropTypes.string.isRequired,
     onClose: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
   };
@@ -108,13 +106,13 @@ class ExpirationDropdownMenu extends PureComponent {
   };
 
   render () {
-    const { style, items, value } = this.props;
+    const { style, items } = this.props;
 
     return (
       <div style={{ ...style }} role='listbox' ref={this.setRef}>
         {items.map(item => (
-          <div role='option' tabIndex='0' key={item.value} data-index={item.value} onKeyDown={this.handleKeyDown} onClick={this.handleClick} className={classNames('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? this.setFocusRef : null}>
-            <div className='expiration-dropdown__option__content'>
+          <div role='option' tabIndex='0' key={item.value} data-index={item.value} onKeyDown={this.handleKeyDown} onClick={this.handleClick} className={classNames('privacy-dropdown__option')} aria-selected={false} ref={null}>
+            <div className='privacy-dropdown__option__content'>
               <strong>{item.text}</strong>
             </div>
           </div>
@@ -131,7 +129,6 @@ class ExpirationDropdown extends PureComponent {
     isUserTouching: PropTypes.func,
     onModalOpen: PropTypes.func,
     onModalClose: PropTypes.func,
-    value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
     noDirect: PropTypes.bool,
     container: PropTypes.func,
@@ -145,21 +142,11 @@ class ExpirationDropdown extends PureComponent {
   };
 
   handleToggle = () => {
-    if (this.props.isUserTouching && this.props.isUserTouching()) {
-      if (this.state.open) {
-        this.props.onModalClose();
-      } else {
-        this.props.onModalOpen({
-          actions: this.options.map(option => ({ ...option, active: option.value === this.props.value })),
-          onClick: this.handleModalActionClick,
-        });
-      }
-    } else {
-      if (this.state.open && this.activeElement) {
-        this.activeElement.focus({ preventScroll: true });
-      }
-      this.setState({ open: !this.state.open });
+    if (this.state.open && this.activeElement) {
+      this.activeElement.focus({ preventScroll: true });
     }
+
+    this.setState({ open: !this.state.open });
   };
 
   handleModalActionClick = (e) => {
@@ -230,36 +217,30 @@ class ExpirationDropdown extends PureComponent {
   };
 
   render () {
-    const { value, container, disabled, intl } = this.props;
+    const { container, disabled, intl } = this.props;
     const { open, placement } = this.state;
 
     return (
-      <div className={classNames('expiration-dropdown', placement, { active: open })} onKeyDown={this.handleKeyDown}>
-        <div className={classNames('expiration-dropdown__value')} ref={this.setTargetRef}>
-          <IconButton
-            className='expiration-dropdown__value-icon'
-            icon='clock-o'
-            iconComponent={TimerIcon}
-            title={intl.formatMessage(messages.add_expiration)}
-            size={18}
-            expanded={open}
-            active={open}
-            inverted
-            onClick={this.handleToggle}
-            onMouseDown={this.handleMouseDown}
-            onKeyDown={this.handleButtonKeyDown}
-            style={{ height: null, lineHeight: '27px' }}
-            disabled={disabled}
-          />
-        </div>
+      <div ref={this.setTargetRef} onKeyDown={this.handleKeyDown}>
+        <button
+          type='button'
+          title={intl.formatMessage(messages.add_expiration)}
+          aria-expanded={open}
+          onClick={this.handleToggle}
+          onMouseDown={this.handleMouseDown}
+          onKeyDown={this.handleButtonKeyDown}
+          disabled={disabled}
+          className={classNames('dropdown-button', { active: open })}
+        >
+          <Icon id='clock-o' icon={TimerIcon} />
+        </button>
 
-        <Overlay show={open} placement={'bottom'} flip target={this.findTarget} container={container} popperConfig={{ strategy: 'fixed', onFirstUpdate: this.handleOverlayEnter }}>
+        <Overlay show={open} offset={[5, 5]} placement={placement} flip target={this.findTarget} container={container} popperConfig={{ strategy: 'fixed', onFirstUpdate: this.handleOverlayEnter }}>
           {({ props, placement }) => (
             <div {...props}>
-              <div className={`dropdown-animation expiration-dropdown__dropdown ${placement}`}>
+              <div className={`dropdown-animation privacy-dropdown__dropdown ${placement}`}>
                 <ExpirationDropdownMenu
                   items={this.options}
-                  value={value}
                   onClose={this.handleClose}
                   onChange={this.handleChange}
                 />

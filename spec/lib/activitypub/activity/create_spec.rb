@@ -1933,6 +1933,49 @@ RSpec.describe ActivityPub::Activity::Create do
       end
     end
 
+    context 'when object URI uses bearcaps' do
+      subject { described_class.new(json, sender) }
+
+      let(:token) { 'foo' }
+
+      let(:json) do
+        {
+          '@context': 'https://www.w3.org/ns/activitystreams',
+          id: [ActivityPub::TagManager.instance.uri_for(sender), '#foo'].join,
+          type: 'Create',
+          actor: ActivityPub::TagManager.instance.uri_for(sender),
+          object: Addressable::URI.new(scheme: 'bear', query_values: { t: token, u: object_json[:id] }).to_s,
+        }.with_indifferent_access
+      end
+
+      let(:object_json) do
+        {
+          id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
+          type: 'Note',
+          content: 'Lorem ipsum',
+          to: 'https://www.w3.org/ns/activitystreams#Public',
+        }
+      end
+
+      before do
+        stub_request(:get, object_json[:id])
+          .with(headers: { Authorization: "Bearer #{token}" })
+          .to_return(body: Oj.dump(object_json), headers: { 'Content-Type': 'application/activity+json' })
+
+        subject.perform
+      end
+
+      it 'creates status' do
+        status = sender.statuses.first
+
+        expect(status).to_not be_nil
+        expect(status).to have_attributes(
+          visibility: 'public',
+          text: 'Lorem ipsum'
+        )
+      end
+    end
+
     context 'with an encrypted message' do
       subject { described_class.new(json, sender, delivery: true, delivered_to_account_id: recipient.id) }
 
@@ -2180,55 +2223,6 @@ RSpec.describe ActivityPub::Activity::Create do
 
       it 'does not create anything' do
         expect(sender.statuses.count).to eq 0
-      end
-    end
-
-    context 'when bearcaps' do
-      subject { described_class.new(json, sender) }
-
-      before do
-        stub_request(:get, 'https://example.com/statuses/1234567890')
-          .with(headers: { 'Authorization' => 'Bearer test_ohagi_token' })
-          .to_return(status: 200, body: Oj.dump(object_json), headers: {})
-
-        subject.perform
-      end
-
-      let!(:recipient) { Fabricate(:account) }
-      let(:object_json) do
-        {
-          id: 'https://example.com/statuses/1234567890',
-          type: 'Note',
-          content: 'Lorem ipsum',
-          to: ActivityPub::TagManager.instance.uri_for(recipient),
-          attachment: [
-            {
-              type: 'Document',
-              mediaType: 'image/png',
-              url: 'http://example.com/attachment.png',
-            },
-          ],
-        }
-      end
-      let(:json) do
-        {
-          '@context': 'https://www.w3.org/ns/activitystreams',
-          id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
-          type: 'Create',
-          actor: ActivityPub::TagManager.instance.uri_for(sender),
-          object: "bear:?#{{ u: 'https://example.com/statuses/1234567890', t: 'test_ohagi_token' }.to_query}",
-        }.with_indifferent_access
-      end
-
-      it 'creates status' do
-        status = sender.statuses.first
-
-        expect(status).to_not be_nil
-        expect(status.text).to eq 'Lorem ipsum'
-        expect(status.mentions.map(&:account)).to include(recipient)
-        expect(status.mentions.count).to eq 1
-        expect(status.visibility).to eq 'limited'
-        expect(status.media_attachments.map(&:remote_url)).to include('http://example.com/attachment.png')
       end
     end
   end

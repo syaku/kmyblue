@@ -43,9 +43,7 @@ import {
   COMPOSE_RESET,
   COMPOSE_POLL_ADD,
   COMPOSE_POLL_REMOVE,
-  COMPOSE_POLL_OPTION_ADD,
   COMPOSE_POLL_OPTION_CHANGE,
-  COMPOSE_POLL_OPTION_REMOVE,
   COMPOSE_POLL_SETTINGS_CHANGE,
   COMPOSE_CIRCLE_CHANGE,
   INIT_MEDIA_EDIT_MODAL,
@@ -365,6 +363,18 @@ const updateSuggestionTags = (state, token) => {
   });
 };
 
+const updatePoll = (state, index, value) => state.updateIn(['poll', 'options'], options => {
+  const tmp = options.set(index, value).filterNot(x => x.trim().length === 0);
+
+  if (tmp.size === 0) {
+    return tmp.push('').push('');
+  } else if (tmp.size < 8) {
+    return tmp.push('');
+  }
+
+  return tmp;
+});
+
 export default function compose(state = initialState, action) {
   switch(action.type) {
   case STORE_HYDRATE:
@@ -635,12 +645,8 @@ export default function compose(state = initialState, action) {
     return state.set('poll', initialPoll);
   case COMPOSE_POLL_REMOVE:
     return state.set('poll', null);
-  case COMPOSE_POLL_OPTION_ADD:
-    return state.updateIn(['poll', 'options'], options => options.push(action.title));
   case COMPOSE_POLL_OPTION_CHANGE:
-    return state.setIn(['poll', 'options', action.index], action.title);
-  case COMPOSE_POLL_OPTION_REMOVE:
-    return state.updateIn(['poll', 'options'], options => options.delete(action.index));
+    return updatePoll(state, action.index, action.title);
   case COMPOSE_POLL_SETTINGS_CHANGE:
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case COMPOSE_CIRCLE_CHANGE:
