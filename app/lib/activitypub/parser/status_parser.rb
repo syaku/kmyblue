@@ -4,14 +4,15 @@ class ActivityPub::Parser::StatusParser
   include JsonLdHelper
 
   # @param [Hash] json
-  # @param [Hash] magic_values
-  # @option magic_values [String] :followers_collection
-  def initialize(json, magic_values = {})
-    @json         = json
-    @object       = magic_values[:object] || json['object'] || json
-    @magic_values = magic_values
-    @account      = magic_values[:account]
-    @friend       = magic_values[:friend_domain]
+  # @param [Hash] options
+  # @option options [String] :followers_collection
+  # @option options [Hash]   :object
+  def initialize(json, **options)
+    @json    = json
+    @object  = options[:object] || json['object'] || json
+    @options = options
+    @account = options[:account]
+    @friend  = options[:friend_domain]
   end
 
   def uri
@@ -84,7 +85,7 @@ class ActivityPub::Parser::StatusParser
       :unlisted
     elsif audience_to.include?('kmyblue:LoginOnly') || audience_to.include?('as:LoginOnly') || audience_to.include?('LoginUser')
       :login
-    elsif audience_to.include?(@magic_values[:followers_collection])
+    elsif audience_to.include?(@options[:followers_collection])
       :private
     else
       :direct
