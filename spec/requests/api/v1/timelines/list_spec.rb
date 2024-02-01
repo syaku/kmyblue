@@ -2,28 +2,26 @@
 
 require 'rails_helper'
 
-describe Api::V1::Timelines::AntennaController do
-  render_views
-
+describe 'API V1 Timelines List' do
   let(:user) { Fabricate(:user) }
-  let(:antenna) { Fabricate(:antenna, account: user.account) }
-
-  before do
-    allow(controller).to receive(:doorkeeper_token) { token }
-  end
+  let(:scopes)  { 'read:statuses' }
+  let(:token)   { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: scopes) }
+  let(:headers) { { 'Authorization' => "Bearer #{token.token}" } }
+  let(:list) { Fabricate(:list, account: user.account) }
 
   context 'with a user context' do
     let(:token) { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: 'read:lists') }
 
-    describe 'GET #show' do
+    describe 'GET /api/v1/timelines/list/:id' do
       before do
-        account = Fabricate(:account)
-        antenna.antenna_accounts.create!(account: account)
-        PostStatusService.new.call(account, text: 'New status for user home timeline.')
+        follow = Fabricate(:follow, account: user.account)
+        list.accounts << follow.target_account
+        PostStatusService.new.call(follow.target_account, text: 'New status for user home timeline.')
       end
 
       it 'returns http success' do
-        get :show, params: { id: antenna.id }
+        get "/api/v1/timelines/list/#{list.id}", headers: headers
+
         expect(response).to have_http_status(200)
       end
     end
@@ -35,7 +33,8 @@ describe Api::V1::Timelines::AntennaController do
 
     describe 'GET #show' do
       it 'returns http not found' do
-        get :show, params: { id: antenna.id }
+        get "/api/v1/timelines/list/#{list.id}", headers: headers
+
         expect(response).to have_http_status(404)
       end
     end
@@ -46,7 +45,7 @@ describe Api::V1::Timelines::AntennaController do
 
     describe 'GET #show' do
       it 'returns http unprocessable entity' do
-        get :show, params: { id: antenna.id }
+        get "/api/v1/timelines/list/#{list.id}", headers: headers
 
         expect(response).to have_http_status(422)
         expect(response.headers['Link']).to be_nil
