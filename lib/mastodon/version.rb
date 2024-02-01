@@ -9,7 +9,7 @@ module Mastodon
     end
 
     def kmyblue_minor
-      14
+      15
     end
 
     def kmyblue_flag
