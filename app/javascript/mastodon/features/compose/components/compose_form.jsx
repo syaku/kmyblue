@@ -78,6 +78,7 @@ class ComposeForm extends ImmutablePureComponent {
     singleColumn: PropTypes.bool,
     lang: PropTypes.string,
     circleId: PropTypes.string,
+    maxChars: PropTypes.number,
     ...WithOptionalRouterPropTypes
   };
 
@@ -109,11 +110,11 @@ class ComposeForm extends ImmutablePureComponent {
   };
 
   canSubmit = () => {
-    const { isSubmitting, isChangingUpload, isUploading, anyMedia, privacy, circleId, isEditing } = this.props;
+    const { isSubmitting, isChangingUpload, isUploading, anyMedia, maxChars, privacy, circleId, isEditing } = this.props;
     const fulltext = this.getFulltextForCharacterCounting();
     const isOnlyWhitespace = fulltext.length !== 0 && fulltext.trim().length === 0;
 
-    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > 500 || (isOnlyWhitespace && !anyMedia) || (privacy === 'circle' && !isEditing && !circleId));
+    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > maxChars || (isOnlyWhitespace && !anyMedia) || (privacy === 'circle' && !isEditing && !circleId));
   };
 
   handleSubmit = (e) => {
@@ -238,7 +239,7 @@ class ComposeForm extends ImmutablePureComponent {
   };
 
   render () {
-    const { intl, onPaste, autoFocus, withoutNavigation } = this.props;
+    const { intl, onPaste, autoFocus, withoutNavigation, maxChars } = this.props;
     const { highlighted } = this.state;
     const disabled = this.props.isSubmitting;
 
@@ -319,7 +320,7 @@ class ComposeForm extends ImmutablePureComponent {
                 <SpoilerButtonContainer />
                 <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
                 <MarkdownButtonContainer />
-                <CharacterCounter max={500} text={this.getFulltextForCharacterCounting()} />
+                <CharacterCounter max={maxChars} text={this.getFulltextForCharacterCounting()} />
               </div>
 
 
