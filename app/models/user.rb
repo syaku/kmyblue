@@ -55,6 +55,7 @@ class User < ApplicationRecord
 
   include LanguagesHelper
   include Redisable
+  include RegistrationLimitationHelper
   include User::HasSettings
   include User::LdapAuthenticable
   include User::Omniauthable
@@ -192,6 +193,8 @@ class User < ApplicationRecord
   end
 
   def confirm
+    raise Mastodon::ValidationError, I18n.t('devise.registrations.sign_up_failed_because_reach_limit') if !invited? && reach_registrations_limit?
+
     wrap_email_confirmation do
       super
     end
@@ -482,6 +485,7 @@ class User < ApplicationRecord
     ActivityTracker.record('activity:logins', id)
     UserMailer.welcome(self).deliver_later
     TriggerWebhookWorker.perform_async('account.approved', 'Account', account_id)
+    reset_registration_limit_caches!
   end
 
   def prepare_returning_user!
