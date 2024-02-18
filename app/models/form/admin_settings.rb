@@ -65,6 +65,7 @@ class Form::AdminSettings
     enable_local_timeline
     emoji_reaction_disallow_domains
     permit_new_account_domains
+    block_unfollow_account_mention
     hold_remote_new_accounts
   ).freeze
 
@@ -108,6 +109,7 @@ class Form::AdminSettings
     stranger_mention_from_local_ng
     enable_local_timeline
     delete_content_cache_without_reaction
+    block_unfollow_account_mention
     hold_remote_new_accounts
   ).freeze
 
