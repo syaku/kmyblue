@@ -159,7 +159,7 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
     end
   end
 
-  context 'with property values' do
+  context 'with property values, an avatar, and a profile header' do
     let(:payload) do
       {
         id: 'https://foo.test',
@@ -170,23 +170,51 @@ RSpec.describe ActivityPub::ProcessAccountService, type: :service do
           { type: 'PropertyValue', name: 'Occupation', value: 'Unit test' },
           { type: 'PropertyValue', name: 'non-string', value: %w(foo bar) },
         ],
+        image: {
+          type: 'Image',
+          mediaType: 'image/png',
+          url: 'https://foo.test/image.png',
+        },
+        icon: {
+          type: 'Image',
+          url: [
+            {
+              mediaType: 'image/png',
+              href: 'https://foo.test/icon.png',
+            },
+          ],
+        },
       }.with_indifferent_access
     end
 
     before do
       stub_request(:get, 'https://example.com/.well-known/nodeinfo').to_return(body: '{}')
+      stub_request(:get, 'https://foo.test/image.png').to_return(request_fixture('avatar.txt'))
+      stub_request(:get, 'https://foo.test/icon.png').to_return(request_fixture('avatar.txt'))
     end
 
-    it 'parses out of attachment' do
+    it 'parses property values, avatar and profile header as expected' do
       account = subject.call('alice', 'example.com', payload)
-      expect(account.fields).to be_a Array
-      expect(account.fields.size).to eq 2
-      expect(account.fields[0]).to be_a Account::Field
-      expect(account.fields[0].name).to eq 'Pronouns'
-      expect(account.fields[0].value).to eq 'They/them'
-      expect(account.fields[1]).to be_a Account::Field
-      expect(account.fields[1].name).to eq 'Occupation'
-      expect(account.fields[1].value).to eq 'Unit test'
+
+      expect(account.fields)
+        .to be_an(Array)
+        .and have_attributes(size: 2)
+      expect(account.fields.first)
+        .to be_an(Account::Field)
+        .and have_attributes(
+          name: eq('Pronouns'),
+          value: eq('They/them')
+        )
+      expect(account.fields.last)
+        .to be_an(Account::Field)
+        .and have_attributes(
+          name: eq('Occupation'),
+          value: eq('Unit test')
+        )
+      expect(account).to have_attributes(
+        avatar_remote_url: 'https://foo.test/icon.png',
+        header_remote_url: 'https://foo.test/image.png'
+      )
     end
   end
 
