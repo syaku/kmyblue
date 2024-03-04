@@ -217,25 +217,37 @@ const onChangeRegistrationMode = (target: HTMLSelectElement) => {
       warning_hint.style.display = target.value === 'open' ? 'inline' : 'none';
     });
 
+  const toggleEnabled = (input: HTMLInputElement, value: boolean) => {
+    input.disabled = !value;
+    if (enabled) {
+      let element: HTMLElement | null = input;
+      do {
+        element.classList.remove('disabled');
+        element = element.parentElement;
+      } while (element && !element.classList.contains('fields-group'));
+    } else {
+      let element: HTMLElement | null = input;
+      do {
+        element.classList.add('disabled');
+        element = element.parentElement;
+      } while (element && !element.classList.contains('fields-group'));
+    }
+  };
+
   document
     .querySelectorAll<HTMLInputElement>(
       'input#form_admin_settings_require_invite_text',
     )
     .forEach((input) => {
-      input.disabled = !enabled;
-      if (enabled) {
-        let element: HTMLElement | null = input;
-        do {
-          element.classList.remove('disabled');
-          element = element.parentElement;
-        } while (element && !element.classList.contains('fields-group'));
-      } else {
-        let element: HTMLElement | null = input;
-        do {
-          element.classList.add('disabled');
-          element = element.parentElement;
-        } while (element && !element.classList.contains('fields-group'));
-      }
+      toggleEnabled(input, enabled);
+    });
+
+  document
+    .querySelectorAll<HTMLInputElement>(
+      '#form_admin_settings_registrations_start_hour, #form_admin_settings_registrations_end_hour, #form_admin_settings_registrations_secondary_start_hour, #form_admin_settings_registrations_secondary_end_hour',
+    )
+    .forEach((input) => {
+      toggleEnabled(input, target.value === 'open');
     });
 };
 
