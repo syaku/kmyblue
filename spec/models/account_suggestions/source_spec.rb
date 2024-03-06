@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+# Reverted this commit.temporarily because load issues.
+# Whenever a manual merge occurs, be sure to check the following commits.
+# Hash: ee8d0b94473df357677cd1f82581251ce0423c01
+# Message: Fix follow suggestions potentially including silenced or blocked accounts (#29306)
+
 require 'rails_helper'
 
 RSpec.describe AccountSuggestions::Source do
@@ -11,16 +16,14 @@ RSpec.describe AccountSuggestions::Source do
     end
 
     context 'with follows and follow requests' do
-      let!(:account_domain_blocked_account) { Fabricate(:account, domain: 'blocked.host', discoverable: true) }
-      let!(:account) { Fabricate(:account, discoverable: true) }
-      let!(:blocked_account) { Fabricate(:account, discoverable: true) }
-      let!(:eligible_account) { Fabricate(:account, discoverable: true) }
-      let!(:follow_recommendation_muted_account) { Fabricate(:account, discoverable: true) }
-      let!(:follow_requested_account) { Fabricate(:account, discoverable: true) }
-      let!(:following_account) { Fabricate(:account, discoverable: true) }
-      let!(:moved_account) { Fabricate(:account, moved_to_account: Fabricate(:account), discoverable: true) }
-      let!(:silenced_account) { Fabricate(:account, silenced: true, discoverable: true) }
-      let!(:undiscoverable_account) { Fabricate(:account, discoverable: false) }
+      let!(:account_domain_blocked_account) { Fabricate(:account, domain: 'blocked.host') }
+      let!(:account) { Fabricate(:account) }
+      let!(:blocked_account) { Fabricate(:account) }
+      let!(:eligible_account) { Fabricate(:account) }
+      let!(:follow_recommendation_muted_account) { Fabricate(:account) }
+      let!(:follow_requested_account) { Fabricate(:account) }
+      let!(:following_account) { Fabricate(:account) }
+      let!(:moved_account) { Fabricate(:account, moved_to_account: Fabricate(:account)) }
 
       before do
         Fabricate :account_domain_block, account: account, domain: account_domain_blocked_account.domain
@@ -42,8 +45,6 @@ RSpec.describe AccountSuggestions::Source do
           .and not_include(follow_requested_account)
           .and not_include(following_account)
           .and not_include(moved_account)
-          .and not_include(silenced_account)
-          .and not_include(undiscoverable_account)
       end
     end
   end
