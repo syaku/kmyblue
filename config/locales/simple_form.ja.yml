@@ -289,6 +289,7 @@ ja:
         setting_show_quote_in_home: ホーム・リスト・アンテナなどで引用を表示する
         setting_show_quote_in_public: 公開タイムライン（ローカル・連合）で引用を表示する
         setting_show_recent_emojis: 絵文字ピッカーで絵文字デッキと一緒に、絵文字の使用履歴も表示する
+        setting_show_relationships: アカウント詳細ベージで、相手からのフォロー状況を表示する
         setting_show_statuses_count: 投稿数を公開する
         setting_stay_privacy: 投稿時に公開範囲を保存する
         setting_public_post_to_unlisted: サードパーティから公開範囲「公開」で投稿した場合、「ローカル公開」に変更する

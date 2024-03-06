@@ -10,6 +10,7 @@
  *   | 'quote_in_home'
  *   | 'quote_in_public'
  *   | 'recent_emojis'
+ *   | 'relationships'
  * } HideItemsDefinition
  */
 

@@ -287,6 +287,7 @@ en:
         setting_show_quote_in_home: Show quotes in home, list or antenna timelines
         setting_show_quote_in_public: Show quotes in public timelines
         setting_show_recent_emojis: Show recent emojis
+        setting_show_relationships: Show relationships on account page
         setting_show_statuses_count: Show statuses count
         setting_simple_timeline_menu: Reduce post menu on timeline
         setting_single_ref_to_quote: Deliver single reference to other server as quote
