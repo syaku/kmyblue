@@ -208,59 +208,63 @@ class ListTimeline extends PureComponent {
           pinned={pinned}
           multiColumn={multiColumn}
         >
-          <div className='column-settings__row column-header__links'>
-            <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleEditClick}>
-              <Icon id='pencil' icon={EditIcon} /> <FormattedMessage id='lists.edit' defaultMessage='Edit list' />
-            </button>
+          <div className='column-settings'>
+            <section className='column-header__links'>
+              <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleEditClick}>
+                <Icon id='pencil' icon={EditIcon} /> <FormattedMessage id='lists.edit' defaultMessage='Edit list' />
+              </button>
 
-            <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleDeleteClick}>
-              <Icon id='trash' icon={DeleteIcon} /> <FormattedMessage id='lists.delete' defaultMessage='Delete list' />
-            </button>
-          </div>
+              <button type='button' className='text-btn column-header__setting-btn' tabIndex={0} onClick={this.handleDeleteClick}>
+                <Icon id='trash' icon={DeleteIcon} /> <FormattedMessage id='lists.delete' defaultMessage='Delete list' />
+              </button>
+            </section>
 
-          <div className='setting-toggle'>
-            <Toggle id={`list-${id}-exclusive`} checked={isExclusive} onChange={this.onExclusiveToggle} />
-            <label htmlFor={`list-${id}-exclusive`} className='setting-toggle__label'>
-              <FormattedMessage id='lists.exclusive' defaultMessage='Hide list or antenna account posts from home' />
-            </label>
-          </div>
-
-          <div className='setting-toggle'>
-            <Toggle id={`list-${id}-exclusive`} checked={isNotify} onChange={this.onNotifyToggle} />
-            <label htmlFor={`list-${id}-notify`} className='setting-toggle__label'>
-              <FormattedMessage id='lists.notify' defaultMessage='Notify these posts' />
-            </label>
-          </div>
-
-          { replies_policy !== undefined && (
-            <div role='group' aria-labelledby={`list-${id}-replies-policy`}>
-              <span id={`list-${id}-replies-policy`} className='column-settings__section'>
-                <FormattedMessage id='lists.replies_policy.title' defaultMessage='Show replies to:' />
-              </span>
-              <div className='column-settings__row'>
-                { ['none', 'list', 'followed'].map(policy => (
-                  <RadioButton name='order' key={policy} value={policy} label={intl.formatMessage(messages[policy])} checked={replies_policy === policy} onChange={this.handleRepliesPolicyChange} />
-                ))}
+            <section>
+              <div className='setting-toggle'>
+                <Toggle id={`list-${id}-exclusive`} checked={isExclusive} onChange={this.onExclusiveToggle} />
+                <label htmlFor={`list-${id}-exclusive`} className='setting-toggle__label'>
+                  <FormattedMessage id='lists.exclusive' defaultMessage='Hide these posts from home' />
+                </label>
               </div>
-            </div>
-          )}
+            </section>
 
-          { antennas.length > 0 && (
-            <div>
-              <span className='column-settings__section column-settings__section--with-margin'>
-                <FormattedMessage id='lists.antennas' defaultMessage='Related antennas:' />
-              </span>
-              <ul className='column-settings__row'>
-                { antennas.map(antenna => (
-                  <li key={antenna.get('id')} className='column-settings__row__antenna'>
-                    <button type='button' className='text-btn column-header__setting-btn' data-id={antenna.get('id')} onClick={this.handleEditAntennaClick}>
-                      <Icon id='pencil' icon={EditIcon} /> {antenna.get('title')}{antenna.get('stl') && ' [STL]'}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+            <section className='similar-row'>
+              <div className='setting-toggle'>
+                <Toggle id={`list-${id}-notify`} checked={isNotify} onChange={this.onNotifyToggle} />
+                <label htmlFor={`list-${id}-notify`} className='setting-toggle__label'>
+                  <FormattedMessage id='lists.notify' defaultMessage='Notify these posts' />
+                </label>
+              </div>
+            </section>
+
+            {replies_policy !== undefined && (
+              <section aria-labelledby={`list-${id}-replies-policy`}>
+                <h3 id={`list-${id}-replies-policy`}><FormattedMessage id='lists.replies_policy.title' defaultMessage='Show replies to:' /></h3>
+
+                <div className='column-settings__row'>
+                  { ['none', 'list', 'followed'].map(policy => (
+                    <RadioButton name='order' key={policy} value={policy} label={intl.formatMessage(messages[policy])} checked={replies_policy === policy} onChange={this.handleRepliesPolicyChange} />
+                  ))}
+                </div>
+              </section>
+            )}
+
+            { antennas.length > 0 && (
+              <section aria-labelledby={`list-${id}-antenna`}>
+                <h3><FormattedMessage id='lists.antennas' defaultMessage='Related antennas:' /></h3>
+
+                <ul className='column-settings__row'>
+                  { antennas.map(antenna => (
+                    <li key={antenna.get('id')} className='column-settings__row__antenna'>
+                      <button type='button' className='text-btn column-header__setting-btn' data-id={antenna.get('id')} onClick={this.handleEditAntennaClick}>
+                        <Icon id='pencil' icon={EditIcon} /> {antenna.get('title')}{antenna.get('stl') && ' [STL]'}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
         </ColumnHeader>
 
         <StatusListContainer

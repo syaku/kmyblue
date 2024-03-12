@@ -54,6 +54,12 @@ $fluid-breakpoint: $maximum-width + 20px;
     }
   }
 
+  &__hint {
+    font-size: 14px;
+    font-weight: 400;
+    color: $darker-text-color;
+  }
+
   .capability-icon {
     svg {
       transform: translateY(4px);
