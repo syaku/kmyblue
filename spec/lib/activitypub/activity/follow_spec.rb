@@ -381,7 +381,7 @@ RSpec.describe ActivityPub::Activity::Follow do
     subject { described_class.new(json, sender) }
 
     let(:sender) { Fabricate(:account, domain: 'abc.com', url: 'https://abc.com/#actor') }
-    let!(:friend) { Fabricate(:friend_domain, domain: 'abc.com', passive_state: :idle) }
+    let!(:friend) { Fabricate(:friend_domain, domain: 'abc.com', inbox_url: 'https://example.com/inbox', passive_state: :idle) }
     let!(:owner_user) { Fabricate(:user, role: UserRole.find_by(name: 'Owner')) }
     let!(:patch_user) { Fabricate(:user, role: Fabricate(:user_role, name: 'OhagiOps', permissions: UserRole::FLAGS[:manage_federation])) }
     let(:inbox_url) { nil }
@@ -405,7 +405,7 @@ RSpec.describe ActivityPub::Activity::Follow do
 
     context 'when no record' do
       before do
-        friend.update(domain: 'def.com')
+        friend.destroy!
       end
 
       it 'marks the friend as pending' do
@@ -423,7 +423,7 @@ RSpec.describe ActivityPub::Activity::Follow do
       let(:inbox_url) { 'https://ohagi.com/inbox' }
 
       before do
-        friend.update(domain: 'def.com')
+        friend.destroy!
       end
 
       it 'marks the friend as pending' do
@@ -539,7 +539,7 @@ RSpec.describe ActivityPub::Activity::Follow do
 
     context 'when domain blocked' do
       before do
-        friend.update(domain: 'def.com')
+        friend.destroy!
       end
 
       it 'marks the friend rejected' do
