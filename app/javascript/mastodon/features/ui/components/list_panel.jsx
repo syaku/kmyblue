@@ -1,10 +1,9 @@
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 
 import { createSelector } from '@reduxjs/toolkit';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
+import ListAltActiveIcon from '@/material-icons/400-24px/list_alt-fill.svg?react';
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
 import AntennaIcon from '@/material-icons/400-24px/wifi.svg?react';
 import { fetchAntennas } from 'mastodon/actions/antennas';
@@ -28,47 +27,31 @@ const getOrderedAntennas = createSelector([state => state.get('antennas')], ante
   return antennas.toList().filter(item => !!item && !item.get('insert_feeds')).sort((a, b) => a.get('title').localeCompare(b.get('title'))).take(8);
 });
 
-const mapStateToProps = state => ({
-  lists: getOrderedLists(state),
-  antennas: getOrderedAntennas(state),
-});
+export const ListPanel = () => {
+  const dispatch = useDispatch();
+  const lists = useSelector(state => getOrderedLists(state));
+  const antennas = useSelector(state => getOrderedAntennas(state));
 
-class ListPanel extends ImmutablePureComponent {
-
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    lists: ImmutablePropTypes.list,
-    antennas: ImmutablePropTypes.list,
-  };
-
-  componentDidMount () {
-    const { dispatch } = this.props;
+  useEffect(() => {
     dispatch(fetchLists());
     dispatch(fetchAntennas());
+  }, [dispatch]);
+
+  const size = (lists ? lists.size : 0) + (antennas ? antennas.size : 0);
+  if (size === 0) {
+    return null;
   }
 
-  render () {
-    const { lists, antennas } = this.props;
-    const size = (lists ? lists.size : 0) + (antennas ? antennas.size : 0);
+  return (
+    <div className='list-panel'>
+      <hr />
 
-    if (size === 0) {
-      return null;
-    }
-
-    return (
-      <div className='list-panel'>
-        <hr />
-
-        {lists && lists.map(list => (
-          <ColumnLink icon='list-ul' iconComponent={ListAltIcon} key={list.get('id')} strict text={list.get('title')} to={`/lists/${list.get('id')}`} transparent />
-        ))}
-        {antennas && antennas.take(8 - (lists ? lists.size : 0)).map(antenna => (
-          <ColumnLink icon='wifi' iconComponent={AntennaIcon} key={antenna.get('id')} strict text={antenna.get('title')} to={`/antennast/${antenna.get('id')}`} transparent />
-        ))}
-      </div>
-    );
-  }
-
-}
-
-export default connect(mapStateToProps)(ListPanel);
+      {lists && lists.map(list => (
+        <ColumnLink icon='list-ul' key={list.get('id')} iconComponent={ListAltIcon} activeIconComponent={ListAltActiveIcon} text={list.get('title')} to={`/lists/${list.get('id')}`} transparent />
+      ))}
+      {antennas && antennas.map(antenna => (
+        <ColumnLink icon='wifi' key={antenna.get('id')} iconComponent={AntennaIcon} activeIconComponent={AntennaIcon} text={antenna.get('title')} to={`/antennast/${antenna.get('id')}`} transparent />
+      ))}
+    </div>
+  );
+};

@@ -3,5 +3,5 @@
 Fabricator(:pending_status) do
   account { Fabricate.build(:account) }
   fetch_account { Fabricate.build(:account) }
-  uri { "https://example.com/#{Time.now.utc.nsec}" }
+  uri { sequence(:uri) { |i| "https://example.com/note-#{i}" } }
 end
