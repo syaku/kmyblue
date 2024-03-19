@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import CirclesIcon from '@/material-icons/400-24px/account_circle-fill.svg?react';
 import AlternateEmailIcon from '@/material-icons/400-24px/alternate_email.svg?react';
 import BookmarksIcon from '@/material-icons/400-24px/bookmarks-fill.svg?react';
+import ExploreIcon from '@/material-icons/400-24px/explore.svg?react';
 import PeopleIcon from '@/material-icons/400-24px/group.svg?react';
 import HomeIcon from '@/material-icons/400-24px/home-fill.svg?react';
 import ListAltIcon from '@/material-icons/400-24px/list_alt.svg?react';
@@ -20,7 +21,6 @@ import PersonAddIcon from '@/material-icons/400-24px/person_add.svg?react';
 import PublicIcon from '@/material-icons/400-24px/public.svg?react';
 import SettingsIcon from '@/material-icons/400-24px/settings-fill.svg?react';
 import StarIcon from '@/material-icons/400-24px/star.svg?react';
-import TagIcon from '@/material-icons/400-24px/tag.svg?react';
 import AntennaIcon from '@/material-icons/400-24px/wifi.svg?react';
 import { fetchFollowRequests } from 'mastodon/actions/accounts';
 import Column from 'mastodon/components/column';
@@ -117,7 +117,7 @@ class GettingStarted extends ImmutablePureComponent {
 
     if (showTrends) {
       navItems.push(
-        <ColumnLink key='explore' icon='explore' iconComponent={TagIcon} text={intl.formatMessage(messages.explore)} to='/explore' />,
+        <ColumnLink key='explore' icon='explore' iconComponent={ExploreIcon} text={intl.formatMessage(messages.explore)} to='/explore' />,
       );
     }
 

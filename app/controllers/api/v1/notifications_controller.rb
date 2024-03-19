@@ -58,10 +58,6 @@ class Api::V1::NotificationsController < Api::BaseController
     @notifications.reject { |notification| notification.target_status.nil? }.map(&:target_status)
   end
 
-  def insert_pagination_headers
-    set_pagination_headers(next_path, prev_path)
-  end
-
   def next_path
     api_v1_notifications_url pagination_params(max_id: pagination_max_id) unless @notifications.empty?
   end
@@ -70,12 +66,8 @@ class Api::V1::NotificationsController < Api::BaseController
     api_v1_notifications_url pagination_params(min_id: pagination_since_id) unless @notifications.empty?
   end
 
-  def pagination_max_id
-    @notifications.last.id
-  end
-
-  def pagination_since_id
-    @notifications.first.id
+  def pagination_collection
+    @notifications
   end
 
   def browserable_params

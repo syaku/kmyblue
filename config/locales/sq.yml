@@ -1693,8 +1693,6 @@ sq:
         other: "%{count} vota"
       vote: Votë
     show_more: Shfaq më tepër
-    show_newer: Shfaq më të reja
-    show_older: Shfaq më të vjetra
     show_thread: Shfaq rrjedhën
     title: '%{name}: "%{quote}"'
     visibilities:
@@ -1843,6 +1841,7 @@ sq:
       apps_step: Shkarkoni aplikacionet tona zyrtare.
       apps_title: Aplikacione Mastodon
       checklist_subtitle: 'Le t’ju vëmë në udhë drejt këtij horizonti të ri rrjetesh shoqërorë:'
+      checklist_title: Listë hapash mirëseardhjeje
       edit_profile_action: Personalizojeni
       edit_profile_step: Përforconi ndërveprimet tuaja, duke pasur një profil shterues.
       edit_profile_title: Personalizoni profilin tuaj
@@ -1862,7 +1861,9 @@ sq:
       follows_subtitle: Ndiqni llogari të mirënjohura
       follows_title: Cilët të ndiqen
       follows_view_more: Shihni më tepër vetë për ndjekje
-      hashtags_recent_count: "%{people} vetë në %{days} ditët e shkuara"
+      hashtags_recent_count:
+        one: "%{people} person në 2 ditët e shkuara"
+        other: "%{people} vetë në 2 ditët e shkuara"
       hashtags_subtitle: Eksploroni ç’është në modëë që prej 2 ditëve të fundit
       hashtags_title: Hashtag-ë në modë
       hashtags_view_more: Shihni më tepër hashtagë në modë

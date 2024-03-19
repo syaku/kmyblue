@@ -33,23 +33,55 @@ class Notification < ApplicationRecord
     'AccountWarning' => :warning,
   }.freeze
 
-  TYPES = %i(
-    mention
-    status
-    list_status
-    reblog
-    status_reference
-    follow
-    follow_request
-    favourite
-    emoji_reaction
-    reaction
-    poll
-    update
-    warning
-    admin.sign_up
-    admin.report
-  ).freeze
+  PROPERTIES = {
+    mention: {
+      filterable: true,
+    }.freeze,
+    status: {
+      filterable: false,
+    }.freeze,
+    list_status: {
+      filterable: false,
+    }.freeze,
+    reblog: {
+      filterable: true,
+    }.freeze,
+    status_reference: {
+      filterable: true,
+    }.freeze,
+    follow: {
+      filterable: true,
+    }.freeze,
+    follow_request: {
+      filterable: true,
+    }.freeze,
+    favourite: {
+      filterable: true,
+    }.freeze,
+    emoji_reaction: {
+      filterable: true,
+    }.freeze,
+    reaction: {
+      filterable: true,
+    }.freeze,
+    poll: {
+      filterable: false,
+    }.freeze,
+    update: {
+      filterable: false,
+    }.freeze,
+    warning: {
+      filterable: false,
+    }.freeze,
+    'admin.sign_up': {
+      filterable: false,
+    }.freeze,
+    'admin.report': {
+      filterable: false,
+    }.freeze,
+  }.freeze
+
+  TYPES = PROPERTIES.keys.freeze
 
   TARGET_STATUS_INCLUDES_BY_TYPE = {
     status: :status,
