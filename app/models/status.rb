@@ -138,7 +138,6 @@ class Status < ApplicationRecord
   scope :with_accounts, ->(ids) { where(id: ids).includes(:account) }
   scope :without_replies, -> { where('statuses.reply = FALSE OR statuses.in_reply_to_account_id = statuses.account_id') }
   scope :without_reblogs, -> { where(statuses: { reblog_of_id: nil }) }
-  scope :with_public_visibility, -> { where(visibility: [:public, :public_unlisted, :login]) }
   scope :with_public_search_visibility, -> { merge(where(visibility: [:public, :public_unlisted, :login]).or(Status.where(searchability: [:public, :public_unlisted]))) }
   scope :tagged_with, ->(tag_ids) { joins(:statuses_tags).where(statuses_tags: { tag_id: tag_ids }) }
   scope :not_excluded_by_account, ->(account) { where.not(account_id: account.excluded_from_timeline_account_ids) }
@@ -659,7 +658,6 @@ class Status < ApplicationRecord
   def set_visibility
     self.visibility = reblog.visibility if reblog? && visibility.nil?
     self.visibility = (account.locked? ? :private : :public) if visibility.nil?
-    self.sensitive  = false if sensitive.nil?
   end
 
   def set_searchability

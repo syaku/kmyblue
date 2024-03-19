@@ -10,7 +10,6 @@ import announcements from './announcements';
 import antennaAdder from './antenna_adder';
 import antennaEditor from './antenna_editor';
 import antennas from './antennas';
-import blocks from './blocks';
 import bookmark_categories from './bookmark_categories';
 import bookmarkCategoryAdder from './bookmark_category_adder';
 import bookmarkCategoryEditor from './bookmark_category_editor';
@@ -35,7 +34,6 @@ import markers from './markers';
 import media_attachments from './media_attachments';
 import meta from './meta';
 import { modalReducer } from './modal';
-import mutes from './mutes';
 import { notificationPolicyReducer } from './notification_policy';
 import { notificationRequestsReducer } from './notification_requests';
 import notifications from './notifications';
@@ -72,8 +70,6 @@ const reducers = {
   relationships: relationshipsReducer,
   settings,
   push_notifications,
-  mutes,
-  blocks,
   boosts,
   server,
   contexts,

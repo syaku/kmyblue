@@ -137,14 +137,16 @@ namespace :api, format: false do
     end
 
     resource :instance, only: [:show] do
-      resources :peers, only: [:index], controller: 'instances/peers'
-      resources :rules, only: [:index], controller: 'instances/rules'
-      resources :domain_blocks, only: [:index], controller: 'instances/domain_blocks'
-      resource :privacy_policy, only: [:show], controller: 'instances/privacy_policies'
-      resource :extended_description, only: [:show], controller: 'instances/extended_descriptions'
-      resource :translation_languages, only: [:show], controller: 'instances/translation_languages'
-      resource :languages, only: [:show], controller: 'instances/languages'
-      resource :activity, only: [:show], controller: 'instances/activity'
+      scope module: :instances do
+        resources :peers, only: [:index]
+        resources :rules, only: [:index]
+        resources :domain_blocks, only: [:index]
+        resource :privacy_policy, only: [:show]
+        resource :extended_description, only: [:show]
+        resource :translation_languages, only: [:show]
+        resource :languages, only: [:show]
+        resource :activity, only: [:show], controller: :activity
+      end
     end
 
     namespace :peers do
@@ -193,15 +195,17 @@ namespace :api, format: false do
     end
 
     resources :accounts, only: [:create, :show] do
-      resources :statuses, only: :index, controller: 'accounts/statuses'
-      resources :followers, only: :index, controller: 'accounts/follower_accounts'
-      resources :following, only: :index, controller: 'accounts/following_accounts'
-      resources :lists, only: :index, controller: 'accounts/lists'
-      resources :antennas, only: :index, controller: 'accounts/antennas'
-      resources :exclude_antennas, only: :index, controller: 'accounts/exclude_antennas'
-      resources :circles, only: :index, controller: 'accounts/circles'
-      resources :identity_proofs, only: :index, controller: 'accounts/identity_proofs'
-      resources :featured_tags, only: :index, controller: 'accounts/featured_tags'
+      scope module: :accounts do
+        resources :statuses, only: :index
+        resources :followers, only: :index, controller: :follower_accounts
+        resources :following, only: :index, controller: :following_accounts
+        resources :lists, only: :index
+        resources :antennas, only: :index
+        resources :exclude_antennas, only: :index
+        resources :circlues, only: :index
+        resources :identity_proofs, only: :index
+        resources :featured_tags, only: :index
+      end
 
       member do
         post :follow
