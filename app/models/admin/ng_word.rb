@@ -4,20 +4,25 @@ class Admin::NgWord
   class << self
     def reject?(text, **options)
       text = PlainTextFormatter.new(text, false).to_s if options[:uri].present?
-      hit_word = ng_words.detect { |word| include?(text, word) ? word : nil }
-      record!(:ng_words, text, hit_word, options) if hit_word.present?
-      hit_word.present?
+
+      if options.delete(:stranger)
+        ::NgWord.caches.detect { |word| include?(text, word) ? word : nil }&.keyword.tap do |hit_word|
+          record!(:ng_words_for_stranger_mention, text, hit_word, options) if hit_word.present?
+        end.present?
+      else
+        ::NgWord.caches.filter { |w| !w.stranger }.detect { |word| include?(text, word) ? word : nil }&.keyword.tap do |hit_word|
+          record!(:ng_words, text, hit_word, options) if hit_word.present?
+        end.present?
+      end
     end
 
     def stranger_mention_reject?(text, **options)
-      text = PlainTextFormatter.new(text, false).to_s if options[:uri].present?
-      hit_word = ng_words_for_stranger_mention.detect { |word| include?(text, word) ? word : nil }
-      record!(:ng_words_for_stranger_mention, text, hit_word, options) if hit_word.present?
-      hit_word.present?
+      opts = options.merge({ stranger: true })
+      reject?(text, **opts)
     end
 
-    def reject_with_custom_words?(text, custom_ng_words)
-      custom_ng_words.any? { |word| include?(text, word) }
+    def reject_with_custom_word?(text, word)
+      include_with_regexp?(text, word)
     end
 
     def hashtag_reject?(hashtag_count, **options)
@@ -53,19 +58,15 @@ class Admin::NgWord
     private
 
     def include?(text, word)
-      if word.start_with?('?') && word.size >= 2
-        text =~ /#{word[1..]}/i
+      if word.regexp
+        text =~ /#{word.keyword}/
       else
-        text.include?(word)
+        text.include?(word.keyword)
       end
     end
 
-    def ng_words
-      Setting.ng_words || []
-    end
-
-    def ng_words_for_stranger_mention
-      Setting.ng_words_for_stranger_mention || []
+    def include_with_regexp?(text, word)
+      text =~ /#{word}/i
     end
 
     def post_hash_tags_max

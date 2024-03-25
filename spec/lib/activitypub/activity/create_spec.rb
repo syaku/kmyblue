@@ -1755,8 +1755,8 @@ RSpec.describe ActivityPub::Activity::Create do
         let(:custom_before) { true }
         let(:custom_before_sub) { false }
         let(:content) { 'Lorem ipsum' }
-        let(:ng_words) { 'hello' }
-        let(:ng_words_for_stranger_mention) { 'ohagi' }
+        let(:ng_word) { 'hello' }
+        let(:ng_word_for_stranger_mention) { 'ohagi' }
         let(:object_json) do
           {
             id: [ActivityPub::TagManager.instance.uri_for(sender), '#bar'].join,
@@ -1767,7 +1767,8 @@ RSpec.describe ActivityPub::Activity::Create do
         end
 
         before do
-          Form::AdminSettings.new(ng_words: ng_words, ng_words_for_stranger_mention: ng_words_for_stranger_mention).save
+          Fabricate(:ng_word, keyword: ng_word, stranger: false)
+          Fabricate(:ng_word, keyword: ng_word_for_stranger_mention, stranger: true)
           subject.perform unless custom_before_sub
         end
 
@@ -1776,11 +1777,6 @@ RSpec.describe ActivityPub::Activity::Create do
 
           it 'creates status' do
             expect(sender.statuses.first).to_not be_nil
-          end
-
-          it 'does not record history' do
-            history = NgwordHistory.find_by(uri: object_json[:id])
-            expect(history).to be_nil
           end
         end
 
@@ -1796,7 +1792,7 @@ RSpec.describe ActivityPub::Activity::Create do
             expect(history).to_not be_nil
             expect(history.status_blocked?).to be true
             expect(history.within_ng_words?).to be true
-            expect(history.keyword).to eq ng_words
+            expect(history.keyword).to eq ng_word
           end
         end
 
@@ -1812,11 +1808,6 @@ RSpec.describe ActivityPub::Activity::Create do
 
           it 'creates status' do
             expect(sender.statuses.first).to be_nil
-          end
-
-          it 'records history' do
-            history = NgwordHistory.find_by(uri: object_json[:id])
-            expect(history).to be_nil
           end
         end
 
@@ -1844,11 +1835,6 @@ RSpec.describe ActivityPub::Activity::Create do
             it 'creates status' do
               expect(sender.statuses.first).to_not be_nil
             end
-
-            it 'does not record history' do
-              history = NgwordHistory.find_by(uri: object_json[:id])
-              expect(history).to be_nil
-            end
           end
 
           context 'with using ng words for stranger' do
@@ -1856,14 +1842,6 @@ RSpec.describe ActivityPub::Activity::Create do
 
             it 'creates status' do
               expect(sender.statuses.first).to be_nil
-            end
-
-            it 'records history' do
-              history = NgwordHistory.find_by(uri: object_json[:id])
-              expect(history).to_not be_nil
-              expect(history.status_blocked?).to be true
-              expect(history.within_ng_words_for_stranger_mention?).to be true
-              expect(history.keyword).to eq ng_words_for_stranger_mention
             end
           end
 
@@ -1878,11 +1856,6 @@ RSpec.describe ActivityPub::Activity::Create do
 
             it 'creates status' do
               expect(sender.statuses.first).to_not be_nil
-            end
-
-            it 'does not record history' do
-              history = NgwordHistory.find_by(uri: object_json[:id])
-              expect(history).to be_nil
             end
           end
 
@@ -1917,14 +1890,6 @@ RSpec.describe ActivityPub::Activity::Create do
             it 'creates status' do
               expect(sender.statuses.first).to be_nil
             end
-
-            it 'records history' do
-              history = NgwordHistory.find_by(uri: object_json[:id])
-              expect(history).to_not be_nil
-              expect(history.status_blocked?).to be true
-              expect(history.within_ng_words_for_stranger_mention?).to be true
-              expect(history.keyword).to eq ng_words_for_stranger_mention
-            end
           end
         end
 
@@ -1946,14 +1911,6 @@ RSpec.describe ActivityPub::Activity::Create do
             it 'creates status' do
               expect(sender.statuses.first).to be_nil
             end
-
-            it 'records history' do
-              history = NgwordHistory.find_by(uri: object_json[:id])
-              expect(history).to_not be_nil
-              expect(history.status_blocked?).to be true
-              expect(history.within_ng_words_for_stranger_mention?).to be true
-              expect(history.keyword).to eq ng_words_for_stranger_mention
-            end
           end
 
           context 'with following' do
@@ -1966,11 +1923,6 @@ RSpec.describe ActivityPub::Activity::Create do
 
             it 'creates status' do
               expect(sender.statuses.first).to_not be_nil
-            end
-
-            it 'does not record history' do
-              history = NgwordHistory.find_by(uri: object_json[:id])
-              expect(history).to be_nil
             end
           end
         end
