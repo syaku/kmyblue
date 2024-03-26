@@ -63,7 +63,6 @@ class UserSettings
     setting :enable_emoji_reaction, default: true
     setting :show_emoji_reaction_on_timeline, default: true
     setting :reblog_modal, default: false
-    setting :unfollow_modal, default: true
     setting :reduce_motion, default: false
     setting :expand_content_warnings, default: false
     setting :display_media, default: 'default', in: %w(default show_all hide_all)

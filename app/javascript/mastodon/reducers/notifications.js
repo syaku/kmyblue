@@ -58,6 +58,7 @@ export const notificationToMap = notification => ImmutableMap({
   list: notification.list ? ImmutableMap(notification.list) : null,
   report: notification.report ? fromJS(notification.report) : null,
   account_warning: notification.account_warning ? ImmutableMap(notification.account_warning) : null,
+  event: notification.event ? fromJS(notification.event) : null,
 });
 
 const normalizeNotification = (state, notification, usePendingItems) => {

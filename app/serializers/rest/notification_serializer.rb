@@ -9,6 +9,7 @@ class REST::NotificationSerializer < ActiveModel::Serializer
   belongs_to :emoji_reaction, if: :emoji_reaction_type?, serializer: REST::NotifyEmojiReactionSerializer
   belongs_to :account_warning, if: :warning_type?, serializer: REST::AccountWarningSerializer
   belongs_to :list, if: :list_status_type?, serializer: REST::ListSerializer
+  belongs_to :account_relationship_severance_event, key: :event, if: :relationship_severance_event?, serializer: REST::AccountRelationshipSeveranceEventSerializer
 
   def id
     object.id.to_s
@@ -36,5 +37,9 @@ class REST::NotificationSerializer < ActiveModel::Serializer
 
   def list
     object.list_status.list
+  end
+
+  def relationship_severance_event?
+    object.type == :severed_relationships
   end
 end
