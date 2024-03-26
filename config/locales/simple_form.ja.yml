@@ -179,6 +179,9 @@ ja:
       account:
         discoverable: アカウントを見つけやすくする
         fields:
+          examples:
+            name_1: 例) GitHub
+            value_1: 例) https://github.com/xxxxxx
           name: ラベル
           value: 内容
         indexable: 公開投稿を検索できるようにする
