@@ -199,6 +199,14 @@ Rails.application.routes.draw do
   resources :antennas, except: [:show]
 
   resource :relationships, only: [:show, :update]
+  resources :severed_relationships, only: [:index] do
+    member do
+      constraints(format: :csv) do
+        get :followers
+        get :following
+      end
+    end
+  end
   resource :statuses_cleanup, controller: :statuses_cleanup, only: [:show, :update]
 
   get '/media_proxy/:id/(*any)', to: 'media_proxy#show', as: :media_proxy, format: false

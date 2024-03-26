@@ -87,10 +87,6 @@ module User::HasSettings
     settings['slip_local_emoji_reaction']
   end
 
-  def setting_unfollow_modal
-    settings['web.unfollow_modal']
-  end
-
   def setting_boost_modal
     settings['web.reblog_modal']
   end

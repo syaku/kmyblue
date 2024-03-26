@@ -330,7 +330,7 @@ class EmojiPickerDropdown extends PureComponent {
   state = {
     active: false,
     loading: false,
-    bottom: true,
+    placement: 'bottom',
   };
 
   setRef = (c) => {
@@ -338,7 +338,6 @@ class EmojiPickerDropdown extends PureComponent {
   };
 
   onShowDropdown = () => {
-    this.updateDropdownPosition();
     this.setState({ active: true });
 
     if (!EmojiPicker) {
@@ -357,23 +356,6 @@ class EmojiPickerDropdown extends PureComponent {
 
   onHideDropdown = () => {
     this.setState({ active: false });
-  };
-
-  updateDropdownPosition = () => {
-    let bottom = true;
-
-    if (this.target) {
-      const height = window.innerHeight;
-      const rect = this.target.getBoundingClientRect();
-
-      if (height && rect) {
-        bottom = height / 2 > rect.top;
-      }
-    }
-
-    if (this.state.bottom !== bottom) {
-      this.setState({ bottom });
-    }
   };
 
   onToggle = (e) => {
@@ -400,10 +382,14 @@ class EmojiPickerDropdown extends PureComponent {
     return this.target;
   };
 
+  handleOverlayEnter = (state) => {
+    this.setState({ placement: state.placement });
+  };
+
   render () {
     const { intl, onPickEmoji, onSkinTone, skinTone, frequentlyUsedEmojis } = this.props;
     const title = intl.formatMessage(messages.emoji);
-    const { active, loading, bottom } = this.state;
+    const { active, loading, placement } = this.state;
 
     return (
       <div className='emoji-picker-dropdown' onKeyDown={this.handleKeyDown} ref={this.setTargetRef}>
@@ -416,7 +402,7 @@ class EmojiPickerDropdown extends PureComponent {
           inverted
         />
 
-        <Overlay show={active} placement={ bottom ? 'bottom' : 'top' } target={this.findTarget} popperConfig={{ strategy: 'fixed' }}>
+        <Overlay show={active} placement={placement} flip target={this.findTarget} popperConfig={{ strategy: 'fixed', onFirstUpdate: this.handleOverlayEnter }}>
           {({ props, placement })=> (
             <div {...props} style={{ ...props.style }}>
               <div className={`dropdown-animation ${placement}`}>
