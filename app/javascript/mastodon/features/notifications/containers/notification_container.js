@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import { initBoostModal } from '../../../actions/boosts';
 import { mentionCompose } from '../../../actions/compose';
 import {
   reblog,
@@ -9,6 +8,7 @@ import {
   unfavourite,
   emojiReact,
 } from '../../../actions/interactions';
+import { openModal } from '../../../actions/modal';
 import {
   hideStatus,
   revealStatus,
@@ -50,7 +50,7 @@ const mapDispatchToProps = dispatch => ({
       if (e.shiftKey || !boostModal) {
         this.onModalReblog(status);
       } else {
-        dispatch(initBoostModal({ status, onReblog: this.onModalReblog }));
+        dispatch(openModal({ modalType: 'BOOST', modalProps: { status, onReblog: this.onModalReblog } }));
       }
     }
   },
@@ -59,7 +59,7 @@ const mapDispatchToProps = dispatch => ({
     if (status.get('reblogged')) {
       dispatch(unreblog(status));
     } else {
-      dispatch(initBoostModal({ status, onReblog: this.onModalReblog }));
+      dispatch(openModal({ modalType: 'BOOST', modalProps: { status, onReblog: this.onModalReblog } }));
     }
   },
 

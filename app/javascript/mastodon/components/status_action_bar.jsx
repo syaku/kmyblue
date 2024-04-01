@@ -91,7 +91,7 @@ class StatusActionBar extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
-    relationship: ImmutablePropTypes.map,
+    relationship: ImmutablePropTypes.record,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onEmojiReact: PropTypes.func,
@@ -345,7 +345,9 @@ class StatusActionBar extends ImmutablePureComponent {
         menu.push(null);
       }
 
-      menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancelReblog : messages.reblog), action: this.handleReblogForceModalClick });
+      if (status.get('visibility_ex') !== 'limited') {
+        menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancelReblog : messages.reblog), action: this.handleReblogForceModalClick });
+      }
 
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
