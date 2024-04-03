@@ -56,6 +56,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
       accounts: {
         max_featured_tags: FeaturedTag::LIMIT,
+        max_pinned_statuses: StatusPinValidator::PIN_LIMIT,
       },
 
       statuses: {
