@@ -25,9 +25,9 @@ describe 'Public' do
       get '/api/v1/timelines/public', headers: headers, params: params
     end
 
-    let!(:local_status)   { Fabricate(:status, account: Fabricate.build(:account, domain: nil)) }
-    let!(:remote_status)  { Fabricate(:status, account: Fabricate.build(:account, domain: 'example.com')) }
-    let!(:media_status)   { Fabricate(:status, media_attachments: [Fabricate.build(:media_attachment)]) }
+    let!(:local_status)   { Fabricate(:status, text: 'ohagi', account: Fabricate.build(:account, domain: nil)) }
+    let!(:remote_status)  { Fabricate(:status, text: 'ohagi', account: Fabricate.build(:account, domain: 'example.com')) }
+    let!(:media_status)   { Fabricate(:status, text: 'ohagi', media_attachments: [Fabricate.build(:media_attachment)]) }
     let(:params) { {} }
 
     before do
