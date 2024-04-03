@@ -25,12 +25,14 @@ describe 'Public' do
       get '/api/v1/timelines/public', headers: headers, params: params
     end
 
-    let!(:private_status) { Fabricate(:status, text: 'ohagi', visibility: :private) } # rubocop:disable RSpec/LetSetup
     let!(:local_status)   { Fabricate(:status, text: 'ohagi', account: Fabricate.build(:account, domain: nil)) }
     let!(:remote_status)  { Fabricate(:status, text: 'ohagi', account: Fabricate.build(:account, domain: 'example.com')) }
     let!(:media_status)   { Fabricate(:status, text: 'ohagi', media_attachments: [Fabricate.build(:media_attachment)]) }
-
     let(:params) { {} }
+
+    before do
+      Fabricate(:status, visibility: :private)
+    end
 
     context 'when the instance allows public preview' do
       let(:expected_statuses) { [local_status, remote_status, media_status] }
@@ -182,7 +184,7 @@ describe 'Public' do
         end
       end
 
-      context 'when include_quotes' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      context 'when include_quotes' do
         let(:with_quote) { true }
 
         it 'load statuses', :aggregate_failures do
