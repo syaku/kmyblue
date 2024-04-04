@@ -222,9 +222,9 @@ class DetailedStatus extends ImmutablePureComponent {
     }
 
     let emojiReactionsBar = null;
+    const emojiReactionAvailableServer = !isHideItem('emoji_reaction_unavailable_server') || status.getIn(['account', 'emoji_reaction_available_server']);
     if (status.get('emoji_reactions')) {
       const emojiReactions = status.get('emoji_reactions');
-      const emojiReactionAvailableServer = !isHideItem('emoji_reaction_unavailable_server') || status.getIn(['account', 'emoji_reaction_available_server']);
       if (emojiReactions.size > 0 && enableEmojiReaction && emojiReactionAvailableServer) {
         emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
       }
@@ -279,7 +279,9 @@ class DetailedStatus extends ImmutablePureComponent {
       );
     }
 
-    if (this.props.history) {
+    if (!enableEmojiReaction || !emojiReactionAvailableServer) {
+      emojiReactionsLink = null;
+    } else if (this.props.history) {
       emojiReactionsLink = (
         <Link to={`/@${status.getIn(['account', 'acct'])}/${status.get('id')}/emoji_reactions`} className='detailed-status__link'>
           <span className='detailed-status__favorites'>
