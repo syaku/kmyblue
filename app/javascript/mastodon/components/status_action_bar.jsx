@@ -350,11 +350,13 @@ class StatusActionBar extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancelReblog : messages.reblog), action: this.handleReblogForceModalClick, tag: 'reblog' });
 
         if (publicStatus) {
-          if (allowQuote) {
+          if (allowQuote && (account.getIn(['server_features', 'quote']) || !isHideItem('quote_unavailable_server'))) {
             menu.push({ text: intl.formatMessage(messages.quote), action: this.handleQuote, tag: 'reblog' });
           }
 
-          menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference, tag: 'reblog' });
+          if (account.getIn(['server_features', 'status_reference']) || !isHideItem('status_reference_unavailable_server')) {
+            menu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference, tag: 'reblog' });
+          }
         }
       }
 
@@ -439,11 +441,13 @@ class StatusActionBar extends ImmutablePureComponent {
       }
   
       if (publicStatus) {
-        if (allowQuote) {
+        if (allowQuote && (account.getIn(['server_features', 'quote']) || !isHideItem('quote_unavailable_server'))) {
           reblogMenu.push({ text: intl.formatMessage(messages.quote), action: this.handleQuote });
         }
   
-        reblogMenu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
+        if (account.getIn(['server_features', 'status_reference']) || !isHideItem('status_reference_unavailable_server')) {
+          reblogMenu.push({ text: intl.formatMessage(messages.reference), action: this.handleReference });
+        }
       }
     }
 
@@ -485,7 +489,7 @@ class StatusActionBar extends ImmutablePureComponent {
       <IconButton className='status__action-bar__button' title={intl.formatMessage(messages.hide)} icon='eye' iconComponent={VisibilityIcon} onClick={this.handleHideClick} />
     );
 
-    const emojiReactionAvailableServer = !isHideItem('emoji_reaction_unavailable_server') || account.get('emoji_reaction_available_server');
+    const emojiReactionAvailableServer = !isHideItem('emoji_reaction_unavailable_server') || account.getIn(['server_features', 'emoji_reaction']);
     const emojiReactionPolicy = account.getIn(['other_settings', 'emoji_reaction_policy']) || 'allow';
     const following = emojiReactionPolicy !== 'following_only' || (relationship && relationship.get('following'));
     const followed = emojiReactionPolicy !== 'followers_only' || (relationship && relationship.get('followed_by'));
