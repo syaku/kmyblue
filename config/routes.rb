@@ -148,7 +148,7 @@ Rails.application.routes.draw do
   resource :inbox, only: [:create], module: :activitypub
   resources :contexts, only: [:show], module: :activitypub
 
-  get '/:encoded_at(*path)', to: redirect("/@%{path}"), constraints: { encoded_at: /%40/ }
+  get '/:encoded_at(*path)', to: redirect('/@%{path}'), constraints: { encoded_at: /%40/ }
 
   constraints(username: %r{[^@/.]+}) do
     with_options to: 'accounts#show' do
