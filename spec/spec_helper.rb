@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rspec/retry'
-
 unless ENV['DISABLE_SIMPLECOV'] == 'true'
   require 'simplecov' # Configuration details loaded from .simplecov
 end
@@ -36,10 +34,6 @@ RSpec.configure do |config|
   config.after :suite do
     FileUtils.rm_rf(Dir[Rails.root.join('spec', 'test_files')])
   end
-
-  # for RSpec::Retry
-  config.verbose_retry = true
-  config.display_try_failure_messages = true
 
   # Use the GitHub Annotations formatter for CI
   if ENV['GITHUB_ACTIONS'] == 'true' && ENV['GITHUB_RSPEC'] == 'true'

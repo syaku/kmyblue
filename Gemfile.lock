@@ -639,8 +639,6 @@ GEM
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
       rspec-support (~> 3.13)
-    rspec-retry (0.6.2)
-      rspec-core (> 3.3)
     rspec-sidekiq (4.2.0)
       rspec-core (~> 3.0)
       rspec-expectations (~> 3.0)
@@ -920,7 +918,6 @@ DEPENDENCIES
   rqrcode (~> 2.2)
   rspec-github (~> 2.4)
   rspec-rails (~> 6.0)
-  rspec-retry (>= 0.6.2)
   rspec-sidekiq (~> 4.0)
   rubocop
   rubocop-capybara
