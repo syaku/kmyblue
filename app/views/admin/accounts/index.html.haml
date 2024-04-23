@@ -53,38 +53,38 @@
         = check_box_tag :batch_checkbox_all, nil, false
       .batch-table__toolbar__actions
         - if @accounts.any?(&:user_pending?)
-          = f.button safe_join([fa_icon('check'), t('admin.accounts.approve')]),
+          = f.button safe_join([material_symbol('check'), t('admin.accounts.approve')]),
                      class: 'table-action-link',
                      data: { confirm: t('admin.reports.are_you_sure') },
                      name: :approve,
                      type: :submit
 
-          = f.button safe_join([fa_icon('times'), t('admin.accounts.reject')]),
+          = f.button safe_join([material_symbol('close'), t('admin.accounts.reject')]),
                      class: 'table-action-link',
                      data: { confirm: t('admin.reports.are_you_sure') },
                      name: :reject,
                      type: :submit
 
         - elsif @accounts.any?(&:remote_pending)
-          = f.button safe_join([fa_icon('check'), t('admin.accounts.approve')]),
+          = f.button safe_join([material_symbol('check'), t('admin.accounts.approve')]),
                      class: 'table-action-link',
                      data: { confirm: t('admin.reports.are_you_sure') },
                      name: :approve_remote,
                      type: :submit
 
-          = f.button safe_join([fa_icon('check'), t('admin.accounts.approve_domain')]),
+          = f.button safe_join([material_symbol('check'), t('admin.accounts.approve_domain')]),
                      class: 'table-action-link',
                      data: { confirm: t('admin.reports.are_you_sure') },
                      name: :approve_remote_domain,
                      type: :submit
 
-          = f.button safe_join([fa_icon('times'), t('admin.accounts.reject')]),
+          = f.button safe_join([material_symbol('times'), t('admin.accounts.reject')]),
                      class: 'table-action-link',
                      data: { confirm: t('admin.reports.are_you_sure') },
                      name: :reject_remote,
                      type: :submit
 
-        = f.button safe_join([fa_icon('lock'), t('admin.accounts.perform_full_suspension')]),
+        = f.button safe_join([material_symbol('lock'), t('admin.accounts.perform_full_suspension')]),
                    class: 'table-action-link',
                    data: { confirm: t('admin.reports.are_you_sure') },
                    name: :suspend,
