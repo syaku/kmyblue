@@ -307,7 +307,7 @@ class DetailedStatus extends ImmutablePureComponent {
           <span className='detailed-status__favorites'>
             <AnimatedNumber value={status.get('status_referred_by_count')} />
           </span>
-          <FormattedMessage id='status.status_references' defaultMessage='{count, plural, one {quote} other {quotes}}' values={{ count: status.get('status_referred_by_count') }} />
+          <FormattedMessage id='status.quotes' defaultMessage='{count, plural, one {quote} other {quotes}}' values={{ count: status.get('status_referred_by_count') }} />
         </Link>
       );
     } else {
@@ -316,7 +316,7 @@ class DetailedStatus extends ImmutablePureComponent {
           <span className='detailed-status__favorites'>
             <AnimatedNumber value={status.get('status_referred_by_count')} />
           </span>
-          <FormattedMessage id='status.status_references' defaultMessage='{count, plural, one {quote} other {quotes}}' values={{ count: status.get('status_referred_by_count') }} />
+          <FormattedMessage id='status.quotes' defaultMessage='{count, plural, one {quote} other {quotes}}' values={{ count: status.get('status_referred_by_count') }} />
         </a>
       );
     }
