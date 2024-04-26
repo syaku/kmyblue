@@ -30,7 +30,7 @@ class Notification < ApplicationRecord
     'EmojiReaction' => :emoji_reaction,
     'StatusReference' => :status_reference,
     'Poll' => :poll,
-    'AccountWarning' => :warning,
+    'AccountWarning' => :moderation_warning,
   }.freeze
 
   PROPERTIES = {
@@ -70,10 +70,10 @@ class Notification < ApplicationRecord
     update: {
       filterable: false,
     }.freeze,
-    warning: {
+    severed_relationships: {
       filterable: false,
     }.freeze,
-    severed_relationships: {
+    moderation_warning: {
       filterable: false,
     }.freeze,
     'admin.sign_up': {
@@ -205,15 +205,6 @@ class Notification < ApplicationRecord
       end
 
       notifications
-    end
-  end
-
-  def from_account_web
-    case activity_type
-    when 'AccountWarning'
-      account_warning&.target_account
-    else
-      from_account
     end
   end
 

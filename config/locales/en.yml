@@ -1507,6 +1507,7 @@ en:
       title_actions:
         delete_statuses: Post removal
         disable: Freezing of account
+        force_cw: Add content-warning to posts
         mark_statuses_as_sensitive: Marking of posts as sensitive
         none: Warning
         sensitive: Marking of account as sensitive
