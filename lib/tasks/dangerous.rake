@@ -98,6 +98,7 @@ namespace :dangerous do
       20240326231854
       20240327234026
       20240401222541
+      20240426000034
     )
     # Removed: account_groups
     target_tables = %w(
