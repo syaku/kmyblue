@@ -38,6 +38,7 @@ RSpec/MultipleExpectations:
 RSpec/MultipleMemoizedHelpers:
   Max: 17
   Exclude:
+    - 'spec/lib/activitypub/activity/create_spec.rb'
     - 'spec/services/delete_account_service_spec.rb'
     - 'spec/services/fan_out_on_write_service_spec.rb'
 

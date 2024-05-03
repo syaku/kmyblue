@@ -16,7 +16,7 @@ RSpec.describe ActivityPub::Activity::Create do
     }.with_indifferent_access
   end
 
-  let(:conversation) do
+  let(:conversation_hash) do
     {
       id: 'http://example.com/conversation',
       type: 'Group',
@@ -30,7 +30,7 @@ RSpec.describe ActivityPub::Activity::Create do
     stub_request(:get, 'http://example.com/attachment.png').to_return(request_fixture('avatar.txt'))
     stub_request(:get, 'http://example.com/emoji.png').to_return(body: attachment_fixture('emojo.png'))
     stub_request(:get, 'http://example.com/emojib.png').to_return(body: attachment_fixture('emojo.png'), headers: { 'Content-Type' => 'application/octet-stream' })
-    stub_request(:get, 'http://example.com/conversation').to_return(body: Oj.dump(conversation), headers: { 'Content-Type': 'application/activity+json' })
+    stub_request(:get, 'http://example.com/conversation').to_return(body: Oj.dump(conversation_hash), headers: { 'Content-Type': 'application/activity+json' })
     stub_request(:get, 'http://example.com/invalid-conversation').to_return(status: 404)
   end
 
