@@ -109,7 +109,7 @@ class Status < ApplicationRecord
   has_many :local_emoji_reacted, -> { merge(Account.local) }, through: :emoji_reactions, source: :account
   has_many :local_referenced, -> { merge(Account.local) }, through: :referenced_by_statuses, source: :account
 
-  has_and_belongs_to_many :tags
+  has_and_belongs_to_many :tags # rubocop:disable Rails/HasAndBelongsToMany
 
   has_one :preview_cards_status, inverse_of: :status, dependent: :delete
 
@@ -136,7 +136,9 @@ class Status < ApplicationRecord
   scope :remote, -> { where(local: false).where.not(uri: nil) }
   scope :local,  -> { where(local: true).or(where(uri: nil)) }
   scope :with_accounts, ->(ids) { where(id: ids).includes(:account) }
-  scope :without_replies, -> { where('statuses.reply = FALSE OR statuses.in_reply_to_account_id = statuses.account_id') }
+  scope :without_replies, -> { not_reply.or(reply_to_account) }
+  scope :not_reply, -> { where(reply: false) }
+  scope :reply_to_account, -> { where(arel_table[:in_reply_to_account_id].eq arel_table[:account_id]) }
   scope :without_reblogs, -> { where(statuses: { reblog_of_id: nil }) }
   scope :with_public_visibility, -> { where(visibility: [:public, :public_unlisted, :login]) }
   scope :with_public_search_visibility, -> { merge(where(visibility: [:public, :public_unlisted, :login]).or(Status.where(searchability: [:public, :public_unlisted]))) }
