@@ -17,11 +17,9 @@
 #  url                           :string
 #  avatar_file_name              :string
 #  avatar_content_type           :string
-#  avatar_file_size              :integer
 #  avatar_updated_at             :datetime
 #  header_file_name              :string
 #  header_content_type           :string
-#  header_file_size              :integer
 #  header_updated_at             :datetime
 #  avatar_remote_url             :string
 #  locked                        :boolean          default(FALSE), not null
@@ -55,6 +53,8 @@
 #  indexable                     :boolean          default(FALSE), not null
 #  master_settings               :jsonb
 #  remote_pending                :boolean          default(FALSE), not null
+#  avatar_file_size              :bigint(8)
+#  header_file_size              :bigint(8)
 #
 
 class Account < ApplicationRecord

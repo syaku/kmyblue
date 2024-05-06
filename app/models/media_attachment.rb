@@ -8,7 +8,6 @@
 #  status_id                   :bigint(8)
 #  file_file_name              :string
 #  file_content_type           :string
-#  file_file_size              :integer
 #  file_updated_at             :datetime
 #  remote_url                  :string           default(""), not null
 #  created_at                  :datetime         not null
@@ -24,9 +23,10 @@
 #  file_storage_schema_version :integer
 #  thumbnail_file_name         :string
 #  thumbnail_content_type      :string
-#  thumbnail_file_size         :integer
 #  thumbnail_updated_at        :datetime
 #  thumbnail_remote_url        :string
+#  file_file_size              :bigint(8)
+#  thumbnail_file_size         :bigint(8)
 #
 
 class MediaAttachment < ApplicationRecord
