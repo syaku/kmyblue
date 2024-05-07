@@ -168,11 +168,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.string "url"
     t.string "avatar_file_name"
     t.string "avatar_content_type"
-    t.integer "avatar_file_size"
     t.datetime "avatar_updated_at", precision: nil
     t.string "header_file_name"
     t.string "header_content_type"
-    t.integer "header_file_size"
     t.datetime "header_updated_at", precision: nil
     t.string "avatar_remote_url"
     t.boolean "locked", default: false, null: false
@@ -206,6 +204,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.boolean "indexable", default: false, null: false
     t.jsonb "master_settings"
     t.boolean "remote_pending", default: false, null: false
+    t.bigint "avatar_file_size"
+    t.bigint "header_file_size"
     t.index "(((setweight(to_tsvector('simple'::regconfig, (display_name)::text), 'A'::\"char\") || setweight(to_tsvector('simple'::regconfig, (username)::text), 'B'::\"char\")) || setweight(to_tsvector('simple'::regconfig, (COALESCE(domain, ''::character varying))::text), 'C'::\"char\")))", name: "search_index", using: :gin
     t.index "lower((username)::text), COALESCE(lower((domain)::text), ''::text)", name: "index_accounts_on_username_and_domain_lower", unique: true
     t.index ["domain", "id"], name: "index_accounts_on_domain_and_id"
@@ -491,7 +491,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.string "domain"
     t.string "image_file_name"
     t.string "image_content_type"
-    t.integer "image_file_size"
     t.datetime "image_updated_at", precision: nil
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -506,6 +505,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.jsonb "aliases"
     t.boolean "is_sensitive", default: false, null: false
     t.string "license"
+    t.bigint "image_file_size"
     t.index ["shortcode", "domain"], name: "index_custom_emojis_on_shortcode_and_domain", unique: true
   end
 
@@ -732,10 +732,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "data_file_name"
     t.string "data_content_type"
-    t.integer "data_file_size"
     t.datetime "data_updated_at", precision: nil
     t.bigint "account_id", null: false
     t.boolean "overwrite", default: false, null: false
+    t.bigint "data_file_size"
   end
 
   create_table "instance_infos", force: :cascade do |t|
@@ -829,7 +829,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.bigint "status_id"
     t.string "file_file_name"
     t.string "file_content_type"
-    t.integer "file_file_size"
     t.datetime "file_updated_at", precision: nil
     t.string "remote_url", default: "", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -845,9 +844,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.integer "file_storage_schema_version"
     t.string "thumbnail_file_name"
     t.string "thumbnail_content_type"
-    t.integer "thumbnail_file_size"
     t.datetime "thumbnail_updated_at", precision: nil
     t.string "thumbnail_remote_url"
+    t.bigint "file_file_size"
+    t.bigint "thumbnail_file_size"
     t.index ["account_id", "status_id"], name: "index_media_attachments_on_account_id_and_status_id", order: { status_id: :desc }
     t.index ["id"], name: "index_media_attachments_vacuum", where: "((file_file_name IS NOT NULL) AND ((remote_url)::text <> ''::text))"
     t.index ["scheduled_status_id"], name: "index_media_attachments_on_scheduled_status_id", where: "(scheduled_status_id IS NOT NULL)"
@@ -1153,7 +1153,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.string "description", default: "", null: false
     t.string "image_file_name"
     t.string "image_content_type"
-    t.integer "image_file_size"
     t.datetime "image_updated_at", precision: nil
     t.integer "type", default: 0, null: false
     t.text "html", default: "", null: false
@@ -1175,6 +1174,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.integer "link_type"
     t.datetime "published_at"
     t.string "image_description", default: "", null: false
+    t.bigint "image_file_size"
     t.index ["id"], name: "index_preview_cards_vacuum", where: "((image_file_name IS NOT NULL) AND ((image_file_name)::text <> ''::text))"
     t.index ["url"], name: "index_preview_cards_on_url", unique: true
   end
@@ -1312,12 +1312,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.string "var", default: "", null: false
     t.string "file_file_name"
     t.string "file_content_type"
-    t.integer "file_file_size"
     t.datetime "file_updated_at", precision: nil
     t.json "meta"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "blurhash"
+    t.bigint "file_file_size"
     t.index ["var"], name: "index_site_uploads_on_var", unique: true
   end
 

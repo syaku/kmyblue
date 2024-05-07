@@ -8,18 +8,26 @@
 #  var               :string           default(""), not null
 #  file_file_name    :string
 #  file_content_type :string
-#  file_file_size    :integer
 #  file_updated_at   :datetime
 #  meta              :json
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  blurhash          :string
+#  file_file_size    :bigint(8)
 #
 
 class SiteUpload < ApplicationRecord
   include Attachmentable
 
+  FAVICON_SIZES = [16, 32, 48].freeze
+  APPLE_ICON_SIZES   = [57, 60, 72, 76, 114, 120, 144, 152, 167, 180, 1024].freeze
+  ANDROID_ICON_SIZES = [36, 48, 72, 96, 144, 192, 256, 384, 512].freeze
+
+  APP_ICON_SIZES = (APPLE_ICON_SIZES + ANDROID_ICON_SIZES).uniq.freeze
+
   STYLES = {
+    app_icon: APP_ICON_SIZES.each_with_object({}) { |size, hash| hash[size.to_s.to_sym] = "#{size}x#{size}#" }.freeze,
+    favicon: FAVICON_SIZES.each_with_object({}) { |size, hash| hash[size.to_s.to_sym] = "#{size}x#{size}#" }.freeze,
     thumbnail: {
       '@1x': {
         format: 'png',

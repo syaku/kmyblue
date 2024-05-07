@@ -65,6 +65,8 @@ class Form::AdminSettings
     hold_remote_new_accounts
     stop_fetch_activity_domains
     stop_link_preview_domains
+    app_icon
+    favicon
   ).freeze
 
   INTEGER_KEYS = %i(
@@ -114,6 +116,8 @@ class Form::AdminSettings
   UPLOAD_KEYS = %i(
     thumbnail
     mascot
+    app_icon
+    favicon
   ).freeze
 
   OVERRIDEN_SETTINGS = {
