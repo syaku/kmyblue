@@ -53,8 +53,8 @@
 #  indexable                     :boolean          default(FALSE), not null
 #  master_settings               :jsonb
 #  remote_pending                :boolean          default(FALSE), not null
-#  avatar_file_size              :bigint(8)
-#  header_file_size              :bigint(8)
+#  avatar_file_size              :integer
+#  header_file_size              :integer
 #
 
 class Account < ApplicationRecord

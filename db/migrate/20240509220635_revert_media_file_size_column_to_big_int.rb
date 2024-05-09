@@ -2,7 +2,7 @@
 
 require_relative '../../lib/mastodon/migration_helpers'
 
-class ConvertFileSizeColumnsToBigInt < ActiveRecord::Migration[7.1]
+class RevertMediaFileSizeColumnToBigInt < ActiveRecord::Migration[7.1]
   include Mastodon::MigrationHelpers
 
   TABLE_COLUMN_MAPPING = [
@@ -33,7 +33,7 @@ class ConvertFileSizeColumnsToBigInt < ActiveRecord::Migration[7.1]
   end
 
   def up
-    migrate_columns(:bigint)
+    migrate_columns(:integer)
   end
 
   def down

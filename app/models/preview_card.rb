@@ -31,7 +31,7 @@
 #  link_type                    :integer
 #  published_at                 :datetime
 #  image_description            :string           default(""), not null
-#  image_file_size              :bigint(8)
+#  image_file_size              :integer
 #
 
 class PreviewCard < ApplicationRecord
