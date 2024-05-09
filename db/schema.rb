@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_09_220635) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -204,8 +204,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.boolean "indexable", default: false, null: false
     t.jsonb "master_settings"
     t.boolean "remote_pending", default: false, null: false
-    t.bigint "avatar_file_size"
-    t.bigint "header_file_size"
+    t.integer "avatar_file_size"
+    t.integer "header_file_size"
     t.index "(((setweight(to_tsvector('simple'::regconfig, (display_name)::text), 'A'::\"char\") || setweight(to_tsvector('simple'::regconfig, (username)::text), 'B'::\"char\")) || setweight(to_tsvector('simple'::regconfig, (COALESCE(domain, ''::character varying))::text), 'C'::\"char\")))", name: "search_index", using: :gin
     t.index "lower((username)::text), COALESCE(lower((domain)::text), ''::text)", name: "index_accounts_on_username_and_domain_lower", unique: true
     t.index ["domain", "id"], name: "index_accounts_on_domain_and_id"
@@ -505,7 +505,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.jsonb "aliases"
     t.boolean "is_sensitive", default: false, null: false
     t.string "license"
-    t.bigint "image_file_size"
+    t.integer "image_file_size"
     t.index ["shortcode", "domain"], name: "index_custom_emojis_on_shortcode_and_domain", unique: true
   end
 
@@ -735,7 +735,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.datetime "data_updated_at", precision: nil
     t.bigint "account_id", null: false
     t.boolean "overwrite", default: false, null: false
-    t.bigint "data_file_size"
+    t.integer "data_file_size"
   end
 
   create_table "instance_infos", force: :cascade do |t|
@@ -846,8 +846,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.string "thumbnail_content_type"
     t.datetime "thumbnail_updated_at", precision: nil
     t.string "thumbnail_remote_url"
-    t.bigint "file_file_size"
-    t.bigint "thumbnail_file_size"
+    t.integer "file_file_size"
+    t.integer "thumbnail_file_size"
     t.index ["account_id", "status_id"], name: "index_media_attachments_on_account_id_and_status_id", order: { status_id: :desc }
     t.index ["id"], name: "index_media_attachments_vacuum", where: "((file_file_name IS NOT NULL) AND ((remote_url)::text <> ''::text))"
     t.index ["scheduled_status_id"], name: "index_media_attachments_on_scheduled_status_id", where: "(scheduled_status_id IS NOT NULL)"
@@ -1174,7 +1174,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.integer "link_type"
     t.datetime "published_at"
     t.string "image_description", default: "", null: false
-    t.bigint "image_file_size"
+    t.integer "image_file_size"
     t.index ["id"], name: "index_preview_cards_vacuum", where: "((image_file_name IS NOT NULL) AND ((image_file_name)::text <> ''::text))"
     t.index ["url"], name: "index_preview_cards_on_url", unique: true
   end
@@ -1317,7 +1317,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_26_233435) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "blurhash"
-    t.bigint "file_file_size"
+    t.integer "file_file_size"
     t.index ["var"], name: "index_site_uploads_on_var", unique: true
   end
 

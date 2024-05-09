@@ -25,8 +25,8 @@
 #  thumbnail_content_type      :string
 #  thumbnail_updated_at        :datetime
 #  thumbnail_remote_url        :string
-#  file_file_size              :bigint(8)
-#  thumbnail_file_size         :bigint(8)
+#  file_file_size              :integer
+#  thumbnail_file_size         :integer
 #
 
 class MediaAttachment < ApplicationRecord

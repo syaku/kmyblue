@@ -13,7 +13,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  blurhash          :string
-#  file_file_size    :bigint(8)
+#  file_file_size    :integer
 #
 
 class SiteUpload < ApplicationRecord

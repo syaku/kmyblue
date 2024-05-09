@@ -14,7 +14,7 @@
 #  data_updated_at   :datetime
 #  account_id        :bigint(8)        not null
 #  overwrite         :boolean          default(FALSE), not null
-#  data_file_size    :bigint(8)
+#  data_file_size    :integer
 #
 
 # NOTE: This is a deprecated model, only kept to not break ongoing imports

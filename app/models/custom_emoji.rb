@@ -23,7 +23,7 @@
 #  aliases                      :jsonb
 #  is_sensitive                 :boolean          default(FALSE), not null
 #  license                      :string
-#  image_file_size              :bigint(8)
+#  image_file_size              :integer
 #
 
 class CustomEmoji < ApplicationRecord
