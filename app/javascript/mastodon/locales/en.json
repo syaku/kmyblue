@@ -591,7 +591,7 @@
   "notification.list_status": "{name} post is added to {listName}",
   "notification.mention": "{name} mentioned you",
   "notification.moderation-warning.learn_more": "Learn more",
-  "notification.moderation_warning": "Your have received a moderation warning",
+  "notification.moderation_warning": "You have received a moderation warning",
   "notification.moderation_warning.action_delete_statuses": "Some of your posts have been removed.",
   "notification.moderation_warning.action_disable": "Your account has been disabled.",
   "notification.moderation_warning.action_force_cw": "Some of your posts have been added content-warning text.",

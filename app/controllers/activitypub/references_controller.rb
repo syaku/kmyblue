@@ -31,7 +31,7 @@ class ActivityPub::ReferencesController < ActivityPub::BaseController
   end
 
   def cached_references
-    cache_collection(Status.where(id: results).reorder(:id), Status)
+    preload_collection(Status.where(id: results).reorder(:id), Status)
   end
 
   def results
