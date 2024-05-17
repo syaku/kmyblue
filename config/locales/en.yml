@@ -462,8 +462,8 @@ en:
       reject_new_follow: Reject follows
       reject_new_follow_hint: Reject follows in the future
       reject_reply_exclude_followers: Reject mentions/quotes exclude followers
-      reject_reply_hint: Reject replies in the future
       reject_reply_exclude_followers_hint: Reject replies exclude followers in the future
+      reject_reply_hint: Reject replies in the future
       reject_reports: Reject reports
       reject_reports_hint: Ignore all reports coming from this domain. Irrelevant for suspensions
       reject_send_sensitive: Do not deliver sensitive postings
@@ -520,7 +520,7 @@ en:
       accept: Accept
       add_new: Add and make a new application
       delete: Delete
-      description_html: <strong>Friend server</strong> is a system for exchanging posts with each other's local public and local search permissions as they are.
+      description_html: "<strong>Friend server</strong> is a system for exchanging posts with each other's local public and local search permissions as they are."
       disabled: Disabled
       domain: Domain
       edit:
@@ -576,9 +576,9 @@ en:
           reject_hashtag: Reject hashtags
           reject_media: Reject media
           reject_new_follow: Reject follows
-          reject_straight_follow: Reject straight follow
           reject_reply_exclude_followers: Reject reply/quote exclude followers
           reject_reports: Reject reports
+          reject_straight_follow: Reject straight follow
           silence: Limit
           suspend: Suspend
         policy: Policy
@@ -649,6 +649,24 @@ en:
       title: IP rules
     media_attachments:
       title: Media attachments
+    ng_rule_histories:
+      back_to_ng_rule: Back to NG rule
+      back_to_ng_rules: Back to index
+      data:
+        media_count: "%{count} medias"
+        poll_count: "%{count} polls"
+      from_local_user: Local user
+      hidden: Private post
+      moderate_account: Moderate account
+      reason_actions:
+        reaction_emoji_reaction: Emoji reaction
+        reaction_favourite: Favourite
+        reaction_follow: Follow request
+        reaction_reblog: Boost
+        reaction_vote: Vote
+        status_create: Post
+        status_edit: Edit post
+      title: NG Rule History %{title}
     ng_rules:
       account_avatar_state: Has avatar or not
       account_display_name: Name
@@ -690,6 +708,8 @@ en:
       new:
         save: Save new NG rule
         title: Add new NG Rule
+      reaction_allow_follower: Allow all reactions targeted at followers
+      reaction_allow_follower_hint: If enabled, reactions between other servers are unconditionally allowed
       reaction_type: Reaction type
       reaction_types:
         emoji_reaction: Emoji reaction
@@ -697,8 +717,6 @@ en:
         follow: Follow
         reblog: Boost
         vote: Vote
-      reaction_allow_follower: Allow all reactions targeted at followers
-      reaction_allow_follower_hint: If enabled, reactions between other servers are unconditionally allowed
       record_history_also_local: Local users are also subject to history recording
       rubular: Regular Expression Checker
       states:
@@ -726,24 +744,6 @@ en:
       status_visibility: Visibility
       test_error: Regular expression syntax is incorrect.
       title: NG Rule
-    ng_rule_histories:
-      back_to_ng_rule: Back to NG rule
-      back_to_ng_rules: Back to index
-      data:
-        media_count: "%{count} medias"
-        poll_count: "%{count} polls"
-      from_local_user: Local user
-      hidden: Private post
-      moderate_account: Moderate account
-      reason_actions:
-        reaction_emoji_reaction: Emoji reaction
-        reaction_favourite: Favourite
-        reaction_follow: Follow request
-        reaction_reblog: Boost
-        reaction_vote: Vote
-        status_create: Post
-        status_edit: Edit post
-      title: NG Rule History %{title}
     ng_words:
       block_unfollow_account_mention: Reject all mentions/quotes from all accounts that do not have followers on your server
       block_unfollow_account_mention_hint: This setting will be removed. After the setting is removed, the behavior will always be the same as if it were unchecked; please use NG rules instead.
@@ -755,17 +755,17 @@ en:
       hide_local_users_for_anonymous_hint: This setting will be removed. After the setting is removed, the behavior will always be the same as if it were unchecked. It can be replaced, though not completely, by "Allow unauthorized access to public timelines" in the "Find" section of the server settings.
       hold_remote_new_accounts: Hold new remote accounts
       keywords: Reject keywords
-      preamble: This setting is useful for solving problems related to spam that are difficult to address with domain blocking. You can reject posts that meet certain criteria, such as the inclusion of specific keywords. Please consider your settings carefully and check your history regularly to ensure that problem-free posts are not deleted.
+      phrases:
+        regexp_html: "<strong>Reg</strong> - If the <strong>Reg</strong> checkbox is checked, the comparison is performed using regular expressions."
+        regexp_short: Reg
+        stranger_html: "<strong>UE</strong> - Items checked under <strong>Uem</strong> apply only to mentions, replies, quotes, etc. from accounts with which you have no follow relationship."
+        stranger_short: Uem
       post_hash_tags_max: Hash tags limit of a post
       post_mentions_max: Mentions limit of a post
       post_stranger_mentions_max: Mentions limit of a post
-      phrases:
-        regexp_html: <strong>Reg</strong> - If the <strong>Reg</strong> checkbox is checked, the comparison is performed using regular expressions.
-        regexp_short: Reg
-        stranger_html: <strong>UE</strong> - Items checked under <strong>Uem</strong> apply only to mentions, replies, quotes, etc. from accounts with which you have no follow relationship.
-        stranger_short: Uem
-      remote_approval_list: List of remote accounts awaiting approval
+      preamble: This setting is useful for solving problems related to spam that are difficult to address with domain blocking. You can reject posts that meet certain criteria, such as the inclusion of specific keywords. Please consider your settings carefully and check your history regularly to ensure that problem-free posts are not deleted.
       remote_approval_hint: Newly recognized accounts with unspecified domains will be placed in Suspended status. You can review that list and approve them if necessary. If this setting is not enabled, all remote accounts will be approved immediately.
+      remote_approval_list: List of remote accounts awaiting approval
       settings: Settings
       stranger_mention_from_local_ng: NG words for Mention to accounts you do not follow are also applied to posts by local users.
       stranger_mention_from_local_ng_hint: This setting will be removed. After the setting is removed, the behavior will be the same as if it is always checked. If you do not wish this behavior, please use NG rules instead.
@@ -971,11 +971,11 @@ en:
       auto_warning_text_hint: If not specified, the default warning text is used.
       hint: This keywords is applied to public posts only..
       phrases:
-        remote_html: <strong>Rem</strong> ote checked applies to remote posts as well.
-        remote_short: Rem
-        regexp_html: <strong>Reg</strong> Exp checked items are compared using regular expressions.
+        regexp_html: "<strong>Reg</strong> Exp checked items are compared using regular expressions."
         regexp_short: Reg
-        spoiler_html: <strong>War</strong> ning checked will also be applied to the content warning statement.
+        remote_html: "<strong>Rem</strong> ote checked applies to remote posts as well."
+        remote_short: Rem
+        spoiler_html: "<strong>War</strong> ning checked will also be applied to the content warning statement."
         spoiler_short: War
       title: Sensitive words
     settings:
@@ -1083,8 +1083,8 @@ en:
       original_status: Original post
       reblogs: Reblogs
       remove: Remove post
-      remove_media: Remove medias
       remove_history: Remove edit history
+      remove_media: Remove medias
       searchability: Searchability
       status_changed: Post changed
       title: Account posts
@@ -1293,17 +1293,6 @@ en:
       domain: Domains
       keyword: Keywords
       tag: Tags
-    errors:
-      duplicate_account: Duplicate account
-      duplicate_domain: Duplicate domain
-      duplicate_keyword: Duplicate keyword
-      duplicate_tag: Duplicate tag
-      limit:
-        accounts: 登録できるアカウント数の上限に達しています
-        domains: 登録できるドメイン数の上限に達しています
-        keywords: 登録できるキーワード数の上限に達しています
-        tags: 登録できるタグ数の上限に達しています
-      too_short_keyword: Too short keyword! must 2 and more letters
     edit:
       available: Available
       description: Antenna is for all public and local public posts recognized by the server, from all accounts that have not refused to subscribe. Detected posts will be added to the specified list.
@@ -1690,13 +1679,13 @@ en:
     delete: Deactivate
     expired: Expired
     expires_in:
+      '1209600': 2 weeks
       '1800': 30 minutes
       '21600': 6 hours
+      '2629746': 1 month
       '3600': 1 hour
       '43200': 12 hours
       '604800': 1 week
-      '1209600': 2 weeks
-      '2629746': 1 month
       '7889238': 3 months
       '86400': 1 day
     expires_in_prompt: Never
@@ -1791,14 +1780,14 @@ en:
         subject: "%{name} submitted a report"
       sign_up:
         subject: "%{name} signed up"
-    favourite:
-      body: 'Your post was favorited by %{name}:'
-      subject: "%{name} favorited your post"
-      title: New favorite
     emoji_reaction:
       body: 'Your post was reacted with emoji by %{name}:'
       subject: "%{name} reacted your post with emoji"
       title: New emoji reaction
+    favourite:
+      body: 'Your post was favorited by %{name}:'
+      subject: "%{name} favorited your post"
+      title: New favorite
     follow:
       body: "%{name} is now following you!"
       subject: "%{name} is now following you"
@@ -1867,7 +1856,7 @@ en:
   preferences:
     does_not_search: The full-text search feature is not available on this server. Instead, your posts will be searched according to this setting on other kmyblue servers.
     dtl: Deep timeline
-    dtl_hint: "You can join deep timeline with #%{tag} tag. Following settings make convenient to use deep timeline."
+    dtl_hint: 'You can join deep timeline with #%{tag} tag. Following settings make convenient to use deep timeline.'
     emoji_reaction_permitting: Receiving emoji reactions
     other: Other
     posting_defaults: Posting defaults
@@ -1883,13 +1872,13 @@ en:
     reach: Reach
     reach_hint_html: Control whether you want to be discovered and followed by new people. Do you want your posts to appear on the Explore screen? Do you want other people to see you in their follow recommendations? Do you want to accept all new followers automatically, or have granular control over each one?
     search: Search
-    search_kmyblue_hint_html: "There are two types of post search settings in kmyblue: 'Indexable' and 'Searchability'. indexable allows all public posts of an account to be searchable by other standard Mastodon, and changes to the setting are retroactive to past posts. Searchability can be specified on a per-post basis, and on kmyblue and Fedibird, this setting takes precedence over Indexable. Past posts cannot be changed."
     search_hint_html: Control how you want to be found. Do you want people to find you by what you've publicly posted about? Do you want people outside Mastodon to find your profile when searching the web? Please mind that total exclusion from all search engines cannot be guaranteed for public information.
+    search_kmyblue_hint_html: 'There are two types of post search settings in kmyblue: ''Indexable'' and ''Searchability''. indexable allows all public posts of an account to be searchable by other standard Mastodon, and changes to the setting are retroactive to past posts. Searchability can be specified on a per-post basis, and on kmyblue and Fedibird, this setting takes precedence over Indexable. Past posts cannot be changed.'
     title: Privacy and reach
   privacy_extra:
     hint_html: These settings are kmyblue original. You will receive additional privacy benefits by doing this setting.
-    post_processing_hint_html: Controls additional operations that the system may perform on the information you post. These include settings that involve sending information about your submission to third party sites.
     post_processing: Processing posts
+    post_processing_hint_html: Controls additional operations that the system may perform on the information you post. These include settings that involve sending information about your submission to third party sites.
     stop_deliver: Stop delivery
     stop_deliver_hint_html: Mastodon posts can be freely searched by other software; privacy settings made within Mastodon will be ignored and your posts may be found by unintended people. Here, you can set up your posts so that they will not be found by other servers or software. However, there is a risk involved.
     title: Privacy extra settings
@@ -2078,7 +2067,7 @@ en:
       public_search_long: You can search all posts permitted to search
       public_unlisted: Local and followers
       public_unlisted_long: Local users and followers can find
-      unset: (Unsupported servers)
+      unset: "(Unsupported servers)"
     show_more: Show more
     show_thread: Show thread
     title: '%{name}: "%{quote}"'

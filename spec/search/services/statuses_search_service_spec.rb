@@ -220,7 +220,7 @@ describe StatusesSearchService do
     end
 
     let(:search_keyword) { 'ohagi' }
-    let(:status_text) { 'りんごを食べました' }
+    let(:status_text) { 'I ate an apple.' }
 
     let(:alice) { Fabricate(:user).account }
     let(:account) { alice }
@@ -252,16 +252,16 @@ describe StatusesSearchService do
       end
     end
 
-    it_behaves_like 'hit status', 'when search with word', 'りんご'
-    it_behaves_like 'hit status', 'when search with multiple words', 'りんご 食べる'
-    it_behaves_like 'does not hit status', 'when search with multiple words but does not hit half', 'りんご 茹でる'
-    it_behaves_like 'hit status', 'when search with letter in word', 'ご'
-    it_behaves_like 'does not hit status', 'when double quote search with letter in word', '"ご"'
-    it_behaves_like 'hit status', 'when search with fixed word', '"りんご"'
-    it_behaves_like 'hit status', 'when double quote search with multiple letter in word', 'り ご'
-    it_behaves_like 'does not hit status', 'when double quote search with multiple letter in word but does not contain half', 'ず ご'
-    it_behaves_like 'hit status', 'when specify user name', 'りんご from:alice'
-    it_behaves_like 'does not hit status', 'when specify not existing user name', 'りんご from:ohagi'
+    it_behaves_like 'hit status', 'when search with word', 'apple'
+    it_behaves_like 'hit status', 'when search with multiple words', 'apple ate'
+    it_behaves_like 'does not hit status', 'when search with multiple words but does not hit half', 'apple kill'
+    # it_behaves_like 'hit status', 'when search with letter in word', 'p' # available only Japanese sudachi
+    # it_behaves_like 'does not hit status', 'when double quote search with letter in word', '"p"' # available only Japanese sudachi
+    it_behaves_like 'hit status', 'when search with fixed word', '"apple"'
+    # it_behaves_like 'hit status', 'when double quote search with multiple letter in word', 'p e'  # available only Japanese sudachi
+    it_behaves_like 'does not hit status', 'when double quote search with multiple letter in word but does not contain half', 'q p'
+    it_behaves_like 'hit status', 'when specify user name', 'apple from:alice'
+    it_behaves_like 'does not hit status', 'when specify not existing user name', 'apple from:ohagi'
 
     context 'when in:following is specified' do
       let(:following) { Fabricate(:user).account }
@@ -274,19 +274,19 @@ describe StatusesSearchService do
       context 'with myself' do
         let(:account) { alice }
 
-        it_behaves_like 'does not hit status', 'when search with following', 'in:following りんご'
+        it_behaves_like 'does not hit status', 'when search with following', 'in:following apple'
       end
 
       context 'with following' do
         let(:account) { following }
 
-        it_behaves_like 'hit status', 'when search with following', 'in:following りんご'
+        it_behaves_like 'hit status', 'when search with following', 'in:following apple'
       end
 
       context 'without following' do
         let(:account) { other }
 
-        it_behaves_like 'does not hit status', 'when search with following', 'in:following りんご'
+        it_behaves_like 'does not hit status', 'when search with following', 'in:following apple'
       end
     end
 
@@ -295,9 +295,9 @@ describe StatusesSearchService do
         alice.user.update!(settings: { reverse_search_quote: true })
       end
 
-      it_behaves_like 'does not hit status', 'when search with letter in word', 'ご'
-      it_behaves_like 'hit status', 'when double quote search with letter in word', '"ご"'
-      it_behaves_like 'hit status', 'when search with word', 'りんご'
+      it_behaves_like 'does not hit status', 'when search with letter in word', 'p'
+      # it_behaves_like 'hit status', 'when double quote search with letter in word', '"p"' # available only Japanese sudachi
+      it_behaves_like 'hit status', 'when search with word', 'apple'
     end
   end
 end
