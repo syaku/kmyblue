@@ -433,6 +433,8 @@ en:
         harassment: Harassment or spam
         invalid_privacy: Privacy is not protected
         mastodon_default: Original Mastodon supports
+      hidden: Hide
+      hidden_hint: You may choose to make this domain block private if disclosure would jeopardize the security of this server.
       import: Import
       new:
         create: Create block
@@ -567,6 +569,7 @@ en:
         limited_federation_mode_description_html: You can chose whether to allow federation with this domain.
         policies:
           block_trends: Reject trends
+          detect_invalid_subscription: No subscription privacy
           reject_favourite: Reject favorite
           reject_friend: Reject friend server application
           reject_hashtag: Reject hashtags
@@ -574,6 +577,7 @@ en:
           reject_new_follow: Reject follows
           reject_reply_exclude_followers: Reject reply/quote exclude followers
           reject_reports: Reject reports
+          reject_send_sensitive: No Sensitive Submission Delivery
           reject_straight_follow: Reject straight follow
           silence: Limit
           suspend: Suspend
@@ -662,6 +666,8 @@ en:
         status_edit: Edit post
       title: NG Rule History %{title}
     ng_rules:
+      account_allow_followed_by_local: Check only accounts that are not followed by local users
+      account_allow_followed_by_local_hint: Use this option only if all local users with more than 1 follow are trusted
       account_avatar_state: Has avatar or not
       account_display_name: Name
       account_domain: Domain
@@ -671,6 +677,7 @@ en:
       account_include_local: Contains local users
       account_note: Account note
       account_username: ID
+      available: Available
       copy: Copy
       copy_error: Copy failed.
       edit:
@@ -689,6 +696,9 @@ en:
           reaction: Set the reaction conditions. The account conditions must match at the same time. Please note that by default, not all reactions will match unless you set the "Reaction Type".
           status: Set the conditions of your submission. The account conditions must match at the same time. Please note that by default, not all posts will be applicable unless you set the "Visibility" and "Searchability".
         title: Edit NG Rule
+      emoji_reaction_name: Emoji reaction emoji or shortcode
+      emoji_reaction_origin_domain: Custom emoji origin domain
+      emoji_reaction_origin_domain_hint: If a pictogram from another server is used, the domain of the server where the pictogram was originally registered will be used.
       index:
         delete: Delete
         disabled: Disabled
@@ -749,6 +759,7 @@ en:
       hide_local_users_for_anonymous_hint: This setting will be removed. After the setting is removed, the behavior will always be the same as if it were unchecked. It can be replaced, though not completely, by "Allow unauthorized access to public timelines" in the "Find" section of the server settings.
       hold_remote_new_accounts: Hold new remote accounts
       keywords: Reject keywords
+      keywords_for_stranger_mention: Keywords for stranger mention
       phrases:
         regexp_html: "<strong>Reg</strong> - If the <strong>Reg</strong> checkbox is checked, the comparison is performed using regular expressions."
         regexp_short: Reg
@@ -760,6 +771,7 @@ en:
       preamble: This setting is useful for solving problems related to spam that are difficult to address with domain blocking. You can reject posts that meet certain criteria, such as the inclusion of specific keywords. Please consider your settings carefully and check your history regularly to ensure that problem-free posts are not deleted.
       remote_approval_hint: Newly recognized accounts with unspecified domains will be placed in Suspended status. You can review that list and approve them if necessary. If this setting is not enabled, all remote accounts will be approved immediately.
       remote_approval_list: List of remote accounts awaiting approval
+      save_error: Has save errors
       settings: Settings
       stranger_mention_from_local_ng: NG words for Mention to accounts you do not follow are also applied to posts by local users.
       stranger_mention_from_local_ng_hint: This setting will be removed. After the setting is removed, the behavior will be the same as if it is always checked. If you do not wish this behavior, please use NG rules instead.
@@ -1203,6 +1215,9 @@ en:
           other: Used by %{count} people over the last week
       title: Trends
       trending: Trending
+    update_pendings:
+      major: Major update available
+      patch: Patch update available
     warning_presets:
       add_new: Add new
       delete: Delete
@@ -1288,19 +1303,37 @@ en:
       description: Antenna is for all public and local public posts recognized by the server, from all accounts that have not refused to subscribe. Detected posts will be added to the specified list.
       title: Edit antenna
     errors:
+      duplicate_account: Duplicate account
+      duplicate_domain: Duplicate domain
+      duplicate_keyword: Duplicate keyword
+      duplicate_tag: Duplicate tag
       empty_contexts: No contexts! You must set any context filters
       invalid_list_owner: This list is not yours
+      limit:
+        accounts: 登録できるアカウント数の上限に達しています
+        domains: 登録できるドメイン数の上限に達しています
+        keywords: 登録できるキーワード数の上限に達しています
+        tags: 登録できるタグ数の上限に達しています
       over_limit: You have exceeded the limit of %{limit} antennas
       over_ltl_limit: You have exceeded the limit of %{limit} ltl antennas
       over_stl_limit: You have exceeded the limit of %{limit} stl antennas
+      too_short_keyword: Keyword is too short
     index:
+      accounts:
+        other: "%{count} accounts"
       contexts: Antennas in %{contexts}
       delete: Delete
       disabled: Disabled
+      domains:
+        other: "%{count} domains"
       empty: You have no antennas.
       expires_in: Expires in %{distance}
       expires_on: Expires on %{date}
+      keywords:
+        other: "%{count} keywords"
       stl: This antenna is in STL mode, ignoring reject-subscription settings.
+      tags:
+        other: "%{count} tags"
       title: Antennas
   appearance:
     advanced_web_interface: Advanced web interface
@@ -1418,6 +1451,9 @@ en:
       view_strikes: View past strikes against your account
     too_fast: Form submitted too fast, try again.
     use_security_key: Use security key
+  bookmark_categories:
+    errors:
+      limit: Bookmark category limit
   challenge:
     confirm: Continue
     hint_html: "<strong>Tip:</strong> We won't ask you for your password again for the next hour."
@@ -1580,6 +1616,8 @@ en:
       index:
         hint: This filter applies to select individual posts regardless of other criteria. You can add more posts to this filter from the web interface.
         title: Filtered posts
+  footer:
+    trending_now: Trending now
   generic:
     all: All
     all_items_on_page_selected_html:
@@ -1914,6 +1952,9 @@ en:
     descriptions:
       account: Public posts from @%{acct}
       tag: 'Public posts tagged #%{hashtag}'
+  scheduled_expiration_statuses:
+    over_daily_limit: You have exceeded the limit of %{limit} scheduled expiration posts for today
+    over_total_limit: You have exceeded the limit of %{limit} scheduled expiration posts
   scheduled_statuses:
     over_daily_limit: You have exceeded the limit of %{limit} scheduled posts for today
     over_total_limit: You have exceeded the limit of %{limit} scheduled posts
@@ -2129,6 +2170,7 @@ en:
   themes:
     contrast: Mastodon (High contrast)
     default: Mastodon (Dark)
+    full-dark: フルダーク
     mastodon-light: Mastodon (Light)
     system: Automatic (use system theme)
   time:
