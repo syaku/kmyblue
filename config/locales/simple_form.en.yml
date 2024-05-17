@@ -381,8 +381,8 @@ en:
         receive_other_servers_emoji_reaction: Receive emoji reaction between other server users
         registration_button_message: Register button message
         registrations_end_hour: Registration-without-approval end hour (UTC 0-24)
-        registrations_limit: User registration limit
-        registrations_limit_per_day: User registration limit per day
+        registrations_limit: User registration limit (Current %{count})
+        registrations_limit_per_day: User registration limit per day (Current %{count})
         registrations_mode: Who can sign-up
         registrations_secondary_end_hour: Secondary registration end hour (UTC 0-24)
         registrations_secondary_end_hour_hint: If input 0, secondary hour is disabled.
