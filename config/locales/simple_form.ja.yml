@@ -177,7 +177,6 @@ ja:
         events: 送信するイベントを選択
         template: 変数補完を使用して、独自のJSONペイロードを構成できます。デフォルトのJSONを使用する場合は空白のままにします。
         url: イベントの送信先
-    kmyblue: kmyblue
     labels:
       account:
         discoverable: アカウントを見つけやすくする
