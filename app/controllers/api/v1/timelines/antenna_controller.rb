@@ -25,7 +25,7 @@ class Api::V1::Timelines::AntennaController < Api::V1::Timelines::BaseController
   end
 
   def cached_list_statuses
-    cache_collection list_statuses, Status
+    preload_collection list_statuses, Status
   end
 
   def list_statuses
