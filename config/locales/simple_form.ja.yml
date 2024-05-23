@@ -23,7 +23,7 @@ ja:
         include_statuses: ユーザーは取られた制限や警告の原因となった投稿を確認できるようになります
         send_email_notification: ユーザーは自分のアカウントに何が起こったのか説明を受け取ります
         text_html: オプションです。投稿に用いる構文を使うことができます。簡略化のため<a href="%{path}">プリセット警告文を追加</a>することができます
-        type_html: <strong>%{acct}</strong>さんに対し、何を行うか選択してください
+        type_html: "<strong>%{acct}</strong>さんに対し、何を行うか選択してください"
         types:
           disable: ユーザーが自分のアカウントを使用できないようにします。コンテンツを削除したり非表示にすることはありません。
           none: これを使用すると、他の操作をせずにユーザーに警告を送信できます。
@@ -69,9 +69,9 @@ ja:
         setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大16個まで表示します。kmyblueからアップロードはできません
         setting_display_media_hide_all: メディアを常に隠す
         setting_display_media_show_all: メディアを常に表示する
+        setting_dtl_force_searchability: 'ハッシュタグ #%{tag} をつけて投稿するとき、検索許可を強制的に置き換えるかを設定します'
         setting_dtl_force_subscribable: 購読拒否設定に関係なく、ディープタイムラインに向けた投稿はアンテナに掲載されます。ディープタイムラインをアンテナ経由で閲覧している人にあなたの発言が届きます
-        setting_dtl_force_searchability: "ハッシュタグ #%{tag} をつけて投稿するとき、検索許可を強制的に置き換えるかを設定します"
-        setting_dtl_force_visibility: "ハッシュタグ #%{tag} をつけて投稿するとき、公開範囲を強制的に置き換えるかを設定します"
+        setting_dtl_force_visibility: 'ハッシュタグ #%{tag} をつけて投稿するとき、公開範囲を強制的に置き換えるかを設定します'
         setting_emoji_reaction_policy: この設定をしても他のサーバーのユーザーはその投稿に自由に絵文字をつけ、同じサーバーの中で共有できます。単にあなた自身の画面から絵文字リアクションを除去したいだけなら、外観設定から絵文字リアクションを無効にすることができます
         setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、絵文字リアクション機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
         setting_enable_emoji_reaction: この機能を無効にしても、他の人はあなたの投稿に絵文字をつけられます
@@ -94,7 +94,7 @@ ja:
         domain: 電子メールアドレスのドメイン名、または使用されるMXレコードを指定できます。新規登録時にチェックされます。
         with_dns_records: 指定したドメインのDNSレコードを取得し、その結果もメールドメインブロックに登録されます
       featured_tag:
-        name: '最近使用したハッシュタグ'
+        name: 最近使用したハッシュタグ
       filters:
         action: 投稿がフィルタに一致したときに実行するアクションを選択
         actions:
@@ -103,6 +103,7 @@ ja:
           warn: フィルタに一致した投稿を非表示にし、フィルタのタイトルを含む警告を表示します
       form_admin_settings:
         activity_api_enabled: 週単位でローカルで公開された投稿数、アクティブユーザー数、新規登録者数を表示します
+        app_icon: モバイル端末で表示されるデフォルトのアプリアイコンを独自のアイコンで上書きします。WEBP、PNG、GIF、JPGが利用可能です。
         backups_retention_period: ユーザーには、後でダウンロードするために投稿のアーカイブを生成する機能があります。正の値に設定すると、これらのアーカイブは指定された日数後に自動的にストレージから削除されます。
         bootstrap_timeline_accounts: これらのアカウントは、新しいユーザー向けのおすすめユーザーの一番上にピン留めされます。
         closed_registrations_message: アカウント作成を停止している時に表示されます
@@ -112,14 +113,15 @@ ja:
         enable_local_timeline: 有効にすると気の合ったユーザー同士の交流が捗る反面、内輪の雰囲気が強くなるかもしれません。Mastodonはローカルタイムラインがあるものだと思われているので、無効にする場合はサーバー紹介での注記をおすすめします。
         enable_public_unlisted_visibility: 有効にするとあなたのコミュニティは閉鎖的になるかもしれません。この設定はkmyblueの主要機能の1つであり、無効にする場合は概要などに記載することを強くおすすめします。
         enable_public_visibility: 無効にすると公開投稿は強制的に「ローカル公開」または「非収載」に置き換えられます。
+        favicon: デフォルトのMastodonのブックマークアイコンを独自のアイコンで上書きします。WEBP、PNG、GIF、JPGが利用可能です。
         mascot: 上級者向けWebインターフェースのイラストを上書きします。
         media_cache_retention_period: リモートユーザーが投稿したメディアファイルは、あなたのサーバーにキャッシュされます。正の値を設定すると、メディアは指定した日数後に削除されます。削除後にメディアデータが要求された場合、ソースコンテンツがまだ利用可能であれば、再ダウンロードされます。リンクプレビューカードがサードパーティのサイトを更新する頻度に制限があるため、この値を少なくとも14日に設定することをお勧めします。
         peers_api_enabled: このサーバーが Fediverse で遭遇したドメイン名のリストです。このサーバーが知っているだけで、特定のサーバーと連合しているかのデータは含まれません。これは一般的に Fediverse に関する統計情報を収集するサービスによって使用されます。
         profile_directory: ディレクトリには、掲載する設定をしたすべてのユーザーが一覧表示されます。
         receive_other_servers_emoji_reaction: 負荷の原因になります。人が少ない場合にのみ有効にすることをおすすめします。
+        registrations_end_hour: 新規登録が承認なしで可能な時間帯の開始時間を指定します。これより前の時間に登録することはできません。終了時間より後にすることはできません。この時間帯から外れた新規登録には、別途承認が必要となります。
         registrations_limit: 現在のユーザー数がこれを超過すると、管理者がこの数値を増やさない限り新規登録できません。0を指定すると、この制限を無効化します。
         registrations_limit_per_day: 本日登録されたユーザー数がこれを超過すると、UTC時刻で翌日0時にならない限り新規登録できません。0を指定すると、この制限を無効化します。
-        registrations_end_hour: 新規登録が承認なしで可能な時間帯の開始時間を指定します。これより前の時間に登録することはできません。終了時間より後にすることはできません。この時間帯から外れた新規登録には、別途承認が必要となります。
         registrations_start_hour: 新規登録が承認なしで可能な時間帯の終了時間を指定します。これより後の時間に登録することはできません。開始時間より前にすることはできません。この時間帯から外れた新規登録には、別途承認が必要となります。
         require_invite_text: アカウント登録が承認制の場合、登録の際の申請事由の入力を必須にします
         site_contact_email: 法律またはサポートに関する問い合わせ先
@@ -175,7 +177,6 @@ ja:
         events: 送信するイベントを選択
         template: 変数補完を使用して、独自のJSONペイロードを構成できます。デフォルトのJSONを使用する場合は空白のままにします。
         url: イベントの送信先
-    kmyblue: kmyblue
     labels:
       account:
         discoverable: アカウントを見つけやすくする
@@ -271,11 +272,10 @@ ja:
         setting_display_media_expand: 5個目以降のメディアも表示する (最大16)
         setting_display_media_hide_all: 非表示
         setting_display_media_show_all: 表示
-        setting_dtl_force_subscribable: ディープタイムライン用のハッシュタグを購読するアンテナに限り、購読拒否設定を無視する
         setting_dtl_force_searchability: DTL投稿の検索許可
+        setting_dtl_force_subscribable: ディープタイムライン用のハッシュタグを購読するアンテナに限り、購読拒否設定を無視する
         setting_dtl_force_visibility: DTL投稿の公開範囲
         setting_dtl_menu: Webクライアントのメニューにディープタイムラインを追加する
-        setting_enabled_visibilities: 投稿を有効にする公開範囲
         setting_emoji_reaction_policy: 絵文字リアクション受け入れと表示設定
         setting_emoji_reaction_policy_items:
           allow: 全員に許可
@@ -286,14 +286,23 @@ ja:
           outside_only: フォロー中、またはフォロワーのみに許可
         setting_emoji_reaction_streaming_notify_impl2: Nyastodon, Catstodon, glitch-soc互換の絵文字リアクション機能を有効にする
         setting_enable_emoji_reaction: 絵文字リアクション機能を使用する
+        setting_enabled_visibilities: 投稿を有効にする公開範囲
         setting_expand_spoilers: 閲覧注意としてマークされた投稿を常に展開する
         setting_hide_emoji_reaction_unavailable_server: 絵文字リアクションに対応していないと思われるサーバーの投稿から絵文字リアクション機能を隠す
         setting_hide_network: 繋がりを隠す
         setting_hide_quote_unavailable_server: 引用に対応していないと思われるサーバーの投稿からメニューを隠す
         setting_hide_status_reference_unavailable_server: ひかえめな引用（Fedibirdの参照）に対応していないと思われるサーバーの投稿からメニューを隠す
         setting_lock_follow_from_bot: botからのフォローを承認制にする
+        setting_public_post_to_unlisted: サードパーティから公開範囲「公開」で投稿した場合、「ローカル公開」に変更する
+        setting_reduce_motion: アニメーションの動きを減らす
+        setting_reject_public_unlisted_subscription: Misskey系サーバーに「ローカル公開」かつ検索許可「誰でも以外」の投稿を「フォロワーのみ」に変換して配送する
+        setting_reject_send_limited_to_suspects: Misskey系サーバーに「相互のみ」投稿を配送しない
+        setting_reject_unlisted_subscription: Misskey系サーバーに「非収載」かつ検索許可「誰でも以外」の投稿を「フォロワーのみ」に変換して配送する
+        setting_reverse_search_quote: ダブルクオートで囲まず検索した時、単語単位で検索する
+        setting_show_application: 送信したアプリを開示する
         setting_show_blocking_quote: ブロックしたユーザーの投稿を引用した投稿を表示する
         setting_show_emoji_reaction_count: 投稿につけられた各絵文字の数を表示する
+        setting_show_emoji_reaction_on_timeline: タイムライン上の投稿に他の人のつけた絵文字を表示する
         setting_show_favourite_menu: 右サイドメニューに「お気に入り」を表示する
         setting_show_followers_count: フォロワー数を公開する
         setting_show_following_count: フォロー数を公開する
@@ -302,15 +311,6 @@ ja:
         setting_show_recent_emojis: 絵文字ピッカーで絵文字デッキと一緒に、絵文字の使用履歴も表示する
         setting_show_relationships: アカウント詳細ベージで、相手からのフォロー状況を表示する
         setting_show_statuses_count: 投稿数を公開する
-        setting_stay_privacy: 投稿時に公開範囲を保存する
-        setting_public_post_to_unlisted: サードパーティから公開範囲「公開」で投稿した場合、「ローカル公開」に変更する
-        setting_reduce_motion: アニメーションの動きを減らす
-        setting_reject_public_unlisted_subscription: Misskey系サーバーに「ローカル公開」かつ検索許可「誰でも以外」の投稿を「フォロワーのみ」に変換して配送する
-        setting_reject_send_limited_to_suspects: Misskey系サーバーに「相互のみ」投稿を配送しない
-        setting_reject_unlisted_subscription: Misskey系サーバーに「非収載」かつ検索許可「誰でも以外」の投稿を「フォロワーのみ」に変換して配送する
-        setting_reverse_search_quote: ダブルクオートで囲まず検索した時、単語単位で検索する
-        setting_show_application: 送信したアプリを開示する
-        setting_show_emoji_reaction_on_timeline: タイムライン上の投稿に他の人のつけた絵文字を表示する
         setting_simple_timeline_menu: タイムライン上でメニューの項目を減らす
         setting_slip_local_emoji_reaction: ローカルユーザーに限って上記設定を無視して絵文字リアクションを許可する
         setting_stay_privacy: 投稿時に公開範囲を保存する
@@ -376,14 +376,14 @@ ja:
         profile_directory: プロフィール一覧を有効にする
         receive_other_servers_emoji_reaction: 他のサーバーのユーザーが他のサーバーの投稿につけた絵文字リアクションを受け入れる
         registration_button_message: 新規登録ボタンの直上に表示するメッセージ
+        registrations_end_hour: 登録に承認を必要としない時間帯の終了時刻 A (UTC 0〜24)
         registrations_limit: 登録ユーザー数上限 (現在 %{count} 名)
         registrations_limit_per_day: 1日あたり登録ユーザー数上限 (現在 %{count} 名)
         registrations_mode: 新規登録が可能な人
-        registrations_end_hour: 登録に承認を必要としない時間帯の終了時刻 A (UTC 0〜24)
-        registrations_start_hour: 登録に承認を必要としない時間帯の開始時刻 A (UTC 0〜24)
         registrations_secondary_end_hour: 登録に承認を必要としない時間帯の終了時刻 B (UTC 0〜24)
         registrations_secondary_end_hour_hint: ここで0を指定した場合、時間Bの設定は無効化されます
         registrations_secondary_start_hour: 登録に承認を必要としない時間帯の開始時刻 B (UTC 0〜24)
+        registrations_start_hour: 登録に承認を必要としない時間帯の開始時刻 A (UTC 0〜24)
         require_invite_text: 申請事由の入力を必須にする
         show_domain_blocks: ドメインブロックを表示
         show_domain_blocks_rationale: ドメインがブロックされた理由を表示
@@ -465,7 +465,7 @@ ja:
         events: 有効なイベント
         template: ペイロードテンプレート
         url: エンドポイントURL
-    'no': 'いいえ'
+    'no': いいえ
     not_recommended: 非推奨
     overridden: 上書き済み
     recommended: おすすめ
@@ -475,4 +475,4 @@ ja:
     title:
       sessions:
         webauthn: セキュリティキーを使用してサインインする
-    'yes': 'はい'
+    'yes': はい

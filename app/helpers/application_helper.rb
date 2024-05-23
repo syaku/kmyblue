@@ -254,11 +254,16 @@ module ApplicationHelper
     prerender_custom_emojis(html, JSON.parse([custom_emojis_hash].to_json, object_class: OpenStruct)) # rubocop:disable Style/OpenStructUse
   end
 
-  def site_icon_path(type, size = '48')
-    icon = SiteUpload.find_by(var: type)
-    return nil unless icon
+  def instance_presenter
+    @instance_presenter ||= InstancePresenter.new
+  end
 
-    icon.file.url(size)
+  def favicon_path(size = '48')
+    instance_presenter.favicon&.file&.url(size)
+  end
+
+  def app_icon_path(size = '48')
+    instance_presenter.app_icon&.file&.url(size)
   end
 
   private

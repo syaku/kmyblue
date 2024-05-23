@@ -1,7 +1,7 @@
 ---
 ja:
   about:
-    about_mastodon_html: 'Mastodonは、オープンなウェブプロトコルを採用した、自由でオープンソースなソーシャルネットワークです。電子メールのような分散型の仕組みを採っています。'
+    about_mastodon_html: Mastodonは、オープンなウェブプロトコルを採用した、自由でオープンソースなソーシャルネットワークです。電子メールのような分散型の仕組みを採っています。
     contact_missing: 未設定
     contact_unavailable: N/A
     hosted_on: Mastodon hosted on %{domain}
@@ -23,7 +23,7 @@ ja:
   admin:
     account_actions:
       action: アクションを実行
-      title: '%{acct}さんに対してアクションを実行'
+      title: "%{acct}さんに対してアクションを実行"
     account_moderation_notes:
       create: 書き込む
       created_msg: モデレーションメモを書き込みました！
@@ -33,7 +33,7 @@ ja:
       approve: 承認
       approve_domain: ドメインを承認
       approve_remote: リモートアカウントを承認
-      approved_msg: '%{username}さんの登録申請を承認しました'
+      approved_msg: "%{username}さんの登録申請を承認しました"
       are_you_sure: 本当に実行しますか？
       avatar: アイコン
       by_domain: ドメイン
@@ -43,12 +43,12 @@ ja:
         label: メールアドレスを変更
         new_email: 新しいメールアドレス
         submit: メールアドレスの変更
-        title: '%{username}さんのメールアドレスを変更'
+        title: "%{username}さんのメールアドレスを変更"
       change_role:
         changed_msg: ロールを変更しました!
         label: ロールを変更
         no_role: ロールがありません
-        title: '%{username}さんのロールを変更'
+        title: "%{username}さんのロールを変更"
       confirm: 確認
       confirmed: 確認済み
       confirming: 確認中
@@ -69,7 +69,7 @@ ja:
       enable: 有効化
       enable_sign_in_token_auth: メールトークン認証を有効にする
       enabled: 有効
-      enabled_msg: '%{username}の無効化を解除しました'
+      enabled_msg: "%{username}の無効化を解除しました"
       followers: フォロワー数
       follows: フォロー数
       header: ヘッダー
@@ -87,7 +87,7 @@ ja:
       media_attachments: 添付されたメディア
       memorialize: 追悼アカウント化
       memorialized: 追悼化済み
-      memorialized_msg: '%{username} を追悼アカウント化しました'
+      memorialized_msg: "%{username} を追悼アカウント化しました"
       moderation:
         active: アクティブ
         all: すべて
@@ -108,23 +108,23 @@ ja:
       perform_full_suspension: 活動を完全に停止させる
       previous_strikes: 以前のストライク
       previous_strikes_description_html:
-        other: <strong>%{count}</strong> ストライクがあります。
+        other: "<strong>%{count}</strong> ストライクがあります。"
       promote: 昇格
       protocol: プロトコル
       public: パブリック
       push_subscription_expires: PuSH購読期限
       redownload: プロフィールを更新
-      redownloaded_msg: '%{username}のプロフィールを正常に更新しました'
+      redownloaded_msg: "%{username}のプロフィールを正常に更新しました"
       reject: 却下
       reject_remote: リモートアカウントを却下
-      rejected_msg: '%{username}さんの登録申請を却下しました'
+      rejected_msg: "%{username}さんの登録申請を却下しました"
       remote_pending_hint_html: このアカウントは現在保留中で、一時的にサスペンド状態になっています。このサーバーで利用可能にするためには、アカウントを承認する必要があります。
       remote_suspension_irreversible: このアカウントのデータは不可逆的に削除されました。
       remote_suspension_reversible_hint_html: このアカウントは停止されており、データは%{date} 日で完全に削除されます。それまでは悪影響なしにアカウントを復旧させることができます。アカウントを即座に削除したい場合は、以下から行うことができます。
       remove_avatar: アイコンを削除
       remove_header: ヘッダーを削除
-      removed_avatar_msg: '%{username}さんのアバター画像を削除しました'
-      removed_header_msg: '%{username}さんのヘッダー画像を削除しました'
+      removed_avatar_msg: "%{username}さんのアバター画像を削除しました"
+      removed_header_msg: "%{username}さんのヘッダー画像を削除しました"
       resend_confirmation:
         already_confirmed: メールアドレスは確認済みです
         send: 確認メールを再送
@@ -157,14 +157,14 @@ ja:
       suspension_reversible_hint_html: アカウントは停止されており、データは%{date}に完全に削除されます。それまではアカウントを元に戻すことができます。今すぐ完全に削除したい場合は以下から行うことができます。
       title: アカウント
       unblock_email: メールアドレスのブロックを解除
-      unblocked_email_msg: '%{username}さんのメールアドレスのブロックを解除しました'
+      unblocked_email_msg: "%{username}さんのメールアドレスのブロックを解除しました"
       unconfirmed_email: 確認待ちのメールアドレス
       undo_sensitized: 閲覧注意から戻す
       undo_silenced: サイレンスから戻す
       undo_suspension: 停止から戻す
-      unsilenced_msg: '%{username}さんのサイレンス解除に成功しました'
+      unsilenced_msg: "%{username}さんのサイレンス解除に成功しました"
       unsubscribe: 購読の解除
-      unsuspended_msg: '%{username}さんの無効化を解除しました'
+      unsuspended_msg: "%{username}さんの無効化を解除しました"
       username: ユーザー名
       view_domain: ドメインの概要を表示
       warn: 警告
@@ -316,7 +316,7 @@ ja:
         title: お知らせを追加
       publish: 公開する
       published_msg: お知らせを掲載しました
-      scheduled_for: '%{time}に予約'
+      scheduled_for: "%{time}に予約"
       scheduled_msg: お知らせの掲載を予約しました
       title: お知らせ
       unpublish: 非公開にする
@@ -346,7 +346,7 @@ ja:
       enable: 有効化
       enabled: 有効
       enabled_msg: 絵文字を有効化しました
-      image_hint: '%{size}までのPNGまたはGIF画像を利用できます'
+      image_hint: "%{size}までのPNGまたはGIF画像を利用できます"
       license: ライセンス
       license_hint: カスタム絵文字のライセンス情報を設定します。ただしライセンス情報の連合に対応していないサーバーも多く、Misskeyもローカル絵文字のライセンス情報には対応しますが他のサーバーのライセンス情報は参照しません。ライセンスは無視される場合があることを考慮してください。
       list: 表示
@@ -373,13 +373,13 @@ ja:
       new_users: 新規ユーザー
       opened_reports: 新規通報
       pending_appeals_html:
-        other: "保留中の抗議 <strong>%{count}</strong>件"
+        other: 保留中の抗議 <strong>%{count}</strong>件
       pending_reports_html:
-        other: "保留中の通報 <strong>%{count}</strong>件"
+        other: 保留中の通報 <strong>%{count}</strong>件
       pending_tags_html:
-        other: "保留中のハッシュタグ <strong>%{count}</strong>件"
+        other: 保留中のハッシュタグ <strong>%{count}</strong>件
       pending_users_html:
-        other: "保留中のユーザー <strong>%{count}</strong>件"
+        other: 保留中のユーザー <strong>%{count}</strong>件
       resolved_reports: 解決済みの通報
       software: ソフトウェア
       sources: サインアップソース
@@ -457,7 +457,6 @@ ja:
       reject_new_follow: 新規フォローを拒否
       reject_new_follow_hint: 今後の新規フォローを拒否します。停止とは無関係です
       reject_reply_exclude_followers: フォロー相手以外からのメンションと引用を拒否
-      reject_reply_hint: 今後のリプライを拒否します。停止とは無関係です
       reject_reply_exclude_followers_hint: 今後のリプライを拒否します。停止とは無関係です
       reject_reports: 通報を拒否
       reject_reports_hint: このドメインからの通報をすべて無視します。停止とは無関係です
@@ -471,7 +470,7 @@ ja:
       add_new: 新規追加
       allow_registrations_with_approval: 承認制での新規登録を可能にする
       attempts_over_week:
-        other: "先週は%{count}回サインアップが試みられました"
+        other: 先週は%{count}回サインアップが試みられました
       created_msg: メールドメインブロックに追加しました
       delete: 消去
       dns:
@@ -485,7 +484,7 @@ ja:
       no_email_domain_block_selected: 何も選択されていないためメールドメインブロックを変更しませんでした
       not_permitted: 権限がありません
       resolved_dns_records_hint_html: ドメイン名はDNSでMXドメインに名前解決され、最終的にメールを受け付ける役割を担います。目に見えるドメイン名が異なっていても、同じMXドメインを使用するメールアドレスからのアカウント登録がブロックされます。<strong>主要なメールプロバイダーをブロックしないように注意して下さい。</strong>
-      resolved_through_html: '%{domain}を通して解決しました'
+      resolved_through_html: "%{domain}を通して解決しました"
       title: メールドメインブロック
     export_domain_allows:
       new:
@@ -496,7 +495,7 @@ ja:
         description_html: ドメインブロックのリストをインポートしようとしています。このリストを自分で作成していない場合は、慎重に確認してください。
         existing_relationships_warning: 既存のフォロー関係
         private_comment_description_html: 'ブロックのインポート元を判別できるようにするため、ブロックは次のプライベートコメントを追加してインポートされます: <q>%{comment}</q>'
-        private_comment_template: '%{source} から %{date} にインポートしました'
+        private_comment_template: "%{source} から %{date} にインポートしました"
         title: ドメインブロックをインポート
       invalid_domain_block: 'エラーが発生したため、ブロックできなかったドメインがあります: %{error}'
       new:
@@ -514,7 +513,7 @@ ja:
       accept: 相手の申請を承認する
       add_new: フレンドサーバーを追加・申請
       delete: 削除
-      description_html: <strong>フレンドサーバー</strong>とは、お互いのローカル公開・ローカル検索許可の投稿をそのまま交換するシステムです。
+      description_html: "<strong>フレンドサーバー</strong>とは、お互いのローカル公開・ローカル検索許可の投稿をそのまま交換するシステムです。"
       disabled: 無効
       domain: ドメイン
       edit:
@@ -529,7 +528,6 @@ ja:
         inbox_url_hint: 空欄にした場合、自動で「https://ドメイン名/inbox」に設定されます。（例：https://example.com/inbox）相手のサーバーがinbox URLを特別に指定している場合、入力してください。
         pseudo_relay: 全ての公開・ローカル公開・非収載かつ検索可能な投稿を送信する
         pseudo_relay_hint: お互いに有効で、かつ相手側で「このサーバーからの投稿を無条件で受け入れる」が有効になっている必要があります
-        unlocked: このサーバーからの申請を自動で承認する
       edit_friend: 編集
       enabled: 有効
       follow: こちらから申請する
@@ -538,17 +536,15 @@ ja:
       reject: 相手からの申請を却下する
       save_and_enable: 保存して有効にする
       setup: フレンドサーバーを追加・申請
-      signatures_not_enabled: セキュアモードまたは連合制限モードが有効の場合、フレンドサーバーの動作を確認していないため正常に動作しない可能性があります
       status: ステータス
       title: フレンドサーバー
-      unfollow: こちらの申請を取り消す
     instances:
       availability:
         description_html:
           other: ドメインへの配信が <strong>%{count}</strong> 日失敗した場合、そのドメイン<em>からの</em>配信を受信しない限り、それ以上の配信を行いません。
-        failure_threshold_reached: '%{date}に失敗のしきい値に達しました。'
+        failure_threshold_reached: "%{date}に失敗のしきい値に達しました。"
         failures_recorded:
-          other: '%{count}日間試行に失敗しました。'
+          other: "%{count}日間試行に失敗しました。"
         no_failures_recorded: 失敗は記録されていません。
         title: 可用性
         warning: このサーバーへの最後の接続試行に失敗しました
@@ -596,11 +592,11 @@ ja:
         unavailable: 配送不可
       delivery_available: 配送可能
       delivery_error_days: 配送エラー発生日
-      delivery_error_hint: '%{count}日間配送ができない場合は、自動的に配送不可としてマークされます。'
-      destroyed_msg: '%{domain}からのデータは、すぐに削除されるように、キューに追加されました。'
+      delivery_error_hint: "%{count}日間配送ができない場合は、自動的に配送不可としてマークされます。"
+      destroyed_msg: "%{domain}からのデータは、すぐに削除されるように、キューに追加されました。"
       empty: ドメインが見つかりませんでした。
       known_accounts:
-        other: "既知のアカウント数 %{count}"
+        other: 既知のアカウント数 %{count}
       moderation:
         all: すべて
         limited: 制限あり
@@ -640,8 +636,24 @@ ja:
         title: 新規IPルール
       no_ip_block_selected: 何も選択されていないためIPルールを変更しませんでした
       title: IPルール
-    media_attachments:
-      title: 投稿された画像
+    ng_rule_histories:
+      back_to_ng_rule: NGルール設定に戻る
+      back_to_ng_rules: 一覧に戻る
+      data:
+        media_count: "%{count} のメディア"
+        poll_count: 項目 %{count} の投票
+      from_local_user: ローカルユーザー
+      hidden: 非公開投稿
+      moderate_account: アカウントをモデレートする
+      reason_actions:
+        reaction_emoji_reaction: 絵文字リアクション
+        reaction_favourite: お気に入りに登録
+        reaction_follow: フォローリクエスト
+        reaction_reblog: ブースト
+        reaction_vote: 投票
+        status_create: 投稿
+        status_edit: 投稿を編集
+      title: NGルール「%{title}」の履歴
     ng_rules:
       account_allow_followed_by_local: ローカルユーザーからフォローされていないアカウントのみチェックする
       account_allow_followed_by_local_hint: 1以上のフォローを持つ全てのローカルユーザーが信頼できる場合にのみこのオプションを使用してください
@@ -665,8 +677,8 @@ ja:
           status: 投稿
         helps:
           generic: 全ての項目が条件にマッチしている場合のみ、制限が有効になります。
-          textarea_html: <strong>複数行入力可能な箇所</strong>では、改行区切りで条件を入力します。複数行のうちどれか1つが含まれている場合、条件にマッチしたと判断されます。行頭を「?」で始めると正規表現を利用できます。
-          threshold_html: <strong>上限の指定</strong>では、「-1」を指定すると上限チェックが無効になります。「0」を指定した場合、その対象が全く無い状態に限りチェックを通過します。例えばメディア数の上限「0」は、「メディア無し」と等価ではありません。
+          textarea_html: "<strong>複数行入力可能な箇所</strong>では、改行区切りで条件を入力します。複数行のうちどれか1つが含まれている場合、条件にマッチしたと判断されます。行頭を「?」で始めると正規表現を利用できます。"
+          threshold_html: "<strong>上限の指定</strong>では、「-1」を指定すると上限チェックが無効になります。「0」を指定した場合、その対象が全く無い状態に限りチェックを通過します。例えばメディア数の上限「0」は、「メディア無し」と等価ではありません。"
         history: このルールが適用された履歴を確認する
         summary:
           account: アカウントの条件を設定します。ここでマッチしたアカウントが投稿・リアクションする場合に、このNGルールのチェックが行われます。アカウント作成時のチェックは行いません。初期状態では全てのアカウントが対象になります。
@@ -684,7 +696,7 @@ ja:
         empty: NGルールが空です
         empty_title: 空のタイトル
         hit_count: ここ一週間で %{count} 件の検出
-        preamble: 「NGワードとスパム」機能においてどうしても緩すぎる条件を指定しなければならず、他の正常な投稿が規制に巻き込まれやすくなる場合があります。NGルールではアカウントや投稿の特徴などを詳細に指定して、巻き込まれる投稿を少しでも減らすことができます。設定は慎重に検討し、正常な投稿の巻き込みが最小限になるよう定期的に履歴を確認してください。
+        preamble: "「NGワードとスパム」機能においてどうしても緩すぎる条件を指定しなければならず、他の正常な投稿が規制に巻き込まれやすくなる場合があります。NGルールではアカウントや投稿の特徴などを詳細に指定して、巻き込まれる投稿を少しでも減らすことができます。設定は慎重に検討し、正常な投稿の巻き込みが最小限になるよう定期的に履歴を確認してください。"
         title: NGルール
       new:
         save: 新規NGルールを保存
@@ -725,24 +737,6 @@ ja:
       status_visibility: 公開範囲
       test_error: 正規表現の文法が誤っています
       title: NGルール
-    ng_rule_histories:
-      back_to_ng_rule: NGルール設定に戻る
-      back_to_ng_rules: 一覧に戻る
-      data:
-        media_count: "%{count} のメディア"
-        poll_count: 項目 %{count} の投票
-      from_local_user: ローカルユーザー
-      hidden: 非公開投稿
-      moderate_account: アカウントをモデレートする
-      reason_actions:
-        reaction_emoji_reaction: 絵文字リアクション
-        reaction_favourite: お気に入りに登録
-        reaction_follow: フォローリクエスト
-        reaction_reblog: ブースト
-        reaction_vote: 投票
-        status_create: 投稿
-        status_edit: 投稿を編集
-      title: NGルール「%{title}」の履歴
     ng_words:
       block_unfollow_account_mention: 自分のサーバーのフォロワーを持たない全てのアカウントからのメンション・引用を全て拒否する
       block_unfollow_account_mention_hint: この設定は削除予定です。設定削除後は、常にチェックをつけていない場合と同じ挙動になります。NGルールで代替してください。
@@ -755,16 +749,16 @@ ja:
       hold_remote_new_accounts: リモートの新規アカウントを保留する
       keywords: 拒否するキーワード
       phrases:
-        regexp_html: <strong>正規</strong> 表現 にチェックの入っている項目は、正規表現を用いての比較となります。
+        regexp_html: "<strong>正規</strong> 表現 にチェックの入っている項目は、正規表現を用いての比較となります。"
         regexp_short: 正規
-        stranger_html: <strong>無関</strong> 係のフォロワーからのメンション にチェックの入っている項目は、フォロー関係にないアカウントからのメンション、返信、引用などのみに適用されます。
+        stranger_html: "<strong>無関</strong> 係のフォロワーからのメンション にチェックの入っている項目は、フォロー関係にないアカウントからのメンション、返信、引用などのみに適用されます。"
         stranger_short: 無関
-      preamble: ドメインブロックでは対処の難しいスパムに関する問題の解決に、この設定が役に立ちます。特定キーワードが含まれているなどの条件を満たした投稿を拒否することができます。問題のない投稿が削除されないよう設定は慎重に検討し、定期的に履歴を確認してください。
       post_hash_tags_max: 投稿に設定可能なハッシュタグの最大数
       post_mentions_max: 投稿に設定可能なメンションの最大数
       post_stranger_mentions_max: 投稿に設定可能なメンションの最大数 (メンション先にフォロワー以外を1人でも含む場合)
-      remote_approval_list: 承認待ちのリモートアカウント一覧
+      preamble: ドメインブロックでは対処の難しいスパムに関する問題の解決に、この設定が役に立ちます。特定キーワードが含まれているなどの条件を満たした投稿を拒否することができます。問題のない投稿が削除されないよう設定は慎重に検討し、定期的に履歴を確認してください。
       remote_approval_hint: 指定されていないドメインで新しく認識されたアカウントはサスペンド状態になります。その一覧を確認し、必要であれば承認を行うことができます。この設定が有効でない場合、全てのリモートアカウントが即座に承認されます。
+      remote_approval_list: 承認待ちのリモートアカウント一覧
       settings: 詳細設定
       stranger_mention_from_local_ng: フォローしていないアカウントへのメンションのNGワードを、ローカルユーザーによる投稿にも適用する
       stranger_mention_from_local_ng_hint: この設定は削除予定です。設定削除後は、常にチェックをつけている場合と同じ挙動になります。この動作を希望しない場合は、NGルールで代替してください。
@@ -785,7 +779,7 @@ ja:
     relays:
       add_new: リレーを追加
       delete: 削除
-      description_html: <strong>連合リレー</strong>とは、登録しているサーバー間の公開投稿を仲介するサーバーです。<strong>中小規模のサーバーが連合のコンテンツを見つけるのを助けます。</strong>これを使用しない場合、ローカルユーザーがリモートユーザーを手動でフォローする必要があります。
+      description_html: "<strong>連合リレー</strong>とは、登録しているサーバー間の公開投稿を仲介するサーバーです。<strong>中小規模のサーバーが連合のコンテンツを見つけるのを助けます。</strong>これを使用しない場合、ローカルユーザーがリモートユーザーを手動でフォローする必要があります。"
       disable: 無効化
       disabled: 無効
       enable: 有効化
@@ -830,9 +824,9 @@ ja:
       category_description_html: 選択した理由は通報されたアカウントへの連絡時に引用されます
       comment:
         none: なし
-      comment_description_html: '%{name}からの詳細情報:'
+      comment_description_html: "%{name}からの詳細情報:"
       confirm: 確認
-      confirm_action: '@%{acct} さんに対するアクション'
+      confirm_action: "@%{acct} さんに対するアクション"
       created_at: 通報日時
       delete_and_resolve: 投稿を削除
       force_cw: 強制的にCWにする
@@ -853,7 +847,7 @@ ja:
       notes_description_html: 他のモデレーターと将来の自分にメモを残してください
       processed_msg: '通報 #%{id} が正常に処理されました'
       quick_actions_description_html: 'クイックアクションを実行するかスクロールして報告された通報を確認してください:'
-      remote_user_placeholder: '%{instance}からのリモートユーザー'
+      remote_user_placeholder: "%{instance}からのリモートユーザー"
       reopen: 未解決に戻す
       report: '通報 #%{id}'
       reported_account: 報告対象アカウント
@@ -878,11 +872,11 @@ ja:
           silence_html: "<strong>@%{acct}</strong>さんのプロフィールとコンテンツの表示範囲をフォロー中の人や意図的にプロフィールにアクセスした人のみに制限することで、アカウントを発見されにくくします"
           suspend_html: "<strong>@%{acct}</strong>さんのアカウントが凍結され、プロフィールとコンテンツへのアクセス、および投稿ができなくなります"
         close_report: '通報 #%{id} を解決済みにします'
-        close_reports_html: <strong>@%{acct}</strong>さんに対する<strong>すべての</strong>通報を解決済みにします
+        close_reports_html: "<strong>@%{acct}</strong>さんに対する<strong>すべての</strong>通報を解決済みにします"
         delete_data_html: 停止が解除されないまま30日経過すると、<strong>@%{acct}</strong>さんのプロフィールとコンテンツは削除されます
         preview_preamble_html: "<strong>@%{acct}</strong>さんに次の内容の警告を通知します:"
         record_strike_html: 今後、<strong>@%{acct}</strong>さんが違反行為をしたときにエスカレーションできるように、このアカウントに対するストライクを記録します
-        send_email_html: <strong>@%{acct}</strong>さんに警告メールを送信します
+        send_email_html: "<strong>@%{acct}</strong>さんに警告メールを送信します"
         warning_placeholder: アクションを行使する追加の理由（オプション）
       target_origin: 報告されたアカウントの起源
       title: 通報
@@ -902,8 +896,8 @@ ja:
         moderation: モデレーション
         special: スペシャル
       delete: 削除
-      description_html: <strong>ユーザー ロール</strong>を使用すると、ユーザーがアクセスできる Mastodon の機能や領域をカスタマイズできます。
-      edit: '『%{name}』のロールを編集'
+      description_html: "<strong>ユーザー ロール</strong>を使用すると、ユーザーがアクセスできる Mastodon の機能や領域をカスタマイズできます。"
+      edit: "『%{name}』のロールを編集"
       everyone: デフォルトの権限
       everyone_full_description_html: これは、割り当てられたロールを持っていないものであっても、 <strong>すべてのユーザー</strong> に影響を与える <strong>基本ロール</strong>です。 他のすべてのロールは、そこから権限を継承します。
       permissions_count:
@@ -967,11 +961,11 @@ ja:
       auto_warning_text_hint: 指定しなかった場合は、各言語のデフォルト警告文が使用されます
       hint: センシティブなキーワードの設定は、当サーバーのローカルユーザーによる公開範囲「公開」「ローカル公開」「ログインユーザーのみ」に対して適用されます。
       phrases:
-        remote_html: <strong>リモ</strong> ート にチェックの入っている項目は、リモートからの投稿にも適用されます。
-        remote_short: リモ
-        regexp_html: <strong>正規</strong> 表現 にチェックの入っている項目は、正規表現を用いての比較となります。
+        regexp_html: "<strong>正規</strong> 表現 にチェックの入っている項目は、正規表現を用いての比較となります。"
         regexp_short: 正規
-        spoiler_html: <strong>警告</strong> 文 にチェックの入っている項目は、コンテンツ警告文にも適用されます。
+        remote_html: "<strong>リモ</strong> ート にチェックの入っている項目は、リモートからの投稿にも適用されます。"
+        remote_short: リモ
+        spoiler_html: "<strong>警告</strong> 文 にチェックの入っている項目は、コンテンツ警告文にも適用されます。"
         spoiler_short: 警告
       title: センシティブ単語と設定
     settings:
@@ -1079,9 +1073,8 @@ ja:
       original_status: オリジナルの投稿
       reblogs: ブースト
       remove: 投稿を削除
-      remove_media: メディアを削除
       remove_history: 編集履歴を削除
-      searchability: 検索許可
+      remove_media: メディアを削除
       status_changed: 投稿を変更しました
       title: 投稿一覧
       trending: トレンド
@@ -1193,7 +1186,7 @@ ja:
         not_listable: おすすめに表示しない
         not_trendable: トレンドに表示しない
         not_usable: 使用を禁止
-        peaked_on_and_decaying: '%{date}以降、しばらく使われていません'
+        peaked_on_and_decaying: "%{date}以降、しばらく使われていません"
         title: トレンドタグ
         trendable: トレンドに表示する
         trending_rank: '人気: %{rank}位'
@@ -1215,7 +1208,7 @@ ja:
     webhooks:
       add_new: エンドポイントを追加
       delete: 削除
-      description_html: <strong>Webhook</strong> により、Mastodon は選択されたイベントの<strong>リアルタイム通知</strong>をアプリケーションにプッシュします。これにより、アプリケーションは<strong>自動的に処理を行うことができます</strong>。
+      description_html: "<strong>Webhook</strong> により、Mastodon は選択されたイベントの<strong>リアルタイム通知</strong>をアプリケーションにプッシュします。これにより、アプリケーションは<strong>自動的に処理を行うことができます</strong>。"
       disable: 無効化
       disabled: 無効
       edit: エンドポイントを編集
@@ -1252,10 +1245,10 @@ ja:
       subject: 緊急のMastodonアップデートがあります［%{instance}］
     new_pending_account:
       body: 新しいアカウントの詳細は以下の通りです。この申請を承認または却下することができます。
-      subject: '%{instance}で新しいアカウント (%{username}) が承認待ちです'
+      subject: "%{instance}で新しいアカウント (%{username}) が承認待ちです"
     new_pending_friend_server:
       body: 新しいフレンドサーバー %{domain} の申請が届いています。この申請を承認または却下することができます。
-      subject: '%{instance}で新しいフレンドサーバー (%{domain}) が承認待ちです'
+      subject: "%{instance}で新しいフレンドサーバー (%{domain}) が承認待ちです"
     new_report:
       body: "%{reporter}さんが%{target}さんを通報しました"
       body_remote: "%{domain}の誰かが%{target}さんを通報しました"
@@ -1264,14 +1257,14 @@ ja:
       body: Mastodonの新しいアップデートがリリースされました。
       subject: Mastodonのアップデートがあります［%{instance}］
     new_trends:
-      body: '以下の項目は、公開する前に審査が必要です。'
+      body: 以下の項目は、公開する前に審査が必要です。
       new_trending_links:
         title: トレンドリンク
       new_trending_statuses:
         title: トレンド投稿
       new_trending_tags:
         title: トレンドハッシュタグ
-      subject: '%{instance}で新しいトレンドが審査待ちです'
+      subject: "%{instance}で新しいトレンドが審査待ちです"
   aliases:
     add_new: エイリアスを作成
     created_msg: エイリアスを作成しました。これで以前のアカウントから引っ越しを開始できます。
@@ -1285,6 +1278,10 @@ ja:
       domain: ドメイン
       keyword: キーワード
       tag: ハッシュタグ
+    edit:
+      available: 有効
+      description: アンテナは、サーバーが認識した全ての公開・ローカル公開投稿のうち、購読を拒否していないすべてのアカウントからの投稿が対象です。検出された投稿は、指定したリストに追加されます。
+      title: アンテナを編集
     errors:
       empty_contexts: 絞り込み条件が1つも指定されていないため無効です（除外条件はカウントされません）
       invalid_list_owner: これはあなたのリストではありません
@@ -1297,10 +1294,6 @@ ja:
       over_ltl_limit: 所持できるLTLモード付きアンテナ数 (ホーム/リストそれぞれにつき%{limit}) を超えています
       over_stl_limit: 所持できるSTLモード付きアンテナ数 (ホーム/リストそれぞれにつき%{limit}) を超えています
       too_short_keyword: キーワードが短すぎます
-    edit:
-      available: 有効
-      description: アンテナは、サーバーが認識した全ての公開・ローカル公開投稿のうち、購読を拒否していないすべてのアカウントからの投稿が対象です。検出された投稿は、指定したリストに追加されます。
-      title: アンテナを編集
     index:
       accounts:
         other: "%{count}件のアカウント"
@@ -1320,7 +1313,7 @@ ja:
       title: アンテナ
   appearance:
     advanced_web_interface: 上級者向けUI
-    advanced_web_interface_hint: 'ディスプレイを幅いっぱいまで活用したい場合、上級者向け UI をおすすめします。ホーム、通知、連合タイムライン、更にはリストやハッシュタグなど、様々な異なるカラムから望む限りの情報を一度に受け取れるような設定が可能になります。'
+    advanced_web_interface_hint: ディスプレイを幅いっぱいまで活用したい場合、上級者向け UI をおすすめします。ホーム、通知、連合タイムライン、更にはリストやハッシュタグなど、様々な異なるカラムから望む限りの情報を一度に受け取れるような設定が可能になります。
     animations_and_accessibility: アニメーションとアクセシビリティー
     confirmation_dialogs: 確認ダイアログ
     custom_emoji_and_emoji_reactions: カスタム絵文字と絵文字リアクション
@@ -1357,7 +1350,6 @@ ja:
       help_html: CAPTCHAの解決に問題がある場合は、 %{email} までお問い合わせください。お手伝いいたします。
       hint_html: もう一つだけ！あなたが人間であることを確認する必要があります(スパムを防ぐためです！)。 以下のCAPTCHAを解き、「続ける」をクリックします。
       title: セキュリティチェック
-    cloudflare_with_registering: 登録時にCloudflareの画面が表示されます。登録できないときは管理者へご連絡ください
     confirmations:
       awaiting_review: メールアドレスが確認できました。%{domain} のスタッフが登録審査を行います。承認されたらメールでお知らせします！
       awaiting_review_title: 登録の審査待ちです
@@ -1419,10 +1411,10 @@ ja:
       new_confirmation_instructions_sent: 確認用のリンクを記載した新しいメールを送信しました
       title: 確認メールを送信しました
     sign_in:
-      preamble_html: <strong>%{domain}</strong> の資格情報でサインインします。 あなたのアカウントが別のサーバーでホストされている場合は、ここでログインすることはできません。
-      title: '%{domain}にログイン'
+      preamble_html: "<strong>%{domain}</strong> の資格情報でサインインします。 あなたのアカウントが別のサーバーでホストされている場合は、ここでログインすることはできません。"
+      title: "%{domain}にログイン"
     sign_up:
-      manual_review: '%{domain} への登録にはモデレーターによる承認が必要です。審査の参考になるように、簡単な自己紹介や %{domain} に登録したい理由などを記入してください。'
+      manual_review: "%{domain} への登録にはモデレーターによる承認が必要です。審査の参考になるように、簡単な自己紹介や %{domain} に登録したい理由などを記入してください。"
       preamble: この Mastodon サーバーのアカウントがあれば、ネットワーク上の他の人のアカウントがどこでホストされているかに関係なく、その人をフォローすることができます。
       title: さあ %{domain} でセットアップしましょう.
     status:
@@ -1437,7 +1429,7 @@ ja:
     use_security_key: セキュリティキーを使用
   challenge:
     confirm: 続ける
-    hint_html: "以後1時間はパスワードの再入力を求めません"
+    hint_html: 以後1時間はパスワードの再入力を求めません
     invalid_password: パスワードが間違っています
     prompt: 続行するにはパスワードを入力してください
   crypto:
@@ -1533,12 +1525,12 @@ ja:
     noscript_html: Mastodonのウェブアプリケーションを利用する場合はJavaScriptを有効にしてください。またはあなたのプラットフォーム向けの<a href="%{apps_path}">Mastodonネイティブアプリ</a>を探すことができます。
   existing_username_validator:
     not_found: そのようなユーザー名はローカルに見つかりませんでした
-    not_found_multiple: '%{usernames}さんは見つかりませんでした'
+    not_found_multiple: "%{usernames}さんは見つかりませんでした"
   exports:
     archive_takeout:
       date: 日時
       download: ダウンロード
-      hint_html: <strong>投稿本文とメディア</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。7日毎にアーカイブをリクエストできます。
+      hint_html: "<strong>投稿本文とメディア</strong>のアーカイブをリクエストできます。 データはActivityPub形式で、対応しているソフトウェアで読み込むことができます。7日毎にアーカイブをリクエストできます。"
       in_progress: 準備中...
       request: アーカイブをリクエスト
       size: 容量
@@ -1572,10 +1564,10 @@ ja:
       deprecated_api_multiple_keywords: これらのパラメータは複数のフィルタキーワードに適用されるため、このアプリケーションから変更できません。 最新のアプリケーションまたはWebインターフェースを使用してください。
       invalid_context: 対象がないか無効です
     index:
-      contexts: '%{contexts}のフィルター'
+      contexts: "%{contexts}のフィルター"
       delete: 削除
       empty: フィルターはありません。
-      expires_in: '%{distance}で期限切れ'
+      expires_in: "%{distance}で期限切れ"
       expires_on: 有効期限 %{date}
       keywords:
         other: "%{count}件のキーワード"
@@ -1676,13 +1668,13 @@ ja:
     delete: 無効化
     expired: 期限切れ
     expires_in:
+      '1209600': 2週間
       '1800': 30分
       '21600': 6時間
+      '2629746': 1ヶ月
       '3600': 1時間
       '43200': 12時間
       '604800': 1週間
-      '1209600': 2週間
-      '2629746': 1ヶ月
       '7889238': 3ヶ月
       '86400': 1日
     expires_in_prompt: 無期限
@@ -1708,8 +1700,8 @@ ja:
       webauthn: セキュリティキー
     description_html: 認識できないアクティビティが表示された場合は、パスワードの変更と二要素認証の有効化を検討してください。
     empty: 利用可能な認証履歴がありません
-    failed_sign_in_html: '%{ip} (%{browser}) から%{method}を利用したサインインに失敗しました。'
-    successful_sign_in_html: '%{ip} (%{browser}) から%{method}を利用したサインインに成功しました'
+    failed_sign_in_html: "%{ip} (%{browser}) から%{method}を利用したサインインに失敗しました。"
+    successful_sign_in_html: "%{ip} (%{browser}) から%{method}を利用したサインインに成功しました"
     title: 認証履歴
   mail_subscriptions:
     unsubscribe:
@@ -1767,7 +1759,7 @@ ja:
   move_handler:
     carry_blocks_over_text: このユーザーは、あなたがブロックしていた%{acct}から引っ越しました。
     carry_mutes_over_text: このユーザーは、あなたがミュートしていた%{acct}から引っ越しました。
-    copy_account_note_text: 'このユーザーは%{acct}から引っ越しました。これは以前のメモです。'
+    copy_account_note_text: このユーザーは%{acct}から引っ越しました。これは以前のメモです。
   navigation:
     toggle_menu: メニューを表示 / 非表示
   notification_mailer:
@@ -1776,14 +1768,14 @@ ja:
         subject: "%{name}さんがレポートを送信しました"
       sign_up:
         subject: "%{name}さんがサインアップしました"
-    favourite:
-      body: '%{name}さんにお気に入り登録された、あなたの投稿があります:'
-      subject: "%{name}さんにお気に入りに登録されました"
-      title: 新たなお気に入り登録
     emoji_reaction:
       body: "%{name}さんに絵文字をつけられた、あなたの投稿があります:"
       subject: "%{name}さんに絵文字をつけられました"
       title: 新たな絵文字リアクション
+    favourite:
+      body: "%{name}さんにお気に入り登録された、あなたの投稿があります:"
+      subject: "%{name}さんにお気に入りに登録されました"
+      title: 新たなお気に入り登録
     follow:
       body: "%{name}さんにフォローされています！"
       subject: "%{name}さんにフォローされています"
@@ -1791,17 +1783,17 @@ ja:
     follow_request:
       action: フォローリクエストの管理
       body: "%{name}さんがあなたにフォローをリクエストしました"
-      subject: '%{name}さんからのフォローリクエスト'
+      subject: "%{name}さんからのフォローリクエスト"
       title: 新たなフォローリクエスト
     mention:
       action: 返信
-      body: '%{name}さんから返信がありました:'
-      subject: '%{name}さんに返信されました'
+      body: "%{name}さんから返信がありました:"
+      subject: "%{name}さんに返信されました"
       title: 新たな返信
     poll:
-      subject: '%{name} さんの投票が終了しました'
+      subject: "%{name} さんの投票が終了しました"
     reblog:
-      body: '%{name}さんにブーストされた、あなたの投稿があります:'
+      body: "%{name}さんにブーストされた、あなたの投稿があります:"
       subject: "%{name}さんにブーストされました"
       title: 新たなブースト
     status:
@@ -1824,7 +1816,7 @@ ja:
           trillion: T
   otp_authentication:
     code_hint: 続行するには認証アプリで表示されたコードを入力してください
-    description_html: <strong>二要素認証</strong>を有効にすると、ログイン時に認証アプリからコードを入力する必要があります。
+    description_html: "<strong>二要素認証</strong>を有効にすると、ログイン時に認証アプリからコードを入力する必要があります。"
     enable: 有効化
     instructions_html: "<strong>Google Authenticatorか、もしくはほかのTOTPアプリでこのQRコードをスキャンしてください。</strong>これ以降、ログインするときはそのアプリで生成されるコードが必要になります。"
     manual_instructions: 'QRコードがスキャンできず、手動での登録を希望の場合はこのシークレットコードを利用してください。:'
@@ -1867,13 +1859,13 @@ ja:
     reach: つながりやすさ
     reach_hint_html: ほかのユーザーからの見つかりやすさと、フォローされる方法についての設定項目です。「エクスプローラー」やおすすめのユーザーに掲載するか、また新しいフォロワーをどのように受け入れるかをここで変更できます。
     search: 被検索性
-    search_kmyblue_hint_html: kmyblueの投稿検索設定には「Indexable」と「検索許可」の2種類があります。Indexableはアカウントのすべての公開投稿を他の標準のMastodonで検索できるようにするもので、設定変更は過去投稿に遡及します。検索許可は投稿ごとに指定可能なもので、kmyblue・Fedibirdではこの設定がIndexableより優先されます。過去の投稿を変更することはできません。
     search_hint_html: 検索での見つかりやすさに関する設定項目です。公開投稿を検索できるようにするかや、Mastodonの外からweb検索でたどり着けるようにするかをここで変更できます。ただし検索エンジンのなかには、この設定に従わずに公開されている情報を利用するものがあるかもしれません。
+    search_kmyblue_hint_html: kmyblueの投稿検索設定には「Indexable」と「検索許可」の2種類があります。Indexableはアカウントのすべての公開投稿を他の標準のMastodonで検索できるようにするもので、設定変更は過去投稿に遡及します。検索許可は投稿ごとに指定可能なもので、kmyblue・Fedibirdではこの設定がIndexableより優先されます。過去の投稿を変更することはできません。
     title: プライバシーとつながりやすさ
   privacy_extra:
     hint_html: これらはkmyblue独自のプライバシー設定項目です。この機能を利用することで、あなたは追加の恩恵を受けることができます。なおこれらの設定の一部は他のサーバーにも送信されますが、kmyblue以外で対応するソフトウェアは現在確認できていません。他のサーバーではこれらの設定は無視されること、ご了承ください。
-    post_processing_hint_html: 投稿された情報に対して、システムが追加で行うことができる操作を制御します。これらには、第三者のサイトへあなたの投稿に関する情報の送信を伴う設定も含まれます。
     post_processing: 投稿の処理
+    post_processing_hint_html: 投稿された情報に対して、システムが追加で行うことができる操作を制御します。これらには、第三者のサイトへあなたの投稿に関する情報の送信を伴う設定も含まれます。
     stop_deliver: 配送制限
     stop_deliver_hint_html: Mastodonの投稿を、他のソフトウェアでは自由に検索することができます。Mastodon内で行ったプライバシーの設定は無視され、あなたの投稿が意図しない人に見つかるおそれがあります。ここでは、他のサーバーやソフトウェアであなたの投稿が見つからないようにする設定が可能です。ただしリスクは伴います。
     title: プライバシー追加設定
@@ -1920,8 +1912,8 @@ ja:
   rss:
     content_warning: '閲覧注意:'
     descriptions:
-      account: '@%{acct}からの公開投稿'
-      tag: '#%{hashtag}が付けられた公開投稿'
+      account: "@%{acct}からの公開投稿"
+      tag: "#%{hashtag}が付けられた公開投稿"
   scheduled_statuses:
     over_daily_limit: その日予約できる投稿数 %{limit}を超えています
     over_total_limit: 予約できる投稿数 %{limit}を超えています
@@ -2019,13 +2011,13 @@ ja:
         other: "%{count}枚の画像"
       video:
         other: "%{count}本の動画"
-    boosted_from_html: '%{acct_link}からブースト'
+    boosted_from_html: "%{acct_link}からブースト"
     contains_ng_words: 投稿できない単語が含まれています
     content_warning: '閲覧注意: %{warning}'
     default_language: UIの表示言語
     disallowed_hashtags:
       other: '許可されていないハッシュタグが含まれています: %{tags}'
-    edited_at_html: '%{date} 編集済み'
+    edited_at_html: "%{date} 編集済み"
     errors:
       in_reply_not_found: あなたが返信しようとしている投稿は存在しないようです。
     open_in_web: Webで開く
@@ -2056,7 +2048,7 @@ ja:
       public_search_long: 検索が許可された全ての投稿が検索できます
       public_unlisted: ローカルとフォロワー
       public_unlisted_long: ローカル・フォロワー・反応者のみが検索できます
-      unset: (未対応サーバー)
+      unset: "(未対応サーバー)"
     show_more: もっと見る
     show_thread: スレッドを表示
     title: '%{name}: "%{quote}"'
@@ -2206,11 +2198,11 @@ ja:
       reason: '理由:'
       statuses: '投稿:'
       subject:
-        delete_statuses: '%{acct}さんの投稿が削除されました'
+        delete_statuses: "%{acct}さんの投稿が削除されました"
         disable: あなたのアカウント %{acct}は凍結されました
         force_cw: あなたの%{acct}の投稿はCWとして警告文が追加されました
         mark_statuses_as_sensitive: あなたの%{acct}の投稿は閲覧注意としてマークされました
-        none: '%{acct}に対する警告'
+        none: "%{acct}に対する警告"
         sensitive: あなたの%{acct}の投稿はこれから閲覧注意としてマークされます
         silence: あなたのアカウント %{acct}はサイレンスにされました
         suspend: あなたのアカウント %{acct}は停止されました
@@ -2285,7 +2277,7 @@ ja:
       success: セキュリティキーを追加しました。
     delete: 削除
     delete_confirmation: 本当にこのセキュリティキーを削除しますか？
-    description_html: <strong>セキュリティキーによる認証</strong>を有効にすると、ログイン時にセキュリティキーを要求するようにできます。
+    description_html: "<strong>セキュリティキーによる認証</strong>を有効にすると、ログイン時にセキュリティキーを要求するようにできます。"
     destroy:
       error: セキュリティキーの削除中に問題が発生しました。もう一度お試しください。
       success: セキュリティキーを削除しました。
@@ -2294,4 +2286,4 @@ ja:
     not_enabled: まだセキュリティキーを有効にしていません
     not_supported: このブラウザはセキュリティキーに対応していないようです
     otp_required: セキュリティキーを使用するには、まず二要素認証を有効にしてください。
-    registered_on: '%{date}に登録'
+    registered_on: "%{date}に登録"

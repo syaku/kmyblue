@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_09_220635) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_10_192043) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1718,7 +1718,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_09_220635) do
   add_foreign_key "ng_rule_histories", "ng_rules"
   add_foreign_key "notification_permissions", "accounts"
   add_foreign_key "notification_permissions", "accounts", column: "from_account_id"
-  add_foreign_key "notification_policies", "accounts"
+  add_foreign_key "notification_policies", "accounts", on_delete: :cascade
   add_foreign_key "notification_requests", "accounts", column: "from_account_id", on_delete: :cascade
   add_foreign_key "notification_requests", "accounts", on_delete: :cascade
   add_foreign_key "notification_requests", "statuses", column: "last_status_id", on_delete: :nullify
