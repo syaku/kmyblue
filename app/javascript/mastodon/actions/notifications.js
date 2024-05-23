@@ -233,7 +233,7 @@ export function expandNotifications({ maxId, forceLoad } = {}, done = noOp) {
 
     dispatch(expandNotificationsRequest(isLoadingMore));
 
-    api(getState).get('/api/v1/notifications', { params, signal: expandNotificationsController.signal }).then(response => {
+    api().get('/api/v1/notifications', { params, signal: expandNotificationsController.signal }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data.map(item => item.account)));
@@ -279,12 +279,12 @@ export function expandNotificationsFail(error, isLoadingMore) {
 }
 
 export function clearNotifications() {
-  return (dispatch, getState) => {
+  return (dispatch) => {
     dispatch({
       type: NOTIFICATIONS_CLEAR,
     });
 
-    api(getState).post('/api/v1/notifications/clear');
+    api().post('/api/v1/notifications/clear');
   };
 }
 
@@ -363,10 +363,10 @@ export function setBrowserPermission (value) {
   };
 }
 
-export const fetchNotificationPolicy = () => (dispatch, getState) => {
+export const fetchNotificationPolicy = () => (dispatch) => {
   dispatch(fetchNotificationPolicyRequest());
 
-  api(getState).get('/api/v1/notifications/policy').then(({ data }) => {
+  api().get('/api/v1/notifications/policy').then(({ data }) => {
     dispatch(fetchNotificationPolicySuccess(data));
   }).catch(err => {
     dispatch(fetchNotificationPolicyFail(err));
@@ -387,10 +387,10 @@ export const fetchNotificationPolicyFail = error => ({
   error,
 });
 
-export const updateNotificationsPolicy = params => (dispatch, getState) => {
+export const updateNotificationsPolicy = params => (dispatch) => {
   dispatch(fetchNotificationPolicyRequest());
 
-  api(getState).put('/api/v1/notifications/policy', params).then(({ data }) => {
+  api().put('/api/v1/notifications/policy', params).then(({ data }) => {
     dispatch(fetchNotificationPolicySuccess(data));
   }).catch(err => {
     dispatch(fetchNotificationPolicyFail(err));
@@ -410,7 +410,7 @@ export const fetchNotificationRequests = () => (dispatch, getState) => {
 
   dispatch(fetchNotificationRequestsRequest());
 
-  api(getState).get('/api/v1/notifications/requests', { params }).then(response => {
+  api().get('/api/v1/notifications/requests', { params }).then(response => {
     const next = getLinks(response).refs.find(link => link.rel === 'next');
     dispatch(importFetchedAccounts(response.data.map(x => x.account)));
     dispatch(fetchNotificationRequestsSuccess(response.data, next ? next.uri : null));
@@ -443,7 +443,7 @@ export const expandNotificationRequests = () => (dispatch, getState) => {
 
   dispatch(expandNotificationRequestsRequest());
 
-  api(getState).get(url).then(response => {
+  api().get(url).then(response => {
     const next = getLinks(response).refs.find(link => link.rel === 'next');
     dispatch(importFetchedAccounts(response.data.map(x => x.account)));
     dispatch(expandNotificationRequestsSuccess(response.data, next?.uri));
@@ -476,7 +476,7 @@ export const fetchNotificationRequest = id => (dispatch, getState) => {
 
   dispatch(fetchNotificationRequestRequest(id));
 
-  api(getState).get(`/api/v1/notifications/requests/${id}`).then(({ data }) => {
+  api().get(`/api/v1/notifications/requests/${id}`).then(({ data }) => {
     dispatch(fetchNotificationRequestSuccess(data));
   }).catch(err => {
     dispatch(fetchNotificationRequestFail(id, err));
@@ -499,10 +499,10 @@ export const fetchNotificationRequestFail = (id, error) => ({
   error,
 });
 
-export const acceptNotificationRequest = id => (dispatch, getState) => {
+export const acceptNotificationRequest = id => (dispatch) => {
   dispatch(acceptNotificationRequestRequest(id));
 
-  api(getState).post(`/api/v1/notifications/requests/${id}/accept`).then(() => {
+  api().post(`/api/v1/notifications/requests/${id}/accept`).then(() => {
     dispatch(acceptNotificationRequestSuccess(id));
   }).catch(err => {
     dispatch(acceptNotificationRequestFail(id, err));
@@ -525,10 +525,10 @@ export const acceptNotificationRequestFail = (id, error) => ({
   error,
 });
 
-export const dismissNotificationRequest = id => (dispatch, getState) => {
+export const dismissNotificationRequest = id => (dispatch) => {
   dispatch(dismissNotificationRequestRequest(id));
 
-  api(getState).post(`/api/v1/notifications/requests/${id}/dismiss`).then(() =>{
+  api().post(`/api/v1/notifications/requests/${id}/dismiss`).then(() =>{
     dispatch(dismissNotificationRequestSuccess(id));
   }).catch(err => {
     dispatch(dismissNotificationRequestFail(id, err));
@@ -567,7 +567,7 @@ export const fetchNotificationsForRequest = accountId => (dispatch, getState) =>
 
   dispatch(fetchNotificationsForRequestRequest());
 
-  api(getState).get('/api/v1/notifications', { params }).then(response => {
+  api().get('/api/v1/notifications', { params }).then(response => {
     const next = getLinks(response).refs.find(link => link.rel === 'next');
     dispatch(importFetchedAccounts(response.data.map(item => item.account)));
     dispatch(importFetchedStatuses(response.data.map(item => item.status).filter(status => !!status)));
@@ -603,7 +603,7 @@ export const expandNotificationsForRequest = () => (dispatch, getState) => {
 
   dispatch(expandNotificationsForRequestRequest());
 
-  api(getState).get(url).then(response => {
+  api().get(url).then(response => {
     const next = getLinks(response).refs.find(link => link.rel === 'next');
     dispatch(importFetchedAccounts(response.data.map(item => item.account)));
     dispatch(importFetchedStatuses(response.data.map(item => item.status).filter(status => !!status)));

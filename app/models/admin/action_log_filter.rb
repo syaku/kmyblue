@@ -61,6 +61,7 @@ class Admin::ActionLogFilter
     unsuspend_account: { target_type: 'Account', action: 'unsuspend' }.freeze,
     update_announcement: { target_type: 'Announcement', action: 'update' }.freeze,
     update_custom_emoji: { target_type: 'CustomEmoji', action: 'update' }.freeze,
+    update_report: { target_type: 'Report', action: 'update' }.freeze,
     update_status: { target_type: 'Status', action: 'update' }.freeze,
     force_cw_status: { target_type: 'Status', action: 'force_cw' }.freeze,
     force_sensitive_status: { target_type: 'Status', action: 'force_sensitive' }.freeze,
