@@ -26,6 +26,7 @@ import { fetchFollowRequests } from 'mastodon/actions/accounts';
 import Column from 'mastodon/components/column';
 import ColumnHeader from 'mastodon/components/column_header';
 import LinkFooter from 'mastodon/features/ui/components/link_footer';
+import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 
 import { dtlTag, enableDtlMenu, me, showTrends } from '../../initial_state';
 import { NavigationBar } from '../compose/components/navigation_bar';
@@ -80,12 +81,8 @@ const badgeDisplay = (number, limit) => {
 };
 
 class GettingStarted extends ImmutablePureComponent {
-
-  static contextTypes = {
-    identity: PropTypes.object,
-  };
-
   static propTypes = {
+    identity: identityContextPropShape,
     intl: PropTypes.object.isRequired,
     myAccount: ImmutablePropTypes.record,
     multiColumn: PropTypes.bool,
@@ -96,7 +93,7 @@ class GettingStarted extends ImmutablePureComponent {
 
   componentDidMount () {
     const { fetchFollowRequests } = this.props;
-    const { signedIn } = this.context.identity;
+    const { signedIn } = this.props.identity;
 
     if (!signedIn) {
       return;
@@ -107,7 +104,7 @@ class GettingStarted extends ImmutablePureComponent {
 
   render () {
     const { intl, myAccount, multiColumn, unreadFollowRequests } = this.props;
-    const { signedIn } = this.context.identity;
+    const { signedIn } = this.props.identity;
 
     const navItems = [];
 
@@ -183,4 +180,4 @@ class GettingStarted extends ImmutablePureComponent {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(GettingStarted));
+export default withIdentity(connect(mapStateToProps, mapDispatchToProps)(injectIntl(GettingStarted)));

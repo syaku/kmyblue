@@ -6,7 +6,9 @@ en:
         discoverable: Your public posts and profile may be featured or recommended in various areas of Mastodon and your profile may be suggested to other users.
         display_name: Your full name or your fun name.
         fields: Your homepage, pronouns, age, anything you want.
+        hide_collections: People will not be able to browse through your follows and followers. People that you follow will see that you follow them regardless.
         indexable: Your public posts may appear in search results on Mastodon. People who have interacted with your posts may be able to search them regardless.
+        locked: People will request to follow you and you will be able to either accept or reject new followers.
         note: 'You can @mention other people or #hashtags.'
         show_collections: People will be able to browse through your follows and followers. People that you follow will see that you follow them regardless.
         unlocked: People will be able to follow you without requesting approval. Uncheck if you want to review follow requests and chose whether to accept or reject new followers.
@@ -60,21 +62,26 @@ en:
         setting_allow_quote: Subdued quotes are allowed regardless of this setting; you can quote freely from any source except kmyblue!
         setting_always_send_emails: Normally e-mail notifications won't be sent when you are actively using Mastodon
         setting_bookmark_category_needed: When removing from all category, unbookmarked automatically
-        setting_default_searchability:  On kmyblue and Fedibird, the search is based on the search permission setting; on Misskey, all public, local public, and non-public posts are searched regardless of this setting; on Mastodon and Firefish, instead of search permission, the "Make public posts freely searchable on other servers" setting in the profile settings is applied. In Mastodon and Firefish, the "Make public posts freely searchable on other servers" setting in the profile settings is applied instead of the search permission.
+        setting_default_searchability: On kmyblue and Fedibird, the search is based on the search permission setting; on Misskey, all public, local public, and non-public posts are searched regardless of this setting; on Mastodon and Firefish, instead of search permission, the "Make public posts freely searchable on other servers" setting in the profile settings is applied. In Mastodon and Firefish, the "Make public posts freely searchable on other servers" setting in the profile settings is applied instead of the search permission.
         setting_default_sensitive: Sensitive media is hidden by default and can be revealed with a click
+        setting_disallow_unlisted_public_searchability: この設定を有効にすると、非収載投稿と検索範囲「誰でも」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
         setting_display_media_default: Hide media marked as sensitive
         setting_display_media_expand: Misskey and others can submit more than 4. The additions will be displayed up to 16. kmyblue will not allow uploading from kmyblue.
         setting_display_media_hide_all: Always hide media
         setting_display_media_show_all: Always show media
+        setting_dtl_force_searchability: 'With using #%{tag} tag, your post settings will be changed forcibly'
         setting_dtl_force_subscribable: Your post can be detected local user's antenna to subscribe deep timeline
-        setting_dtl_force_searchability: "With using #%{tag} tag, your post settings will be changed forcibly"
-        setting_dtl_force_visibility: "With using #%{tag} tag, your post settings will be changed forcibly"
+        setting_dtl_force_visibility: 'With using #%{tag} tag, your post settings will be changed forcibly'
         setting_emoji_reaction_policy: Even with this setting, users on other servers are free to put their emoji reaction on the post and share it within the same server. If you simply want to remove the emoji reaction from your own screen, you can disable it from the appearance settings
+        setting_emoji_reaction_streaming_notify_impl2: 当該サーバーの独自機能に対応したアプリを利用時に、絵文字リアクション機能を利用できます。動作確認していないため（そもそもそのようなアプリ自体を確認できていないため）正しく動かない場合があります
         setting_enable_emoji_reaction: If turn off, other users still can react your posts
         setting_enabled_visibilities: If turn off, you cannot select and post the privacy.
+        setting_hide_network: フォローとフォロワーの情報がプロフィールページで見られないようにします
+        setting_public_post_to_unlisted: 未対応のサードパーティアプリからもローカル公開で投稿できますが、公開投稿はWeb以外できなくなります
         setting_reject_send_limited_to_suspects: This applies to "Mutual Only" posts. Circle posts will be delivered without exception. Some Misskey servers have independently supported limited posting, but this is a setting for those who are concerned about it, as mutual-only posting exposes some of the users you are mutual with to Misskey users!
         setting_reject_unlisted_subscription: Misskey and its forks can **subscribe and search** for "non-following" posts from accounts they do not follow. This differs from kmyblue's behavior. It delivers posts in the specified public range to such servers as "followers only". Please understand, however, that due to its structure, it is difficult to handle perfectly and will occasionally be delivered as non-subscribed.
         setting_reverse_search_quote: Double-quotes will result in a search with a wider range of notation, which is the opposite of Mastodon's default behavior.
+        setting_show_application: 投稿するのに使用したアプリが投稿の詳細ビューに表示されるようになります
         setting_stop_emoji_reaction_streaming: Helps to save communication capacity.
         setting_use_blurhash: Gradients are based on the colors of the hidden visuals but obfuscate any details
         setting_use_pending_items: Hide timeline updates behind a click instead of automatically scrolling the feed
@@ -112,6 +119,10 @@ en:
         peers_api_enabled: A list of domain names this server has encountered in the fediverse. No data is included here about whether you federate with a given server, just that your server knows about it. This is used by services that collect statistics on federation in a general sense.
         profile_directory: The profile directory lists all users who have opted-in to be discoverable.
         receive_other_servers_emoji_reaction: It can cause load. It is recommended to enable it only when there are few people.
+        registrations_end_hour: 新規登録が承認なしで可能な時間帯の開始時間を指定します。これより前の時間に登録することはできません。終了時間より後にすることはできません。この時間帯から外れた新規登録には、別途承認が必要となります。
+        registrations_limit: 現在のユーザー数がこれを超過すると、管理者がこの数値を増やさない限り新規登録できません。0を指定すると、この制限を無効化します。
+        registrations_limit_per_day: 本日登録されたユーザー数がこれを超過すると、UTC時刻で翌日0時にならない限り新規登録できません。0を指定すると、この制限を無効化します。
+        registrations_start_hour: 新規登録が承認なしで可能な時間帯の終了時間を指定します。これより後の時間に登録することはできません。開始時間より前にすることはできません。この時間帯から外れた新規登録には、別途承認が必要となります。
         require_invite_text: When sign-ups require manual approval, make the “Why do you want to join?” text input mandatory rather than optional
         site_contact_email: How people can reach you for legal or support inquiries.
         site_contact_username: How people can reach you on Mastodon.
@@ -170,7 +181,6 @@ en:
         events: Select events to send
         template: Compose your own JSON payload using variable interpolation. Leave blank for default JSON.
         url: Where events will be sent to
-    kmyblue: kmyblue
     labels:
       account:
         discoverable: Feature profile and posts in discovery algorithms
@@ -266,13 +276,10 @@ en:
         setting_display_media_expand: Show more medias
         setting_display_media_hide_all: Hide all
         setting_display_media_show_all: Show all
-        setting_dtl_force_subscribable: Ignore your subscribability setting when using the DTL tag
         setting_dtl_force_searchability: Post searchability
+        setting_dtl_force_subscribable: Ignore your subscribability setting when using the DTL tag
         setting_dtl_force_visibility: Post visibility
         setting_dtl_menu: Show DTL menu on web
-        setting_emoji_reaction_streaming_notify_impl2: Enable emoji reaction notification compat with Nyastodon, Catstodon, glitch-soc
-        setting_enable_emoji_reaction: Use emoji reaction function
-        setting_enabled_visibilities: Enabled visibilities
         setting_emoji_reaction_policy: Emoji reaction receive/display policy
         setting_emoji_reaction_policy_items:
           allow: Allow all
@@ -281,6 +288,9 @@ en:
           following_only: Followings only
           mutuals_only: Mutuals only
           outside_only: Followings or followers only
+        setting_emoji_reaction_streaming_notify_impl2: Enable emoji reaction notification compat with Nyastodon, Catstodon, glitch-soc
+        setting_enable_emoji_reaction: Use emoji reaction function
+        setting_enabled_visibilities: Enabled visibilities
         setting_expand_spoilers: Always expand posts marked with content warnings
         setting_hide_emoji_reaction_unavailable_server: Hide emoji reaction button from unavailable server
         setting_hide_network: Hide your social graph
@@ -370,14 +380,14 @@ en:
         profile_directory: Enable profile directory
         receive_other_servers_emoji_reaction: Receive emoji reaction between other server users
         registration_button_message: Register button message
-        registrations_limit: User registration limit
-        registrations_limit_per_day: User registration limit per day
-        registrations_mode: Who can sign-up
         registrations_end_hour: Registration-without-approval end hour (UTC 0-24)
-        registrations_start_hour: Registration-without-approval start hour (UTC 0-24)
+        registrations_limit: User registration limit (Current %{count})
+        registrations_limit_per_day: User registration limit per day (Current %{count})
+        registrations_mode: Who can sign-up
         registrations_secondary_end_hour: Secondary registration end hour (UTC 0-24)
         registrations_secondary_end_hour_hint: If input 0, secondary hour is disabled.
         registrations_secondary_start_hour: Secondary registration start hour (UTC 0-24)
+        registrations_start_hour: Registration-without-approval start hour (UTC 0-24)
         require_invite_text: Require a reason to join
         show_domain_blocks: Show domain blocks
         show_domain_blocks_rationale: Show why domains were blocked
@@ -437,6 +447,10 @@ en:
       settings:
         indexable: Include profile page in search engines
         show_application: Display from which app you sent a post
+      subscription_policy:
+        allow: 全員に許可
+        block: 全員拒否
+        followers_only: フォロワーにのみ許可
       tag:
         listable: Allow this hashtag to appear in searches and suggestions
         name: Hashtag
