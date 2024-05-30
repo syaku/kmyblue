@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_10_192043) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_22_041528) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -1175,6 +1175,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_192043) do
     t.datetime "published_at"
     t.string "image_description", default: "", null: false
     t.integer "image_file_size"
+    t.bigint "author_account_id"
+    t.index ["author_account_id"], name: "index_preview_cards_on_author_account_id", where: "(author_account_id IS NOT NULL)"
     t.index ["id"], name: "index_preview_cards_vacuum", where: "((image_file_name IS NOT NULL) AND ((image_file_name)::text <> ''::text))"
     t.index ["url"], name: "index_preview_cards_on_url", unique: true
   end
@@ -1739,6 +1741,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_10_192043) do
   add_foreign_key "polls", "accounts", on_delete: :cascade
   add_foreign_key "polls", "statuses", on_delete: :cascade
   add_foreign_key "preview_card_trends", "preview_cards", on_delete: :cascade
+  add_foreign_key "preview_cards", "accounts", column: "author_account_id", on_delete: :nullify
   add_foreign_key "report_notes", "accounts", on_delete: :cascade
   add_foreign_key "report_notes", "reports", on_delete: :cascade
   add_foreign_key "reports", "accounts", column: "action_taken_by_account_id", name: "fk_bca45b75fd", on_delete: :nullify

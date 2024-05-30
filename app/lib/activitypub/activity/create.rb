@@ -124,7 +124,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   def process_status_params
     @status_parser = ActivityPub::Parser::StatusParser.new(@json, followers_collection: @account.followers_url, object: @object, account: @account, friend_domain: friend_domain?)
 
-    attachment_ids = process_attachments.take(MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX).map(&:id)
+    attachment_ids = process_attachments.take(Status::MEDIA_ATTACHMENTS_LIMIT_FROM_REMOTE).map(&:id)
 
     @params = {
       uri: @status_parser.uri,
@@ -341,7 +341,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     as_array(@object['attachment']).each do |attachment|
       media_attachment_parser = ActivityPub::Parser::MediaAttachmentParser.new(attachment)
 
-      next if media_attachment_parser.remote_url.blank? || media_attachments.size >= MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX
+      next if media_attachment_parser.remote_url.blank? || media_attachments.size >= Status::MEDIA_ATTACHMENTS_LIMIT_FROM_REMOTE
 
       begin
         media_attachment = MediaAttachment.create(

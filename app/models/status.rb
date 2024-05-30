@@ -47,6 +47,10 @@ class Status < ApplicationRecord
   include Status::ThreadingConcern
   include DtlHelper
 
+  MEDIA_ATTACHMENTS_LIMIT = 4
+  MEDIA_ATTACHMENTS_LIMIT_WITH_POLL = 4
+  MEDIA_ATTACHMENTS_LIMIT_FROM_REMOTE = 16
+
   rate_limit by: :account, family: :statuses
 
   self.discard_column = :deleted_at
@@ -193,9 +197,9 @@ class Status < ApplicationRecord
                    :reference_objects,
                    :references,
                    :scheduled_expiration_status,
-                   preview_cards_status: [:preview_card],
+                   preview_cards_status: { preview_card: { author_account: [:account_stat, user: :role] } },
                    account: [:account_stat, user: :role],
-                   active_mentions: { account: :account_stat },
+                   active_mentions: :account,
                    reblog: [
                      :application,
                      :tags,
@@ -205,7 +209,7 @@ class Status < ApplicationRecord
                      :preloadable_poll,
                      :reference_objects,
                      :scheduled_expiration_status,
-                     preview_cards_status: [:preview_card],
+                     preview_cards_status: { preview_card: { author_account: [:account_stat, user: :role] } },
                      account: [:account_stat, user: :role],
                      active_mentions: { account: :account_stat },
                    ],
@@ -218,11 +222,11 @@ class Status < ApplicationRecord
                      :preloadable_poll,
                      :reference_objects,
                      :scheduled_expiration_status,
-                     preview_cards_status: [:preview_card],
+                     preview_cards_status: { preview_card: { author_account: [:account_stat, user: :role] } },
                      account: [:account_stat, user: :role],
-                     active_mentions: { account: :account_stat },
+                     active_mentions: :account,
                    ],
-                   thread: { account: :account_stat }
+                   thread: :account
 
   delegate :domain, to: :account, prefix: true
 
@@ -393,10 +397,6 @@ class Status < ApplicationRecord
 
   def decrement_count!(key)
     update_status_stat!(key => [public_send(key) - 1, 0].max)
-  end
-
-  def add_status_referred_by_count!(diff)
-    update_status_stat!(status_referred_by_count: [public_send(:status_referred_by_count) + diff, 0].max)
   end
 
   def emoji_reactions_grouped_by_name(account = nil, **options)
