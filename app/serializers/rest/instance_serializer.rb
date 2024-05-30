@@ -61,9 +61,9 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
       statuses: {
         max_characters: StatusLengthValidator::MAX_CHARS,
-        max_media_attachments: MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX,
-        max_media_attachments_with_poll: MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX_WITH_POLL,
-        max_media_attachments_from_activitypub: MediaAttachment::ACTIVITYPUB_STATUS_ATTACHMENT_MAX,
+        max_media_attachments: Status::MEDIA_ATTACHMENTS_LIMIT,
+        max_media_attachments_with_poll: Status::MEDIA_ATTACHMENTS_LIMIT_WITH_POLL,
+        max_media_attachments_from_activitypub: Status::MEDIA_ATTACHMENTS_LIMIT_FROM_REMOTE,
         characters_reserved_per_url: StatusLengthValidator::URL_PLACEHOLDER_CHARS,
       },
 

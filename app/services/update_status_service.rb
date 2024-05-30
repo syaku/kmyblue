@@ -152,7 +152,7 @@ class UpdateStatusService < BaseService
   def validate_media!
     return [] if @options[:media_ids].blank? || !@options[:media_ids].is_a?(Enumerable)
 
-    media_max = @options[:poll] ? MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX_WITH_POLL : MediaAttachment::LOCAL_STATUS_ATTACHMENT_MAX
+    media_max = @options[:poll] ? Status::MEDIA_ATTACHMENTS_LIMIT_WITH_POLL : Status::MEDIA_ATTACHMENTS_LIMIT
 
     raise Mastodon::ValidationError, I18n.t('media_attachments.validations.too_many') if @options[:media_ids].size > media_max
 
