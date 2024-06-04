@@ -181,6 +181,7 @@ en:
         events: Select events to send
         template: Compose your own JSON payload using variable interpolation. Leave blank for default JSON.
         url: Where events will be sent to
+    kmyblue: kmyblue
     labels:
       account:
         discoverable: Feature profile and posts in discovery algorithms

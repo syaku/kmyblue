@@ -11,6 +11,7 @@ import { HotKeys } from 'react-hotkeys';
 
 import AttachmentList from 'mastodon/components/attachment_list';
 import { Icon }  from 'mastodon/components/icon';
+import { WithRouterPropTypes } from 'mastodon/utils/react_router';
 
 import Card from '../features/status/components/card';
 // We use the component (and not the container) since we do not want
@@ -66,10 +67,6 @@ const messages = defineMessages({
 
 class CompactedStatus extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     status: ImmutablePropTypes.map,
     previousId: PropTypes.string,
@@ -94,6 +91,7 @@ class CompactedStatus extends ImmutablePureComponent {
     cacheMediaWidth: PropTypes.func,
     cachedMediaWidth: PropTypes.number,
     history: PropTypes.func,
+    ...WithRouterPropTypes,
   };
 
   // Avoid checking props that are functions (and whose equality will always
