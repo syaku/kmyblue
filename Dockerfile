@@ -1,5 +1,8 @@
 # syntax=docker/dockerfile:1.7
 
+# This file is designed for production server deployment, not local development work
+# For a containerized local dev environment, see: https://github.com/mastodon/mastodon/blob/main/README.md#docker
+
 # Please see https://docs.docker.com/engine/reference/builder for information about
 # the extended buildx capabilities used in this file.
 # Make sure multiarch TARGETPLATFORM is available for interpolation
@@ -43,6 +46,8 @@ ENV \
 # Apply Mastodon version information
   MASTODON_VERSION_PRERELEASE="${MASTODON_VERSION_PRERELEASE}" \
   MASTODON_VERSION_METADATA="${MASTODON_VERSION_METADATA}" \
+# Enable libvips
+  MASTODON_USE_LIBVIPS=true \
 # Apply Mastodon static files and YJIT options
   RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES} \
   RUBY_YJIT_ENABLE=${RUBY_YJIT_ENABLE} \
@@ -97,7 +102,7 @@ RUN \
     curl \
     ffmpeg \
     file \
-    imagemagick \
+    libvips42 \
     libjemalloc2 \
     patchelf \
     procps \
