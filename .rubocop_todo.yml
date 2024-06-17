@@ -26,25 +26,10 @@ Metrics/CyclomaticComplexity:
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/PerceivedComplexity:
   Max: 27
-
-# Configuration parameters: CountAsOne.
-RSpec/ExampleLength:
-  Max: 18
-
-RSpec/MultipleExpectations:
-  Max: 7
-
-# Configuration parameters: AllowSubject.
-RSpec/MultipleMemoizedHelpers:
-  Max: 17
   Exclude:
-    - 'spec/lib/activitypub/activity/create_spec.rb'
-    - 'spec/services/delete_account_service_spec.rb'
-    - 'spec/services/fan_out_on_write_service_spec.rb'
-
-# Configuration parameters: AllowedGroups.
-RSpec/NestedGroups:
-  Max: 6
+    - 'app/policies/status_policy.rb'
+    - 'app/services/delivery_antenna_service.rb'
+    - 'app/services/post_status_service.rb'
 
 Rails/OutputSafety:
   Exclude:
