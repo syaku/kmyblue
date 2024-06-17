@@ -68,16 +68,20 @@ export function importFetchedStatuses(statuses) {
         status.filtered.forEach(result => pushUnique(filters, result.filter));
       }
 
-      if (status.reblog && status.reblog.id) {
+      if (status.reblog?.id) {
         processStatus(status.reblog);
       }
 
-      if (status.quote && status.quote.id && !getState().getIn(['statuses', status.id])) {
+      if (status.quote?.id && !getState().getIn(['statuses', status.id])) {
         processStatus(status.quote);
       }
 
-      if (status.poll && status.poll.id) {
+      if (status.poll?.id) {
         pushUnique(polls, normalizePoll(status.poll, getState().getIn(['polls', status.poll.id])));
+      }
+
+      if (status.card?.author_account) {
+        pushUnique(accounts, status.card.author_account);
       }
     }
 
