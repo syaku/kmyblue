@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class REST::NotificationSerializer < ActiveModel::Serializer
-  attributes :id, :type, :created_at
+  attributes :id, :type, :created_at, :group_key
 
   belongs_to :from_account, key: :account, serializer: REST::AccountSerializer
   belongs_to :target_status, key: :status, if: :status_type?, serializer: REST::StatusSerializer
@@ -13,6 +13,10 @@ class REST::NotificationSerializer < ActiveModel::Serializer
 
   def id
     object.id.to_s
+  end
+
+  def group_key
+    object.group_key || "ungrouped-#{object.id}"
   end
 
   def status_type?
