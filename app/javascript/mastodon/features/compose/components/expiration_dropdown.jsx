@@ -209,7 +209,7 @@ class ExpirationDropdown extends PureComponent {
     this.props.onChange(value);
   };
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     const { intl } = this.props;
 
     this.options = [
