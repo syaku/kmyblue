@@ -287,8 +287,12 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          path: './public'
+          path: './'
           name: ${{ github.sha }}
+
+      - name: Expand archived asset artifacts
+        run: |
+          tar xvzf artifacts.tar.gz
 
       - name: Set up Ruby environment
         uses: ./.github/actions/setup-ruby
@@ -407,7 +411,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          path: './public'
+          path: './'
           name: ${{ github.sha }}
 
       - name: Set up Ruby environment

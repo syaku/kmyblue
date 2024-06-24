@@ -1,5 +1,6 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
+import { timelineDelete } from 'mastodon/actions/timelines_typed';
 import { me } from 'mastodon/initial_state';
 
 import {
@@ -34,7 +35,6 @@ import {
   STATUS_FETCH_FAIL,
   STATUS_EMOJI_REACTION_UPDATE,
 } from '../actions/statuses';
-import { TIMELINE_DELETE } from '../actions/timelines';
 
 const importStatus = (state, status) => state.set(status.id, fromJS(status));
 
@@ -152,8 +152,8 @@ export default function statuses(state = initialState, action) {
     });
   case STATUS_COLLAPSE:
     return state.setIn([action.id, 'collapsed'], action.isCollapsed);
-  case TIMELINE_DELETE:
-    return deleteStatus(state, action.id, action.references);
+  case timelineDelete.type:
+    return deleteStatus(state, action.payload.statusId, action.payload.references);
   case STATUS_TRANSLATE_SUCCESS:
     return statusTranslateSuccess(state, action.id, action.translation);
   case STATUS_TRANSLATE_UNDO:

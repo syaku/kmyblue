@@ -203,7 +203,7 @@ class FeaturedTagsDropdown extends PureComponent {
     this.props.onChange(value);
   };
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.options = featuredTags.map((tag) => {
       return { value: `#${tag}`, text: `#${tag}` };
     });
