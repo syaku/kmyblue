@@ -28,9 +28,7 @@ class AccountSearchService < BaseService
               },
 
               functions: [
-                reputation_score_function,
                 followers_score_function,
-                time_distance_function,
               ],
             },
           },
@@ -91,45 +89,12 @@ class AccountSearchService < BaseService
       }
     end
 
-    def boost_follower_query
-      {
-        terms: {
-          id: follower_ids,
-          boost: 100,
-        },
-      }
-    end
-
-    # This function deranks accounts that follow more people than follow them
-    def reputation_score_function
-      {
-        script_score: {
-          script: {
-            source: "(Math.max(doc['followers_count'].value, 0) + 0.0) / (Math.max(doc['followers_count'].value, 0) + Math.max(doc['following_count'].value, 0) + 1)",
-          },
-        },
-      }
-    end
-
     # This function promotes accounts that have more followers
     def followers_score_function
       {
         script_score: {
           script: {
-            source: "(Math.max(doc['followers_count'].value, 0) / (Math.max(doc['followers_count'].value, 0) + 1))",
-          },
-        },
-      }
-    end
-
-    # This function deranks accounts that haven't posted in a long time
-    def time_distance_function
-      {
-        gauss: {
-          last_status_at: {
-            scale: '30d',
-            offset: '30d',
-            decay: 0.3,
+            source: "Math.log10((Math.max(doc['followers_count'].value, 0) + 1))",
           },
         },
       }
@@ -149,10 +114,24 @@ class AccountSearchService < BaseService
 
     def core_query
       {
-        multi_match: {
-          query: @query,
-          type: 'bool_prefix',
-          fields: %w(username^2 username.*^2 display_name display_name.*),
+        dis_max: {
+          queries: [
+            {
+              multi_match: {
+                query: @query,
+                type: 'most_fields',
+                fields: %w(username username.*),
+              },
+            },
+
+            {
+              multi_match: {
+                query: @query,
+                type: 'most_fields',
+                fields: %w(display_name display_name.*),
+              },
+            },
+          ],
         },
       }
     end
@@ -165,7 +144,7 @@ class AccountSearchService < BaseService
       {
         multi_match: {
           query: @query,
-          type: 'most_fields',
+          type: 'best_fields',
           fields: %w(username^2 display_name^2 text text.*),
           operator: 'and',
         },
