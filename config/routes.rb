@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     /antennasw/(*any)
     /antennast/(*any)
     /circles/(*any)
+    /links/(*any)
     /notifications/(*any)
     /favourites
     /emoji_reactions
