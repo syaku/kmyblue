@@ -63,6 +63,7 @@ import {
   BookmarkCategories,
   BookmarkCategoryStatuses,
   FollowedTags,
+  LinkTimeline,
   ListTimeline,
   Blocks,
   DomainBlocks,
@@ -217,6 +218,7 @@ class SwitchingColumnsArea extends PureComponent {
             <WrappedRoute path='/public/local/fixed' exact component={CommunityTimeline} content={children} />
             <WrappedRoute path={['/conversations', '/timelines/direct']} component={DirectTimeline} content={children} />
             <WrappedRoute path='/tags/:id' component={HashtagTimeline} content={children} />
+            <WrappedRoute path='/links/:url' component={LinkTimeline} content={children} />
             <WrappedRoute path='/lists/:id' component={ListTimeline} content={children} />
             <WrappedRoute path='/antennasw/:id' component={AntennaSetting} content={children} />
             <WrappedRoute path='/antennast/:id' component={AntennaTimeline} content={children} />
