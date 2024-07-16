@@ -306,6 +306,7 @@ ja:
       filter_by_action: アクションでフィルター
       filter_by_user: ユーザーでフィルター
       title: 操作履歴
+      unavailable_instance: "(ドメイン名が利用できません)"
     announcements:
       destroyed_msg: お知らせが削除されました
       edit:
@@ -1323,7 +1324,6 @@ ja:
       body: Mastodonは有志によって翻訳されています。
       guide_link: https://ja.crowdin.com/project/mastodon
       guide_link_text: 誰でも参加することができます。
-    media: メディア
     quotes: 引用
     remote_server_features: 他のサーバーの機能
     saved_posts: 投稿の記録

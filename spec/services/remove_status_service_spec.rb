@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe RemoveStatusService, :sidekiq_inline do
+RSpec.describe RemoveStatusService, :inline_jobs do
   subject { described_class.new }
 
   let!(:alice)  { Fabricate(:account) }
@@ -141,7 +141,7 @@ RSpec.describe RemoveStatusService, :sidekiq_inline do
              )).to have_been_made.once
     end
 
-    it 'do not send Delete activity to followers', :sidekiq_inline do
+    it 'do not send Delete activity to followers', :inline_jobs do
       subject.call(status)
 
       expect(a_request(:post, hank.inbox_url)).to_not have_been_made

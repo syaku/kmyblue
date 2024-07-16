@@ -455,7 +455,7 @@ RSpec.describe ActivityPub::Activity::Follow do
         stub_request(:post, 'https://example.com/inbox')
       end
 
-      it 'marks me as idle and the friend as accepted', :sidekiq_inline do
+      it 'marks me as idle and the friend as accepted', :inline_jobs do
         subject.perform
         expect(friend.reload.they_are_accepted?).to be true
         expect(friend.i_am_idle?).to be true
@@ -503,7 +503,7 @@ RSpec.describe ActivityPub::Activity::Follow do
         stub_request(:post, 'https://example.com/inbox')
       end
 
-      it 'marks the friend as accepted', :sidekiq_inline do
+      it 'marks the friend as accepted', :inline_jobs do
         subject.perform
 
         friend = FriendDomain.find_by(domain: 'abc.com')
@@ -523,7 +523,7 @@ RSpec.describe ActivityPub::Activity::Follow do
         stub_request(:post, 'https://example.com/inbox')
       end
 
-      it 'marks the friend as accepted', :sidekiq_inline do
+      it 'marks the friend as accepted', :inline_jobs do
         subject.perform
 
         friend = FriendDomain.find_by(domain: 'abc.com')

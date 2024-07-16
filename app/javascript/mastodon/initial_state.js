@@ -31,10 +31,10 @@
  * @property {boolean=} boost_modal
  * @property {boolean=} delete_modal
  * @property {boolean=} disable_swiping
+ * @property {boolean=} disable_hover_cards
  * @property {string=} disabled_account_id
  * @property {string[]} enabled_visibilities
  * @property {string} display_media
- * @property {boolean} display_media_expand
  * @property {string} domain
  * @property {string} dtl_tag
  * @property {boolean} enable_emoji_reaction
@@ -128,10 +128,10 @@ export const bookmarkCategoryNeeded = getMeta('bookmark_category_needed');
 export const boostModal = getMeta('boost_modal');
 export const deleteModal = getMeta('delete_modal');
 export const disableSwiping = getMeta('disable_swiping');
+export const disableHoverCards = getMeta('disable_hover_cards');
 export const disabledAccountId = getMeta('disabled_account_id');
 export const enabledVisibilites = getMeta('enabled_visibilities');
 export const displayMedia = getMeta('display_media');
-export const displayMediaExpand = getMeta('display_media_expand');
 export const domain = getMeta('domain');
 export const dtlTag = getMeta('dtl_tag');
 export const enableEmojiReaction = getMeta('enable_emoji_reaction');

@@ -36,7 +36,7 @@ RSpec.describe ActivateRemoteStatusesService, type: :service do
       subject
     end
 
-    it 'original status is fetched', :sidekiq_inline do
+    it 'original status is fetched', :inline_jobs do
       status = sender.statuses.first
 
       expect(status).to_not be_nil
@@ -54,7 +54,7 @@ RSpec.describe ActivateRemoteStatusesService, type: :service do
       subject
     end
 
-    it 'original status is not fetched', :sidekiq_inline do
+    it 'original status is not fetched', :inline_jobs do
       status = sender.statuses.first
 
       expect(status).to be_nil

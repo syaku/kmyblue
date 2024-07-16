@@ -66,7 +66,6 @@ en:
         setting_default_sensitive: Sensitive media is hidden by default and can be revealed with a click
         setting_disallow_unlisted_public_searchability: この設定を有効にすると、非収載投稿と検索範囲「誰でも」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
         setting_display_media_default: Hide media marked as sensitive
-        setting_display_media_expand: Misskey and others can submit more than 4. The additions will be displayed up to 16. kmyblue will not allow uploading from kmyblue.
         setting_display_media_hide_all: Always hide media
         setting_display_media_show_all: Always show media
         setting_dtl_force_searchability: 'With using #%{tag} tag, your post settings will be changed forcibly'
@@ -271,11 +270,11 @@ en:
         setting_default_searchability_of_search: Your search setting
         setting_default_sensitive: Always mark media as sensitive
         setting_delete_modal: Show confirmation dialog before deleting a post
+        setting_disable_hover_cards: Disable profile preview on hover
         setting_disable_swiping: Disable swiping motions
         setting_disallow_unlisted_public_searchability: Disallow everyone or local searchability when unlisted visibility
         setting_display_media: Media display
         setting_display_media_default: Default
-        setting_display_media_expand: Show more medias
         setting_display_media_hide_all: Hide all
         setting_display_media_show_all: Show all
         setting_dtl_force_searchability: Post searchability
@@ -366,6 +365,7 @@ en:
           exclude_quote: Exclude quote or references
       form_admin_settings:
         activity_api_enabled: Publish aggregate statistics about user activity in the API
+        app_icon: App icon
         backups_retention_period: User archive retention period
         bootstrap_timeline_accounts: Always recommend these accounts to new users
         check_lts_version_only: Check kmyblue LTS version only when update check
@@ -377,6 +377,7 @@ en:
         enable_local_timeline: Enable local timeline
         enable_public_unlisted_visibility: Enable public-unlisted visibility / public-unlisted searchability
         enable_public_visibility: Enable public visibility
+        favicon: Favicon
         mascot: Custom mascot (legacy)
         media_cache_retention_period: Media cache retention period
         peers_api_enabled: Publish list of discovered servers in the API

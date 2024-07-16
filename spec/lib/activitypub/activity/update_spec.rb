@@ -138,7 +138,7 @@ RSpec.describe ActivityPub::Activity::Update do
         subject.perform
       end
 
-      it 'does not create a new status', :sidekiq_inline do
+      it 'does not create a new status', :inline_jobs do
         status = Status.find_by(uri: 'https://example.com/note')
         expect(status).to be_nil
       end
@@ -170,7 +170,7 @@ RSpec.describe ActivityPub::Activity::Update do
         subject.perform
       end
 
-      it 'forwards to parent status holder', :sidekiq_inline do
+      it 'forwards to parent status holder', :inline_jobs do
         expect(a_request(:post, 'https://example.com/inbox').with(body: hash_including({
           type: 'Update',
           signature: 'foo',

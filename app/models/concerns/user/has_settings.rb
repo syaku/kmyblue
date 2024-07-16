@@ -175,10 +175,6 @@ module User::HasSettings
     settings['web.display_media']
   end
 
-  def setting_display_media_expand
-    settings['web.display_media_expand']
-  end
-
   def setting_expand_spoilers
     settings['web.expand_content_warnings']
   end
@@ -213,6 +209,10 @@ module User::HasSettings
 
   def setting_disable_swiping
     settings['web.disable_swiping']
+  end
+
+  def setting_disable_hover_cards
+    settings['web.disable_hover_cards']
   end
 
   def setting_always_send_emails

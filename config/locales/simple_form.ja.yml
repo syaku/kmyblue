@@ -66,7 +66,6 @@ ja:
         setting_default_sensitive: 閲覧注意状態のメディアはデフォルトでは内容が伏せられ、クリックして初めて閲覧できるようになります
         setting_disallow_unlisted_public_searchability: この設定を有効にすると、非収載投稿と検索範囲「誰でも」は両立できず不特定多数からの検索が不可になります。Fedibirdと同じ挙動になります
         setting_display_media_default: 閲覧注意としてマークされたメディアは隠す
-        setting_display_media_expand: Misskeyなどは4個を超えて投稿可能です。その追加分を最大16個まで表示します。kmyblueからアップロードはできません
         setting_display_media_hide_all: メディアを常に隠す
         setting_display_media_show_all: メディアを常に表示する
         setting_dtl_force_searchability: 'ハッシュタグ #%{tag} をつけて投稿するとき、検索許可を強制的に置き換えるかを設定します'
@@ -267,11 +266,11 @@ ja:
         setting_default_searchability_of_search: 自分が検索するときの検索許可設定
         setting_default_sensitive: メディアを常に閲覧注意としてマークする
         setting_delete_modal: 投稿を削除する前に確認ダイアログを表示する
+        setting_disable_hover_cards: マウスオーバーでプロフィールをポップアップしない
         setting_disable_swiping: スワイプでの切り替えを無効にする
         setting_disallow_unlisted_public_searchability: 非収載投稿の検索許可が「誰でも」「ローカルとフォロワー」だった場合、「フォロワーのみ」に変更する
         setting_display_media: メディアの表示
         setting_display_media_default: 標準
-        setting_display_media_expand: 5個目以降のメディアも表示する (最大16)
         setting_display_media_hide_all: 非表示
         setting_display_media_show_all: 表示
         setting_dtl_force_searchability: DTL投稿の検索許可
