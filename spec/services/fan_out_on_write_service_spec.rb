@@ -85,43 +85,43 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is public' do
     let(:visibility) { 'public' }
 
-    it 'is added to the home feed of its author', :sidekiq_inline do
+    it 'is added to the home feed of its author', :inline_jobs do
       expect(home_feed_of(alice)).to include status.id
     end
 
-    it 'is added to the home feed of the mentioned follower', :sidekiq_inline do
+    it 'is added to the home feed of the mentioned follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
     end
 
-    it 'is added to the home feed of a follower', :sidekiq_inline do
+    it 'is added to the home feed of a follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
       expect(home_feed_of(tom)).to include status.id
     end
 
-    it 'is added to the tag follower', :sidekiq_inline do
+    it 'is added to the tag follower', :inline_jobs do
       expect(home_feed_of(tagf)).to include status.id
     end
 
-    it 'is broadcast to the hashtag stream', :sidekiq_inline do
+    it 'is broadcast to the hashtag stream', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge:local', anything)
     end
 
-    it 'is broadcast to the public stream', :sidekiq_inline do
+    it 'is broadcast to the public stream', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:public', anything)
       expect(redis).to have_received(:publish).with('timeline:public:local', anything)
       expect(redis).to have_received(:publish).with('timeline:public:media', anything)
     end
 
-    context 'when local timeline is disabled', :sidekiq_inline do
+    context 'when local timeline is disabled', :inline_jobs do
       let(:ltl_enabled) { false }
 
-      it 'is broadcast to the hashtag stream', :sidekiq_inline do
+      it 'is broadcast to the hashtag stream', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
       end
 
-      it 'is broadcast to the public stream', :sidekiq_inline do
+      it 'is broadcast to the public stream', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:public', anything)
         expect(redis).to_not have_received(:publish).with('timeline:public:local', anything)
       end
@@ -131,7 +131,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:list) { list_with_account(bob, alice) }
       let!(:empty_list) { Fabricate(:list, account: tom) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(list_feed_of(list)).to include status.id
         expect(list_feed_of(empty_list)).to_not include status.id
       end
@@ -141,7 +141,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_account(bob, alice) }
       let!(:empty_antenna) { antenna_with_account(tom, bob) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -149,7 +149,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when subscription is blocked' do
         let(:subscription_policy) { :block }
 
-        it 'is not added to the antenna feed', :sidekiq_inline do
+        it 'is not added to the antenna feed', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
         end
       end
@@ -158,14 +158,14 @@ RSpec.describe FanOutOnWriteService do
         let(:subscription_policy) { :followers_only }
         let!(:antenna) { antenna_with_account(ohagi, alice) }
 
-        it 'is not added to the antenna feed', :sidekiq_inline do
+        it 'is not added to the antenna feed', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
         end
 
         context 'with following' do
           let!(:antenna) { antenna_with_account(bob, alice) }
 
-          it 'is added to the antenna feed', :sidekiq_inline do
+          it 'is added to the antenna feed', :inline_jobs do
             expect(antenna_feed_of(antenna)).to include status.id
           end
         end
@@ -181,7 +181,7 @@ RSpec.describe FanOutOnWriteService do
         end
 
         context 'with listening tag' do
-          it 'is added to the antenna feed', :sidekiq_inline do
+          it 'is added to the antenna feed', :inline_jobs do
             expect(antenna_feed_of(antenna)).to include status.id
           end
         end
@@ -189,7 +189,7 @@ RSpec.describe FanOutOnWriteService do
         context 'with listening tag but sender is limiting subscription' do
           let(:subscription_policy) { :block }
 
-          it 'does not add to the antenna feed', :sidekiq_inline do
+          it 'does not add to the antenna feed', :inline_jobs do
             expect(antenna_feed_of(antenna)).to_not include status.id
           end
         end
@@ -204,7 +204,7 @@ RSpec.describe FanOutOnWriteService do
             subject.call(status)
           end
 
-          it 'is added to the antenna feed', :sidekiq_inline do
+          it 'is added to the antenna feed', :inline_jobs do
             expect(antenna_feed_of(antenna)).to include status.id
           end
         end
@@ -215,7 +215,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_options(bob, stl: true) }
       let!(:empty_antenna) { antenna_with_options(tom) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -223,7 +223,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when subscription is blocked' do
         let(:subscription_policy) { :block }
 
-        it 'is added to the antenna feed', :sidekiq_inline do
+        it 'is added to the antenna feed', :inline_jobs do
           expect(antenna_feed_of(antenna)).to include status.id
         end
       end
@@ -242,7 +242,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_options(bob, ltl: true) }
       let!(:empty_antenna) { antenna_with_options(tom) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -250,7 +250,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when subscription is blocked' do
         let(:subscription_policy) { :block }
 
-        it 'is added to the antenna feed', :sidekiq_inline do
+        it 'is added to the antenna feed', :inline_jobs do
           expect(antenna_feed_of(antenna)).to include status.id
         end
       end
@@ -258,7 +258,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when local timeline is disabled' do
         let(:ltl_enabled) { false }
 
-        it 'is not added to the antenna feed of antenna follower', :sidekiq_inline do
+        it 'is not added to the antenna feed of antenna follower', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
           expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
@@ -286,23 +286,23 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is limited' do
     let(:visibility) { 'limited' }
 
-    it 'is added to the home feed of its author', :sidekiq_inline do
+    it 'is added to the home feed of its author', :inline_jobs do
       expect(home_feed_of(alice)).to include status.id
     end
 
-    it 'is added to the home feed of the mentioned follower', :sidekiq_inline do
+    it 'is added to the home feed of the mentioned follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
     end
 
-    it 'is not added to the home feed of the other follower', :sidekiq_inline do
+    it 'is not added to the home feed of the other follower', :inline_jobs do
       expect(home_feed_of(tom)).to_not include status.id
     end
 
-    it 'is not added to the tag follower', :sidekiq_inline do
+    it 'is not added to the tag follower', :inline_jobs do
       expect(home_feed_of(tagf)).to_not include status.id
     end
 
-    it 'is not broadcast publicly', :sidekiq_inline do
+    it 'is not broadcast publicly', :inline_jobs do
       expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to_not have_received(:publish).with('timeline:public', anything)
     end
@@ -311,7 +311,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:list) { list_with_account(bob, alice) }
       let!(:empty_list) { list_with_account(tom, alice) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(list_feed_of(list)).to include status.id
         expect(list_feed_of(empty_list)).to_not include status.id
       end
@@ -321,7 +321,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_account(bob, alice) }
       let!(:empty_antenna) { antenna_with_account(tom, alice) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -331,7 +331,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_options(bob, stl: true) }
       let!(:empty_antenna) { antenna_with_options(tom, stl: true) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -340,7 +340,7 @@ RSpec.describe FanOutOnWriteService do
     context 'with LTL antenna' do
       let!(:empty_antenna) { antenna_with_options(bob, ltl: true) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
     end
@@ -349,25 +349,25 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is private' do
     let(:visibility) { 'private' }
 
-    it 'is added to the home feed of its author', :sidekiq_inline do
+    it 'is added to the home feed of its author', :inline_jobs do
       expect(home_feed_of(alice)).to include status.id
     end
 
-    it 'is added to the home feed of a follower', :sidekiq_inline do
+    it 'is added to the home feed of a follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
       expect(home_feed_of(tom)).to include status.id
     end
 
-    it 'is not added to the tag follower', :sidekiq_inline do
+    it 'is not added to the tag follower', :inline_jobs do
       expect(home_feed_of(tagf)).to_not include status.id
     end
 
-    it 'is not broadcast publicly', :sidekiq_inline do
+    it 'is not broadcast publicly', :inline_jobs do
       expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to_not have_received(:publish).with('timeline:public', anything)
     end
 
-    it 'is added to the home feed of the mentioned follower', :sidekiq_inline do
+    it 'is added to the home feed of the mentioned follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
     end
 
@@ -375,7 +375,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:list) { list_with_account(bob, alice) }
       let!(:empty_list) { list_with_account(ohagi, bob) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(list_feed_of(list)).to include status.id
         expect(list_feed_of(empty_list)).to_not include status.id
       end
@@ -385,7 +385,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_account(bob, alice) }
       let!(:empty_antenna) { antenna_with_account(ohagi, alice) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -395,7 +395,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_options(bob, stl: true) }
       let!(:empty_antenna) { antenna_with_options(ohagi, stl: true) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -403,7 +403,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when local timeline is disabled' do
         let(:ltl_enabled) { false }
 
-        it 'is not added to the antenna feed of antenna follower', :sidekiq_inline do
+        it 'is not added to the antenna feed of antenna follower', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
           expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
@@ -413,14 +413,14 @@ RSpec.describe FanOutOnWriteService do
     context 'with LTL antenna' do
       let!(:empty_antenna) { antenna_with_options(bob, ltl: true) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
       context 'when local timeline is disabled' do
         let(:ltl_enabled) { false }
 
-        it 'is not added to the antenna feed of antenna follower', :sidekiq_inline do
+        it 'is not added to the antenna feed of antenna follower', :inline_jobs do
           expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
       end
@@ -430,20 +430,20 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is public_unlisted' do
     let(:visibility) { 'public_unlisted' }
 
-    it 'is added to the home feed of its author', :sidekiq_inline do
+    it 'is added to the home feed of its author', :inline_jobs do
       expect(home_feed_of(alice)).to include status.id
     end
 
-    it 'is added to the home feed of a follower', :sidekiq_inline do
+    it 'is added to the home feed of a follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
       expect(home_feed_of(tom)).to include status.id
     end
 
-    it 'is added to the tag follower', :sidekiq_inline do
+    it 'is added to the tag follower', :inline_jobs do
       expect(home_feed_of(tagf)).to include status.id
     end
 
-    it 'is broadcast publicly', :sidekiq_inline do
+    it 'is broadcast publicly', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to have_received(:publish).with('timeline:public:local', anything)
       expect(redis).to have_received(:publish).with('timeline:public', anything)
@@ -452,12 +452,12 @@ RSpec.describe FanOutOnWriteService do
     context 'when local timeline is disabled' do
       let(:ltl_enabled) { false }
 
-      it 'is broadcast to the hashtag stream', :sidekiq_inline do
+      it 'is broadcast to the hashtag stream', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
       end
 
-      it 'is broadcast to the public stream', :sidekiq_inline do
+      it 'is broadcast to the public stream', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:public', anything)
         expect(redis).to_not have_received(:publish).with('timeline:public:local', anything)
       end
@@ -467,7 +467,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:list) { list_with_account(bob, alice) }
       let!(:empty_list) { list_with_account(ohagi, bob) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(list_feed_of(list)).to include status.id
         expect(list_feed_of(empty_list)).to_not include status.id
       end
@@ -477,7 +477,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_account(bob, alice) }
       let!(:empty_antenna) { antenna_with_account(tom, bob) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -485,7 +485,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when subscription is blocked' do
         let(:subscription_policy) { :block }
 
-        it 'is not added to the antenna feed', :sidekiq_inline do
+        it 'is not added to the antenna feed', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
         end
       end
@@ -495,7 +495,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_options(bob, stl: true) }
       let!(:empty_antenna) { antenna_with_options(tom) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -503,7 +503,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when subscription is blocked' do
         let(:subscription_policy) { :block }
 
-        it 'is added to the antenna feed', :sidekiq_inline do
+        it 'is added to the antenna feed', :inline_jobs do
           expect(antenna_feed_of(antenna)).to include status.id
         end
       end
@@ -511,7 +511,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when local timeline is disabled' do
         let(:ltl_enabled) { false }
 
-        it 'is not added to the antenna feed of antenna follower', :sidekiq_inline do
+        it 'is not added to the antenna feed of antenna follower', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
           expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
@@ -522,7 +522,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_options(bob, ltl: true) }
       let!(:empty_antenna) { antenna_with_options(tom) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -530,7 +530,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when subscription is blocked' do
         let(:subscription_policy) { :block }
 
-        it 'is added to the antenna feed', :sidekiq_inline do
+        it 'is added to the antenna feed', :inline_jobs do
           expect(antenna_feed_of(antenna)).to include status.id
         end
       end
@@ -538,7 +538,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when local timeline is disabled' do
         let(:ltl_enabled) { false }
 
-        it 'is not added to the antenna feed of antenna follower', :sidekiq_inline do
+        it 'is not added to the antenna feed of antenna follower', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
           expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
@@ -549,20 +549,20 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is unlisted' do
     let(:visibility) { 'unlisted' }
 
-    it 'is added to the home feed of its author', :sidekiq_inline do
+    it 'is added to the home feed of its author', :inline_jobs do
       expect(home_feed_of(alice)).to include status.id
     end
 
-    it 'is added to the home feed of a follower', :sidekiq_inline do
+    it 'is added to the home feed of a follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
       expect(home_feed_of(tom)).to include status.id
     end
 
-    it 'is added to the tag follower', :sidekiq_inline do
+    it 'is added to the tag follower', :inline_jobs do
       expect(home_feed_of(tagf)).to include status.id
     end
 
-    it 'is not broadcast publicly', :sidekiq_inline do
+    it 'is not broadcast publicly', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to_not have_received(:publish).with('timeline:public', anything)
     end
@@ -570,12 +570,12 @@ RSpec.describe FanOutOnWriteService do
     context 'with searchability public_unlisted' do
       let(:searchability) { 'public_unlisted' }
 
-      it 'is broadcast to the hashtag stream', :sidekiq_inline do
+      it 'is broadcast to the hashtag stream', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge:local', anything)
       end
 
-      it 'is added to the tag follower', :sidekiq_inline do
+      it 'is added to the tag follower', :inline_jobs do
         expect(home_feed_of(tagf)).to include status.id
       end
     end
@@ -583,12 +583,12 @@ RSpec.describe FanOutOnWriteService do
     context 'with searchability private' do
       let(:searchability) { 'private' }
 
-      it 'is not broadcast to the hashtag stream', :sidekiq_inline do
+      it 'is not broadcast to the hashtag stream', :inline_jobs do
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
       end
 
-      it 'is not added to the tag follower', :sidekiq_inline do
+      it 'is not added to the tag follower', :inline_jobs do
         expect(home_feed_of(tagf)).to_not include status.id
       end
     end
@@ -596,7 +596,7 @@ RSpec.describe FanOutOnWriteService do
     context 'when local timeline is disabled' do
       let(:ltl_enabled) { false }
 
-      it 'is broadcast to the hashtag stream', :sidekiq_inline do
+      it 'is broadcast to the hashtag stream', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
       end
@@ -606,7 +606,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:list) { list_with_account(bob, alice) }
       let!(:empty_list) { list_with_account(ohagi, bob) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(list_feed_of(list)).to include status.id
         expect(list_feed_of(empty_list)).to_not include status.id
       end
@@ -616,7 +616,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_account(bob, alice) }
       let!(:empty_antenna) { antenna_with_account(ohagi, alice) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -626,7 +626,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_options(bob, stl: true) }
       let!(:empty_antenna) { antenna_with_options(ohagi, stl: true) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -634,7 +634,7 @@ RSpec.describe FanOutOnWriteService do
       context 'when local timeline is disabled' do
         let(:ltl_enabled) { false }
 
-        it 'is not added to the antenna feed of antenna follower', :sidekiq_inline do
+        it 'is not added to the antenna feed of antenna follower', :inline_jobs do
           expect(antenna_feed_of(antenna)).to_not include status.id
           expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
@@ -644,14 +644,14 @@ RSpec.describe FanOutOnWriteService do
     context 'with LTL antenna' do
       let!(:empty_antenna) { antenna_with_options(bob, ltl: true) }
 
-      it 'is added to the antenna feed of antenna follower', :sidekiq_inline do
+      it 'is added to the antenna feed of antenna follower', :inline_jobs do
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
 
       context 'when local timeline is disabled' do
         let(:ltl_enabled) { false }
 
-        it 'is not added to the antenna feed of antenna follower', :sidekiq_inline do
+        it 'is not added to the antenna feed of antenna follower', :inline_jobs do
           expect(antenna_feed_of(empty_antenna)).to_not include status.id
         end
       end
@@ -660,7 +660,7 @@ RSpec.describe FanOutOnWriteService do
     context 'with non-public searchability' do
       let(:searchability) { 'direct' }
 
-      it 'hashtag-timeline is not detected', :sidekiq_inline do
+      it 'hashtag-timeline is not detected', :inline_jobs do
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:public', anything)
       end
@@ -670,23 +670,23 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is direct' do
     let(:visibility) { 'direct' }
 
-    it 'is added to the home feed of its author', :sidekiq_inline do
+    it 'is added to the home feed of its author', :inline_jobs do
       expect(home_feed_of(alice)).to include status.id
     end
 
-    it 'is added to the home feed of the mentioned follower', :sidekiq_inline do
+    it 'is added to the home feed of the mentioned follower', :inline_jobs do
       expect(home_feed_of(bob)).to include status.id
     end
 
-    it 'is not added to the home feed of the other follower', :sidekiq_inline do
+    it 'is not added to the home feed of the other follower', :inline_jobs do
       expect(home_feed_of(tom)).to_not include status.id
     end
 
-    it 'is not added to the tag follower', :sidekiq_inline do
+    it 'is not added to the tag follower', :inline_jobs do
       expect(home_feed_of(tagf)).to_not include status.id
     end
 
-    it 'is not broadcast publicly', :sidekiq_inline do
+    it 'is not broadcast publicly', :inline_jobs do
       expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to_not have_received(:publish).with('timeline:public', anything)
     end
@@ -695,7 +695,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:list) { list_with_account(bob, alice) }
       let!(:empty_list) { list_with_account(ohagi, bob) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(list_feed_of(list)).to_not include status.id
         expect(list_feed_of(empty_list)).to_not include status.id
       end
@@ -705,7 +705,7 @@ RSpec.describe FanOutOnWriteService do
       let!(:antenna) { antenna_with_account(bob, alice) }
       let!(:empty_antenna) { antenna_with_account(ohagi, alice) }
 
-      it 'is added to the list feed of list follower', :sidekiq_inline do
+      it 'is added to the list feed of list follower', :inline_jobs do
         expect(antenna_feed_of(antenna)).to_not include status.id
         expect(antenna_feed_of(empty_antenna)).to_not include status.id
       end
@@ -733,28 +733,28 @@ RSpec.describe FanOutOnWriteService do
     end
 
     context 'when public visibility' do
-      it 'does not create notification', :sidekiq_inline do
+      it 'does not create notification', :inline_jobs do
         notification = Notification.find_by(account: bob, type: 'mention')
 
         expect(notification).to be_nil
       end
 
-      it 'creates notification for active mention', :sidekiq_inline do
+      it 'creates notification for active mention', :inline_jobs do
         notification = Notification.find_by(account: tom, type: 'mention')
 
         expect(notification).to_not be_nil
         expect(notification.mention.status_id).to eq status.id
       end
 
-      it 'inserts home feed for reply', :sidekiq_inline do
+      it 'inserts home feed for reply', :inline_jobs do
         expect(home_feed_of(bob)).to include status.id
       end
 
-      it 'inserts home feed for non-replied but mentioned and following replied account', :sidekiq_inline do
+      it 'inserts home feed for non-replied but mentioned and following replied account', :inline_jobs do
         expect(home_feed_of(zilu)).to include status.id
       end
 
-      it 'does not insert home feed for non-replied, non-following replied account but mentioned', :sidekiq_inline do
+      it 'does not insert home feed for non-replied, non-following replied account but mentioned', :inline_jobs do
         expect(home_feed_of(tom)).to_not include status.id
       end
     end
@@ -762,29 +762,29 @@ RSpec.describe FanOutOnWriteService do
     context 'when limited visibility' do
       let(:visibility) { :limited }
 
-      it 'creates notification', :sidekiq_inline do
+      it 'creates notification', :inline_jobs do
         notification = Notification.find_by(account: bob, type: 'mention')
 
         expect(notification).to_not be_nil
         expect(notification.mention.status_id).to eq status.id
       end
 
-      it 'creates notification for other conversation account', :sidekiq_inline do
+      it 'creates notification for other conversation account', :inline_jobs do
         notification = Notification.find_by(account: ohagi, type: 'mention')
 
         expect(notification).to_not be_nil
         expect(notification.mention.status_id).to eq status.id
       end
 
-      it 'inserts home feed for reply', :sidekiq_inline do
+      it 'inserts home feed for reply', :inline_jobs do
         expect(home_feed_of(bob)).to include status.id
       end
 
-      it 'inserts home feed for non-replied but mentioned and following replied account', :sidekiq_inline do
+      it 'inserts home feed for non-replied but mentioned and following replied account', :inline_jobs do
         expect(home_feed_of(zilu)).to include status.id
       end
 
-      it 'does not insert home feed for non-replied, non-following replied account but mentioned', :sidekiq_inline do
+      it 'does not insert home feed for non-replied, non-following replied account but mentioned', :inline_jobs do
         expect(home_feed_of(tom)).to_not include status.id
       end
     end
@@ -800,21 +800,21 @@ RSpec.describe FanOutOnWriteService do
       subject.call(status, update: true)
     end
 
-    it 'notified to boosted account', :sidekiq_inline do
+    it 'notified to boosted account', :inline_jobs do
       notification = Notification.find_by(account: bob, type: 'update')
 
       expect(notification).to_not be_nil
       expect(notification.activity_id).to eq status.id
     end
 
-    it 'notified to quoted account', :sidekiq_inline do
+    it 'notified to quoted account', :inline_jobs do
       notification = Notification.find_by(account: tom, type: 'update')
 
       expect(notification).to_not be_nil
       expect(notification.activity_id).to eq status.id
     end
 
-    it 'notified not to non-boosted account', :sidekiq_inline do
+    it 'notified not to non-boosted account', :inline_jobs do
       notification = Notification.find_by(account: ohagi, type: 'update')
 
       expect(notification).to be_nil

@@ -305,7 +305,7 @@ export function submitComposeFail(error) {
 
 export function uploadCompose(files) {
   return function (dispatch, getState) {
-    const uploadLimit = 4;
+    const uploadLimit = getState().getIn(['server', 'server', 'configuration', 'statuses', 'max_media_attachments']);
     const media = getState().getIn(['compose', 'media_attachments']);
     const pending = getState().getIn(['compose', 'pending_media_attachments']);
     const defaultSensitive = getState().getIn(['compose', 'default_sensitive']);
@@ -322,7 +322,7 @@ export function uploadCompose(files) {
     dispatch(uploadComposeRequest());
 
     for (const [i, file] of Array.from(files).entries()) {
-      if (media.size + i >= 4) break;
+      if (media.size + i > (uploadLimit - 1)) break;
 
       const data = new FormData();
       data.append('file', file);

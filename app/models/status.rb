@@ -364,7 +364,7 @@ class Status < ApplicationRecord
     else
       map = media_attachments.index_by(&:id)
       ordered_media_attachment_ids.filter_map { |media_attachment_id| map[media_attachment_id] }
-    end
+    end.take(media_attachments_max)
   end
 
   def replies_count
@@ -609,6 +609,10 @@ class Status < ApplicationRecord
   end
 
   private
+
+  def media_attachments_max
+    local? ? MEDIA_ATTACHMENTS_LIMIT : MEDIA_ATTACHMENTS_LIMIT_FROM_REMOTE
+  end
 
   def update_status_stat!(attrs)
     return if marked_for_destruction? || destroyed?

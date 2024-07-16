@@ -1348,7 +1348,6 @@ en:
       body: Mastodon is translated by volunteers.
       guide_link: https://crowdin.com/project/mastodon
       guide_link_text: Everyone can contribute.
-    media: Media
     quotes: Quotes
     remote_server_features: Other server features
     saved_posts: Saving posts

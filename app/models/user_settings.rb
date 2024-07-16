@@ -58,6 +58,7 @@ class UserSettings
     setting :use_system_font, default: false
     setting :bookmark_category_needed, default: false
     setting :disable_swiping, default: false
+    setting :disable_hover_cards, default: false
     setting :delete_modal, default: true
     setting :enable_dtl_menu, default: false
     setting :hide_recent_emojis, default: false
@@ -67,7 +68,6 @@ class UserSettings
     setting :reduce_motion, default: false
     setting :expand_content_warnings, default: false
     setting :display_media, default: 'default', in: %w(default show_all hide_all)
-    setting :display_media_expand, default: true
     setting :auto_play, default: true
     setting :simple_timeline_menu, default: false
     setting :boost_menu, default: false

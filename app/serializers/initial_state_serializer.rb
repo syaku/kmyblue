@@ -23,12 +23,12 @@ class InitialStateSerializer < ActiveModel::Serializer
       store[:delete_modal]      = object_account_user.setting_delete_modal
       store[:auto_play_gif]     = object_account_user.setting_auto_play_gif
       store[:display_media]     = object_account_user.setting_display_media
-      store[:display_media_expand] = object_account_user.setting_display_media_expand
       store[:expand_spoilers] = object_account_user.setting_expand_spoilers
       store[:enable_emoji_reaction] = object_account_user.setting_enable_emoji_reaction && Setting.enable_emoji_reaction
       store[:enable_dtl_menu]   = object_account_user.setting_enable_dtl_menu
       store[:reduce_motion]     = object_account_user.setting_reduce_motion
       store[:disable_swiping]   = object_account_user.setting_disable_swiping
+      store[:disable_hover_cards] = object_account_user.setting_disable_hover_cards
       store[:advanced_layout]   = object_account_user.setting_advanced_layout
       store[:use_blurhash]      = object_account_user.setting_use_blurhash
       store[:use_pending_items] = object_account_user.setting_use_pending_items

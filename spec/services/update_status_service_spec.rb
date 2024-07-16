@@ -62,7 +62,7 @@ RSpec.describe UpdateStatusService do
     end
   end
 
-  context 'when content warning changes and has remote user', :sidekiq_inline do
+  context 'when content warning changes and has remote user', :inline_jobs do
     let(:remote_follower) { Fabricate(:account, domain: 'example.com', uri: 'https://example.com/actor', protocol: :activitypub, inbox_url: 'https://example.com/inbox') }
     let(:status) { Fabricate(:status, text: 'Foo', spoiler_text: '', account: Fabricate(:user).account) }
 

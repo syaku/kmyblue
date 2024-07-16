@@ -1,8 +1,13 @@
 name: Bundler Audit
 on:
+  merge_group:
   push:
-    branches-ignore:
-      - 'dependabot/**'
+    branches:
+      - 'main'
+      - 'kb*'
+      - 'upstream-*'
+      - 'releases/*'
+      - 'stable-*'
     paths:
       - 'Gemfile*'
       - '.ruby-version'

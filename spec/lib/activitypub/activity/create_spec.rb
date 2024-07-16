@@ -1046,7 +1046,7 @@ RSpec.describe ActivityPub::Activity::Create do
           expect(status.mentions.map(&:account_id)).to contain_exactly(recipient.id, ancestor_account.id, mentioned_account.id, local_mentioned_account.id)
         end
 
-        it 'forwards to observers', :sidekiq_inline do
+        it 'forwards to observers', :inline_jobs do
           expect(a_request(:post, 'http://or.example.com/actor/inbox')).to have_been_made.once
           expect(a_request(:post, 'http://example.com/bob/inbox')).to have_been_made.once
         end
@@ -1089,7 +1089,7 @@ RSpec.describe ActivityPub::Activity::Create do
             expect(status.mentions.map(&:account_id)).to contain_exactly(recipient.id, ancestor_account.id, mentioned_account.id, local_mentioned_account.id, new_mentioned_account.id, new_local_mentioned_account.id)
           end
 
-          it 'forwards to observers', :sidekiq_inline do
+          it 'forwards to observers', :inline_jobs do
             expect(a_request(:post, 'http://or.example.com/actor/inbox')).to have_been_made.once
             expect(a_request(:post, 'http://example.com/bob/inbox')).to have_been_made.once
             expect(a_request(:post, 'http://example.com/alice/inbox')).to have_been_made.once
@@ -1142,7 +1142,7 @@ RSpec.describe ActivityPub::Activity::Create do
             expect(status.mentioned_accounts.map(&:uri)).to include 'https://foo.test'
           end
 
-          it 'forwards to observers', :sidekiq_inline do
+          it 'forwards to observers', :inline_jobs do
             expect(a_request(:post, 'https://foo.test/inbox')).to have_been_made.once
           end
         end
@@ -1159,7 +1159,7 @@ RSpec.describe ActivityPub::Activity::Create do
             expect(status.mentions.map(&:account_id)).to contain_exactly(recipient.id)
           end
 
-          it 'do not forward to observers', :sidekiq_inline do
+          it 'do not forward to observers', :inline_jobs do
             expect(a_request(:post, 'http://or.example.com/actor/inbox')).to_not have_been_made
             expect(a_request(:post, 'http://example.com/bob/inbox')).to_not have_been_made
           end

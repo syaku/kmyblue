@@ -218,7 +218,7 @@ RSpec.describe EmojiReactService, type: :service do
       stub_request(:post, 'https://author.foo.bar/inbox')
     end
 
-    it 'react with emoji', :sidekiq_inline do
+    it 'react with emoji', :inline_jobs do
       expect(subject.count).to eq 1
       expect(a_request(:post, 'https://author.foo.bar/inbox').with(body: hash_including({
         type: 'Like',
@@ -235,7 +235,7 @@ RSpec.describe EmojiReactService, type: :service do
         stub_request(:post, 'https://foo.bar/inbox')
       end
 
-      it 'react with emoji', :sidekiq_inline do
+      it 'react with emoji', :inline_jobs do
         expect(subject.count).to eq 1
         expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
           type: 'Like',
@@ -254,7 +254,7 @@ RSpec.describe EmojiReactService, type: :service do
       stub_request(:post, 'https://foo.bar/inbox')
     end
 
-    it 'react with emoji', :sidekiq_inline do
+    it 'react with emoji', :inline_jobs do
       expect(subject.count).to eq 1
       expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
         type: 'Like',
@@ -270,7 +270,7 @@ RSpec.describe EmojiReactService, type: :service do
       stub_request(:post, 'https://foo.bar/inbox')
     end
 
-    it 'react with emoji', :sidekiq_inline do
+    it 'react with emoji', :inline_jobs do
       expect(subject.count).to eq 1
       expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
         type: 'Like',
@@ -286,7 +286,7 @@ RSpec.describe EmojiReactService, type: :service do
       stub_request(:post, 'https://foo.bar/inbox')
     end
 
-    it 'react with emoji', :sidekiq_inline do
+    it 'react with emoji', :inline_jobs do
       expect(subject.count).to eq 1
       expect(a_request(:post, 'https://foo.bar/inbox').with(body: hash_including({
         type: 'Like',
