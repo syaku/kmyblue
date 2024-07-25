@@ -4,7 +4,7 @@ import { PureComponent } from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import classNames from 'classnames';
-import { withRouter } from 'react-router-dom';
+
 
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
@@ -109,10 +109,6 @@ class ActionBar extends PureComponent {
     ...WithRouterPropTypes,
   };
 
-  handleOpenMentions = () => {
-    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/${this.props.status.get('id')}/mentioned_users`);
-  };
-
   handleReplyClick = () => {
     this.props.onReply(this.props.status);
   };
@@ -142,23 +138,23 @@ class ActionBar extends PureComponent {
   };
 
   handleDeleteClick = () => {
-    this.props.onDelete(this.props.status, this.props.history);
+    this.props.onDelete(this.props.status);
   };
 
   handleRedraftClick = () => {
-    this.props.onDelete(this.props.status, this.props.history, true);
+    this.props.onDelete(this.props.status, true);
   };
 
   handleEditClick = () => {
-    this.props.onEdit(this.props.status, this.props.history);
+    this.props.onEdit(this.props.status);
   };
 
   handleDirectClick = () => {
-    this.props.onDirect(this.props.status.get('account'), this.props.history);
+    this.props.onDirect(this.props.status.get('account'));
   };
 
   handleMentionClick = () => {
-    this.props.onMention(this.props.status.get('account'), this.props.history);
+    this.props.onMention(this.props.status.get('account'));
   };
 
   handleMuteClick = () => {
@@ -293,7 +289,7 @@ class ActionBar extends PureComponent {
         }
 
         if (status.get('limited_scope') !== 'reply') {
-          menu.push({ text: intl.formatMessage(messages.mentions), action: this.handleOpenMentions });
+          menu.push({ text: intl.formatMessage(messages.mentions), href: `/@${this.props.status.getIn(['account', 'acct'])}/${this.props.status.get('id')}/mentioned_users` });
         }
         
         menu.push({ text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation), action: this.handleConversationMuteClick });
@@ -446,4 +442,4 @@ class ActionBar extends PureComponent {
 
 }
 
-export default withRouter(connect(mapStateToProps)(withIdentity(injectIntl(ActionBar))));
+export default connect(mapStateToProps)(withIdentity(injectIntl(ActionBar)));

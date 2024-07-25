@@ -10,6 +10,7 @@ import {
   deleteAnnouncement,
 } from './announcements';
 import { updateConversations } from './conversations';
+import { processNewNotificationForGroups } from './notification_groups';
 import { updateNotifications, expandNotifications, updateEmojiReactions } from './notifications';
 import { updateStatus } from './statuses';
 import {
@@ -99,10 +100,16 @@ export const connectTimelineStream = (timelineId, channelName, params = {}, opti
         case 'delete':
           dispatch(deleteFromTimelines(data.payload));
           break;
-        case 'notification':
+        case 'notification': {
           // @ts-expect-error
-          dispatch(updateNotifications(JSON.parse(data.payload), messages, locale));
+          const notificationJSON = JSON.parse(data.payload);
+          dispatch(updateNotifications(notificationJSON, messages, locale));
+          // TODO: remove this once the groups feature replaces the previous one
+          if(getState().notificationGroups.groups.length > 0) {
+            dispatch(processNewNotificationForGroups(notificationJSON));
+          }
           break;
+        }
         case 'emoji_reaction':
           // @ts-expect-error
           dispatch(updateEmojiReactions(JSON.parse(data.payload)));

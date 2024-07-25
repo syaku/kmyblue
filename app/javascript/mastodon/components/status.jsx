@@ -124,7 +124,10 @@ class Status extends ImmutablePureComponent {
     cacheMediaWidth: PropTypes.func,
     cachedMediaWidth: PropTypes.number,
     scrollKey: PropTypes.string,
+    skipPrepend: PropTypes.bool,
+    avatarSize: PropTypes.number,
     deployPictureInPicture: PropTypes.func,
+    unfocusable: PropTypes.bool,
     pictureInPicture: ImmutablePropTypes.contains({
       inUse: PropTypes.bool,
       available: PropTypes.bool,
@@ -276,7 +279,7 @@ class Status extends ImmutablePureComponent {
 
   handleHotkeyReply = e => {
     e.preventDefault();
-    this.props.onReply(this._properStatus(), this.props.history);
+    this.props.onReply(this._properStatus());
   };
 
   handleHotkeyFavourite = () => {
@@ -289,7 +292,7 @@ class Status extends ImmutablePureComponent {
 
   handleHotkeyMention = e => {
     e.preventDefault();
-    this.props.onMention(this._properStatus().get('account'), this.props.history);
+    this.props.onMention(this._properStatus().get('account'));
   };
 
   handleHotkeyOpen = () => {
@@ -363,7 +366,7 @@ class Status extends ImmutablePureComponent {
   };
 
   render () {
-    const { intl, hidden, featured, unread, muted, showThread, scrollKey, pictureInPicture, previousId, nextInReplyToId, rootId, withoutQuote } = this.props;
+    const { intl, hidden, featured, unfocusable, unread, showThread, scrollKey, pictureInPicture, previousId, nextInReplyToId, rootId, withoutQuote, skipPrepend, avatarSize = 46 } = this.props;
 
     let { status, account, ...other } = this.props;
     
@@ -373,7 +376,7 @@ class Status extends ImmutablePureComponent {
       return null;
     }
 
-    const handlers = muted ? {} : {
+    const handlers = this.props.muted ? {} : {
       reply: this.handleHotkeyReply,
       favourite: this.handleHotkeyFavourite,
       boost: this.handleHotkeyBoost,
@@ -391,8 +394,8 @@ class Status extends ImmutablePureComponent {
 
     if (hidden) {
       return (
-        <HotKeys handlers={handlers}>
-          <div ref={this.handleRef} className={classNames('status__wrapper', { focusable: !muted })} tabIndex={0}>
+        <HotKeys handlers={handlers} tabIndex={unfocusable ? null : -1}>
+          <div ref={this.handleRef} className={classNames('status__wrapper', { focusable: !this.props.muted })} tabIndex={unfocusable ? null : 0}>
             <span>{status.getIn(['account', 'display_name']) || status.getIn(['account', 'username'])}</span>
             <span>{status.get('content')}</span>
           </div>
@@ -406,6 +409,25 @@ class Status extends ImmutablePureComponent {
     const matchedFilters = status.get('matched_filters');
 
     let visibilityName = status.get('limited_scope') || status.get('visibility_ex') || status.get('visibility');
+
+    if (this.state.forceFilter === undefined ? matchedFilters : this.state.forceFilter) {
+      const minHandlers = this.props.muted ? {} : {
+        moveUp: this.handleHotkeyMoveUp,
+        moveDown: this.handleHotkeyMoveDown,
+      };
+
+      return (
+        <HotKeys handlers={minHandlers} tabIndex={unfocusable ? null : -1}>
+          <div className='status__wrapper status__wrapper--filtered focusable' tabIndex={unfocusable ? null : 0} ref={this.handleRef}>
+            <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {matchedFilters.join(', ')}.
+            {' '}
+            <button className='status__wrapper--filtered__button' onClick={this.handleUnfilterClick}>
+              <FormattedMessage id='status.show_filter_reason' defaultMessage='Show anyway' />
+            </button>
+          </div>
+        </HotKeys>
+      );
+    }
 
     if (featured) {
       prepend = (
@@ -454,7 +476,7 @@ class Status extends ImmutablePureComponent {
     }
 
     if (this.state.forceFilter === undefined ? matchedFilters : this.state.forceFilter) {
-      const minHandlers = muted ? {} : {
+      const minHandlers = this.props.muted ? {} : {
         moveUp: this.handleHotkeyMoveUp,
         moveDown: this.handleHotkeyMoveDown,
       };
@@ -511,7 +533,7 @@ class Status extends ImmutablePureComponent {
     } else if (status.get('media_attachments').size > 0) {
       const language = status.getIn(['translation', 'language']) || status.get('language');
 
-      if (muted) {
+      if (this.props.muted) {
         media = (
           <AttachmentList
             compact
@@ -589,7 +611,7 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       }
-    } else if (status.get('card') && !muted) {
+    } else if (status.get('card') && !this.props.muted) {
       media = (
         <Card
           onOpenMedia={this.handleOpenMedia}
@@ -603,6 +625,7 @@ class Status extends ImmutablePureComponent {
 
     visibilityName = status.get('limited_scope') || status.get('visibility_ex') || status.get('visibility');
 
+
     let emojiReactionsBar = null;
     if (!this.props.withoutEmojiReactions && status.get('emoji_reactions')) {
       const emojiReactions = status.get('emoji_reactions');
@@ -610,6 +633,12 @@ class Status extends ImmutablePureComponent {
       if (emojiReactions.size > 0 && enableEmojiReaction && emojiReactionAvailableServer) {
         emojiReactionsBar = <StatusEmojiReactionsBar emojiReactions={emojiReactions} myReactionOnly={!isShowItem('emoji_reaction_on_timeline')} status={status} onEmojiReact={this.props.onEmojiReact} onUnEmojiReact={this.props.onUnEmojiReact} />;
       }
+    }
+
+    if (account === undefined || account === null) {
+      statusAvatar = <Avatar account={status.get('account')} size={avatarSize} />;
+    } else {
+      statusAvatar = <AvatarOverlay account={status.get('account')} friend={account} />;
     }
 
     const {statusContentProps, hashtagBar} = getHashtagBarForStatus(status);
@@ -620,14 +649,14 @@ class Status extends ImmutablePureComponent {
     const withReference = (!withQuote && status.get('status_references_count') > 0) ? <span className='status__visibility-icon'><Icon id='link' icon={ReferenceIcon} title='Quiet quote' /></span> : null;
     const withExpiration = status.get('expires_at') ? <span className='status__visibility-icon'><Icon id='clock-o' icon={TimerIcon} title='Expiration' /></span> : null;
 
-    const quote = !muted && !withoutQuote && status.get('quote_id') && (['public', 'community'].includes(contextType) ? isShowItem('quote_in_public') : isShowItem('quote_in_home')) && <CompactedStatusContainer id={status.get('quote_id')} history={this.props.history} />;
+    const quote = !this.props.muted && !withoutQuote && status.get('quote_id') && (['public', 'community'].includes(contextType) ? isShowItem('quote_in_public') : isShowItem('quote_in_home')) && <CompactedStatusContainer id={status.get('quote_id')} history={this.props.history} />;
 
     return (
-      <HotKeys handlers={handlers}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility_ex')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), unread, focusable: !muted })} tabIndex={muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef} data-nosnippet={status.getIn(['account', 'noindex'], true) || undefined}>
-          {prepend}
+      <HotKeys handlers={handlers} tabIndex={unfocusable ? null : -1}>
+        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility_ex')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), unread, focusable: !this.props.muted })} tabIndex={this.props.muted || unfocusable ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef} data-nosnippet={status.getIn(['account', 'noindex'], true) || undefined}>
+          {!skipPrepend && prepend}
 
-          <div className={classNames('status', `status-${status.get('visibility_ex')}`, { 'status-reply': !!status.get('in_reply_to_id'), 'status--in-thread': !!rootId, 'status--first-in-thread': previousId && (!connectUp || connectToRoot), muted: muted })} data-id={status.get('id')}>
+          <div className={classNames('status', `status-${status.get('visibility_ex')}`, { 'status-reply': !!status.get('in_reply_to_id'), 'status--in-thread': !!rootId, 'status--first-in-thread': previousId && (!connectUp || connectToRoot), muted: this.props.muted })} data-id={status.get('id')}>
             {(connectReply || connectUp || connectToRoot) && <div className={classNames('status__line', { 'status__line--full': connectReply, 'status__line--first': !status.get('in_reply_to_id') && !connectToRoot })} />}
 
             {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}

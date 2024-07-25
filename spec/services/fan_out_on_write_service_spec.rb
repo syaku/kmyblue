@@ -85,29 +85,15 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is public' do
     let(:visibility) { 'public' }
 
-    it 'is added to the home feed of its author', :inline_jobs do
-      expect(home_feed_of(alice)).to include status.id
-    end
+    it 'adds status to home feed of author and followers and broadcasts', :inline_jobs do
+      expect(status.id)
+        .to be_in(home_feed_of(alice))
+        .and be_in(home_feed_of(bob))
+        .and be_in(home_feed_of(tom))
+        .and be_in(home_feed_of(tagf))
 
-    it 'is added to the home feed of the mentioned follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
-    end
-
-    it 'is added to the home feed of a follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
-      expect(home_feed_of(tom)).to include status.id
-    end
-
-    it 'is added to the tag follower', :inline_jobs do
-      expect(home_feed_of(tagf)).to include status.id
-    end
-
-    it 'is broadcast to the hashtag stream', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge:local', anything)
-    end
-
-    it 'is broadcast to the public stream', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:public', anything)
       expect(redis).to have_received(:publish).with('timeline:public:local', anything)
       expect(redis).to have_received(:publish).with('timeline:public:media', anything)
@@ -116,12 +102,9 @@ RSpec.describe FanOutOnWriteService do
     context 'when local timeline is disabled', :inline_jobs do
       let(:ltl_enabled) { false }
 
-      it 'is broadcast to the hashtag stream', :inline_jobs do
+      it 'does not add status to local timeline', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
-      end
-
-      it 'is broadcast to the public stream', :inline_jobs do
         expect(redis).to have_received(:publish).with('timeline:public', anything)
         expect(redis).to_not have_received(:publish).with('timeline:public:local', anything)
       end
@@ -286,25 +269,16 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is limited' do
     let(:visibility) { 'limited' }
 
-    it 'is added to the home feed of its author', :inline_jobs do
-      expect(home_feed_of(alice)).to include status.id
-    end
+    it 'adds status to home feed of author and mentioned followers and does not broadcast', :inline_jobs do
+      expect(status.id)
+        .to be_in(home_feed_of(alice))
+        .and be_in(home_feed_of(bob))
+      expect(status.id)
+        .to_not be_in(home_feed_of(tom))
+      expect(status.id)
+        .to_not be_in(home_feed_of(tagf))
 
-    it 'is added to the home feed of the mentioned follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
-    end
-
-    it 'is not added to the home feed of the other follower', :inline_jobs do
-      expect(home_feed_of(tom)).to_not include status.id
-    end
-
-    it 'is not added to the tag follower', :inline_jobs do
-      expect(home_feed_of(tagf)).to_not include status.id
-    end
-
-    it 'is not broadcast publicly', :inline_jobs do
-      expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
-      expect(redis).to_not have_received(:publish).with('timeline:public', anything)
+      expect_no_broadcasting
     end
 
     context 'with list' do
@@ -349,26 +323,15 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is private' do
     let(:visibility) { 'private' }
 
-    it 'is added to the home feed of its author', :inline_jobs do
-      expect(home_feed_of(alice)).to include status.id
-    end
+    it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+      expect(status.id)
+        .to be_in(home_feed_of(alice))
+        .and be_in(home_feed_of(bob))
+        .and be_in(home_feed_of(tom))
+      expect(status.id)
+        .to_not be_in(home_feed_of(tagf))
 
-    it 'is added to the home feed of a follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
-      expect(home_feed_of(tom)).to include status.id
-    end
-
-    it 'is not added to the tag follower', :inline_jobs do
-      expect(home_feed_of(tagf)).to_not include status.id
-    end
-
-    it 'is not broadcast publicly', :inline_jobs do
-      expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
-      expect(redis).to_not have_received(:publish).with('timeline:public', anything)
-    end
-
-    it 'is added to the home feed of the mentioned follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
+      expect_no_broadcasting
     end
 
     context 'with list' do
@@ -430,20 +393,14 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is public_unlisted' do
     let(:visibility) { 'public_unlisted' }
 
-    it 'is added to the home feed of its author', :inline_jobs do
-      expect(home_feed_of(alice)).to include status.id
-    end
+    it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+      expect(status.id)
+        .to be_in(home_feed_of(alice))
+        .and be_in(home_feed_of(bob))
+        .and be_in(home_feed_of(tom))
+      expect(status.id)
+        .to be_in(home_feed_of(tagf))
 
-    it 'is added to the home feed of a follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
-      expect(home_feed_of(tom)).to include status.id
-    end
-
-    it 'is added to the tag follower', :inline_jobs do
-      expect(home_feed_of(tagf)).to include status.id
-    end
-
-    it 'is broadcast publicly', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to have_received(:publish).with('timeline:public:local', anything)
       expect(redis).to have_received(:publish).with('timeline:public', anything)
@@ -549,20 +506,14 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is unlisted' do
     let(:visibility) { 'unlisted' }
 
-    it 'is added to the home feed of its author', :inline_jobs do
-      expect(home_feed_of(alice)).to include status.id
-    end
+    it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+      expect(status.id)
+        .to be_in(home_feed_of(alice))
+        .and be_in(home_feed_of(bob))
+        .and be_in(home_feed_of(tom))
+      expect(status.id)
+        .to be_in(home_feed_of(tagf))
 
-    it 'is added to the home feed of a follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
-      expect(home_feed_of(tom)).to include status.id
-    end
-
-    it 'is added to the tag follower', :inline_jobs do
-      expect(home_feed_of(tagf)).to include status.id
-    end
-
-    it 'is not broadcast publicly', :inline_jobs do
       expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
       expect(redis).to_not have_received(:publish).with('timeline:public', anything)
     end
@@ -570,26 +521,24 @@ RSpec.describe FanOutOnWriteService do
     context 'with searchability public_unlisted' do
       let(:searchability) { 'public_unlisted' }
 
-      it 'is broadcast to the hashtag stream', :inline_jobs do
+      it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+        expect(status.id)
+          .to be_in(home_feed_of(tagf))
+
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to have_received(:publish).with('timeline:hashtag:hoge:local', anything)
-      end
-
-      it 'is added to the tag follower', :inline_jobs do
-        expect(home_feed_of(tagf)).to include status.id
       end
     end
 
     context 'with searchability private' do
       let(:searchability) { 'private' }
 
-      it 'is not broadcast to the hashtag stream', :inline_jobs do
+      it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+        expect(status.id)
+          .to_not be_in(home_feed_of(tagf))
+
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
         expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge:local', anything)
-      end
-
-      it 'is not added to the tag follower', :inline_jobs do
-        expect(home_feed_of(tagf)).to_not include status.id
       end
     end
 
@@ -670,25 +619,16 @@ RSpec.describe FanOutOnWriteService do
   context 'when status is direct' do
     let(:visibility) { 'direct' }
 
-    it 'is added to the home feed of its author', :inline_jobs do
-      expect(home_feed_of(alice)).to include status.id
-    end
+    it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+      expect(status.id)
+        .to be_in(home_feed_of(alice))
+        .and be_in(home_feed_of(bob))
+      expect(status.id)
+        .to_not be_in(home_feed_of(tom))
+      expect(status.id)
+        .to_not be_in(home_feed_of(tagf))
 
-    it 'is added to the home feed of the mentioned follower', :inline_jobs do
-      expect(home_feed_of(bob)).to include status.id
-    end
-
-    it 'is not added to the home feed of the other follower', :inline_jobs do
-      expect(home_feed_of(tom)).to_not include status.id
-    end
-
-    it 'is not added to the tag follower', :inline_jobs do
-      expect(home_feed_of(tagf)).to_not include status.id
-    end
-
-    it 'is not broadcast publicly', :inline_jobs do
-      expect(redis).to_not have_received(:publish).with('timeline:hashtag:hoge', anything)
-      expect(redis).to_not have_received(:publish).with('timeline:public', anything)
+      expect_no_broadcasting
     end
 
     context 'with list' do
@@ -746,16 +686,15 @@ RSpec.describe FanOutOnWriteService do
         expect(notification.mention.status_id).to eq status.id
       end
 
-      it 'inserts home feed for reply', :inline_jobs do
-        expect(home_feed_of(bob)).to include status.id
-      end
+      it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+        expect(status.id)
+          .to be_in(home_feed_of(alice))
+          .and be_in(home_feed_of(bob))
+          .and be_in(home_feed_of(zilu))
+        expect(status.id)
+          .to_not be_in(home_feed_of(tom))
 
-      it 'inserts home feed for non-replied but mentioned and following replied account', :inline_jobs do
-        expect(home_feed_of(zilu)).to include status.id
-      end
-
-      it 'does not insert home feed for non-replied, non-following replied account but mentioned', :inline_jobs do
-        expect(home_feed_of(tom)).to_not include status.id
+        expect_no_broadcasting
       end
     end
 
@@ -776,16 +715,15 @@ RSpec.describe FanOutOnWriteService do
         expect(notification.mention.status_id).to eq status.id
       end
 
-      it 'inserts home feed for reply', :inline_jobs do
-        expect(home_feed_of(bob)).to include status.id
-      end
+      it 'is added to the home feed of its author and mentioned followers and does not broadcast', :inline_jobs do
+        expect(status.id)
+          .to be_in(home_feed_of(alice))
+          .and be_in(home_feed_of(bob))
+          .and be_in(home_feed_of(zilu))
+        expect(status.id)
+          .to_not be_in(home_feed_of(tom))
 
-      it 'inserts home feed for non-replied but mentioned and following replied account', :inline_jobs do
-        expect(home_feed_of(zilu)).to include status.id
-      end
-
-      it 'does not insert home feed for non-replied, non-following replied account but mentioned', :inline_jobs do
-        expect(home_feed_of(tom)).to_not include status.id
+        expect_no_broadcasting
       end
     end
   end
@@ -819,5 +757,14 @@ RSpec.describe FanOutOnWriteService do
 
       expect(notification).to be_nil
     end
+  end
+
+  def expect_no_broadcasting
+    expect(redis)
+      .to_not have_received(:publish)
+      .with('timeline:hashtag:hoge', anything)
+    expect(redis)
+      .to_not have_received(:publish)
+      .with('timeline:public', anything)
   end
 end

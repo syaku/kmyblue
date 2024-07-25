@@ -361,6 +361,7 @@ ja:
           exclude_quote: 引用の内容をフィルターの対象にしない
       form_admin_settings:
         activity_api_enabled: APIでユーザーアクティビティに関する集計統計を公開する
+        app_icon: アプリアイコン
         backups_retention_period: ユーザーアーカイブの保持期間
         bootstrap_timeline_accounts: おすすめユーザーに常に表示するアカウント
         check_lts_version_only: 更新チェックの時、LTSバージョンのみ確認する
@@ -372,6 +373,7 @@ ja:
         enable_local_timeline: ローカルタイムラインを有効にする
         enable_public_unlisted_visibility: 公開範囲「ローカル公開」と検索許可「ローカルとフォロワー」を有効にする
         enable_public_visibility: 公開範囲「公開」を有効にする
+        favicon: ブックマークアイコン
         mascot: カスタムマスコット（レガシー）
         media_cache_retention_period: メディアキャッシュの保持期間
         peers_api_enabled: 発見したサーバーのリストをAPIで公開する

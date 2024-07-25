@@ -1,7 +1,11 @@
+import { boostModal } from 'mastodon/initial_state';
+
 import api, { getLinks } from '../api';
 
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
+import { unreblog, reblog } from './interactions_typed';
+import { openModal } from './modal';
 
 export const REBLOGS_EXPAND_REQUEST = 'REBLOGS_EXPAND_REQUEST';
 export const REBLOGS_EXPAND_SUCCESS = 'REBLOGS_EXPAND_SUCCESS';
@@ -739,5 +743,51 @@ export function expandMentionedUsersFail(id, error) {
     type: MENTIONED_USERS_EXPAND_FAIL,
     id,
     error,
+  };
+}
+
+function toggleReblogWithoutConfirmation(status, privacy) {
+  return (dispatch) => {
+    if (status.get('reblogged')) {
+      dispatch(unreblog({ statusId: status.get('id') }));
+    } else {
+      dispatch(reblog({ statusId: status.get('id'), privacy }));
+    }
+  };
+}
+
+export function toggleReblog(statusId, skipModal = false, forceModal = false) {
+  return (dispatch, getState) => {
+    const state = getState();
+    let status = state.statuses.get(statusId);
+
+    if (!status)
+      return;
+
+    // The reblog modal expects a pre-filled account in status
+    // TODO: fix this by having the reblog modal get a statusId and do the work itself
+    status = status.set('account', state.accounts.get(status.get('account')));
+
+    if ((boostModal && !skipModal) || (forceModal && !status.get('reblogged'))) {
+      dispatch(openModal({ modalType: 'BOOST', modalProps: { status, onReblog: (status, privacy) => dispatch(toggleReblogWithoutConfirmation(status, privacy)) } }));
+    } else {
+      dispatch(toggleReblogWithoutConfirmation(status));
+    }
+  };
+}
+
+export function toggleFavourite(statusId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const status = state.statuses.get(statusId);
+
+    if (!status)
+      return;
+
+    if (status.get('favourited')) {
+      dispatch(unfavourite(status));
+    } else {
+      dispatch(favourite(status));
+    }
   };
 }
