@@ -46,7 +46,7 @@ SimpleNavigation::Configuration.run do |navigation|
 
     n.item :trends, safe_join([fa_icon('fire fw'), t('admin.trends.title')]), admin_trends_statuses_path, if: -> { current_user.can?(:manage_taxonomies) && !self_destruct } do |s|
       s.item :statuses, safe_join([fa_icon('comments-o fw'), t('admin.trends.statuses.title')]), admin_trends_statuses_path, highlights_on: %r{/admin/trends/statuses}
-      s.item :tags, safe_join([fa_icon('hashtag fw'), t('admin.trends.tags.title')]), admin_trends_tags_path, highlights_on: %r{/admin/tags|/admin/trends/tags}
+      s.item :tags, safe_join([fa_icon('hashtag fw'), t('admin.trends.tags.title')]), admin_trends_tags_path, highlights_on: %r{/admin/trends/tags}
       s.item :links, safe_join([fa_icon('newspaper-o fw'), t('admin.trends.links.title')]), admin_trends_links_path, highlights_on: %r{/admin/trends/links}
     end
 
@@ -55,6 +55,7 @@ SimpleNavigation::Configuration.run do |navigation|
                                                                                           } do |s|
       s.item :reports, safe_join([fa_icon('flag fw'), t('admin.reports.title')]), admin_reports_path, highlights_on: %r{/admin/reports|admin/report_notes}, if: -> { current_user.can?(:manage_reports) }
       s.item :accounts, safe_join([fa_icon('users fw'), t('admin.accounts.title')]), admin_accounts_path(origin: 'local'), highlights_on: %r{/admin/accounts|admin/account_moderation_notes|/admin/pending_accounts|/admin/disputes|/admin/users}, if: -> { current_user.can?(:manage_users) }
+      s.item :tags, safe_join([fa_icon('hashtag fw'), t('admin.tags.title')]), admin_tags_path, highlights_on: %r{/admin/tags}, if: -> { current_user.can?(:manage_taxonomies) }
       s.item :ng_words, safe_join([fa_icon('list fw'), t('admin.ng_words.title')]), admin_ng_words_keywords_path, highlights_on: %r{/admin/(ng_words|ngword_histories)}, if: -> { current_user.can?(:manage_ng_words) }
       s.item :ng_rules, safe_join([fa_icon('rub fw'), t('admin.ng_rules.title')]), admin_ng_rules_path, highlights_on: %r{/admin/(ng_rules|ng_rule_histories)}, if: -> { current_user.can?(:manage_ng_words) }
       s.item :sensitive_words, safe_join([fa_icon('list fw'), t('admin.sensitive_words.title')]), admin_sensitive_words_path, highlights_on: %r{/admin/sensitive_words}, if: -> { current_user.can?(:manage_sensitive_words) }
