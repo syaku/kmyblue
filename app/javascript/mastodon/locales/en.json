@@ -592,7 +592,7 @@
   "notification.admin.report_statuses": "{name} reported {target} for {category}",
   "notification.admin.report_statuses_other": "{name} reported {target}",
   "notification.admin.sign_up": "{name} signed up",
-  "notification.emoji_reaction": "{name} reacted your post with emoji",
+  "notification.emoji_reaction": "{name} reacted your status with emoji",
   "notification.favourite": "{name} favorited your post",
   "notification.follow": "{name} followed you",
   "notification.follow_request": "{name} has requested to follow you",
