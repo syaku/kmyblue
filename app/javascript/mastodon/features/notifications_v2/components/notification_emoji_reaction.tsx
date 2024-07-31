@@ -10,7 +10,7 @@ import { NotificationGroupWithStatus } from './notification_group_with_status';
 const labelRenderer: LabelRenderer = (values) => (
   <FormattedMessage
     id='notification.emoji_reaction'
-    defaultMessage='{name} reacted your post with emoji'
+    defaultMessage='{name} reacted your status with emoji'
     values={values}
   />
 );
