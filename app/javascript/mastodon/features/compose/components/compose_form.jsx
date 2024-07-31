@@ -10,9 +10,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import { length } from 'stringz';
 
-import { WithOptionalRouterPropTypes, withOptionalRouter } from 'mastodon/utils/react_router';
-
-
 import AutosuggestInput from '../../../components/autosuggest_input';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import { Button } from '../../../components/button';
@@ -81,7 +78,6 @@ class ComposeForm extends ImmutablePureComponent {
     lang: PropTypes.string,
     circleId: PropTypes.string,
     maxChars: PropTypes.number,
-    ...WithOptionalRouterPropTypes
   };
 
   static defaultProps = {
@@ -130,7 +126,7 @@ class ComposeForm extends ImmutablePureComponent {
       return;
     }
 
-    this.props.onSubmit(this.props.history || null);
+    this.props.onSubmit();
 
     if (e) {
       e.preventDefault();
@@ -349,4 +345,4 @@ class ComposeForm extends ImmutablePureComponent {
 
 }
 
-export default withOptionalRouter(injectIntl(ComposeForm));
+export default injectIntl(ComposeForm);

@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     /circles/(*any)
     /links/(*any)
     /notifications/(*any)
+    /notifications_v2/(*any)
     /favourites
     /emoji_reactions
     /bookmarks

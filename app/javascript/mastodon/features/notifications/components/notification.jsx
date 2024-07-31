@@ -38,7 +38,7 @@ const messages = defineMessages({
   emojiReaction: { id: 'notification.emoji_reaction', defaultMessage: '{name} reacted your status with emoji' },
   follow: { id: 'notification.follow', defaultMessage: '{name} followed you' },
   ownPoll: { id: 'notification.own_poll', defaultMessage: 'Your poll has ended' },
-  poll: { id: 'notification.poll', defaultMessage: 'A poll you have voted in has ended' },
+  poll: { id: 'notification.poll', defaultMessage: 'A poll you voted in has ended' },
   reblog: { id: 'notification.reblog', defaultMessage: '{name} boosted your status' },
   status: { id: 'notification.status', defaultMessage: '{name} just posted' },
   listStatus: { id: 'notification.list_status', defaultMessage: '{name} post is added to {listName}' },
@@ -107,7 +107,7 @@ class Notification extends ImmutablePureComponent {
     e.preventDefault();
 
     const { notification, onMention } = this.props;
-    onMention(notification.get('account'), this.props.history);
+    onMention(notification.get('account'));
   };
 
   handleHotkeyFavourite = () => {
@@ -452,7 +452,7 @@ class Notification extends ImmutablePureComponent {
               {ownPoll ? (
                 <FormattedMessage id='notification.own_poll' defaultMessage='Your poll has ended' />
               ) : (
-                <FormattedMessage id='notification.poll' defaultMessage='A poll you have voted in has ended' />
+                <FormattedMessage id='notification.poll' defaultMessage='A poll you voted in has ended' />
               )}
             </span>
           </div>
