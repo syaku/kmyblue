@@ -1,5 +1,8 @@
 import api, { apiRequest, getLinks } from 'mastodon/api';
-import type { ApiNotificationGroupJSON } from 'mastodon/api_types/notifications';
+import type {
+  ApiNotificationGroupsResultJSON,
+  ApiNotificationGroupJSON,
+} from 'mastodon/api_types/notifications';
 import type { ApiStatusJSON } from 'mastodon/api_types/statuses';
 
 const exceptInvalidNotifications = (
@@ -17,14 +20,18 @@ export const apiFetchNotifications = async (params?: {
   exclude_types?: string[];
   max_id?: string;
 }) => {
-  const response = await api().request<ApiNotificationGroupJSON[]>({
+  const response = await api().request<ApiNotificationGroupsResultJSON>({
     method: 'GET',
     url: '/api/v2_alpha/notifications',
     params,
   });
 
+  const { statuses, accounts, notification_groups } = response.data;
+
   return {
-    notifications: exceptInvalidNotifications(response.data),
+    statuses,
+    accounts,
+    notifications: exceptInvalidNotifications(notification_groups),
     links: getLinks(response),
   };
 };
