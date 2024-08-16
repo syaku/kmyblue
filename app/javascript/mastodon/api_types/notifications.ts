@@ -43,12 +43,29 @@ export type NotificationType =
   | 'admin.sign_up'
   | 'admin.report';
 
+export interface NotifyEmojiReactionJSON {
+  name: string;
+  count: number;
+  me: boolean;
+  url?: string;
+  static_url?: string;
+  domain?: string;
+  width?: number;
+  height?: number;
+}
+
+export interface NotificationEmojiReactionGroupJSON {
+  emoji_reaction: NotifyEmojiReactionJSON;
+  sample_account_ids: string[];
+}
+
 export interface BaseNotificationJSON {
   id: string;
   type: NotificationType;
   created_at: string;
   group_key: string;
   account: ApiAccountJSON;
+  emoji_reaction?: NotifyEmojiReactionJSON;
 }
 
 export interface BaseNotificationGroupJSON {
@@ -60,6 +77,7 @@ export interface BaseNotificationGroupJSON {
   most_recent_notification_id: string;
   page_min_id?: string;
   page_max_id?: string;
+  emoji_reaction_groups?: NotificationEmojiReactionGroupJSON[];
 }
 
 interface NotificationGroupWithStatusJSON extends BaseNotificationGroupJSON {
@@ -70,6 +88,7 @@ interface NotificationGroupWithStatusJSON extends BaseNotificationGroupJSON {
 interface NotificationWithStatusJSON extends BaseNotificationJSON {
   type: NotificationWithStatusType;
   status: ApiStatusJSON;
+  emoji_reaction?: NotifyEmojiReactionJSON;
 }
 
 interface ReportNotificationGroupJSON extends BaseNotificationGroupJSON {
