@@ -5,6 +5,7 @@ class NotifyService < BaseService
 
   MAXIMUM_GROUP_SPAN_HOURS = 12
 
+  # TODO: the severed_relationships type probably warrants email notifications
   NON_EMAIL_TYPES = %i(
     admin.report
     admin.sign_up
@@ -15,7 +16,6 @@ class NotifyService < BaseService
     status
     list_status
     moderation_warning
-    # TODO: this probably warrants an email notification
     severed_relationships
   ).freeze
 

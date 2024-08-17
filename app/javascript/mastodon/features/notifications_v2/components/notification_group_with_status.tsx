@@ -34,6 +34,7 @@ export const NotificationGroupWithStatus: React.FC<{
   labelSeeMoreHref?: string;
   type: string;
   unread: boolean;
+  additionalContent?: JSX.Element;
 }> = ({
   icon,
   iconId,
@@ -47,6 +48,7 @@ export const NotificationGroupWithStatus: React.FC<{
   labelSeeMoreHref,
   type,
   unread,
+  additionalContent,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -103,7 +105,9 @@ export const NotificationGroupWithStatus: React.FC<{
                   />
                   <AvatarGroup accountIds={group.sampleAccountIds} />
 
-                  {actions}
+                  {actions && (
+                    <div className='notification-group__actions'>{actions}</div>
+                  )}
                 </div>
               </div>
             ))}
@@ -112,7 +116,9 @@ export const NotificationGroupWithStatus: React.FC<{
               <div className='notification-group__main__header__wrapper'>
                 <AvatarGroup accountIds={accountIds} />
 
-                {actions}
+                {actions && (
+                  <div className='notification-group__actions'>{actions}</div>
+                )}
               </div>
             )}
 
@@ -125,6 +131,12 @@ export const NotificationGroupWithStatus: React.FC<{
           {statusId && (
             <div className='notification-group__main__status'>
               <EmbeddedStatus statusId={statusId} />
+            </div>
+          )}
+
+          {additionalContent && (
+            <div className='notification-group__main__additional-content'>
+              {additionalContent}
             </div>
           )}
         </div>

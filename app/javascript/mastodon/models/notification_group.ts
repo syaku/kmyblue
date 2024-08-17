@@ -23,7 +23,7 @@ interface BaseNotificationGroup
 interface BaseNotificationWithStatus<Type extends NotificationWithStatusType>
   extends BaseNotificationGroup {
   type: Type;
-  statusId: string;
+  statusId: string | undefined;
   emojiReactionGroups?: EmojiReactionGroup[];
 }
 
@@ -171,7 +171,7 @@ export function createNotificationGroupFromJSON(
     case 'update': {
       const { status_id: statusId, ...groupWithoutStatus } = group;
       return {
-        statusId,
+        statusId: statusId ?? undefined,
         sampleAccountIds,
         ...groupWithoutStatus,
       };
@@ -193,7 +193,7 @@ export function createNotificationGroupFromJSON(
         } as EmojiReactionGroup;
       });
       return {
-        statusId,
+        statusId: statusId ?? undefined,
         sampleAccountIds,
         emojiReactionGroups: groups,
         ...groupWithoutStatus,
@@ -253,11 +253,11 @@ export function createNotificationGroupFromNotificationJSON(
     case 'status_reference':
     case 'poll':
     case 'update':
-      return { ...group, statusId: notification.status.id };
+      return { ...group, statusId: notification.status?.id };
     case 'emoji_reaction':
       return {
         ...group,
-        statusId: notification.status.id,
+        statusId: notification.status?.id,
         emojiReactionGroups: createEmojiReactionGroupsFromJSON(
           notification.emoji_reaction,
           group.sampleAccountIds,
