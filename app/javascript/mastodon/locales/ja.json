@@ -577,6 +577,7 @@
   "notification.admin.report_statuses_other": "{name}さんが{target}さんを通報しました",
   "notification.admin.sign_up": "{name}さんがサインアップしました",
   "notification.emoji_reaction": "{name}さんがあなたの投稿に絵文字をつけました",
+  "notification.emoji_reaction.name_and_others_with_link": "{name}さんと<a>{count, plural, other {他#名}}</a>があなたの投稿に絵文字をつけました",
   "notification.favourite": "{name}さんがお気に入りしました",
   "notification.follow": "{name}さんにフォローされました",
   "notification.follow_request": "{name}さんがあなたにフォローリクエストしました",

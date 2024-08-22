@@ -13,7 +13,7 @@ class REST::InstanceSerializer < ActiveModel::Serializer
 
   attributes :domain, :title, :version, :source_url, :description,
              :usage, :thumbnail, :languages, :configuration,
-             :registrations, :fedibird_capabilities
+             :registrations, :fedibird_capabilities, :api_versions
 
   has_one :contact, serializer: ContactSerializer
   has_many :rules, serializer: REST::RuleSerializer
@@ -116,6 +116,13 @@ class REST::InstanceSerializer < ActiveModel::Serializer
       limit_reached: Setting.registrations_mode != 'none' && reach_registrations_limit?,
       message: registrations_enabled? ? nil : registrations_message,
       url: ENV.fetch('SSO_ACCOUNT_SIGN_UP', nil),
+    }
+  end
+
+  def api_versions
+    {
+      mastodon: 1,
+      kmyblue: KMYBLUE_API_VERSION,
     }
   end
 
