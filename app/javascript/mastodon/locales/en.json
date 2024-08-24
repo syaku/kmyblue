@@ -971,7 +971,6 @@
   "status.pin": "Pin on profile",
   "status.pinned": "Pinned post",
   "status.quote": "Quote",
-  "status.quote_filtered": "This quote is filtered because of muting, blocking or domain blocking",
   "status.quotes": "{count, plural, one {quote} other {quotes}}",
   "status.read_more": "Read more",
   "status.reblog": "Boost",
