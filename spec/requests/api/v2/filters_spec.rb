@@ -68,15 +68,18 @@ RSpec.describe 'Filters' do
       it 'returns a filter with keywords', :aggregate_failures do
         subject
 
-        json = body_as_json
-
-        expect(json[:title]).to eq 'magic'
-        expect(json[:filter_action]).to eq 'hide'
-        expect(json[:context]).to eq ['home']
-        expect(json[:keywords].map { |keyword| keyword.slice(:keyword, :whole_word) }).to eq [{ keyword: 'magic', whole_word: true }]
-        expect(json[:exclude_follows]).to be true
-        expect(json[:exclude_localusers]).to be true
-        expect(json[:with_profile]).to be true
+        expect(body_as_json)
+          .to include(
+            title: 'magic',
+            filter_action: 'hide',
+            context: %w(home),
+            keywords: contain_exactly(
+              include(keyword: 'magic', whole_word: true)
+            ),
+            exclude_follows: true,
+            exclude_localusers: true,
+            with_profile: true
+          )
       end
 
       it 'creates a filter', :aggregate_failures do

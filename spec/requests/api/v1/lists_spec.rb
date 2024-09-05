@@ -63,7 +63,7 @@ RSpec.describe 'Lists' do
       subject
 
       expect(response).to have_http_status(200)
-      expect(body_as_json).to eq({
+      expect(body_as_json).to match({
         id: list.id.to_s,
         title: list.title,
         replies_policy: list.replies_policy,
@@ -149,7 +149,7 @@ RSpec.describe 'Lists' do
       expect(response).to have_http_status(200)
       list.reload
 
-      expect(body_as_json).to eq({
+      expect(body_as_json).to match({
         id: list.id.to_s,
         title: list.title,
         replies_policy: list.replies_policy,

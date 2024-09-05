@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'Home', :inline_jobs do
+RSpec.describe 'Home', :inline_jobs do
   let(:user)    { Fabricate(:user) }
   let(:scopes)  { 'read:statuses' }
   let(:token)   { Fabricate(:accessible_access_token, resource_owner_id: user.id, scopes: scopes) }
@@ -94,8 +94,9 @@ describe 'Home', :inline_jobs do
       it 'returns http unprocessable entity', :aggregate_failures do
         subject
 
-        expect(response).to have_http_status(422)
-        expect(response.headers['Link']).to be_nil
+        expect(response)
+          .to have_http_status(422)
+          .and not_have_http_link_header
       end
     end
   end
