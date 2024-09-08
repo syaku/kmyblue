@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::ListsController do
+RSpec.describe Api::V1::ListsController do
   render_views
 
   let(:user) { Fabricate(:user) }

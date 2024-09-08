@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Api::V1::Circles::StatusesController do
+RSpec.describe Api::V1::Circles::StatusesController do
   render_views
 
   let(:user)  { Fabricate(:user) }
