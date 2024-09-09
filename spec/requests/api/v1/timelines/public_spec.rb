@@ -156,7 +156,7 @@ RSpec.describe 'Public' do
     context 'when user is setting filters' do
       subject do
         get '/api/v1/timelines/public', headers: headers, params: params
-        body_as_json.filter { |status| status[:filtered].empty? || status[:filtered][0][:filter][:id] != filter.id.to_s }.map { |status| status[:id].to_i }
+        response.parsed_body.filter { |status| status[:filtered].empty? || status[:filtered][0][:filter][:id] != filter.id.to_s }.map { |status| status[:id].to_i }
       end
 
       before do

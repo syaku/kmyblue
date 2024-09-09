@@ -22,7 +22,7 @@ RSpec.describe Api::V1::Circles::StatusesController do
       get :show, params: { circle_id: circle.id, limit: 5 }
 
       expect(response).to have_http_status(200)
-      json = body_as_json
+      json = response.parsed_body
       expect(json.map { |item| item[:id].to_i }).to eq [status.id]
     end
 

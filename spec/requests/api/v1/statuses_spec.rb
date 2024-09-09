@@ -126,15 +126,15 @@ RSpec.describe '/api/v1/statuses' do
 
         it 'returns unique ancestors' do
           get "/api/v1/statuses/#{thread.id}/context"
-          status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
+          status_ids = response.parsed_body[:ancestors].map { |ref| ref[:id].to_i }
 
           expect(status_ids).to eq [status.id]
         end
 
         it 'returns unique references' do
           get "/api/v1/statuses/#{thread.id}/context", params: { with_reference: true }
-          ancestor_status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
-          reference_status_ids = body_as_json[:references].map { |ref| ref[:id].to_i }
+          ancestor_status_ids = response.parsed_body[:ancestors].map { |ref| ref[:id].to_i }
+          reference_status_ids = response.parsed_body[:references].map { |ref| ref[:id].to_i }
 
           expect(ancestor_status_ids).to eq [status.id]
           expect(reference_status_ids).to eq []
@@ -164,14 +164,14 @@ RSpec.describe '/api/v1/statuses' do
 
       it 'returns empty references' do
         get "/api/v1/statuses/#{status.id}/context", headers: headers
-        status_ids = body_as_json[:references].map { |ref| ref[:id].to_i }
+        status_ids = response.parsed_body[:references].map { |ref| ref[:id].to_i }
 
         expect(status_ids).to eq []
       end
 
       it 'contains referred status' do
         get "/api/v1/statuses/#{status.id}/context", headers: headers
-        status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
+        status_ids = response.parsed_body[:ancestors].map { |ref| ref[:id].to_i }
 
         expect(status_ids).to include referred.id
         expect(status_ids).to include referred_private_following.id
@@ -179,14 +179,14 @@ RSpec.describe '/api/v1/statuses' do
 
       it 'does not contain private status' do
         get "/api/v1/statuses/#{status.id}/context", headers: headers
-        status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
+        status_ids = response.parsed_body[:ancestors].map { |ref| ref[:id].to_i }
 
         expect(status_ids).to_not include referred_private.id
       end
 
       it 'does not contain private status when not autienticated' do
         get "/api/v1/statuses/#{status.id}/context"
-        status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
+        status_ids = response.parsed_body[:ancestors].map { |ref| ref[:id].to_i }
 
         expect(status_ids).to_not include referred_private.id
       end
@@ -199,14 +199,14 @@ RSpec.describe '/api/v1/statuses' do
 
         it 'returns empty ancestors' do
           get "/api/v1/statuses/#{status.id}/context", params: { with_reference: true }, headers: headers
-          status_ids = body_as_json[:ancestors].map { |ref| ref[:id].to_i }
+          status_ids = response.parsed_body[:ancestors].map { |ref| ref[:id].to_i }
 
           expect(status_ids).to eq []
         end
 
         it 'contains referred status' do
           get "/api/v1/statuses/#{status.id}/context", params: { with_reference: true }, headers: headers
-          status_ids = body_as_json[:references].map { |ref| ref[:id].to_i }
+          status_ids = response.parsed_body[:references].map { |ref| ref[:id].to_i }
 
           expect(status_ids).to include referred.id
         end

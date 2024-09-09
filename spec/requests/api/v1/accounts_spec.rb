@@ -168,7 +168,7 @@ RSpec.describe '/api/v1/accounts' do
         it 'returns JSON with following=false and requested=true' do
           subject
 
-          json = body_as_json
+          json = response.parsed_body
 
           expect(json[:following]).to be false
           expect(json[:requested]).to be true
