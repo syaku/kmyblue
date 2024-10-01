@@ -1524,6 +1524,10 @@ body > [data-popper-placement] {
     &:last-child {
       flex-grow: 0;
     }
+
+    &__blank {
+      width: 24px;
+    }
   }
 
   &--first-in-thread {
@@ -1767,10 +1771,6 @@ body > [data-popper-placement] {
   align-items: center;
   gap: 18px;
   margin-top: 16px;
-
-  &__button__blank {
-    width: 24px;
-  }
 }
 
 .detailed-status__action-bar-dropdown {
